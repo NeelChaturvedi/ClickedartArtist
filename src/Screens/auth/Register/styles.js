@@ -4,7 +4,8 @@ export const styles = StyleSheet.create({
   background: {
     backgroundColor: 'black',
     flex: 1,
-    paddingVertical: 80,
+    paddingTop: 120,
+    paddingBottom: 60,
     justifyContent: 'space-between',
   },
   title: {
