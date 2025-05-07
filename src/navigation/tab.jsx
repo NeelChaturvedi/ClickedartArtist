@@ -80,8 +80,8 @@ export const Tabs = () => {
             <View
               style={{
                 backgroundColor: '#ED3147',
-                width: 80,
-                height: 80,
+                width: 70,
+                height: 70,
                 borderRadius: 50,
                 borderWidth: 8,
                 borderColor: '#000',
@@ -93,8 +93,8 @@ export const Tabs = () => {
                 source={require('../assets/tabIcons/posts.png')}
                 resizeMode="contain"
                 style={{
-                  width: 30,
-                  height: 30,
+                  width: 24,
+                  height: 24,
                   tintColor: '#fff',
                 }}
               />
