@@ -5,6 +5,7 @@ import React, {useState} from 'react';
 import Button from '../../components/button';
 import Switch from '../../components/switch';
 import {MotiText} from 'moti';
+import {useNavigation} from '@react-navigation/native';
 
 const Onboarding = () => {
   const screenText = [
@@ -22,12 +23,15 @@ const Onboarding = () => {
     },
   ];
 
+  const navigation = useNavigation();
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleTextChange = () => {
     if (currentIndex < screenText.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
+      navigation.navigate('Login');
     }
   };
 
