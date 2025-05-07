@@ -15,13 +15,13 @@ export const styles = StyleSheet.create({
     fontSize: 32,
     color: 'white',
     textAlign: 'center',
-    fontFamily: 'Outfit Bold',
+    fontFamily: 'Outfit-bold',
   },
   subHeading: {
     fontSize: 16,
     color: '#888888',
     textAlign: 'center',
-    fontFamily: 'Outfit Bold',
+    fontFamily: 'Outfit-medium',
   },
   form: {
     gap: 20,
@@ -33,6 +33,7 @@ export const styles = StyleSheet.create({
   },
   inputTitle: {
     fontSize: 16,
+    fontFamily:'Outfit-medium',
     color: 'white',
   },
   inputbox: {
@@ -60,6 +61,7 @@ export const styles = StyleSheet.create({
   },
   passwordTextInput: {
     color: '#ffffff',
+    fontFamily: 'Outfit-regular',
     flex: 1,
     marginRight: 10,
   },
@@ -67,14 +69,15 @@ export const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'right',
     textDecorationLine: 'underline',
-    fontWeight: '700',
+    fontFamily:'Outfit-regular',
   },
   createAccountText: {
     color: 'white',
     textAlign: 'center',
-    fontWeight: '400',
+    fontFamily:'Outfit-regular',
   },
   createNowText: {
-    fontWeight: '700',
+    fontFamily:'Outfit-bold',
+    color: '#ED3147',
   },
 });

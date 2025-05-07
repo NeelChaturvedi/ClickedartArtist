@@ -12,6 +12,7 @@ import React, {useState} from 'react';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {AdvancedCheckbox} from 'react-native-advanced-checkbox';
 import Button from '../../../components/button';
+import { useNavigation } from '@react-navigation/native';
 
 const Register = () => {
   const [secure, setSecure] = useState(true);
@@ -19,6 +20,8 @@ const Register = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const navigation = useNavigation();
 
   return (
     <SafeAreaView style={styles.background}>
@@ -82,9 +85,19 @@ const Register = () => {
               uncheckedColor="#ccc"
               size={20}
             />
-            <Text style={{color: 'white', marginLeft: 10}}>
+            <Text
+              style={{
+                color: 'white',
+                marginLeft: 10,
+                fontFamily: 'Outfit-regular',
+              }}>
               Agree With{' '}
-              <Text style={{color: '#ea324a', textDecorationLine: 'underline'}}>
+              <Text
+                style={{
+                  color: '#ea324a',
+                  textDecorationLine: 'underline',
+                  fontFamily: 'Outfit-medium',
+                }}>
                 Terms & Conditions
               </Text>
             </Text>
@@ -93,20 +106,22 @@ const Register = () => {
       </View>
 
       <View style={styles.formField}>
-       <Button btnText={'Create Account'} />
+        <Button btnText={'Create Account'} />
 
-        <Pressable >
+        <Pressable>
           <Text
             style={{
               color: 'white',
               textAlign: 'center',
-              fontWeight: '400',
+              fontFamily: 'Outfit-regular',
               marginTop: 10,
             }}>
             Already have an account?{' '}
-            <Text style={{fontWeight: '700', textDecorationLine: 'underline'}}>
-              Sign In
-            </Text>
+            <Pressable onPress={() => navigation.goBack('Login')}>
+              <Text style={{fontFamily: 'Outfit-bold', color: '#ea324a'}}>
+                Sign In
+              </Text>
+            </Pressable>
           </Text>
         </Pressable>
       </View>

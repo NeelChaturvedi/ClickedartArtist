@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
   },
   title: {
     flexDirection: 'column',
-    gap: 10,
+    gap: 14,
     marginBottom: 20,
     paddingHorizontal: 30,
   },
@@ -17,23 +17,25 @@ export const styles = StyleSheet.create({
     fontSize: 32,
     color: 'white',
     textAlign: 'center',
-    fontFamily: 'Outfit Bold',
+    fontFamily: 'Outfit-bold',
   },
   subHeading: {
     fontSize: 16,
     color: '#888888',
     textAlign: 'center',
-    fontFamily: 'Outfit Bold',
+    fontFamily: 'Outfit-medium',
   },
   form: {
     paddingHorizontal: 30,
   },
   formField: {
-    marginBottom: 20,
+    marginBottom: 28,
+    gap:6,
   },
   inputTitle: {
     fontSize: 16,
     color: 'white',
+    fontFamily:'Outfit-medium',
     marginBottom: 6,
   },
   inputbox: {
@@ -41,6 +43,7 @@ export const styles = StyleSheet.create({
     height: 54,
     color: 'white',
     backgroundColor: '#1A1A1A',
+    fontFamily: 'Outfit-regular',
     paddingHorizontal: 10,
     borderRadius: 10,
     borderWidth: 0.5,

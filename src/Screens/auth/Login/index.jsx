@@ -4,14 +4,18 @@ import {
   SafeAreaView,
   TextInput,
   TouchableOpacity,
+  Pressable,
 } from 'react-native';
 import React, {useState} from 'react';
 import {styles} from './styles';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Button from '../../../components/button';
+import {useNavigation} from '@react-navigation/native';
 
 const Login = () => {
   const [secure, setSecure] = useState(true);
+
+  const navigation = useNavigation();
 
   return (
     <SafeAreaView style={styles.background}>
@@ -52,10 +56,15 @@ const Login = () => {
       </View>
 
       <View style={styles.formField}>
-        <Button btnText={'Login'} />
+        <Button
+          btnText={'Login'}
+          onPress={() => navigation.navigate('BottomTab')}
+        />
         <Text style={styles.createAccountText}>
           Don't have an account?{' '}
-          <Text style={styles.createNowText}>Create Now</Text>
+          <Pressable onPress={() => navigation.navigate('Register')}>
+            <Text style={styles.createNowText}>Create Now</Text>
+          </Pressable>
         </Text>
       </View>
     </SafeAreaView>
