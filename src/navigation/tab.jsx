@@ -6,16 +6,18 @@ import Photos from '../Screens/main/Photos';
 import Posts from '../Screens/main/Posts';
 import Accounts from '../Screens/main/Accounts';
 import Profile from '../Screens/main/Profile';
-import { Image } from 'react-native';
+import {Image} from 'react-native';
 
 export const Tabs = () => {
-  
   const Tab = createBottomTabNavigator();
-  
+
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
+        tabBarLabelStyle: {
+          fontFamily: 'Outfit-bold',
+        },
         tabBarInactiveTintColor: '#000',
         tabBarActiveTintColor: '#ED3147',
         tabBarStyle: {
