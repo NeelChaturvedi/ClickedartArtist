@@ -6,15 +6,12 @@ import Photos from '../Screens/main/Photos';
 import Posts from '../Screens/main/Posts';
 import Accounts from '../Screens/main/Accounts';
 import Profile from '../Screens/main/Profile';
-import {Image, Text, View} from 'react-native';
+import { Image } from 'react-native';
 
 export const Tabs = () => {
-  const {clearUser} = useUserStore();
+  
   const Tab = createBottomTabNavigator();
-  const Logout = () => {
-    clearUser();
-    return null;
-  };
+  
   return (
     <Tab.Navigator
       screenOptions={{
