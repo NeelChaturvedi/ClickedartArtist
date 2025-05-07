@@ -106,7 +106,7 @@ const Register = () => {
       </View>
 
       <View style={styles.formField}>
-        <Button btnText={'Create Account'} />
+        <Button btnText={'Create Account'} onPress={() => {navigation.navigate('Details');}}/>
 
         <View style= {styles.LoginPage}>
           <Text

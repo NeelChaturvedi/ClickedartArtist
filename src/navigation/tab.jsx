@@ -18,11 +18,12 @@ export const Tabs = () => {
         tabBarLabelStyle: {
           fontFamily: 'Outfit-bold',
         },
-        tabBarInactiveTintColor: '#000',
+        tabBarInactiveTintColor: '#fff',
         tabBarActiveTintColor: '#ED3147',
         tabBarStyle: {
-          height: 80,
-          paddingTop: 5,
+          backgroundColor: '#000',
+          height: 90,
+          paddingTop: 10,
           flexDirection: 'row',
           justifyContent: 'space-between',
         },
@@ -39,7 +40,7 @@ export const Tabs = () => {
               style={{
                 width: 20,
                 height: 20,
-                tintColor: focused ? '#ED3147' : '#000',
+                tintColor: focused ? '#ED3147' : '#fff',
               }}
             />
           ),
@@ -56,7 +57,7 @@ export const Tabs = () => {
               style={{
                 width: 22,
                 height: 22,
-                tintColor: focused ? '#ED3147' : '#000',
+                tintColor: focused ? '#ED3147' : '#fff',
               }}
             />
           ),
@@ -66,6 +67,7 @@ export const Tabs = () => {
         name="Posts"
         component={Posts}
         options={{
+          tabBarLabel: () => null,
           tabBarIcon: ({focused}) => (
             <Image
               source={require('../assets/tabIcons/posts.png')}
@@ -73,7 +75,7 @@ export const Tabs = () => {
               style={{
                 width: 70,
                 height: 70,
-                marginBottom: 30,
+                marginTop: 16,
               }}
             />
           ),
@@ -90,7 +92,7 @@ export const Tabs = () => {
               style={{
                 width: 22,
                 height: 22,
-                tintColor: focused ? '#ED3147' : '#000',
+                tintColor: focused ? '#ED3147' : '#fff',
               }}
             />
           ),
@@ -107,7 +109,7 @@ export const Tabs = () => {
               style={{
                 width: 22,
                 height: 22,
-                tintColor: focused ? '#ED3147' : '#000',
+                tintColor: focused ? '#ED3147' : '#fff',
               }}
             />
           ),

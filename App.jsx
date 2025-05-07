@@ -9,6 +9,7 @@ import Register from './src/Screens/auth/Register';
 import {Tabs} from './src/navigation/tab';
 import {useUserStore} from './src/store/auth';
 import {useOnboardingStore} from './src/store/onboarding';
+import Details from './src/navigation/details';
 enableScreens();
 
 const Stack = createNativeStackNavigator();
@@ -27,6 +28,7 @@ export default function App() {
             )}
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Register" component={Register} />
+            <Stack.Screen name="Details" component={Details}/>
           </>
         ) : (
           <Stack.Screen name="BottomTab" component={Tabs} />

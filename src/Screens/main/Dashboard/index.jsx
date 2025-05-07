@@ -1,11 +1,13 @@
-import { View, Text } from 'react-native';
+/* eslint-disable react-native/no-inline-styles */
+import {Text, SafeAreaView} from 'react-native';
 import React from 'react';
+import { style } from './styles';
 
 const Dashboard = () => {
   return (
-    <View>
-      <Text>Dashboard</Text>
-    </View>
+    <SafeAreaView style={style.background}>
+      <Text style={{color: '#fff'}}>Profile</Text>
+    </SafeAreaView>
   );
 };
 
