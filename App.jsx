@@ -36,7 +36,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
-        {isOnboardingCompleted === 'true' && (
+        {isOnboardingCompleted !== 'true' && (
           <Stack.Screen name="Onboarding" component={Onboarding} />
         )}
         <Stack.Screen name="Login" component={Login} />

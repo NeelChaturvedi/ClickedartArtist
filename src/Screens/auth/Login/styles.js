@@ -71,6 +71,11 @@ export const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     fontFamily:'Outfit-regular',
   },
+  createAccount:{
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 4,
+  },
   createAccountText: {
     color: 'white',
     textAlign: 'center',

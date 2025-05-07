@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
   background: {
@@ -30,12 +30,12 @@ export const styles = StyleSheet.create({
   },
   formField: {
     marginBottom: 28,
-    gap:6,
+    gap: 6,
   },
   inputTitle: {
     fontSize: 16,
     color: 'white',
-    fontFamily:'Outfit-medium',
+    fontFamily: 'Outfit-medium',
     marginBottom: 6,
   },
   inputbox: {
@@ -59,5 +59,10 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 0.5,
     borderColor: '#8C8C8C',
+  },
+  LoginPage: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 4,
   },
 });

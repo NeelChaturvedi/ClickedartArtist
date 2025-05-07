@@ -12,7 +12,7 @@ import React, {useState} from 'react';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {AdvancedCheckbox} from 'react-native-advanced-checkbox';
 import Button from '../../../components/button';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const Register = () => {
   const [secure, setSecure] = useState(true);
@@ -108,22 +108,21 @@ const Register = () => {
       <View style={styles.formField}>
         <Button btnText={'Create Account'} />
 
-        <Pressable>
+        <View style= {styles.LoginPage}>
           <Text
             style={{
               color: 'white',
               textAlign: 'center',
               fontFamily: 'Outfit-regular',
-              marginTop: 10,
             }}>
             Already have an account?{' '}
-            <Pressable onPress={() => navigation.goBack('Login')}>
-              <Text style={{fontFamily: 'Outfit-bold', color: '#ea324a'}}>
-                Sign In
-              </Text>
-            </Pressable>
           </Text>
-        </Pressable>
+          <TouchableOpacity onPress={() => navigation.goBack('Login')}>
+            <Text style={{fontFamily: 'Outfit-bold', color: '#ea324a'}}>
+              Sign In
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );

@@ -60,12 +60,12 @@ const Login = () => {
           btnText={'Login'}
           onPress={() => navigation.navigate('BottomTab')}
         />
-        <Text style={styles.createAccountText}>
-          Don't have an account?{' '}
-          <Pressable onPress={() => navigation.navigate('Register')}>
+        <View style={styles.createAccount}>
+          <Text style={styles.createAccountText}>Don't have an account? </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
             <Text style={styles.createNowText}>Create Now</Text>
-          </Pressable>
-        </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );
