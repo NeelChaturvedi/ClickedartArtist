@@ -25,7 +25,7 @@ const Dot = ({active, press}) => {
   return (
     <View>
       <Pressable onPress={press}>
-        <Animated.View style={[styles.dot, animatedStyle]} />;
+        <Animated.View style={[styles.dot, animatedStyle]} />
       </Pressable>
     </View>
   );
