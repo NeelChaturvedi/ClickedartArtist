@@ -7,6 +7,7 @@ import Onboarding from './src/Screens/Onboarding';
 import Login from './src/Screens/auth/Login';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Register from './src/Screens/auth/Register';
+import { Tabs } from './src/navigation/tab';
 enableScreens();
 
 const Stack = createNativeStackNavigator();
@@ -40,6 +41,7 @@ export default function App() {
         )}
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="BottomTab" component={Tabs} />
       </Stack.Navigator>
     </NavigationContainer>
   );
