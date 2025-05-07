@@ -9,7 +9,12 @@ import Profile from '../Screens/main/Profile';
 import {Image, Text, View} from 'react-native';
 
 export const Tabs = () => {
+  const {clearUser} = useUserStore();
   const Tab = createBottomTabNavigator();
+  const Logout = () => {
+    clearUser();
+    return null;
+  };
   return (
     <Tab.Navigator
       screenOptions={{

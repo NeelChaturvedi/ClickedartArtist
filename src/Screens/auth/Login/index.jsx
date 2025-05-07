@@ -11,9 +11,11 @@ import {styles} from './styles';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Button from '../../../components/button';
 import {useNavigation} from '@react-navigation/native';
+import {useUserStore} from '../../../store/auth';
 
 const Login = () => {
   const [secure, setSecure] = useState(true);
+  const {setUser} = useUserStore();
 
   const navigation = useNavigation();
 
@@ -58,11 +60,19 @@ const Login = () => {
       <View style={styles.formField}>
         <Button
           btnText={'Login'}
-          onPress={() => navigation.navigate('BottomTab')}
+          onPress={() => {
+            setUser({
+              name: 'Bhanu',
+              email: 'Bhanu@gmail.com',
+            });
+          }}
         />
         <View style={styles.createAccount}>
           <Text style={styles.createAccountText}>Don't have an account? </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('Register');
+            }}>
             <Text style={styles.createNowText}>Create Now</Text>
           </TouchableOpacity>
         </View>

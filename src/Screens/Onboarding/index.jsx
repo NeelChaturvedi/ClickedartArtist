@@ -7,8 +7,10 @@ import Switch from '../../components/switch';
 import {MotiText} from 'moti';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useOnboardingStore} from '../../store/onboarding';
 
 const Onboarding = () => {
+  const {setOnboardingCompleted} = useOnboardingStore();
   const screenText = [
     {
       text: 'Welcome to Our App!',
@@ -32,7 +34,7 @@ const Onboarding = () => {
     if (currentIndex < screenText.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
-      await AsyncStorage.setItem('isOnboardingCompleted', 'true');
+      setOnboardingCompleted();
       navigation.navigate('Login');
     }
   };
