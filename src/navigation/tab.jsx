@@ -7,6 +7,7 @@ import Posts from '../Screens/main/Posts';
 import Accounts from '../Screens/main/Accounts';
 import Profile from '../Screens/main/Profile';
 import {Image} from 'react-native';
+import {View} from 'moti';
 
 export const Tabs = () => {
   const Tab = createBottomTabNavigator();
@@ -21,11 +22,18 @@ export const Tabs = () => {
         tabBarInactiveTintColor: '#fff',
         tabBarActiveTintColor: '#ED3147',
         tabBarStyle: {
-          backgroundColor: '#000',
-          height: 90,
+          backgroundColor: '#1E1E1E',
+          position: 'absolute',
+          bottom: 25,
           paddingTop: 10,
+          paddingHorizontal: 10,
+          left: 20,
+          right: 20,
+          elevation: 0,
+          borderRadius: 50,
           flexDirection: 'row',
           justifyContent: 'space-between',
+          borderTopWidth: 0,
         },
       }}
       initialRouteName="Profile">
@@ -69,15 +77,28 @@ export const Tabs = () => {
         options={{
           tabBarLabel: () => null,
           tabBarIcon: ({focused}) => (
-            <Image
-              source={require('../assets/tabIcons/posts.png')}
-              resizeMode="contain"
+            <View
               style={{
-                width: 70,
-                height: 70,
-                marginTop: 16,
-              }}
-            />
+                backgroundColor: '#ED3147',
+                width: 80,
+                height: 80,
+                borderRadius: 50,
+                borderWidth: 8,
+                borderColor: '#000',
+                marginTop: -40,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Image
+                source={require('../assets/tabIcons/posts.png')}
+                resizeMode="contain"
+                style={{
+                  width: 30,
+                  height: 30,
+                  tintColor: '#fff',
+                }}
+              />
+            </View>
           ),
         }}
       />
