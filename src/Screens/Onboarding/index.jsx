@@ -6,7 +6,6 @@ import Button from '../../components/button';
 import Switch from '../../components/switch';
 import {MotiText} from 'moti';
 
-
 const Onboarding = () => {
   const screenText = [
     {
@@ -23,15 +22,17 @@ const Onboarding = () => {
     },
   ];
 
-
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleTextChange = () => {
     if (currentIndex < screenText.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
-
     }
+  };
+
+  const handleDotsPress = index => {
+    setCurrentIndex(index);
   };
 
   return (
@@ -69,7 +70,11 @@ const Onboarding = () => {
             </MotiText>
           </View>
           <View style={styles.buttonContainer}>
-            <Switch index={currentIndex} total={screenText.length} />
+            <Switch
+              index={currentIndex}
+              total={screenText.length}
+              dotsPress={handleDotsPress}
+            />
             <Button
               btnText={screenText[currentIndex].btnText}
               onPress={handleTextChange}

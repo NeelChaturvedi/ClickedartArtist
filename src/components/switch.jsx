@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Pressable} from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
 } from 'react-native-reanimated';
 
-const Dot = ({active}) => {
+const Dot = ({active, press}) => {
   const width = useSharedValue(active ? 24 : 10);
   const opacity = useSharedValue(active ? 1 : 0.5);
 
@@ -22,13 +22,19 @@ const Dot = ({active}) => {
     };
   });
 
-  return <Animated.View style = {[styles.dot, animatedStyle]} />;
+  return (
+    <View>
+      <Pressable onPress={press}>
+        <Animated.View style={[styles.dot, animatedStyle]} />;
+      </Pressable>
+    </View>
+  );
 };
-const Switch = ({index, total}) => {
+const Switch = ({index, total, dotsPress}) => {
   return (
     <View style={styles.container}>
       {Array.from({length: total}).map((_, i) => (
-        <Dot key={i} active={index === i} />
+        <Dot key={i} active={index === i} press={() => dotsPress(i)} />
       ))}
     </View>
   );
