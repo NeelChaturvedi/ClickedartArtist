@@ -4,7 +4,6 @@ import {
   SafeAreaView,
   TextInput,
   TouchableOpacity,
-  Pressable,
   ToastAndroid,
 } from 'react-native';
 import React, {useState} from 'react';

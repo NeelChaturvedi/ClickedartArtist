@@ -5,8 +5,6 @@ import React, {useState} from 'react';
 import Button from '../../components/button';
 import Switch from '../../components/switch';
 import {MotiText} from 'moti';
-import {useNavigation} from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useOnboardingStore} from '../../store/onboarding';
 
 const Onboarding = () => {
@@ -26,8 +24,6 @@ const Onboarding = () => {
     },
   ];
 
-  const navigation = useNavigation();
-
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleTextChange = async () => {
@@ -44,7 +40,7 @@ const Onboarding = () => {
 
   const handleSkip = async () => {
     setOnboardingCompleted();
-  }
+  };
 
   return (
     <ImageBackground
