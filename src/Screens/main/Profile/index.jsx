@@ -4,6 +4,7 @@ import React from 'react';
 import {style} from './styles';
 import {Image} from 'moti';
 
+
 const Profile = () => {
   return (
     <SafeAreaView style={style.background}>
