@@ -8,13 +8,13 @@ export const style = StyleSheet.create({
     width: '100%',
   },
   coverImage: {
-    height: '42%',
+    height: '70%',
     width: '100%',
     resizeMode: 'cover',
   },
   profileDiv: {
     position: 'absolute',
-    top: '25%',
+    top: '40%',
     left: '50%',
     transform: [{translateX: -50}],
   },
@@ -27,9 +27,9 @@ export const style = StyleSheet.create({
   },
   edit: {
     backgroundColor: '#fff',
-    flex:1,
+    flex: 1,
     justifyContent: 'center',
-    alignItems:'center',
+    alignItems: 'center',
     height: 24,
     width: 24,
     borderRadius: 20,
@@ -39,18 +39,22 @@ export const style = StyleSheet.create({
     right: 5,
   },
   userDetails: {
-    flexDirection: 'column',
     alignItems: 'center',
-    gap:20,
+    gap: 10,
   },
   userName: {
     color: '#fff',
-    fontFamily:'Outfit-medium',
+    fontFamily: 'Outfit-medium',
     fontSize: 24,
   },
   userAddress: {
     color: '#D9D9D9',
-    fontFamily:'Outfit-medium',
+    fontFamily: 'Outfit-medium',
     fontSize: 16,
+  },
+  tabsContainer: {
+    marginTop: 30,
+    width: '95%',
+    alignSelf: 'center',
   },
 });
