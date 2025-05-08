@@ -8,18 +8,32 @@ import {
   ToastAndroid,
 } from 'react-native';
 import {styles} from './styles';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {AdvancedCheckbox} from 'react-native-advanced-checkbox';
 import Button from '../../../components/button';
 import {useNavigation} from '@react-navigation/native';
 import {useRegistrationStore} from '../../../store/registration';
+import { API_URL } from '@env';
 
 const Register = () => {
   const {formData, setField, nextStep} = useRegistrationStore();
   const [secure, setSecure] = useState(true);
   const [checked, setChecked] = useState(false);
   const navigation = useNavigation();
+
+  const checkUsernameAvailability = async username => {
+    try {
+      const response = await fetch(
+        `${API_URL}/api/photographer/check-username?username=${username}`,
+      );
+      const data = await response.json();
+      return data.available; // Assuming the API returns an object with an 'available' property
+    } catch (error) {
+      console.error('Error checking username availability:', error);
+      return false;
+    }
+  };
 
   return (
     <SafeAreaView style={styles.background}>
@@ -107,7 +121,6 @@ const Register = () => {
         <Button
           btnText={'Create Account'}
           onPress={() => {
-            console.log('Login Pressed', formData);
             if (!formData.username || !formData.email || !formData.password) {
               ToastAndroid.show(
                 'Please fill all the fields',

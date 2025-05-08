@@ -14,6 +14,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useUserStore} from '../../../store/auth';
 import axios from 'axios';
 import {useRegistrationStore} from '../../../store/registration';
+import { API_URL } from '@env';
 
 const Login = () => {
   const {reset} = useRegistrationStore();
@@ -37,7 +38,7 @@ const Login = () => {
     }
     try {
       const response = await axios.post(
-        'https://clickedart.in/api/photographer/login',
+        `${API_URL}/api/photographer/login`,
         formData,
         {
           headers: {
