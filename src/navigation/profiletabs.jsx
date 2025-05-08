@@ -2,19 +2,28 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import tabPhotos from '../Screens/main/Profile/Profiletabs/tabPhotos';
 import tabCatalogues from '../Screens/main/Profile/Profiletabs/tabCatalogue';
 import tabBlogs from '../Screens/main/Profile/Profiletabs/tabBlogs';
-import {NavigationContainer} from '@react-navigation/native';
 
 const Tab = createMaterialTopTabNavigator();
 
 function ProfileTabs() {
   return (
-    <NavigationContainer independent={true}>
-      <Tab.Navigator>
-        <Tab.Screen name="tabPhotos" component={tabPhotos} />
-        <Tab.Screen name="tabCatalogue" component={tabCatalogues} />
-        <Tab.Screen name="tabBlogs" component={tabBlogs} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <Tab.Navigator
+      screenOptions={{
+        tabBarActiveTintColor: '#ED3147',
+        tabBarInactiveTintColor: '#fff',
+        tabBarIndicatorStyle: {
+          backgroundColor: '#ED3147',
+          height: 3,
+        },
+        tabBarStyle: {
+          backgroundColor: '#000',
+        },
+        tabBarLabelStyle: {fontFamily: 'Outfit-bold', fontSize: 16},
+      }}>
+      <Tab.Screen name="Photos" component={tabPhotos} />
+      <Tab.Screen name="Catalogue" component={tabCatalogues} />
+      <Tab.Screen name="Blogs" component={tabBlogs} />
+    </Tab.Navigator>
   );
 }
 
