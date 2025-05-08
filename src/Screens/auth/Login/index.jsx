@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   Pressable,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import {styles} from './styles';
@@ -12,12 +13,37 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Button from '../../../components/button';
 import {useNavigation} from '@react-navigation/native';
 import {useUserStore} from '../../../store/auth';
+import axios from 'axios';
 
 const Login = () => {
   const [secure, setSecure] = useState(true);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
   const {setUser} = useUserStore();
 
   const navigation = useNavigation();
+
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post(
+        'https://clickedart.in/api/photographer/login',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      const data = response.data;
+      console.log('Data', data);
+      setUser(data.photographer);
+    } catch (error) {
+      console.log('Error', error);
+      Alert.alert('Error', 'Something went wrong!');
+    }
+  };
 
   return (
     <SafeAreaView style={styles.background}>
@@ -30,6 +56,8 @@ const Login = () => {
         <View style={styles.formField}>
           <Text style={styles.inputTitle}>EMAIL</Text>
           <TextInput
+            onChangeText={text => setFormData({...formData, email: text})}
+            value={formData.email}
             style={styles.inputbox}
             placeholder="Enter Email"
             placeholderTextColor="#ffffff"
@@ -40,6 +68,8 @@ const Login = () => {
           <Text style={styles.inputTitle}>PASSWORD</Text>
           <View style={styles.passwordInput}>
             <TextInput
+              onChangeText={text => setFormData({...formData, password: text})}
+              value={formData.password}
               style={styles.passwordTextInput}
               placeholder="Enter Password"
               placeholderTextColor="#ffffff"
@@ -61,10 +91,11 @@ const Login = () => {
         <Button
           btnText={'Login'}
           onPress={() => {
-            setUser({
-              name: 'Bhanu',
-              email: 'Bhanu@gmail.com',
-            });
+            // setUser({
+            //   name: 'Bhanu',
+            //   email: 'Bhanu@gmail.com',
+            // });
+            handleLogin();
           }}
         />
         <View style={styles.createAccount}>
