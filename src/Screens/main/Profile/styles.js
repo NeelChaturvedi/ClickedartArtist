@@ -55,6 +55,7 @@ export const style = StyleSheet.create({
   tabsContainer: {
     marginTop: 30,
     width: '95%',
+    height: '60%',
     alignSelf: 'center',
   },
 });
