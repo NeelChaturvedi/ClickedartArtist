@@ -7,6 +7,7 @@ import Posts from '../Screens/main/Posts';
 import Accounts from '../Screens/main/Accounts';
 import Profile from '../Screens/main/Profile';
 import {Image} from 'react-native';
+import {View} from 'moti';
 
 export const Tabs = () => {
   const Tab = createBottomTabNavigator();
@@ -18,13 +19,21 @@ export const Tabs = () => {
         tabBarLabelStyle: {
           fontFamily: 'Outfit-bold',
         },
-        tabBarInactiveTintColor: '#000',
+        tabBarInactiveTintColor: '#fff',
         tabBarActiveTintColor: '#ED3147',
         tabBarStyle: {
-          height: 80,
-          paddingTop: 5,
+          backgroundColor: '#1E1E1E',
+          position: 'absolute',
+          bottom: 25,
+          paddingTop: 10,
+          paddingHorizontal: 10,
+          left: 20,
+          right: 20,
+          elevation: 0,
+          borderRadius: 50,
           flexDirection: 'row',
           justifyContent: 'space-between',
+          borderTopWidth: 0,
         },
       }}
       initialRouteName="Profile">
@@ -39,7 +48,7 @@ export const Tabs = () => {
               style={{
                 width: 20,
                 height: 20,
-                tintColor: focused ? '#ED3147' : '#000',
+                tintColor: focused ? '#ED3147' : '#fff',
               }}
             />
           ),
@@ -56,7 +65,7 @@ export const Tabs = () => {
               style={{
                 width: 22,
                 height: 22,
-                tintColor: focused ? '#ED3147' : '#000',
+                tintColor: focused ? '#ED3147' : '#fff',
               }}
             />
           ),
@@ -66,16 +75,30 @@ export const Tabs = () => {
         name="Posts"
         component={Posts}
         options={{
+          tabBarLabel: () => null,
           tabBarIcon: ({focused}) => (
-            <Image
-              source={require('../assets/tabIcons/posts.png')}
-              resizeMode="contain"
+            <View
               style={{
+                backgroundColor: '#ED3147',
                 width: 70,
                 height: 70,
-                marginBottom: 30,
-              }}
-            />
+                borderRadius: 50,
+                borderWidth: 8,
+                borderColor: '#000',
+                marginTop: -40,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Image
+                source={require('../assets/tabIcons/posts.png')}
+                resizeMode="contain"
+                style={{
+                  width: 24,
+                  height: 24,
+                  tintColor: '#fff',
+                }}
+              />
+            </View>
           ),
         }}
       />
@@ -90,7 +113,7 @@ export const Tabs = () => {
               style={{
                 width: 22,
                 height: 22,
-                tintColor: focused ? '#ED3147' : '#000',
+                tintColor: focused ? '#ED3147' : '#fff',
               }}
             />
           ),
@@ -107,7 +130,7 @@ export const Tabs = () => {
               style={{
                 width: 22,
                 height: 22,
-                tintColor: focused ? '#ED3147' : '#000',
+                tintColor: focused ? '#ED3147' : '#fff',
               }}
             />
           ),

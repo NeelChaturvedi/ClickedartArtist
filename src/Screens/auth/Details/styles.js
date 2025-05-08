@@ -4,15 +4,14 @@ export const styles = StyleSheet.create({
   background: {
     flex: 1,
     backgroundColor: 'black',
-    paddingVertical: 80,
+    paddingVertical: 100,
     justifyContent: 'space-between',
   },
   heading: {
     fontSize: 32,
     color: 'white',
     textAlign: 'center',
-    fontFamily: 'Outfit Bold',
-    marginBottom: 30,
+    fontFamily: 'Outfit-bold',
   },
   form: {
     gap: 20,
@@ -32,12 +31,14 @@ export const styles = StyleSheet.create({
   },
   inputTitle: {
     fontSize: 16,
+    fontFamily: 'Outfit-medium',
     color: '#FFFFFF',
   },
   inputbox: {
     height: 54,
     color: 'white',
     backgroundColor: '#1A1A1A',
+    fontFamily: 'Outfit-regular',
     paddingHorizontal: 16,
     borderRadius: 10,
     borderWidth: 0.5,

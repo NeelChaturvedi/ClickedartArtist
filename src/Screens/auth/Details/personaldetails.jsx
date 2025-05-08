@@ -1,7 +1,10 @@
- import {View, Text, Pressable, SafeAreaView, TextInput} from 'react-native';
+ import {View, Text, SafeAreaView, TextInput} from 'react-native';
 import { styles } from './styles';
+import Button from '../../../components/button';
+import { useNavigation } from '@react-navigation/native';
 
 const Personal = () => {
+  const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.background}>
       <Text style={styles.heading}>Personal Details</Text>
@@ -60,9 +63,7 @@ const Personal = () => {
           </View>
         </View>
       </View>
-      <Pressable style={styles.button}>
-        <Text style={styles.buttonText}>Next</Text>
-      </Pressable>
+     <Button btnText={'Next'} onPress={() => {navigation.navigate('Contact');}}/>
     </SafeAreaView>
   );
 };
