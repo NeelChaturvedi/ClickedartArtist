@@ -14,8 +14,10 @@ import Button from '../../../components/button';
 import {useNavigation} from '@react-navigation/native';
 import {useUserStore} from '../../../store/auth';
 import axios from 'axios';
+import {useRegistrationStore} from '../../../store/registration';
 
 const Login = () => {
+  const {reset} = useRegistrationStore();
   const [secure, setSecure] = useState(true);
   const [formData, setFormData] = useState({
     email: '',
@@ -115,6 +117,7 @@ const Login = () => {
           <TouchableOpacity
             onPress={() => {
               navigation.navigate('Register');
+              reset();
             }}>
             <Text style={styles.createNowText}>Create Now</Text>
           </TouchableOpacity>

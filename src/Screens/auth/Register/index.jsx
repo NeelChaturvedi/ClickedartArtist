@@ -2,10 +2,10 @@
 import {
   View,
   Text,
-  Pressable,
   SafeAreaView,
   TextInput,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native';
 import {styles} from './styles';
 import React, {useState} from 'react';
@@ -13,14 +13,12 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {AdvancedCheckbox} from 'react-native-advanced-checkbox';
 import Button from '../../../components/button';
 import {useNavigation} from '@react-navigation/native';
+import {useRegistrationStore} from '../../../store/registration';
 
 const Register = () => {
+  const {formData, setField, nextStep} = useRegistrationStore();
   const [secure, setSecure] = useState(true);
   const [checked, setChecked] = useState(false);
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
   const navigation = useNavigation();
 
   return (
@@ -39,8 +37,8 @@ const Register = () => {
             style={styles.inputbox}
             placeholder="Enter Username"
             placeholderTextColor="#888888"
-            value={username}
-            onChangeText={setUsername}
+            value={formData.username}
+            onChangeText={text => setField('username', text)}
           />
         </View>
 
@@ -50,8 +48,8 @@ const Register = () => {
             style={styles.inputbox}
             placeholder="Enter Email"
             placeholderTextColor="#888888"
-            value={email}
-            onChangeText={setEmail}
+            value={formData.email}
+            onChangeText={text => setField('email', text)}
             keyboardType="email-address"
           />
         </View>
@@ -64,8 +62,8 @@ const Register = () => {
               placeholder="Enter Password"
               placeholderTextColor="#888888"
               secureTextEntry={secure}
-              value={password}
-              onChangeText={setPassword}
+              value={formData.password}
+              onChangeText={text => setField('password', text)}
             />
             <TouchableOpacity onPress={() => setSecure(!secure)}>
               <FontAwesome5
@@ -106,9 +104,33 @@ const Register = () => {
       </View>
 
       <View style={styles.formField}>
-        <Button btnText={'Create Account'} onPress={() => {navigation.navigate('Details');}}/>
+        <Button
+          btnText={'Create Account'}
+          onPress={() => {
+            console.log('Login Pressed', formData);
+            if (!formData.username || !formData.email || !formData.password) {
+              ToastAndroid.show(
+                'Please fill all the fields',
+                ToastAndroid.SHORT,
+                ToastAndroid.BOTTOM,
+              );
+              return;
+            }
+            if (!checked) {
+              // alert('Please agree to the terms and conditions');
+              ToastAndroid.show(
+                'Please agree to the terms and conditions',
+                ToastAndroid.SHORT,
+                ToastAndroid.BOTTOM,
+              );
+              return;
+            }
+            nextStep();
+            navigation.navigate('Details');
+          }}
+        />
 
-        <View style= {styles.LoginPage}>
+        <View style={styles.LoginPage}>
           <Text
             style={{
               color: 'white',
@@ -117,7 +139,10 @@ const Register = () => {
             }}>
             Already have an account?{' '}
           </Text>
-          <TouchableOpacity onPress={() => navigation.goBack('Login')}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack('Login');
+            }}>
             <Text style={{fontFamily: 'Outfit-bold', color: '#ea324a'}}>
               Sign In
             </Text>
