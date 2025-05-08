@@ -5,7 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   Pressable,
-  Alert,
+  ToastAndroid,
 } from 'react-native';
 import React, {useState} from 'react';
 import {styles} from './styles';
@@ -26,6 +26,14 @@ const Login = () => {
   const navigation = useNavigation();
 
   const handleLogin = async () => {
+    if (formData.email.length < 1 || formData.password.length < 1) {
+      ToastAndroid.show(
+        'Please fill all the fields',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+      );
+      return;
+    }
     try {
       const response = await axios.post(
         'https://clickedart.in/api/photographer/login',
@@ -41,7 +49,11 @@ const Login = () => {
       setUser(data.photographer);
     } catch (error) {
       console.log('Error', error);
-      Alert.alert('Error', 'Something went wrong!');
+      ToastAndroid.show(
+        'Invalid email or password',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+      );
     }
   };
 

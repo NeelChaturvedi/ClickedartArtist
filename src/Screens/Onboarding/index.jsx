@@ -35,13 +35,16 @@ const Onboarding = () => {
       setCurrentIndex(currentIndex + 1);
     } else {
       setOnboardingCompleted();
-      navigation.navigate('Login');
     }
   };
 
   const handleDotsPress = index => {
     setCurrentIndex(index);
   };
+
+  const handleSkip = async () => {
+    setOnboardingCompleted();
+  }
 
   return (
     <ImageBackground
@@ -50,7 +53,7 @@ const Onboarding = () => {
       <View style={styles.overlay}>
         <View style={styles.container}>
           <View style={styles.textContainer}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleSkip}>
               <Text
                 style={[
                   styles.skipText,
