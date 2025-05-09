@@ -22,15 +22,10 @@ export const Tabs = () => {
         tabBarInactiveTintColor: '#fff',
         tabBarActiveTintColor: '#ED3147',
         tabBarStyle: {
-          backgroundColor: '#1E1E1E',
-          position: 'absolute',
-          bottom: 25,
-          paddingTop: 10,
+          height: 92,
+          backgroundColor: '#000',
+          paddingTop: 20,
           paddingHorizontal: 10,
-          left: 20,
-          right: 20,
-          elevation: 0,
-          borderRadius: 50,
           flexDirection: 'row',
           justifyContent: 'space-between',
           borderTopWidth: 0,
@@ -80,12 +75,9 @@ export const Tabs = () => {
             <View
               style={{
                 backgroundColor: '#ED3147',
-                width: 70,
-                height: 70,
+                width: 60,
+                height: 60,
                 borderRadius: 50,
-                borderWidth: 8,
-                borderColor: '#000',
-                marginTop: -40,
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
