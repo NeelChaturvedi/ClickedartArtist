@@ -1,6 +1,6 @@
 import {View, Text, Pressable, SafeAreaView, TextInput} from 'react-native';
 import {styles} from './styles';
-import { useRegistrationStore } from '../../../store/registration';
+import { useRegistrationStore } from '../../store/registration';
 
 const Contact = () => {
   const { formData, setField, setNestedField } = useRegistrationStore();

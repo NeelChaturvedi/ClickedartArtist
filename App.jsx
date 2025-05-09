@@ -4,12 +4,12 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {enableScreens} from 'react-native-screens';
 import Onboarding from './src/Screens/Onboarding';
-import Login from './src/Screens/auth/Login';
-import Register from './src/Screens/auth/Register';
-import {Tabs} from './src/navigation/tab';
+import Login from './src/Screens/Login';
+import Register from './src/Screens/Register';
+import {Tabs} from './src/Navigation/UserTabs';
 import {useUserStore} from './src/store/auth';
 import {useOnboardingStore} from './src/store/onboarding';
-import Details from './src/navigation/details';
+import Details from './src/Navigation/AuthStack';
 enableScreens();
 
 const Stack = createNativeStackNavigator();

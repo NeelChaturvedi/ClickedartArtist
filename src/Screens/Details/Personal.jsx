@@ -9,10 +9,10 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import {styles} from './styles';
-import Button from '../../../components/button';
+import Button from '../../components/button';
 import {useNavigation} from '@react-navigation/native';
 import {useState} from 'react';
-import {useRegistrationStore} from '../../../store/registration';
+import {useRegistrationStore} from '../../store/registration';
 
 const Personal = () => {
   const navigation = useNavigation();

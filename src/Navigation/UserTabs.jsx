@@ -1,13 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/no-unstable-nested-components */
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Dashboard from '../Screens/main/Dashboard';
-import Photos from '../Screens/main/Photos';
-import Posts from '../Screens/main/Posts';
-import Accounts from '../Screens/main/Accounts';
-import Profile from '../Screens/main/Profile';
+import Dashboard from '../Screens/Dashboard';
+import Photos from '../Screens/Photos';
+import Posts from '../Screens/Posts';
+import Accounts from '../Screens/Accounts';
 import {Image} from 'react-native';
 import {View} from 'moti';
+import ProfileNavigator from './ProfileNavigator/ProfileNavigator';
 
 export const Tabs = () => {
   const Tab = createBottomTabNavigator();
@@ -113,7 +113,7 @@ export const Tabs = () => {
       />
       <Tab.Screen
         name="Profile"
-        component={Profile}
+        component={ProfileNavigator}
         options={{
           tabBarIcon: ({focused}) => (
             <Image

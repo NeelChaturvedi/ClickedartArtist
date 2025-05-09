@@ -9,11 +9,11 @@ import {
 import React, {useState} from 'react';
 import {styles} from './styles';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import Button from '../../../components/button';
+import Button from '../../components/button';
 import {useNavigation} from '@react-navigation/native';
-import {useUserStore} from '../../../store/auth';
+import {useUserStore} from '../../store/auth';
 import axios from 'axios';
-import {useRegistrationStore} from '../../../store/registration';
+import {useRegistrationStore} from '../../store/registration';
 import { API_URL } from '@env';
 
 const Login = () => {

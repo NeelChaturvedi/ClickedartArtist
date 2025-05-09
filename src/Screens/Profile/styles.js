@@ -84,7 +84,7 @@ export const style = StyleSheet.create({
   },
   tabsContainer: {
     marginTop: 40,
-    gap: 30,
+    gap: 35,
     width: '95%',
     alignSelf: 'center',
   },

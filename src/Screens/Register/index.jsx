@@ -11,9 +11,9 @@ import {styles} from './styles';
 import React, {useEffect, useState} from 'react';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {AdvancedCheckbox} from 'react-native-advanced-checkbox';
-import Button from '../../../components/button';
+import Button from '../../components/button';
 import {useNavigation} from '@react-navigation/native';
-import {useRegistrationStore} from '../../../store/registration';
+import {useRegistrationStore} from '../../store/registration';
 import { API_URL } from '@env';
 
 const Register = () => {

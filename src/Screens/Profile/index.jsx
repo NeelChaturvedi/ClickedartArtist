@@ -3,13 +3,17 @@ import {Pressable, SafeAreaView, ScrollView, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import {style} from './styles';
 import {Image} from 'moti';
-import {useUserStore} from '../../../store/auth';
-import TabPhotos from './Profiletabs/TabPhotos';
-import TabCatalogues from './Profiletabs/TabCatalogue';
-import TabBlogs from './Profiletabs/TabBlogs';
+import {useUserStore} from '../../store/auth';
+import TabPhotos from '../Profiletabs/TabPhotos';
+import TabCatalogues from '../Profiletabs/TabCatalogue';
+import TabBlogs from '../Profiletabs/TabBlogs';
+import { useNavigation } from '@react-navigation/native';
+
 
 const Profile = () => {
   const {user} = useUserStore();
+
+  const navigation = useNavigation();
 
   const [activeTab, setActiveTab] = useState('photos');
   const handleTabPress = tab => {
@@ -24,7 +28,7 @@ const Profile = () => {
             source={
               user?.coverImage
                 ? {uri: user?.coverImage}
-                : require('../../../assets/images/onboarding.png')
+                : require('../../assets/images/onboarding.png')
             }
           />
           <View style={style.profileDiv}>
@@ -33,13 +37,13 @@ const Profile = () => {
               source={
                 user?.profileImage
                   ? {uri: user?.profileImage}
-                  : require('../../../assets/images/onboarding.png')
+                  : require('../../assets/images/onboarding.png')
               }
             />
-            <Pressable style={style.edit}>
+            <Pressable onPress={() => {navigation.navigate('EditProfile')}} style={style.edit}>
               <Image
                 style={{height: 12, width: 12, tintColor: '#000'}}
-                source={require('../../../assets/tabIcons/edit.png')}
+                source={require('../../assets/tabIcons/edit.png')}
               />
             </Pressable>
           </View>
