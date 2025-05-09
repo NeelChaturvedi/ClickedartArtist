@@ -37,22 +37,27 @@ const TabPhotos = () => {
 
 const styles = StyleSheet.create({
   listContainer: {
+    paddingBottom: 90,
     flexDirection: 'column',
     rowGap: 10,
     paddingHorizontal: 10,
   },
   imageBorder: {
-    padding: 10,
+    paddingTop: 8,
+    paddingBottom: 10,
+    paddingHorizontal: 10,
     width: 170,
     height: 190,
     justifyContent: 'space-between',
-    backgroundColor: '#FFF',
+    backgroundColor: '#1A1A1A',
+    borderWidth: 1,
+    borderColor: '#fff',
     borderRadius: 10,
     marginRight: 10,
   },
   image: {
     resizeMode: 'cover',
-    height: '85%',
+    height: '80%',
     width: '100%',
   },
   imageDetails: {
@@ -63,7 +68,7 @@ const styles = StyleSheet.create({
   imageText: {
     fontSize: 16,
     fontFamily: 'Outfit-bold',
-    color: '#000',
+    color: '#fff',
   },
 });
 
