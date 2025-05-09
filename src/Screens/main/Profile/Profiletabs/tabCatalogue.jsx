@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import React from 'react';
 
-const tabCatalogues = () => {
+const TabCatalogues = () => {
   return (
     <View>
       <Text>catalogue</Text>
@@ -9,4 +9,4 @@ const tabCatalogues = () => {
   );
 };
 
-export default tabCatalogues;
+export default TabCatalogues;

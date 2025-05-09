@@ -46,11 +46,41 @@ export const style = StyleSheet.create({
     color: '#fff',
     fontFamily: 'Outfit-medium',
     fontSize: 24,
+    marginTop: 14,
   },
   userAddress: {
     color: '#D9D9D9',
     fontFamily: 'Outfit-medium',
     fontSize: 16,
+  },
+  userBio: {
+    color: '#FFF',
+    fontFamily: 'Outfit-medium',
+    fontSize: 18,
+    marginTop: 30,
+  },
+  accountInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 40,
+    gap: 40,
+  },
+  summary: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+  },
+  title: {
+    fontSize: 14,
+    fontFamily: 'Outfit-regular',
+    color: '#FFF',
+  },
+  count: {
+    fontSize: 28,
+    fontFamily: 'Outfit-medium',
+    color: '#FFF',
   },
   tabsContainer: {
     marginTop: 30,

@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import React from 'react';
 
-const tabBlogs = () => {
+const TabBlogs = () => {
   return (
     <View>
       <Text>blogs</Text>
@@ -9,4 +9,4 @@ const tabBlogs = () => {
   );
 };
 
-export default tabBlogs;
+export default TabBlogs;
