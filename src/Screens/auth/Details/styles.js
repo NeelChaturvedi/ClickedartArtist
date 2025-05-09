@@ -44,6 +44,16 @@ export const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderColor: '#8C8C8C',
   },
+  bioInput: {
+    height: 120,
+    color: 'white',
+    backgroundColor: '#1A1A1A',
+    fontFamily: 'Outfit-regular',
+    paddingHorizontal: 16,
+    borderRadius: 10,
+    borderWidth: 0.5,
+    borderColor: '#8C8C8C',
+  },
   button: {
     backgroundColor: '#ea324a',
     paddingVertical: 18,
