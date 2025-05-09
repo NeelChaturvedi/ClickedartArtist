@@ -1,12 +1,20 @@
 /* eslint-disable react-native/no-inline-styles */
 import {Pressable, SafeAreaView, ScrollView, Text, View} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {style} from './styles';
 import {Image} from 'moti';
 import {useUserStore} from '../../../store/auth';
+import TabPhotos from './Profiletabs/TabPhotos';
+import TabCatalogues from './Profiletabs/TabCatalogue';
+import TabBlogs from './Profiletabs/TabBlogs';
 
 const Profile = () => {
   const {user} = useUserStore();
+
+  const [activeTab, setActiveTab] = useState('photos');
+  const handleTabPress = tab => {
+    setActiveTab(tab);
+  };
   return (
     <SafeAreaView style={[style.background, {flex: 1}]}>
       <ScrollView contentContainerStyle={{paddingBottom: 30}}>
@@ -57,6 +65,24 @@ const Profile = () => {
           <View style={style.summary}>
             <Text style={style.title}>DOWNLOADS</Text>
             <Text style={style.count}>0</Text>
+          </View>
+        </View>
+        <View style={style.tabsContainer}>
+          <View style={style.tabs}>
+            <Pressable onPress={() => handleTabPress('photos')}>
+              <Text style={style.tabText}>Photos</Text>
+            </Pressable>
+            <Pressable onPress={() => handleTabPress('catalogues')}>
+              <Text style={style.tabText}>Catalogues</Text>
+            </Pressable>
+            <Pressable onPress={() => handleTabPress('blogs')}>
+              <Text style={style.tabText}>Blogs</Text>
+            </Pressable>
+          </View>
+          <View>
+            {activeTab === 'photos' && <TabPhotos />}
+            {activeTab === 'catalogues' && <TabCatalogues />}
+            {activeTab === 'blogs' && <TabBlogs />}
           </View>
         </View>
       </ScrollView>

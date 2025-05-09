@@ -83,9 +83,20 @@ export const style = StyleSheet.create({
     color: '#FFF',
   },
   tabsContainer: {
-    marginTop: 30,
+    marginTop: 40,
+    gap: 30,
     width: '95%',
-    height: '60%',
     alignSelf: 'center',
+  },
+  tabs: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 50,
+    alignItems: 'center',
+  },
+  tabText: {
+    fontSize: 20,
+    color: '#fff',
+    fontFamily: 'Outfit-medium',
   },
 });
