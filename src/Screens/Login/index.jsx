@@ -1,11 +1,11 @@
 import {
   View,
   Text,
-  SafeAreaView,
   TextInput,
   TouchableOpacity,
   ToastAndroid,
 } from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import React, {useState} from 'react';
 import {styles} from './styles';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';

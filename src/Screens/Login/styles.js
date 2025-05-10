@@ -2,9 +2,11 @@ import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
   background: {
+    flex: 1,
+    paddingVertical: '80%',
+    justifyContent: 'space-between',
     backgroundColor: 'black',
     height: '100%',
-    paddingVertical: '30%',
     gap: 90,
   },
   title: {

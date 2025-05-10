@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import {Pressable, SafeAreaView, ScrollView, Text, View} from 'react-native';
+import {Pressable, ScrollView, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import {style} from './styles';
 import {Image} from 'moti';
@@ -7,8 +7,8 @@ import {useUserStore} from '../../store/auth';
 import TabPhotos from '../Profiletabs/TabPhotos';
 import TabCatalogues from '../Profiletabs/TabCatalogue';
 import TabBlogs from '../Profiletabs/TabBlogs';
-import { useNavigation } from '@react-navigation/native';
-
+import {useNavigation} from '@react-navigation/native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const Profile = () => {
   const {user} = useUserStore();
@@ -22,7 +22,7 @@ const Profile = () => {
   return (
     <SafeAreaView style={[style.background, {flex: 1}]}>
       <ScrollView contentContainerStyle={{paddingBottom: 30}}>
-        <View style={{height: 200}}>
+        <View style={style.profileHeader}>
           <Image
             style={style.coverImage}
             source={
@@ -40,7 +40,11 @@ const Profile = () => {
                   : require('../../assets/images/onboarding.png')
               }
             />
-            <Pressable onPress={() => {navigation.navigate('EditProfile')}} style={style.edit}>
+            <Pressable
+              onPress={() => {
+                navigation.navigate('EditProfile');
+              }}
+              style={style.edit}>
               <Image
                 style={{height: 12, width: 12, tintColor: '#000'}}
                 source={require('../../assets/tabIcons/edit.png')}
@@ -84,9 +88,9 @@ const Profile = () => {
             </Pressable>
           </View>
           <View>
-            {activeTab === 'photos' && <TabPhotos />}
-            {activeTab === 'catalogues' && <TabCatalogues />}
-            {activeTab === 'blogs' && <TabBlogs />}
+            {activeTab === 'photos' ? ( <TabPhotos /> )
+            : activeTab === 'catalogues' ? ( <TabCatalogues /> )
+            : ( <TabBlogs /> )}
           </View>
         </View>
       </ScrollView>

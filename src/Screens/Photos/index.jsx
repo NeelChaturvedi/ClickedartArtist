@@ -1,14 +1,21 @@
-/* eslint-disable react-native/no-inline-styles */
-import {Text, SafeAreaView} from 'react-native';
 import React from 'react';
-import { style } from './styles';
+import Approved from '../Phototabs/Approved';
+import Pending from '../Phototabs/Pending';
+import Tabs from '../../components/tabs';
+
 
 const Photos = () => {
-  return (
-    <SafeAreaView style={style.background}>
-      <Text style={{color: '#fff'}}>Profile</Text>
-    </SafeAreaView>
-  );
+  const tabs = [
+    { key: 'approved', label: 'Approved' },
+    { key: 'pending', label: 'Pending' },
+  ];
+
+  const contentComponents = {
+    approved: <Approved />,
+    pending: <Pending />,
+  };
+
+  return <Tabs tabs={tabs} contentComponents={contentComponents} />;
 };
 
 export default Photos;

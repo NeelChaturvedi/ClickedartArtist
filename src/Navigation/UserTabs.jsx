@@ -4,10 +4,10 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Dashboard from '../Screens/Dashboard';
 import Photos from '../Screens/Photos';
 import Posts from '../Screens/Posts';
-import Accounts from '../Screens/Accounts';
 import {Image} from 'react-native';
 import {View} from 'moti';
 import ProfileNavigator from './ProfileNavigator/ProfileNavigator';
+import AccountNavigator from './AccountNavigator/AccountNavigator';
 
 export const Tabs = () => {
   const Tab = createBottomTabNavigator();
@@ -96,7 +96,7 @@ export const Tabs = () => {
       />
       <Tab.Screen
         name="Accounts"
-        component={Accounts}
+        component={AccountNavigator}
         options={{
           tabBarIcon: ({focused}) => (
             <Image

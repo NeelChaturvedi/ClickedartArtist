@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     height: 190,
     justifyContent: 'space-between',
     backgroundColor: '#1A1A1A',
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderColor: '#fff',
     borderRadius: 10,
   },
@@ -35,14 +35,56 @@ export const styles = StyleSheet.create({
     color: '#fff',
   },
   catalogueBorder: {
-    padding: 10,
+    padding: 15,
+    gap: 24,
     width: '100%',
-    height: 380,
+    flexGrow: 1,
     justifyContent: 'space-between',
     backgroundColor: '#1A1A1A',
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderColor: '#fff',
-    borderRadius: 10,
+    borderRadius: 20,
     marginRight: 10,
+  },
+  imageDistribution: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 20,
+  },
+  catalogueImage: {
+    width: 150,
+    height: 150,
+  },
+  catalougeText: {
+    fontFamily: 'Outfit-Bold',
+    fontSize: 24,
+    color: '#fff',
+  },
+  blogBorder: {
+    alignSelf: 'center',
+    padding: 15,
+    gap: 24,
+    width: '95%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderColor: '#fff',
+    marginRight: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#fff',
+  },
+  blogDetails: {
+    flexDirection: 'column',
+    gap: 20,
+  },
+  blogDate: {
+    color: '#A9A9A9',
+    fontFamily: 'Outfit-bold',
+    fontSize: 12,
+  },
+  blogImage: {
+    height: 60,
+    width: 60,
   },
 });

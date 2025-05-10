@@ -3,9 +3,11 @@ import {StyleSheet} from 'react-native';
 export const style = StyleSheet.create({
   background: {
     backgroundColor: '#000',
-    paddingTop: 48,
     height: '100%',
     width: '100%',
+  },
+  profileHeader: {
+    height: 200,
   },
   coverImage: {
     height: '70%',
