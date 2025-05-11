@@ -8,7 +8,6 @@ import Button from '../../components/button';
 import {TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
-import { useNavigation } from '@react-navigation/native';
 
 const Settings = () => {
   const settingsItems = [
@@ -21,7 +20,6 @@ const Settings = () => {
     {icon: 'headset', label: 'Help Center'},
   ];
 
-  const navigation = useNavigation();
 
   return (
     <SafeAreaView style={style.background}>
