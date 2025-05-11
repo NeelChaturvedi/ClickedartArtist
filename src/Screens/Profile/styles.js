@@ -2,15 +2,37 @@ import {StyleSheet} from 'react-native';
 
 export const style = StyleSheet.create({
   background: {
-    backgroundColor: '#000',
+    backgroundColor: 'black',
     height: '100%',
     width: '100%',
+    alignItems: 'center',
+  },
+  headerIcons: {
+    position: 'absolute',
+    top: '25%',
+    right: '4%',
+    gap: 10,
+    zIndex: 30,
+  },
+  iconContainer: {
+    height: 30,
+    width: 30,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 100,
+    backgroundColor: 'white',
   },
   profileHeader: {
     height: 200,
   },
-  coverImage: {
+  coverImageContainer: {
     height: '70%',
+    width: '100%',
+    position: 'relative',
+  },
+  coverImage: {
+    height: '100%',
     width: '100%',
     resizeMode: 'cover',
   },
@@ -87,7 +109,7 @@ export const style = StyleSheet.create({
   tabsContainer: {
     marginTop: 40,
     gap: 35,
-    width: '95%',
+    width: '100%',
     alignSelf: 'center',
   },
   tabs: {
@@ -100,5 +122,42 @@ export const style = StyleSheet.create({
     fontSize: 20,
     color: '#fff',
     fontFamily: 'Outfit-medium',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+  },
+  modalContent: {
+    backgroundColor: '#1E1E1E',
+    width: '80%',
+    gap: 10,
+    padding: 20,
+    borderRadius: 20,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  modalOptions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  platformName: {
+    fontSize: 18,
+    width: '100%',
+    paddingVertical: 10,
+    color: 'white',
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
   },
 });

@@ -77,7 +77,7 @@ const Personal = () => {
           <View style={styles.row}>
             <View style={styles.twoField}>
               <Modal
-                animationType="slide"
+                animationType="fade"
                 transparent={true}
                 visible={modalVisible}
                 onRequestClose={() => {

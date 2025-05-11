@@ -72,13 +72,14 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
   modalContent: {
-    backgroundColor: 'white',
+    backgroundColor: '#1E1E1E',
     width: '80%',
+    gap: 10,
     padding: 20,
-    borderRadius: 10,
+    borderRadius: 20,
   },
   modalTitle: {
     fontSize: 20,
@@ -89,8 +90,7 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     width: '100%',
     paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    color: 'white',
   },
   overlay: {
     flex: 1,

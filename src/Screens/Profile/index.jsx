@@ -1,5 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
-import {Pressable, ScrollView, Text, View} from 'react-native';
+import {
+  Modal,
+  Pressable,
+  ScrollView,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import React, {useState} from 'react';
 import {style} from './styles';
 import {Image} from 'moti';
@@ -9,6 +16,7 @@ import TabCatalogues from '../Profiletabs/TabCatalogue';
 import TabBlogs from '../Profiletabs/TabBlogs';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Profile = () => {
   const {user} = useUserStore();
@@ -16,6 +24,20 @@ const Profile = () => {
   const navigation = useNavigation();
 
   const [activeTab, setActiveTab] = useState('photos');
+  const [activeModal, setActiveModal] = useState(false);
+
+  const options = [
+    {icon: 'facebook', platform: 'Facebook'},
+    {icon: 'instagram', platform: 'Instagram'},
+    {icon: 'linkedin', platform: 'LinkedIn'},
+    {icon: 'x-twitter', platform: 'Twitter'},
+    {icon: 'clone', platform: 'Copy Link'},
+  ];
+
+  const handleModalPress = () => {
+    setActiveModal(!activeModal);
+  };
+
   const handleTabPress = tab => {
     setActiveTab(tab);
   };
@@ -23,14 +45,57 @@ const Profile = () => {
     <SafeAreaView style={[style.background, {flex: 1}]}>
       <ScrollView contentContainerStyle={{paddingBottom: 30}}>
         <View style={style.profileHeader}>
-          <Image
-            style={style.coverImage}
-            source={
-              user?.coverImage
-                ? {uri: user?.coverImage}
-                : require('../../assets/images/onboarding.png')
-            }
-          />
+          <View style={style.coverImageContainer}>
+            <Image
+              style={style.coverImage}
+              source={
+                user?.coverImage
+                  ? {uri: user?.coverImage}
+                  : require('../../assets/images/onboarding.png')
+              }
+            />
+            <View style={style.headerIcons}>
+              <Pressable
+                onPress={() => {
+                  navigation.navigate('Settings');
+                }}
+                style={style.iconContainer}>
+                <Icon name="gear" size={20} />
+              </Pressable>
+              <Pressable onPress={handleModalPress} style={style.iconContainer}>
+                <Icon name="share" size={20} />
+                <Modal
+                  transparent={true}
+                  visible={activeModal}
+                  animationType="fade">
+                  <TouchableWithoutFeedback
+                    onPress={() => setActiveModal(false)}>
+                    <View style={style.modalContainer}>
+                      <Text style={style.modalTitle}>Select Social Media</Text>
+                      <View style={style.modalContent}>
+                        {options.map((option, index) => (
+                          <Pressable style={style.modalOptions} key={index}>
+                            <View
+                              style={{
+                                height: 30,
+                                width: 30,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                              }}>
+                              <Icon style={{color: '#FFF'}} name={option.icon} size={20} />
+                            </View>
+                            <Text style={style.platformName}>
+                              {option.platform}
+                            </Text>
+                          </Pressable>
+                        ))}
+                      </View>
+                    </View>
+                  </TouchableWithoutFeedback>
+                </Modal>
+              </Pressable>
+            </View>
+          </View>
           <View style={style.profileDiv}>
             <Image
               style={style.profileImage}
@@ -40,11 +105,7 @@ const Profile = () => {
                   : require('../../assets/images/onboarding.png')
               }
             />
-            <Pressable
-              onPress={() => {
-                navigation.navigate('EditProfile');
-              }}
-              style={style.edit}>
+            <Pressable style={style.edit}>
               <Image
                 style={{height: 12, width: 12, tintColor: '#000'}}
                 source={require('../../assets/tabIcons/edit.png')}
@@ -88,9 +149,13 @@ const Profile = () => {
             </Pressable>
           </View>
           <View>
-            {activeTab === 'photos' ? ( <TabPhotos /> )
-            : activeTab === 'catalogues' ? ( <TabCatalogues /> )
-            : ( <TabBlogs /> )}
+            {activeTab === 'photos' ? (
+              <TabPhotos />
+            ) : activeTab === 'catalogues' ? (
+              <TabCatalogues />
+            ) : (
+              <TabBlogs />
+            )}
           </View>
         </View>
       </ScrollView>

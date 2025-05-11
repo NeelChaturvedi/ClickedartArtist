@@ -3,6 +3,7 @@ import React from 'react';
 import {View, Text, FlatList, TextInput} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import {styles} from './styles';
+import SearchBar from '../../components/SearchBar';
 
 const invoices = [
   {id: '0007', date: '28 July 2025', amount: '₹3200', status: 'Paid'},
@@ -49,15 +50,7 @@ const Invoices = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.searchRow}>
-        <Icon name="search" size={20} color="#aaa" />
-        <TextInput
-          placeholder="Search"
-          placeholderTextColor="#aaa"
-          style={styles.input}
-        />
-        <Icon name="sliders" size={20} color="#aaa" />
-      </View>
+      <SearchBar/>
 
       <FlatList
         data={invoices}
