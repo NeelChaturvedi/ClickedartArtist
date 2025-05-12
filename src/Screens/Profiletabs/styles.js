@@ -45,6 +45,7 @@ export const styles = StyleSheet.create({
     borderColor: '#fff',
     borderRadius: 20,
     marginRight: 10,
+    minHeight: 400,
   },
   imageDistribution: {
     justifyContent: 'space-between',

@@ -1,93 +1,32 @@
 import {View, Text, Image} from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {styles} from './styles';
 import { ScrollView } from 'moti';
-
-const dummyImages = [
-  {
-    id: '1',
-    source: require('../../assets/images/onboarding.png'),
-    title: 'Image 1',
-  },
-  {
-    id: '2',
-    source: require('../../assets/images/onboarding.png'),
-    title: 'Image 2',
-  },
-  {
-    id: '3',
-    source: require('../../assets/images/onboarding.png'),
-    title: 'Image 3',
-  },
-  {
-    id: '4',
-    source: require('../../assets/images/onboarding.png'),
-    title: 'Image 4',
-  },
-  {
-    id: '5',
-    source: require('../../assets/images/onboarding.png'),
-    title: 'Image 5',
-  },
-  {
-    id: '6',
-    source: require('../../assets/images/onboarding.png'),
-    title: 'Image 6',
-  },
-  {
-    id: '7',
-    source: require('../../assets/images/onboarding.png'),
-    title: 'Image 7',
-  },
-  {
-    id: '8',
-    source: require('../../assets/images/onboarding.png'),
-    title: 'Image 8',
-  },
-  {
-    id: '9',
-    source: require('../../assets/images/onboarding.png'),
-    title: 'Image 9',
-  },
-  {
-    id: '10',
-    source: require('../../assets/images/onboarding.png'),
-    title: 'Image 10',
-  },
-  {
-    id: '11',
-    source: require('../../assets/images/onboarding.png'),
-    title: 'Image 11',
-  },
-  {
-    id: '12',
-    source: require('../../assets/images/onboarding.png'),
-    title: 'Image 12',
-  },
-  {
-    id: '13',
-    source: require('../../assets/images/onboarding.png'),
-    title: 'Image 13',
-  },
-  {
-    id: '14',
-    source: require('../../assets/images/onboarding.png'),
-    title: 'Image 14',
-  },
-  {
-    id: '15',
-    source: require('../../assets/images/onboarding.png'),
-    title: 'Image 15',
-  },
-];
-
+import { useUserStore } from '../../store/auth';
+import { API_URL } from '@env';
 const Approved = () => {
+   const { user } = useUserStore();
+    const [photos, setPhotos] = useState([]);
+    useEffect(() => {
+      const fetchUserPhotos = async () => {
+        try {
+          const response = await fetch(
+            `${API_URL}/api/images/get-images-by-photographer?photographer=${user?._id}`,
+          );
+          const data = await response.json();
+          setPhotos(data.photos);
+        } catch (error) {
+          console.error('Error fetching user photos:', error);
+        }
+      };
+      fetchUserPhotos();
+    }, [user]);
   return (
     <ScrollView>
       <View style={styles.container}>
-        {dummyImages.map(item => (
-          <View key={item.id} style={styles.imageBorder}>
-            <Image style={styles.image} source={item.source} />
+        {photos?.map(item => (
+          <View key={item._id} style={styles.imageBorder}>
+            <Image style={styles.image} source={{uri: item.imageLinks.thumbnail}} />
             <View style={styles.imageDetails}>
               <Text style={styles.imageText}>{item.title}</Text>
             </View>

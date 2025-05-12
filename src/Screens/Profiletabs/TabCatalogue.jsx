@@ -5,53 +5,22 @@ import {styles} from './styles';
 import React from 'react';
 import {Image} from 'moti';
 
-const TabCatalogues = () => {
-  const dummyCatalogues = [
-    {
-      id: 1,
-      title: 'Catalogue 1',
-      images: [
-        {id: 1, source: require('../../assets/images/onboarding.png')},
-        {id: 2, source: require('../../assets/images/onboarding.png')},
-        {id: 3, source: require('../../assets/images/onboarding.png')},
-        {id: 4, source: require('../../assets/images/onboarding.png')},
-      ],
-    },
-    {
-      id: 2,
-      title: 'Catalogue 2',
-      images: [
-        {id: 1, source: require('../../assets/images/onboarding.png')},
-        {id: 2, source: require('../../assets/images/onboarding.png')},
-        {id: 3, source: require('../../assets/images/onboarding.png')},
-      ],
-    },
-    {
-      id: 3,
-      title: 'Catalogue 3',
-      images: [
-        {id: 1, source: require('../../assets/images/onboarding.png')},
-        {id: 2, source: require('../../assets/images/onboarding.png')},
-        {id: 3, source: require('../../assets/images/onboarding.png')},
-      ],
-    },
-  ];
-
+const TabCatalogues = ({catalogues}) => {
   return (
     <View style={styles.container}>
-      {dummyCatalogues.map((item, index) => (
+      {catalogues?.map((item, index) => (
         <View key={index} style={styles.catalogueBorder}>
           <View style={styles.imageDistribution}>
-            {item.images.map((image, index) => (
+            {item?.images.map((image, index) => (
               <Image
                 key={index}
                 style={styles.catalogueImage}
-                source={image.source}
+                source={{uri: image.imageLinks.thumbnail}}
                 resizeMode="cover"
               />
             ))}
           </View>
-          <Text style={styles.catalougeText}>{item.title}</Text>
+          <Text style={styles.catalougeText}>{item.name}</Text>
         </View>
       ))}
     </View>

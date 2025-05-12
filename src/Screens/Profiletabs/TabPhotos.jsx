@@ -1,31 +1,13 @@
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {View, Text, Image} from 'react-native';
 import React from 'react';
 import { styles } from './styles';
 
-const dummyImages = [
-  {
-    id: '1',
-    source: require('../../assets/images/onboarding.png'),
-    title: 'Image 1',
-  },
-  {
-    id: '2',
-    source: require('../../assets/images/onboarding.png'),
-    title: 'Image 2',
-  },
-  {
-    id: '3',
-    source: require('../../assets/images/onboarding.png'),
-    title: 'Image 3',
-  },
-];
-
-const TabPhotos = () => {
+const TabPhotos = ({photos}) => {
   return (
     <View style={styles.container}>
-      {dummyImages.map(item => (
-        <View key={item.id} style={styles.imageBorder}>
-          <Image style={styles.image} source={item.source} />
+      {photos?.map(item => (
+        <View key={item._id} style={styles.imageBorder}>
+          <Image style={styles.image} source={{uri: item.imageLinks.thumbnail}} />
           <View style={styles.imageDetails}>
             <Text style={styles.imageText}>{item.title}</Text>
           </View>
