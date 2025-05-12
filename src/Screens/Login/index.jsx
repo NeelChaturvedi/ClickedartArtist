@@ -12,9 +12,8 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Button from '../../components/button';
 import {useNavigation} from '@react-navigation/native';
 import {useUserStore} from '../../store/auth';
-import axios from 'axios';
 import {useRegistrationStore} from '../../store/registration';
-import {API_URL} from '@env';
+import publicApi from '../../utils/publicApiClient';
 
 const Login = () => {
   const {reset} = useRegistrationStore();
@@ -23,38 +22,24 @@ const Login = () => {
     email: '',
     password: '',
   });
-  const {setUser} = useUserStore();
+  const {setUser, setToken} = useUserStore();
   const passwordRef = useRef(null);
   const navigation = useNavigation();
 
   const handleLogin = async () => {
-    if (formData.email.length < 1 || formData.password.length < 1) {
-      ToastAndroid.show(
-        'Please fill all the fields',
-        ToastAndroid.SHORT,
-        ToastAndroid.BOTTOM,
-      );
+    if (!formData.email || !formData.password) {
+      ToastAndroid.show('Please fill all the fields', ToastAndroid.SHORT);
       return;
     }
+
     try {
-      const response = await axios.post(
-        `${API_URL}/api/photographer/login`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
+      const response = await publicApi.post('/photographer/login', formData);
       const data = response.data;
       setUser(data.photographer);
+      setToken(data.token);
     } catch (error) {
       console.log('Error', error);
-      ToastAndroid.show(
-        'Invalid email or password',
-        ToastAndroid.SHORT,
-        ToastAndroid.BOTTOM,
-      );
+      ToastAndroid.show('Invalid email or password', ToastAndroid.SHORT);
     }
   };
 

@@ -9,8 +9,8 @@ import {
 } from 'react-native';
 import {styles} from './styles';
 // import SearchBar from '../../components/SearchBar';
-import {API_URL} from '@env';
 import {useUserStore} from '../../store/auth';
+import api from '../../utils/apiClient';
 
 const Orders = () => {
   const {user} = useUserStore();
@@ -18,14 +18,16 @@ const Orders = () => {
   const [loading, setLoading] = React.useState(false);
 
   const fetchOrders = React.useCallback(async () => {
-    setLoading(true);
+    if (!user?._id) {
+      return;
+    }
     try {
-      const response = await fetch(
-        `${API_URL}/api/download/get-my-orders?userId=${user?._id}&pageSize=10`,
+      setLoading(true);
+      const res = await api.get(
+        `/download/get-my-orders?userId=${user?._id}&pageSize=10`,
       );
-      const data = await response.json();
-      console.log('Orders:', data);
-      setOrders(data.orders);
+      console.log('Orders:', res.data);
+      setOrders(res.data.orders);
     } catch (error) {
       console.error('Error fetching orders:', error);
     } finally {
