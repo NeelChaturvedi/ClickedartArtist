@@ -35,7 +35,7 @@ const Profile = () => {
     {icon: 'facebook', platform: 'Facebook'},
     {icon: 'instagram', platform: 'Instagram'},
     {icon: 'linkedin', platform: 'LinkedIn'},
-    {icon: 'x-twitter', platform: 'Twitter'},
+    {icon: 'twitter', platform: 'Twitter'},
     {icon: 'clone', platform: 'Copy Link'},
   ];
 

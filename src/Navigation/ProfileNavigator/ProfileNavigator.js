@@ -11,9 +11,9 @@ const Stack = createNativeStackNavigator();
 export default function ProfileNavigator() {
   return (
     <Stack.Navigator
-      initialRouteName="Profile"
+      initialRouteName="ProfileMain"
       screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Profile" component={Profile}/>
+      <Stack.Screen name="ProfileMain" component={Profile}/>
     </Stack.Navigator>
   );
 }
