@@ -30,7 +30,7 @@ const invoices = [
 
 const Invoices = () => {
   const renderItem = ({item}) => (
-    <View style={styles.card}>
+    <View style={styles.invoiceCard}>
       <View style={styles.row}>
         <Text style={styles.invoiceText}>CAP/2025-26/{item.id}</Text>
         <Text style={styles.amount}>{item.amount}</Text>
@@ -42,7 +42,7 @@ const Invoices = () => {
             styles.statusBadge,
             item.status === 'Paid' ? styles.paid : styles.pending,
           ]}>
-          <Text style={styles.statusText}>{item.status}</Text>
+          <Text style={styles.invoiceStatus}>{item.status}</Text>
         </View>
       </View>
     </View>

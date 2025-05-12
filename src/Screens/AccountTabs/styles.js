@@ -6,22 +6,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#000',
     paddingHorizontal: 16,
   },
-  searchRow: {
-    flexDirection: 'row',
-    backgroundColor: '#1E1E1E',
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    alignItems: 'center',
-    marginBottom: 16,
-    height: 50,
-  },
-  input: {
-    flex: 1,
-    marginLeft: 10,
-    color: '#fff',
-    fontSize: 16,
-  },
-  card: {
+  invoiceCard: {
     backgroundColor: '#1E1E1E',
     borderRadius: 10,
     paddingHorizontal: 16,
@@ -54,7 +39,7 @@ export const styles = StyleSheet.create({
     borderRadius: 12,
     marginTop: 6,
   },
-  statusText: {
+  invoiceStatus: {
     fontWeight: '600',
     fontSize: 12,
     color: '#000',
@@ -65,4 +50,74 @@ export const styles = StyleSheet.create({
   pending: {
     backgroundColor: '#FDE68A',
   },
+
+  //Orders
+  orderCard: {
+  backgroundColor: '#1E1E1E',
+  borderRadius: 12,
+  marginBottom: 16,
+  paddingVertical: 10,
+  paddingHorizontal: 14,
+},
+cardContent: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+},
+textSection: {
+  flex: 1,
+  alignItems: 'flex-start',
+  gap: 4,
+  paddingRight: 10,
+},
+title: {
+  color: '#fff',
+  fontSize: 16,
+  fontFamily: 'Outfit-bold',
+},
+orderType: {
+  color: '#A1A1A1',
+  fontSize: 14,
+  marginVertical: 4,
+},
+statusTag: {
+  backgroundColor: '#63D471',
+  paddingHorizontal: 12,
+  paddingVertical: 4,
+  borderRadius: 12,
+  alignSelf: 'flex-start',
+},
+statusText: {
+  color: '#000',
+  fontSize: 12,
+  fontFamily: 'Outfit-regular',
+},
+image: {
+  width: 60,
+  height: 60,
+  borderRadius: 8,
+},
+metaSection: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  marginTop: 20,
+},
+shippingSection: {
+  flex: 1,
+  width: '50%',
+},
+dateSection: {
+  alignItems: 'flex-end',
+  width: '50%',
+},
+metaLabel: {
+  color: '#fff',
+  fontFamily: 'Outfit-bold',
+  fontSize: 14,
+  marginBottom: 4,
+},
+metaText: {
+  color: '#A1A1A1',
+  fontSize: 12,
+},
 });
