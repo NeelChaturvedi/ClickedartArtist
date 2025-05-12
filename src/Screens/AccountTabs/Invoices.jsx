@@ -4,7 +4,7 @@ import {View, Text, FlatList, RefreshControl, ScrollView} from 'react-native';
 import {styles} from './styles';
 import SearchBar from '../../components/SearchBar';
 import {useUserStore} from '../../store/auth';
-import {API_URL} from '@env';
+import api from '../../utils/apiClient';
 
 const Invoices = () => {
   const {user} = useUserStore();
@@ -16,25 +16,54 @@ const Invoices = () => {
   };
 
   const fetchInvoices = useCallback(async () => {
-    setLoading(true);
+    if (!user?._id) {
+      return;
+    }
     try {
       setLoading(true);
-      const response = await fetch(
-        `${API_URL}/api/photographeranalytics/get-photographer-analytics?photographer=${user._id}`,
+      const res = await api.get(
+        `/photographeranalytics/get-photographer-analytics?photographer=${user._id}`,
       );
-      const data = await response.json();
-      console.log('Invoices:', data);
-      setInvoices(data.payoutHistory);
+      setInvoices(res.data.payoutHistory);
     } catch (error) {
-      console.error(error);
+      console.error('Failed to fetch invoices:', error);
     } finally {
       setLoading(false);
     }
-  }, [user._id]);
+  }, [user?._id]);
 
   useEffect(() => {
     fetchInvoices();
   }, [fetchInvoices]);
+
+  const renderItem = useCallback(
+    ({item}) => (
+      <View style={styles.invoiceCard}>
+        <View style={styles.row}>
+          <Text style={styles.invoiceText}>{item.invoiceId}</Text>
+          <Text style={styles.amount}>&#8377;{item.totalAmountPayable}</Text>
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.date}>
+            {item.createdAt &&
+              new Date(item.createdAt).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: '2-digit',
+              })}
+          </Text>
+          <View
+            style={[
+              styles.statusBadge,
+              item.paymentStatus === 'paid' ? styles.paid : styles.pending,
+            ]}>
+            <Text style={styles.invoiceStatus}>{item.paymentStatus}</Text>
+          </View>
+        </View>
+      </View>
+    ),
+    [],
+  );
 
   if (!loading && (!invoices || invoices?.length === 0)) {
     return (
@@ -54,32 +83,6 @@ const Invoices = () => {
       </ScrollView>
     );
   }
-  const renderItem = ({item}) => (
-    <View style={styles.invoiceCard}>
-      <View style={styles.row}>
-        <Text style={styles.invoiceText}>{item.invoiceId}</Text>
-        <Text style={styles.amount}>&#8377;{item.totalAmountPayable}</Text>
-      </View>
-      <View style={styles.row}>
-        <Text style={styles.date}>
-          {item.createdAt &&
-            new Date(item.createdAt).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: '2-digit',
-            })}
-        </Text>
-        <View
-          style={[
-            styles.statusBadge,
-            item.paymentStatus === 'paid' ? styles.paid : styles.pending,
-          ]}>
-          <Text style={styles.invoiceStatus}>{item.paymentStatus}</Text>
-        </View>
-      </View>
-    </View>
-  );
-
   return (
     <View style={styles.container}>
       {!loading && invoices?.length > 0 && (

@@ -18,7 +18,7 @@ import TabBlogs from '../Profiletabs/TabBlogs';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {API_URL} from '@env';
+import api from '../../utils/apiClient';
 
 const Profile = () => {
   const {user} = useUserStore();
@@ -52,37 +52,28 @@ const Profile = () => {
   const fetchAllData = useCallback(async () => {
     try {
       setLoading(true);
+
       const [statsRes, photosRes, cataloguesRes, blogsRes] = await Promise.all([
-        fetch(
-          `${API_URL}/api/photographeranalytics/get-photographer-analytics?photographer=${user._id}`,
+        api.get(
+          `/photographeranalytics/get-photographer-analytics?photographer=${user._id}`,
         ),
-        fetch(
-          `${API_URL}/api/images/get-images-by-photographer?photographer=${user._id}`,
+        api.get(`/images/get-images-by-photographer?photographer=${user._id}`),
+        api.get(
+          `/catalogue/get-catalogues-by-photographer?photographer=${user._id}`,
         ),
-        fetch(
-          `${API_URL}/api/catalogue/get-catalogues-by-photographer?photographer=${user._id}`,
-        ),
-        fetch(`${API_URL}/api/blog/get-my-blogs?author=${user._id}`),
+        api.get(`/blog/get-my-blogs?author=${user._id}`),
       ]);
 
-      const [statsData, photosData, cataloguesData, blogsData] =
-        await Promise.all([
-          statsRes.json(),
-          photosRes.json(),
-          cataloguesRes.json(),
-          blogsRes.json(),
-        ]);
-
-      setStats(statsData);
-      setPhotos(photosData.photos);
-      setCatalogues(cataloguesData.catalogues);
-      setBlogs(blogsData.blogs);
+      setStats(statsRes.data);
+      setPhotos(photosRes.data.photos);
+      setCatalogues(cataloguesRes.data.catalogues);
+      setBlogs(blogsRes.data.blogs);
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
     } finally {
       setLoading(false);
     }
-  }, [user]);
+  }, [user._id]);
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
