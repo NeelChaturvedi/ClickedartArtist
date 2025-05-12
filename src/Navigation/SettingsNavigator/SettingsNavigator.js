@@ -11,9 +11,9 @@ const Stack = createNativeStackNavigator();
 export default function SettingsNavigator() {
   return (
     <Stack.Navigator
-      initialRouteName="Settings"
+      initialRouteName="SettingsMain"
       screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Settings" component={Settings}/>
+      <Stack.Screen name="SettingsMain" component={Settings}/>
     </Stack.Navigator>
   );
 }

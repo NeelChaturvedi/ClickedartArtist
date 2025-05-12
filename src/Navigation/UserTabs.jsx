@@ -24,7 +24,7 @@ export const Tabs = () => {
         tabBarStyle: {
           height: 92,
           backgroundColor: '#000',
-          paddingTop: 20,
+          paddingTop: 10,
           paddingHorizontal: 10,
           flexDirection: 'row',
           justifyContent: 'space-between',

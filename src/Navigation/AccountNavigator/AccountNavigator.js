@@ -11,9 +11,9 @@ const Stack = createNativeStackNavigator();
 export default function AccountNavigator() {
   return (
     <Stack.Navigator
-      initialRouteName="Accounts"
+      initialRouteName="AccountsMain"
       screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Accounts" component={Accounts} />
+      <Stack.Screen name="AccountsMain" component={Accounts} />
     </Stack.Navigator>
   );
 }
