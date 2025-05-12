@@ -50,7 +50,7 @@ export const style = StyleSheet.create({
     borderWidth: 6,
   },
   edit: {
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -67,7 +67,7 @@ export const style = StyleSheet.create({
     gap: 10,
   },
   userName: {
-    color: '#fff',
+    color: 'white',
     fontFamily: 'Outfit-medium',
     fontSize: 24,
     marginTop: 14,
@@ -78,7 +78,7 @@ export const style = StyleSheet.create({
     fontSize: 16,
   },
   userBio: {
-    color: '#FFF',
+    color: 'white',
     fontFamily: 'Outfit-medium',
     fontSize: 18,
     marginTop: 30,
@@ -99,12 +99,12 @@ export const style = StyleSheet.create({
   title: {
     fontSize: 14,
     fontFamily: 'Outfit-regular',
-    color: '#FFF',
+    color: 'white',
   },
   count: {
     fontSize: 28,
     fontFamily: 'Outfit-medium',
-    color: '#FFF',
+    color: 'white',
   },
   tabsContainer: {
     marginTop: 40,
@@ -120,7 +120,7 @@ export const style = StyleSheet.create({
   },
   tabText: {
     fontSize: 20,
-    color: '#fff',
+    color: 'white',
     fontFamily: 'Outfit-medium',
   },
   modalContainer: {

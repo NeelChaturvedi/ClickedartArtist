@@ -19,7 +19,7 @@ export const Tabs = () => {
         tabBarLabelStyle: {
           fontFamily: 'Outfit-bold',
         },
-        tabBarInactiveTintColor: '#fff',
+        tabBarInactiveTintColor: 'white',
         tabBarActiveTintColor: '#ED3147',
         tabBarStyle: {
           height: 92,
@@ -43,7 +43,7 @@ export const Tabs = () => {
               style={{
                 width: 20,
                 height: 20,
-                tintColor: focused ? '#ED3147' : '#fff',
+                tintColor: focused ? '#ED3147' : 'white',
               }}
             />
           ),
@@ -60,7 +60,7 @@ export const Tabs = () => {
               style={{
                 width: 22,
                 height: 22,
-                tintColor: focused ? '#ED3147' : '#fff',
+                tintColor: focused ? '#ED3147' : 'white',
               }}
             />
           ),
@@ -87,7 +87,7 @@ export const Tabs = () => {
                 style={{
                   width: 24,
                   height: 24,
-                  tintColor: '#fff',
+                  tintColor: 'white',
                 }}
               />
             </View>
@@ -105,7 +105,7 @@ export const Tabs = () => {
               style={{
                 width: 22,
                 height: 22,
-                tintColor: focused ? '#ED3147' : '#fff',
+                tintColor: focused ? '#ED3147' : 'white',
               }}
             />
           ),
@@ -122,7 +122,7 @@ export const Tabs = () => {
               style={{
                 width: 22,
                 height: 22,
-                tintColor: focused ? '#ED3147' : '#fff',
+                tintColor: focused ? '#ED3147' : 'white',
               }}
             />
           ),

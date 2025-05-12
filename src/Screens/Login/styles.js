@@ -62,13 +62,13 @@ export const styles = StyleSheet.create({
     borderColor: '#8C8C8C',
   },
   passwordTextInput: {
-    color: '#ffffff',
+    color: 'whitefff',
     fontFamily: 'Outfit-regular',
     flex: 1,
     marginRight: 10,
   },
   forgotPassword: {
-    color: '#fff',
+    color: 'white',
     textAlign: 'right',
     textDecorationLine: 'underline',
     fontFamily:'Outfit-regular',

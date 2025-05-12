@@ -21,19 +21,19 @@ export const styles = StyleSheet.create({
   },
   skipText: {
     fontSize: 24,
-    color: '#fff',
+    color: 'white',
     fontFamily: 'Outfit-bold',
     textAlign: 'right',
   },
   title: {
     fontSize: 30,
-    color: '#fff',
+    color: 'white',
     textAlign: 'center',
     fontFamily: 'Outfit-bold',
   },
   subtitle: {
     fontSize: 16,
-    color: '#fff',
+    color: 'white',
     textAlign: 'center',
     fontFamily: 'Outfit-regular',
   },

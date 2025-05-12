@@ -147,7 +147,7 @@ const Profile = () => {
                                 justifyContent: 'center',
                               }}>
                               <Icon
-                                style={{color: '#FFF'}}
+                                style={{color: 'white'}}
                                 name={option.icon}
                                 size={20}
                               />

@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: '#1A1A1A',
     borderWidth: 0.5,
-    borderColor: '#fff',
+    borderColor: 'white',
     borderRadius: 10,
     overflow: 'hidden',
   },
@@ -56,6 +56,6 @@ export const styles = StyleSheet.create({
   imageText: {
     fontSize: 16,
     fontFamily: 'Outfit-bold',
-    color: '#fff',
+    color: 'white',
   },
 });
