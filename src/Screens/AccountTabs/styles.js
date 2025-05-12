@@ -58,6 +58,7 @@ export const styles = StyleSheet.create({
   marginBottom: 16,
   paddingVertical: 10,
   paddingHorizontal: 14,
+  rowGap: 16,
 },
 cardContent: {
   flexDirection: 'row',
@@ -80,17 +81,12 @@ orderType: {
   fontSize: 14,
   marginVertical: 4,
 },
-statusTag: {
-  backgroundColor: '#63D471',
-  paddingHorizontal: 12,
-  paddingVertical: 4,
-  borderRadius: 12,
-  alignSelf: 'flex-start',
-},
 statusText: {
   color: '#000',
   fontSize: 12,
+  paddingVertical: 1,
   fontFamily: 'Outfit-regular',
+  textTransform: 'capitalize',
 },
 image: {
   width: 60,

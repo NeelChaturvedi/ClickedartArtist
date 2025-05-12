@@ -1,89 +1,123 @@
 import React from 'react';
-import {Text, View, Image, FlatList} from 'react-native';
+import {Text, View, Image, FlatList, RefreshControl} from 'react-native';
 import {styles} from './styles';
 import SearchBar from '../../components/SearchBar';
+import {API_URL} from '@env';
+import {useUserStore} from '../../store/auth';
 
 const Orders = () => {
-  const orders = [
-    {
-      id: 1,
-      title: 'Red wattled pigeon',
-      type: 'PRINT',
-      status: 'Shipped',
-      Address: '154/12-D, B-Block, Bhootnath, Indiranagar, Lucknow, UP',
-      date: '20-03-2024',
-      image: require('../../assets/images/onboarding.png'),
-    },
-    {
-      id: 2,
-      title: 'Red wattled pigeon',
-      type: 'PRINT',
-      status: 'Shipped',
-      Address: '154/12-D, B-Block, Bhootnath, Indiranagar, Lucknow, UP',
-      date: '20-03-2024',
-      image: require('../../assets/images/onboarding.png'),
-    },
-    {
-      id: 3,
-      title: 'Red wattled pigeon',
-      type: 'PRINT',
-      status: 'Shipped',
-      Address: '154/12-D, B-Block, Bhootnath, Indiranagar, Lucknow, UP',
-      date: '20-03-2024',
-      image: require('../../assets/images/onboarding.png'),
-    },
-    {
-      id: 4,
-      title: 'Red wattled pigeon',
-      type: 'PRINT',
-      status: 'Shipped',
-      Address: '154/12-D, B-Block, Bhootnath, Indiranagar, Lucknow, UP',
-      date: '20-03-2024',
-      image: require('../../assets/images/onboarding.png'),
-    },
-    {
-      id: 5,
-      title: 'Red wattled pigeon',
-      type: 'PRINT',
-      status: 'Shipped',
-      Address: '154/12-D, B-Block, Bhootnath, Indiranagar, Lucknow, UP',
-      date: '20-03-2024',
-      image: require('../../assets/images/onboarding.png'),
-    },
-    {
-      id: 6,
-      title: 'Red wattled pigeon',
-      type: 'PRINT',
-      status: 'Shipped',
-      Address: '154/12-D, B-Block, Bhootnath, Indiranagar, Lucknow, UP',
-      date: '20-03-2024',
-      image: require('../../assets/images/onboarding.png'),
-    },
-  ];
+  const {user} = useUserStore();
+  const [orders, setOrders] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const fetchOrders = React.useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `${API_URL}/api/download/get-my-orders?userId=${user?._id}&pageSize=10`,
+      );
+      const data = await response.json();
+      console.log('Orders:', data);
+      setOrders(data.orders);
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [user]);
+
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    await fetchOrders();
+    setRefreshing(false);
+  }, [fetchOrders]);
+
+  React.useEffect(() => {
+    fetchOrders();
+  }, [fetchOrders]);
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text style={styles.loadingText}>Loading...</Text>
+      </View>
+    );
+  }
+
+  if (!loading && orders.length === 0) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text style={styles.loadingText}>No orders found.</Text>
+      </View>
+    );
+  }
 
   const renderItem = ({item}) => (
     <View style={styles.orderCard}>
-      <View style={styles.cardContent}>
-        <View style={styles.textSection}>
-          <Text style={styles.title}>{item.title}</Text>
-          <Text style={styles.orderType}>Order Type - {item.type}</Text>
-          <View style={styles.statusTag}>
-            <Text style={styles.statusText}>{item.status}</Text>
+      {item.orderItems?.map((orderItem, index) => (
+        <View key={index} style={styles.cardContent}>
+          <View style={styles.textSection}>
+            <Text style={styles.title}>{orderItem.imageInfo.image.title}</Text>
+            <Text style={styles.orderType}>
+              Order Type -{' '}
+              {item.printStatus === 'no-print' ? 'Digital' : 'Print'}
+            </Text>
+            <View
+              // eslint-disable-next-line react-native/no-inline-styles
+              style={{
+                backgroundColor:
+                  item.printStatus === 'no-print' ||
+                  item.printStatus === 'completed' ||
+                  item.printStatus === 'delivered'
+                    ? '#63D471'
+                    : item.printStatus === 'pending' ||
+                      item.printStatus === 'processing'
+                    ? '#FFB800'
+                    : item.printStatus === 'cancelled' ||
+                      item.printStatus === 'returned'
+                    ? //light blue
+                      '#FF3D00'
+                    : '#00BFFF',
+                paddingHorizontal: 12,
+                paddingVertical: 4,
+                borderRadius: 12,
+                alignSelf: 'flex-start',
+              }}>
+              <Text style={styles.statusText}>
+                {item.printStatus === 'no-print'
+                  ? item.orderStatus
+                  : item.printStatus}
+              </Text>
+            </View>
           </View>
+          <Image
+            source={{uri: orderItem.imageInfo.image.imageLinks?.thumbnail}}
+            style={styles.image}
+          />
         </View>
-        <Image source={item.image} style={styles.image} />
-      </View>
+      ))}
 
       <View style={styles.metaSection}>
         <View style={styles.shippingSection}>
           <Text style={styles.metaLabel}>SHIPPING ADDRESS</Text>
-          <Text style={styles.metaText}>
-            {item.Address}
-          </Text>
+          <Text style={styles.metaText}>{`${
+            item.shippingAddress?.address &&
+            `${item.shippingAddress?.address}, `
+          }${item.shippingAddress?.area && `${item.shippingAddress?.area}, `}${
+            item.shippingAddress?.city
+          }, ${item.shippingAddress?.state}`}</Text>
         </View>
         <View style={styles.dateSection}>
           <Text style={styles.metaLabel}>DATE</Text>
-          <Text style={styles.metaText}>{item.date}</Text>
+          <Text style={styles.metaText}>
+            {item.createdAt &&
+              new Date(item.createdAt).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+          </Text>
         </View>
       </View>
     </View>
@@ -91,12 +125,19 @@ const Orders = () => {
 
   return (
     <View style={styles.container}>
-      <SearchBar/>
+      {/* <SearchBar /> */}
       <FlatList
         data={orders}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={item => item._id}
         renderItem={renderItem}
         contentContainerStyle={styles.listContent}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor="#000"
+          />
+        }
       />
     </View>
   );

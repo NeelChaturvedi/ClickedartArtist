@@ -2,12 +2,13 @@
 import {
   Modal,
   Pressable,
+  RefreshControl,
   ScrollView,
   Text,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {style} from './styles';
 import {Image} from 'moti';
 import {useUserStore} from '../../store/auth';
@@ -31,6 +32,7 @@ const Profile = () => {
   const [catalogues, setCatalogues] = useState([]);
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const options = [
     {icon: 'facebook', platform: 'Facebook'},
     {icon: 'instagram', platform: 'Instagram'},
@@ -47,53 +49,65 @@ const Profile = () => {
     setActiveTab(tab);
   };
 
+  const fetchAllData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const [statsRes, photosRes, cataloguesRes, blogsRes] = await Promise.all([
+        fetch(
+          `${API_URL}/api/photographeranalytics/get-photographer-analytics?photographer=${user._id}`,
+        ),
+        fetch(
+          `${API_URL}/api/images/get-images-by-photographer?photographer=${user._id}`,
+        ),
+        fetch(
+          `${API_URL}/api/catalogue/get-catalogues-by-photographer?photographer=${user._id}`,
+        ),
+        fetch(`${API_URL}/api/blog/get-my-blogs?author=${user._id}`),
+      ]);
+
+      const [statsData, photosData, cataloguesData, blogsData] =
+        await Promise.all([
+          statsRes.json(),
+          photosRes.json(),
+          cataloguesRes.json(),
+          blogsRes.json(),
+        ]);
+
+      setStats(statsData);
+      setPhotos(photosData.photos);
+      setCatalogues(cataloguesData.catalogues);
+      setBlogs(blogsData.blogs);
+    } catch (error) {
+      console.error('Error fetching dashboard data:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [user]);
+
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    await fetchAllData();
+    setRefreshing(false);
+  }, [fetchAllData]);
+
   useEffect(() => {
     if (!user?._id) {
       return;
     }
-
-    const fetchAllData = async () => {
-      try {
-        setLoading(true);
-        const [statsRes, photosRes, cataloguesRes, blogsRes] =
-          await Promise.all([
-            fetch(
-              `${API_URL}/api/photographeranalytics/get-photographer-analytics?photographer=${user._id}`,
-            ),
-            fetch(
-              `${API_URL}/api/images/get-images-by-photographer?photographer=${user._id}`,
-            ),
-            fetch(
-              `${API_URL}/api/catalogue/get-catalogues-by-photographer?photographer=${user._id}`,
-            ),
-            fetch(`${API_URL}/api/blog/get-my-blogs?author=${user._id}`),
-          ]);
-
-        const [statsData, photosData, cataloguesData, blogsData] =
-          await Promise.all([
-            statsRes.json(),
-            photosRes.json(),
-            cataloguesRes.json(),
-            blogsRes.json(),
-          ]);
-
-        setStats(statsData);
-        setPhotos(photosData.photos);
-        setCatalogues(cataloguesData.catalogues);
-        setBlogs(blogsData.blogs);
-      } catch (error) {
-        console.error('Error fetching dashboard data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchAllData();
-  }, [user]);
+  }, [user, fetchAllData]);
 
   return (
     <SafeAreaView style={[style.background, {flex: 1}]}>
-      <ScrollView contentContainerStyle={{paddingBottom: 30}}>
+      <ScrollView
+        contentContainerStyle={{paddingBottom: 30}}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor="#000"
+          />
+        }>
         <View style={style.profileHeader}>
           <View style={style.coverImageContainer}>
             <Image
