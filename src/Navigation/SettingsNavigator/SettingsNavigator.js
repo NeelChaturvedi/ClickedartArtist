@@ -4,6 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {enableScreens} from 'react-native-screens';
 
 import Settings from '../../Screens/SettingScreen/Settings';
+import Faqs from './Faqs';
 enableScreens();
 
 const Stack = createNativeStackNavigator();
@@ -14,6 +15,7 @@ export default function SettingsNavigator() {
       initialRouteName="SettingsMain"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="SettingsMain" component={Settings}/>
+      <Stack.Screen name="Faqs" component={Faqs}/>
     </Stack.Navigator>
   );
 }
