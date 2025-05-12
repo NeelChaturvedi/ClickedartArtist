@@ -80,7 +80,11 @@ const Login = () => {
             autoFocus={true}
             autoComplete="email"
             keyboardType="email-address"
-            onSubmitEditing={() => passwordRef.current.focus()}
+            onSubmitEditing={() => {
+              formData.password.length === 0
+                ? passwordRef.current.focus()
+                : handleLogin();
+            }}
           />
         </View>
 
