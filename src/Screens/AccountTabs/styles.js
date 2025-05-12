@@ -55,84 +55,85 @@ export const styles = StyleSheet.create({
 
   //Orders
   orderCard: {
-  backgroundColor: '#1E1E1E',
-  borderRadius: 12,
-  marginBottom: 16,
-  paddingVertical: 10,
-  paddingHorizontal: 14,
-  rowGap: 16,
-},
-cardContent: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-},
-textSection: {
-  flex: 1,
-  alignItems: 'flex-start',
-  gap: 4,
-  paddingRight: 10,
-},
-title: {
-  color: '#fff',
-  fontSize: 16,
-  fontFamily: 'Outfit-bold',
-},
-orderType: {
-  color: '#A1A1A1',
-  fontSize: 14,
-  marginVertical: 4,
-},
-statusText: {
-  color: '#000',
-  fontSize: 12,
-  paddingVertical: 1,
-  fontFamily: 'Outfit-regular',
-  textTransform: 'capitalize',
-},
-image: {
-  width: 60,
-  height: 60,
-  borderRadius: 8,
-},
-metaSection: {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  marginTop: 20,
-},
-shippingSection: {
-  flex: 1,
-  width: '50%',
-},
-dateSection: {
-  alignItems: 'flex-end',
-  width: '50%',
-},
-metaLabel: {
-  color: '#fff',
-  fontFamily: 'Outfit-bold',
-  fontSize: 14,
-  marginBottom: 4,
-},
-metaText: {
-  color: '#A1A1A1',
-  fontSize: 12,
-},
-notFoundContainer: {
-  flex: 1,
-  justifyContent: 'center',
-  alignItems: 'center',
-},
-notFoundTitle: {
-  color: '#fff',
-  fontSize: 16,
-  fontFamily: 'Outfit-medium',
-},
-notFoundDesc: {
-  color: '#A1A1A1',
-  fontSize: 14,
-  textAlign: 'center',
-  marginTop: 8,
-  fontFamily: 'Outfit-regular',
-},
+    backgroundColor: '#1E1E1E',
+    borderRadius: 12,
+    marginBottom: 16,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    rowGap: 16,
+  },
+  cardContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  textSection: {
+    flex: 1,
+    alignItems: 'flex-start',
+    gap: 4,
+    paddingRight: 10,
+  },
+  title: {
+    color: '#fff',
+    fontSize: 16,
+    fontFamily: 'Outfit-bold',
+  },
+  orderType: {
+    color: '#A1A1A1',
+    fontSize: 14,
+    marginVertical: 4,
+  },
+  statusText: {
+    color: '#000',
+    fontSize: 12,
+    paddingVertical: 1,
+    fontFamily: 'Outfit-regular',
+    textTransform: 'capitalize',
+  },
+  image: {
+    width: 60,
+    height: 60,
+    borderRadius: 8,
+  },
+  metaSection: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+  },
+  shippingSection: {
+    flex: 1,
+    width: '50%',
+  },
+  dateSection: {
+    alignItems: 'flex-end',
+    width: '50%',
+  },
+  metaLabel: {
+    color: '#fff',
+    fontFamily: 'Outfit-bold',
+    fontSize: 14,
+    marginBottom: 4,
+  },
+  metaText: {
+    color: '#A1A1A1',
+    fontSize: 12,
+  },
+  notFoundContainer: {
+    flex: 1,
+    marginTop: 100,
+    textAlign: 'center',
+  },
+  notFoundTitle: {
+    color: '#fff',
+    fontSize: 16,
+    fontFamily: 'Outfit-medium',
+    textAlign: 'center',
+  },
+  notFoundDesc: {
+    color: '#A1A1A1',
+    fontSize: 14,
+    textAlign: 'center',
+    marginTop: 8,
+    fontFamily: 'Outfit-regular',
+  },
 });

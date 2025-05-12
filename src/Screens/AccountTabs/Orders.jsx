@@ -1,5 +1,12 @@
 import React from 'react';
-import {Text, View, Image, FlatList, RefreshControl} from 'react-native';
+import {
+  Text,
+  View,
+  Image,
+  FlatList,
+  RefreshControl,
+  ScrollView,
+} from 'react-native';
 import {styles} from './styles';
 // import SearchBar from '../../components/SearchBar';
 import {API_URL} from '@env';
@@ -9,7 +16,6 @@ const Orders = () => {
   const {user} = useUserStore();
   const [orders, setOrders] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
-  const [refreshing, setRefreshing] = React.useState(false);
 
   const fetchOrders = React.useCallback(async () => {
     setLoading(true);
@@ -28,9 +34,7 @@ const Orders = () => {
   }, [user]);
 
   const onRefresh = React.useCallback(async () => {
-    setRefreshing(true);
     await fetchOrders();
-    setRefreshing(false);
   }, [fetchOrders]);
 
   React.useEffect(() => {
@@ -47,12 +51,20 @@ const Orders = () => {
 
   if (!loading && (!orders || orders?.length === 0)) {
     return (
-      <View style={styles.notFoundContainer}>
+      <ScrollView
+        style={styles.notFoundContainer}
+        refreshControl={
+          <RefreshControl
+            refreshing={loading}
+            onRefresh={onRefresh}
+            tintColor="#000"
+          />
+        }>
         <Text style={styles.notFoundTitle}>No Orders Found</Text>
         <Text style={styles.notFoundDesc}>
           You have not placed any orders yet.
         </Text>
-      </View>
+      </ScrollView>
     );
   }
 
@@ -129,19 +141,21 @@ const Orders = () => {
   return (
     <View style={styles.container}>
       {/* <SearchBar /> */}
-      <FlatList
-        data={orders}
-        keyExtractor={item => item._id}
-        renderItem={renderItem}
-        contentContainerStyle={styles.listContent}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            tintColor="#000"
-          />
-        }
-      />
+      {!loading && orders?.length > 0 && (
+        <FlatList
+          data={orders}
+          keyExtractor={item => item._id}
+          renderItem={renderItem}
+          contentContainerStyle={styles.listContent}
+          refreshControl={
+            <RefreshControl
+              refreshing={loading}
+              onRefresh={onRefresh}
+              tintColor="#000"
+            />
+          }
+        />
+      )}
     </View>
   );
 };

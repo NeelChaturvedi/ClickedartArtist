@@ -1,7 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {use, useCallback, useEffect, useState} from 'react';
-import {View, Text, FlatList, TextInput, RefreshControl} from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
+import React, {useCallback, useEffect, useState} from 'react';
+import {View, Text, FlatList, RefreshControl, ScrollView} from 'react-native';
 import {styles} from './styles';
 import SearchBar from '../../components/SearchBar';
 import {useUserStore} from '../../store/auth';
@@ -11,12 +10,9 @@ const Invoices = () => {
   const {user} = useUserStore();
   const [invoices, setInvoices] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
 
   const handleRefresh = () => {
-    setRefreshing(true);
     fetchInvoices();
-    setRefreshing(false);
   };
 
   const fetchInvoices = useCallback(async () => {
@@ -39,6 +35,25 @@ const Invoices = () => {
   useEffect(() => {
     fetchInvoices();
   }, [fetchInvoices]);
+
+  if (!loading && (!invoices || invoices?.length === 0)) {
+    return (
+      <ScrollView
+        style={styles.notFoundContainer}
+        refreshControl={
+          <RefreshControl
+            refreshing={loading}
+            onRefresh={handleRefresh}
+            tintColor="#000"
+          />
+        }>
+        <Text style={styles.notFoundTitle}>No Invoice Found</Text>
+        <Text style={styles.notFoundDesc}>
+          You have not received any invoice yet.
+        </Text>
+      </ScrollView>
+    );
+  }
   const renderItem = ({item}) => (
     <View style={styles.invoiceCard}>
       <View style={styles.row}>
@@ -67,22 +82,26 @@ const Invoices = () => {
 
   return (
     <View style={styles.container}>
-      <SearchBar />
+      {!loading && invoices?.length > 0 && (
+        <>
+          <SearchBar />
 
-      <FlatList
-        data={invoices}
-        keyExtractor={item => item.id}
-        renderItem={renderItem}
-        contentContainerStyle={{paddingBottom: 16}}
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={handleRefresh}
-            tintColor="#000"
+          <FlatList
+            data={invoices}
+            keyExtractor={item => item._id}
+            renderItem={renderItem}
+            contentContainerStyle={{paddingBottom: 16}}
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl
+                refreshing={loading}
+                onRefresh={handleRefresh}
+                tintColor="#000"
+              />
+            }
           />
-        }
-      />
+        </>
+      )}
     </View>
   );
 };
