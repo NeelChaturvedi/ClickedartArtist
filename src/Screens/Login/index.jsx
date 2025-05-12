@@ -6,7 +6,7 @@ import {
   ToastAndroid,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {styles} from './styles';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Button from '../../components/button';
@@ -14,7 +14,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useUserStore} from '../../store/auth';
 import axios from 'axios';
 import {useRegistrationStore} from '../../store/registration';
-import { API_URL } from '@env';
+import {API_URL} from '@env';
 
 const Login = () => {
   const {reset} = useRegistrationStore();
@@ -24,7 +24,7 @@ const Login = () => {
     password: '',
   });
   const {setUser} = useUserStore();
-
+  const passwordRef = useRef(null);
   const navigation = useNavigation();
 
   const handleLogin = async () => {
@@ -74,6 +74,13 @@ const Login = () => {
             style={styles.inputbox}
             placeholder="Enter Email"
             placeholderTextColor="#ffffff"
+            textContentType="emailAddress"
+            enterKeyHint="next"
+            autoCapitalize="none"
+            autoFocus={true}
+            autoComplete="email"
+            keyboardType="email-address"
+            onSubmitEditing={() => passwordRef.current.focus()}
           />
         </View>
 
@@ -81,12 +88,19 @@ const Login = () => {
           <Text style={styles.inputTitle}>PASSWORD</Text>
           <View style={styles.passwordInput}>
             <TextInput
+              ref={passwordRef}
               onChangeText={text => setFormData({...formData, password: text})}
               value={formData.password}
               style={styles.passwordTextInput}
               placeholder="Enter Password"
               placeholderTextColor="#ffffff"
               secureTextEntry={secure}
+              autoCapitalize="none"
+              autoComplete="password"
+              keyboardType="default"
+              textContentType="password"
+              enterKeyHint="next"
+              onSubmitEditing={handleLogin}
             />
             <TouchableOpacity onPress={() => setSecure(!secure)}>
               <FontAwesome5
