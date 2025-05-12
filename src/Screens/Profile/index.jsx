@@ -19,11 +19,14 @@ import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import api from '../../utils/apiClient';
+import SlideUpModal from '../../components/SlideupModal';
 
 const Profile = () => {
   const {user} = useUserStore();
 
   const navigation = useNavigation();
+
+  const [slideUp, setSlideUp] = useState(false);
 
   const [activeTab, setActiveTab] = useState('photos');
   const [activeModal, setActiveModal] = useState(false);
@@ -39,6 +42,27 @@ const Profile = () => {
     {icon: 'linkedin', platform: 'LinkedIn'},
     {icon: 'twitter', platform: 'Twitter'},
     {icon: 'clone', platform: 'Copy Link'},
+  ];
+
+  const slideOptions = [
+    {
+      label: 'Cover Image',
+      onPress: () => {
+        console.log('Take Photo pressed');
+      },
+    },
+    {
+      label: 'Profile Image',
+      onPress: () => {
+        console.log('Choose from Gallery pressed');
+      },
+    },
+    {
+      label: 'Edit Profile',
+      onPress: () => {
+        console.log('Edit Profile pressed');
+      },
+    },
   ];
 
   const handleModalPress = () => {
@@ -164,12 +188,17 @@ const Profile = () => {
                   : require('../../assets/images/onboarding.png')
               }
             />
-            <Pressable style={style.edit}>
+            <Pressable style={style.edit} onPress={() => setSlideUp(true)}>
               <Image
                 style={{height: 12, width: 12, tintColor: '#000'}}
                 source={require('../../assets/tabIcons/edit.png')}
               />
             </Pressable>
+            <SlideUpModal
+              visible={slideUp}
+              onClose={() => setSlideUp(false)}
+              options={slideOptions}
+            />
           </View>
         </View>
         <View style={style.userDetails}>

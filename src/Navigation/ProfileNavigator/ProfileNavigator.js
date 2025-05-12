@@ -2,8 +2,9 @@
 import * as React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {enableScreens} from 'react-native-screens';
+import Profile from '../../Screens/Profile';
 
-import { Profile } from '../../Screens';
+
 enableScreens();
 
 const Stack = createNativeStackNavigator();

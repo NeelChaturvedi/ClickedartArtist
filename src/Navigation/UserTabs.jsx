@@ -3,7 +3,6 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Dashboard from '../Screens/Dashboard';
 import Photos from '../Screens/Photos';
-import Posts from '../Screens/Posts';
 import {Image} from 'react-native';
 import {View} from 'moti';
 import ProfileNavigator from './ProfileNavigator/ProfileNavigator';
@@ -22,9 +21,9 @@ export const Tabs = () => {
         tabBarInactiveTintColor: 'white',
         tabBarActiveTintColor: '#ED3147',
         tabBarStyle: {
-          height: 92,
+          height: 100,
           backgroundColor: '#000',
-          paddingTop: 10,
+          paddingTop: 20,
           paddingHorizontal: 10,
           flexDirection: 'row',
           justifyContent: 'space-between',
@@ -66,9 +65,9 @@ export const Tabs = () => {
           ),
         }}
       />
+
       <Tab.Screen
-        name="Posts"
-        component={Posts}
+        name="Upload"
         options={{
           tabBarLabel: () => null,
           tabBarIcon: ({focused}) => (
@@ -93,7 +92,14 @@ export const Tabs = () => {
             </View>
           ),
         }}
-      />
+        listeners={{
+          tabPress: e => {
+            e.preventDefault();
+          },
+        }}>
+        {() => null}
+      </Tab.Screen>
+
       <Tab.Screen
         name="Accounts"
         component={AccountNavigator}
