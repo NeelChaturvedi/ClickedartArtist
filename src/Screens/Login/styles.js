@@ -62,7 +62,7 @@ export const styles = StyleSheet.create({
     borderColor: '#8C8C8C',
   },
   passwordTextInput: {
-    color: 'whitefff',
+    color: 'white',
     fontFamily: 'Outfit-regular',
     flex: 1,
     marginRight: 10,

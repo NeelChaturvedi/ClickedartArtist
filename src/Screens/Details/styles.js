@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
   inputTitle: {
     fontSize: 16,
     fontFamily: 'Outfit-medium',
-    color: 'whiteFFF',
+    color: 'white',
   },
   inputbox: {
     height: 54,

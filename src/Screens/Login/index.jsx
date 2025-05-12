@@ -73,7 +73,7 @@ const Login = () => {
             value={formData.email}
             style={styles.inputbox}
             placeholder="Enter Email"
-            placeholderTextColor="whitefff"
+            placeholderTextColor="white"
             textContentType="emailAddress"
             enterKeyHint="next"
             autoCapitalize="none"
@@ -85,14 +85,14 @@ const Login = () => {
                 ? passwordRef.current.focus()
                 : handleLogin();
             }}
-          />white
+          />
         </View>
 
         <View style={styles.formField}>
           <Text style={styles.inputTitle}>PASSWORD</Text>
           <View style={styles.passwordInput}>
             <TextInput
-              ref={passwhiteRef}
+              ref={passwordRef}
               onChangeText={text => setFormData({...formData, password: text})}
               value={formData.password}
               style={styles.passwordTextInput}
