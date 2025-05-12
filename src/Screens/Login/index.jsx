@@ -58,7 +58,7 @@ const Login = () => {
             value={formData.email}
             style={styles.inputbox}
             placeholder="Enter Email"
-            placeholderTextColor="#ffffff"
+            placeholderTextColor="white"
             textContentType="emailAddress"
             enterKeyHint="next"
             autoCapitalize="none"

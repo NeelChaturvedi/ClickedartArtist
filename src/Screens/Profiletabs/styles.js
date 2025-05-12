@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: '#1A1A1A',
     borderWidth: 0.5,
-    borderColor: '#fff',
+    borderColor: 'white',
     borderRadius: 10,
   },
   image: {
@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
   imageText: {
     fontSize: 16,
     fontFamily: 'Outfit-bold',
-    color: '#fff',
+    color: 'white',
   },
   catalogueBorder: {
     padding: 15,
@@ -42,7 +42,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: '#1A1A1A',
     borderWidth: 0.5,
-    borderColor: '#fff',
+    borderColor: 'white',
     borderRadius: 20,
     marginRight: 10,
     minHeight: 400,
@@ -60,7 +60,7 @@ export const styles = StyleSheet.create({
   catalougeText: {
     fontFamily: 'Outfit-Bold',
     fontSize: 24,
-    color: '#fff',
+    color: 'white',
   },
   blogBorder: {
     alignSelf: 'center',
@@ -70,10 +70,10 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderColor: '#fff',
+    borderColor: 'white',
     marginRight: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#fff',
+    borderBottomColor: 'white',
   },
   blogDetails: {
     flexDirection: 'column',

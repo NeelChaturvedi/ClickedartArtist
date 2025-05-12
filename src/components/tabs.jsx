@@ -74,7 +74,7 @@ const style = StyleSheet.create({
     borderRadius: 100,
     backgroundColor: '#1E1E1E',
     borderWidth: 0.5,
-    borderColor: '#FFF',
+    borderColor: 'white',
     position: 'relative',
     overflow: 'hidden',
   },
@@ -92,7 +92,7 @@ const style = StyleSheet.create({
   tabText: {
     fontFamily: 'Outfit-medium',
     fontSize: 20,
-    color: '#fff',
+    color: 'white',
   },
   content: {
     width: '100%',
@@ -100,7 +100,7 @@ const style = StyleSheet.create({
     paddingBottom: 50,
   },
   loadingText: {
-    color: '#fff',
+    color: 'white',
     fontSize: 18,
     textAlign: 'center',
     marginTop: 20,

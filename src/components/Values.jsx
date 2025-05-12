@@ -1,12 +1,12 @@
 import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
 
-const Details = ({heading, value}) => {
+const Values = ({heading, value}) => {
   return (
     <View style={style.sections}>
       <View style={style.content}>
-        <Text style={style.heading}>{heading}</Text>
-        <Text style={style.value}>{value}</Text>
+        <View style={style.heading}><Text style={style.headingText}>{heading}</Text></View>
+        <View style={style.value}><Text style={style.valueText}>{value}</Text></View>
       </View>
     </View>
   );
@@ -24,16 +24,26 @@ const style = StyleSheet.create({
     borderWidth: 0.3,
     borderColor: 'white',
   },
-  heading: {
+  heading:{
+    width: '50%',
+    flex: 1,
+    alignItems: 'flex-start',
+  },
+  headingText: {
     fontSize: 18,
     color: 'white',
     fontFamily: 'Outfit-medium',
   },
-  value: {
+  value:{
+    width: '50%',
+    flex: 1,
+    alignItems: 'flex-end',
+  },
+  valueText: {
     fontSize: 20,
     color: 'white',
     fontFamily: 'Outfit-medium',
   },
 });
 
-export default Details;
+export default Values;

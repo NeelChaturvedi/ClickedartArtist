@@ -34,7 +34,7 @@ const Pending = () => {
                 style={styles.pending}
                 name="spinner"
                 size={50}
-                color="#FFF"
+                color="white"
               />
             </View>
             <Image style={styles.image} source={{uri: item.imageLinks.thumbnail}} />

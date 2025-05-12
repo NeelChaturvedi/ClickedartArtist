@@ -19,12 +19,12 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   invoiceText: {
-    color: '#fff',
+    color: 'white',
     fontSize: 16,
     fontWeight: '600',
   },
   amount: {
-    color: '#fff',
+    color: 'white',
     fontSize: 16,
     fontWeight: '700',
   },
@@ -74,7 +74,7 @@ export const styles = StyleSheet.create({
     paddingRight: 10,
   },
   title: {
-    color: '#fff',
+    color: 'white',
     fontSize: 16,
     fontFamily: 'Outfit-bold',
   },
@@ -109,7 +109,7 @@ export const styles = StyleSheet.create({
     width: '50%',
   },
   metaLabel: {
-    color: '#fff',
+    color: 'white',
     fontFamily: 'Outfit-bold',
     fontSize: 14,
     marginBottom: 4,
@@ -124,7 +124,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   notFoundTitle: {
-    color: '#fff',
+    color: 'white',
     fontSize: 16,
     fontFamily: 'Outfit-medium',
     textAlign: 'center',

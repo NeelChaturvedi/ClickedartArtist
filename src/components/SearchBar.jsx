@@ -28,7 +28,7 @@ const style = StyleSheet.create({
   input: {
     flex: 1,
     marginLeft: 10,
-    color: '#fff',
+    color: 'white',
     fontSize: 16,
     fontFamily: 'Outfit-regular',
   },

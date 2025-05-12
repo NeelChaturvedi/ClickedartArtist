@@ -72,7 +72,7 @@ const Register = () => {
           <Text style={styles.inputTitle}>PASSWORD</Text>
           <View style={styles.passwordInput}>
             <TextInput
-              style={{color: '#ffffff', flex: 1}}
+              style={{color: 'white', flex: 1}}
               placeholder="Enter Password"
               placeholderTextColor="#888888"
               secureTextEntry={secure}
@@ -83,7 +83,7 @@ const Register = () => {
               <FontAwesome5
                 name={secure ? 'eye-slash' : 'eye'}
                 size={20}
-                color="#ffffff"
+                color="white"
               />
             </TouchableOpacity>
           </View>

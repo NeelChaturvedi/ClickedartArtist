@@ -36,11 +36,11 @@ const Settings = () => {
             <TouchableOpacity key={index} style={style.settingsItem}>
               <View style={style.options}>
                 <View style={style.iconContainer}>
-                  <Icon name={item.icon} size={24} color="#fff" />
+                  <Icon name={item.icon} size={24} color="white" />
                 </View>
                 <Text style={style.itemText}>{item.label}</Text>
               </View>
-              <Feather name="chevron-right" size={24} color="#fff" />
+              <Feather name="chevron-right" size={24} color="white" />
             </TouchableOpacity>
           ))}
         </ScrollView>
