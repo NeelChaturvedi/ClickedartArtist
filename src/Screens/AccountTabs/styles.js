@@ -42,7 +42,9 @@ export const styles = StyleSheet.create({
   invoiceStatus: {
     fontWeight: '600',
     fontSize: 12,
+    width: '100%',
     color: '#000',
+    textTransform: 'capitalize',
   },
   paid: {
     backgroundColor: '#C6F6D5',
@@ -115,5 +117,22 @@ metaLabel: {
 metaText: {
   color: '#A1A1A1',
   fontSize: 12,
+},
+notFoundContainer: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+notFoundTitle: {
+  color: '#fff',
+  fontSize: 16,
+  fontFamily: 'Outfit-medium',
+},
+notFoundDesc: {
+  color: '#A1A1A1',
+  fontSize: 14,
+  textAlign: 'center',
+  marginTop: 8,
+  fontFamily: 'Outfit-regular',
 },
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, View, Image, FlatList, RefreshControl} from 'react-native';
 import {styles} from './styles';
-import SearchBar from '../../components/SearchBar';
+// import SearchBar from '../../components/SearchBar';
 import {API_URL} from '@env';
 import {useUserStore} from '../../store/auth';
 
@@ -45,10 +45,13 @@ const Orders = () => {
     );
   }
 
-  if (!loading && orders.length === 0) {
+  if (!loading && (!orders || orders?.length === 0)) {
     return (
-      <View style={styles.loadingContainer}>
-        <Text style={styles.loadingText}>No orders found.</Text>
+      <View style={styles.notFoundContainer}>
+        <Text style={styles.notFoundTitle}>No Orders Found</Text>
+        <Text style={styles.notFoundDesc}>
+          You have not placed any orders yet.
+        </Text>
       </View>
     );
   }
