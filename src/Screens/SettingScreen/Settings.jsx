@@ -8,8 +8,10 @@ import Button from '../../components/button';
 import {TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
+import { useUserStore } from '../../store/auth';
 
 const Settings = () => {
+  const {clearUser} = useUserStore();
   const settingsItems = [
     {icon: 'shield-outline', label: 'Account Security'},
     {icon: 'lock-outline', label: 'Privacy Policy'},
@@ -39,7 +41,7 @@ const Settings = () => {
             </TouchableOpacity>
           ))}
         </ScrollView>
-        <Button btnText={'LogOut'}/>
+        <Button btnText={'LogOut'} onPress={clearUser}/>
       </View>
     </SafeAreaView>
   );

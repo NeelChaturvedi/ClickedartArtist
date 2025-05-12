@@ -47,7 +47,6 @@ const Login = () => {
         },
       );
       const data = response.data;
-      console.log('Data', data);
       setUser(data.photographer);
     } catch (error) {
       console.log('Error', error);
