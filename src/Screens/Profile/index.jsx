@@ -7,7 +7,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {style} from './styles';
 import {Image} from 'moti';
 import {useUserStore} from '../../store/auth';
@@ -17,6 +17,7 @@ import TabBlogs from '../Profiletabs/TabBlogs';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {API_URL} from '@env';
 
 const Profile = () => {
   const {user} = useUserStore();
@@ -25,7 +26,11 @@ const Profile = () => {
 
   const [activeTab, setActiveTab] = useState('photos');
   const [activeModal, setActiveModal] = useState(false);
-
+  const [stats, setStats] = useState({});
+  const [photos, setPhotos] = useState([]);
+  const [catalogues, setCatalogues] = useState([]);
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
   const options = [
     {icon: 'facebook', platform: 'Facebook'},
     {icon: 'instagram', platform: 'Instagram'},
@@ -41,6 +46,51 @@ const Profile = () => {
   const handleTabPress = tab => {
     setActiveTab(tab);
   };
+
+  useEffect(() => {
+    if (!user?._id) {
+      return;
+    }
+
+    const fetchAllData = async () => {
+      try {
+        setLoading(true);
+        const [statsRes, photosRes, cataloguesRes, blogsRes] =
+          await Promise.all([
+            fetch(
+              `${API_URL}/api/photographeranalytics/get-photographer-analytics?photographer=${user._id}`,
+            ),
+            fetch(
+              `${API_URL}/api/images/get-images-by-photographer?photographer=${user._id}`,
+            ),
+            fetch(
+              `${API_URL}/api/catalogue/get-catalogues-by-photographer?photographer=${user._id}`,
+            ),
+            fetch(`${API_URL}/api/blog/get-my-blogs?author=${user._id}`),
+          ]);
+
+        const [statsData, photosData, cataloguesData, blogsData] =
+          await Promise.all([
+            statsRes.json(),
+            photosRes.json(),
+            cataloguesRes.json(),
+            blogsRes.json(),
+          ]);
+
+        setStats(statsData);
+        setPhotos(photosData.photos);
+        setCatalogues(cataloguesData.catalogues);
+        setBlogs(blogsData.blogs);
+      } catch (error) {
+        console.error('Error fetching dashboard data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAllData();
+  }, [user]);
+
   return (
     <SafeAreaView style={[style.background, {flex: 1}]}>
       <ScrollView contentContainerStyle={{paddingBottom: 30}}>
@@ -82,7 +132,11 @@ const Profile = () => {
                                 alignItems: 'center',
                                 justifyContent: 'center',
                               }}>
-                              <Icon style={{color: '#FFF'}} name={option.icon} size={20} />
+                              <Icon
+                                style={{color: '#FFF'}}
+                                name={option.icon}
+                                size={20}
+                              />
                             </View>
                             <Text style={style.platformName}>
                               {option.platform}
@@ -125,15 +179,22 @@ const Profile = () => {
         <View style={style.accountInfo}>
           <View style={style.summary}>
             <Text style={style.title}>IMPRESSIONS</Text>
-            <Text style={style.count}>0</Text>
+            <Text style={style.count}>
+              {photos
+                ?.filter(photo => photo.imageAnalytics?.views)
+                .reduce(
+                  (acc, photo) => acc + (photo.imageAnalytics?.views || 0),
+                  0,
+                )}
+            </Text>
           </View>
           <View style={style.summary}>
             <Text style={style.title}>PHOTOS</Text>
-            <Text style={style.count}>0</Text>
+            <Text style={style.count}>{stats.totalUploadingImgCount || 0}</Text>
           </View>
           <View style={style.summary}>
             <Text style={style.title}>DOWNLOADS</Text>
-            <Text style={style.count}>0</Text>
+            <Text style={style.count}>{stats.downloads || 0}</Text>
           </View>
         </View>
         <View style={style.tabsContainer}>
@@ -150,11 +211,11 @@ const Profile = () => {
           </View>
           <View>
             {activeTab === 'photos' ? (
-              <TabPhotos />
+              <TabPhotos photos={photos} />
             ) : activeTab === 'catalogues' ? (
-              <TabCatalogues />
+              <TabCatalogues catalogues={catalogues} />
             ) : (
-              <TabBlogs />
+              <TabBlogs blogs={blogs} />
             )}
           </View>
         </View>
