@@ -58,7 +58,7 @@ const style = StyleSheet.create({
   background: {
     backgroundColor: '#000',
     flex: 1,
-    gap: 50,
+    gap: 20,
     height: '100%',
     width: '100%',
     alignItems: 'center',
