@@ -7,23 +7,6 @@ import {Text, View} from 'react-native';
 import Details from '../../components/Details';
 
 const Dashboard = () => {
-  const dashboardArea = [
-    {
-      title: 'REVENUE OVERVIEW',
-      content: [
-        {heading: 'DIGITAL SALES(S)', value: 51},
-        {heading: 'PRINT SALE(S)', value: 9},
-        {heading: 'ACTIVE BUYER(S)', value: 15},
-      ],
-    },
-    {
-      title: 'SALES METRICS',
-      content: [
-        {heading: 'TOTAL DIGITAL SALES', value: 51000},
-        {heading: 'TOTAL PRINT SALES', value: 9500},
-      ],
-    },
-  ];
   return (
     <SafeAreaView style={style.background}>
       <FilterDate />
