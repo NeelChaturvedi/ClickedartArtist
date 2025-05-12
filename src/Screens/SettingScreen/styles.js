@@ -11,6 +11,7 @@ export const style = StyleSheet.create({
     flex: 1,
     gap: 30,
     alignItems: 'center',
+    position: 'relative',
     width: '100%',
     paddingHorizontal: 16,
     paddingVertical: 30,
@@ -20,10 +21,10 @@ export const style = StyleSheet.create({
     fontSize: 32,
     color: 'white',
   },
-  settingsItem:{
+  settingsItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent:'space-between',
+    justifyContent: 'space-between',
     width: '100%',
     paddingVertical: 20,
     paddingHorizontal: 16,
@@ -35,7 +36,7 @@ export const style = StyleSheet.create({
     width: '50%',
     gap: 20,
   },
-  itemText:{
+  itemText: {
     fontFamily: 'Outfit-regular',
     fontSize: 16,
     color: 'white',
@@ -46,5 +47,10 @@ export const style = StyleSheet.create({
     flex: 0,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  backButtonContainer: {
+    position: 'absolute',
+    top: 35,
+    left: 20,
   },
 });

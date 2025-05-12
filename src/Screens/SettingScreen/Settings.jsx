@@ -8,7 +8,8 @@ import Button from '../../components/button';
 import {TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
-import { useUserStore } from '../../store/auth';
+import {useUserStore} from '../../store/auth';
+import Backbutton from '../../components/Backbutton';
 
 const Settings = () => {
   const {clearUser} = useUserStore();
@@ -22,10 +23,12 @@ const Settings = () => {
     {icon: 'headset', label: 'Help Center'},
   ];
 
-
   return (
     <SafeAreaView style={style.background}>
       <View style={style.container}>
+        <View style={style.backButtonContainer}>
+          <Backbutton />
+        </View>
         <Text style={style.headingText}>Settings</Text>
         <SearchBar />
         <ScrollView>
@@ -41,7 +44,7 @@ const Settings = () => {
             </TouchableOpacity>
           ))}
         </ScrollView>
-        <Button btnText={'LogOut'} onPress={clearUser}/>
+        <Button btnText={'LogOut'} onPress={clearUser} />
       </View>
     </SafeAreaView>
   );
