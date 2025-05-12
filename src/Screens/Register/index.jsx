@@ -8,7 +8,7 @@ import {
   ToastAndroid,
 } from 'react-native';
 import {styles} from './styles';
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {AdvancedCheckbox} from 'react-native-advanced-checkbox';
 import Button from '../../components/button';
