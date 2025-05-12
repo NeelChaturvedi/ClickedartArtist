@@ -58,7 +58,6 @@ const FilterDate = () => {
 
 const style = StyleSheet.create({
   background: {
-    paddingHorizontal: 20,
   },
   datePickerContainer: {
     flexDirection: 'row',
