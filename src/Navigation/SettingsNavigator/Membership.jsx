@@ -11,6 +11,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/button';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import BackButton from '../../components/Backbutton';
 
 const Membership = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -110,6 +111,9 @@ const Membership = () => {
   return (
     <SafeAreaView style={styles.background}>
       <View style={styles.headerContainer}>
+        <View style={styles.backButtonContainer}>
+          <BackButton/>
+        </View>
         <Image
           style={styles.image}
           source={require('../../assets/images/membershipHeader.png')}
@@ -283,6 +287,12 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 30,
     height: 40,
     width: 40,
+    zIndex: 1,
+  },
+  backButtonContainer: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
     zIndex: 1,
   },
 });
