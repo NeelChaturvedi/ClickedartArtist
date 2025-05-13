@@ -1,9 +1,12 @@
 import {View, Text, Pressable, SafeAreaView, TextInput} from 'react-native';
 import {styles} from './styles';
 import { useRegistrationStore } from '../../store/registration';
+import Button from '../../components/button';
+import { useNavigation } from '@react-navigation/native';
 
 const Contact = () => {
   const { formData, setField, setNestedField } = useRegistrationStore();
+  const navigation = useNavigation();
   console.log('Form Data', formData);
   return (
     <SafeAreaView style={styles.background}>
@@ -75,9 +78,13 @@ const Contact = () => {
           </View>
         </View>
       </View>
-      <Pressable style={styles.button}>
-        <Text style={styles.buttonText}>Next</Text>
-      </Pressable>
+      <Button
+        btnText={'Next'}
+        onPress={() => {
+          // nextStep();
+          navigation.navigate('ProfilePhoto');
+        }}
+      />
     </SafeAreaView>
   );
 };

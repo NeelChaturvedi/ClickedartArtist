@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
   background: {
@@ -111,5 +111,43 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 0.5,
     borderColor: '#8C8C8C',
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    gap: 50,
+  },
+  photoPicker: {
+    width: '90%',
+    borderRadius: 20,
+    borderWidth: 0.5,
+    borderColor: 'white',
+    padding: 20,
+    height: 400,
+    backgroundColor: '#1E1E1E',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  uploadOptions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 50,
+  },
+  optionButton: {
+    height: 60,
+    width: 60,
+    borderRadius: 50,
+    backgroundColor:'white',
+    justifyContent:'center',
+    alignItems:'center',
+  },
+  centerButton:{
+    height: 75,
+    width: 75,
+    borderRadius: 50,
+    backgroundColor:'white',
+    justifyContent:'center',
+    alignItems:'center',
   },
 });
