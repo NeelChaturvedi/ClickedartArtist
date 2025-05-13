@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {
   View,
   Text,
@@ -10,7 +11,7 @@ import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/button';
 import LinearGradient from 'react-native-linear-gradient';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import BackButton from '../../components/Backbutton';
 
 const Membership = () => {
@@ -148,7 +149,7 @@ const Membership = () => {
             ]}>
             {selectedPlan === plan.id && (
               <View style={styles.checkIcon}>
-                <Icon name="check" size={20} color="black" />
+                <Icon name="flash-on" size={24} color="#1E1E1E" />
               </View>
             )}
             <TouchableOpacity
@@ -185,6 +186,7 @@ const styles = StyleSheet.create({
   background: {
     width: '100%',
     height: '100%',
+    gap:20,
     backgroundColor: 'black',
     alignItems: 'center',
     paddingBottom: 24,
@@ -223,11 +225,9 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     paddingHorizontal: 16,
-    marginTop: 20,
   },
   planContainer: {
     flexDirection: 'column',
-    borderRadius: 10,
     marginVertical: 10,
     backgroundColor: '#1e1e1e',
     gap: 40,
@@ -285,8 +285,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderBottomLeftRadius: 30,
-    height: 40,
-    width: 40,
+    height: 45,
+    width: 45,
     zIndex: 1,
   },
   backButtonContainer: {
