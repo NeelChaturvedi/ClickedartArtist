@@ -9,13 +9,17 @@ import {
 import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/button';
+import LinearGradient from 'react-native-linear-gradient';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Membership = () => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const toggleAccordion = (id) => {
+  const toggleAccordion = id => {
     setIsExpanded(prevId => (prevId === id ? null : id));
   };
+
+  const [selectedPlan, setSelectedPlan] = useState(null);
 
   const plans = [
     {
@@ -47,12 +51,18 @@ const Membership = () => {
         {title: 'Catalogue Creation', value: '5'},
         {title: 'Custom Pricing', value: 'Yes'},
         {title: 'Image Uplaod', value: '50'},
-        {title: 'Licensing Options', value: 'Fixed licensing (commerical, personal)'},
+        {
+          title: 'Licensing Options',
+          value: 'Fixed licensing (commerical, personal)',
+        },
         {title: 'Priority Support', value: 'Standard (24-48 hrs response)'},
         {title: 'Promotional Tools', value: 'Seasonal Promotions'},
         {title: 'Sales Reports', value: 'Detailed sales analytics'},
         {title: 'Social Media Auto Posting', value: 'Single platform posting'},
-        {title: 'Social Media Integration', value: 'Full integration (auto-posting tools)'},
+        {
+          title: 'Social Media Integration',
+          value: 'Full integration (auto-posting tools)',
+        },
         {title: 'Watermarking Tools', value: 'Custom watermark'},
       ],
     },
@@ -62,17 +72,38 @@ const Membership = () => {
       price: '₹999/month',
       desc: 'Take full control of your brand. Enjoy unlimited uploads, complete customization, advanced insights, and priority support. Everything you need to sell smart and scale fast. Designed for professionals, businesses & power users.',
       features: [
-        {title: 'Advanced Tools', value: 'Full customization and analytics dashboard'},
+        {
+          title: 'Advanced Tools',
+          value: 'Full customization and analytics dashboard',
+        },
         {title: 'Catalogue Creation', value: 'Unlimited'},
         {title: 'Custom Pricing', value: 'Yes'},
         {title: 'Image Uplaod', value: 'Unlimited'},
         {title: 'Licensing Options', value: 'Full licensing customization'},
-        {title: 'Priority Support', value: 'Premium (12-24 hrs response, dedicated)'},
-        {title: 'Promotional Tools', value: 'Full promotional toolkit (coupons, discounts)'},
-        {title: 'Sales Reports', value: 'Advanced analytics with customer insights'},
-        {title: 'Social Media Auto Posting', value: 'Multi-platform posting with scheduling'},
-        {title: 'Social Media Integration', value: 'Enhanced social media and website embeds'},
-        {title: 'Watermarking Tools', value: 'Advanced watermark and branding options'},
+        {
+          title: 'Priority Support',
+          value: 'Premium (12-24 hrs response, dedicated)',
+        },
+        {
+          title: 'Promotional Tools',
+          value: 'Full promotional toolkit (coupons, discounts)',
+        },
+        {
+          title: 'Sales Reports',
+          value: 'Advanced analytics with customer insights',
+        },
+        {
+          title: 'Social Media Auto Posting',
+          value: 'Multi-platform posting with scheduling',
+        },
+        {
+          title: 'Social Media Integration',
+          value: 'Enhanced social media and website embeds',
+        },
+        {
+          title: 'Watermarking Tools',
+          value: 'Advanced watermark and branding options',
+        },
       ],
     },
   ];
@@ -93,8 +124,35 @@ const Membership = () => {
       </View>
       <ScrollView style={styles.scrollContainer}>
         {plans.map(plan => (
-          <View key={plan.id} style={styles.planContainer}>
-            <TouchableOpacity style={styles.summary} onPress={() => toggleAccordion(plan.id)}>
+          <LinearGradient
+            colors={
+              plan.name === 'Basic'
+                ? ['#00693B', '#4FBD8F']
+                : plan.name === 'Intermediate'
+                ? ['#7A8204', '#D9D455']
+                : ['#004B69', '#21C4C4']
+            }
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 1}}
+            key={plan.id}
+            style={[
+              styles.planContainer,
+              selectedPlan === plan.id && {
+                borderWidth: 3,
+                borderColor: 'white',
+              },
+            ]}>
+            {selectedPlan === plan.id && (
+              <View style={styles.checkIcon}>
+                <Icon name="check" size={20} color="black" />
+              </View>
+            )}
+            <TouchableOpacity
+              style={styles.summary}
+              onPress={() => {
+                toggleAccordion(plan.id);
+                setSelectedPlan(plan.id);
+              }}>
               <View style={styles.priceAndType}>
                 <Text style={styles.typeText}>{plan.name}</Text>
                 <Text style={styles.subHeadingText}>{plan.price}</Text>
@@ -111,7 +169,7 @@ const Membership = () => {
                 ))}
               </View>
             )}
-          </View>
+          </LinearGradient>
         ))}
       </ScrollView>
       <Button btnText={'Purchase'} />
@@ -171,6 +229,7 @@ const styles = StyleSheet.create({
     gap: 40,
     paddingHorizontal: 16,
     paddingVertical: 20,
+    position: 'relative',
   },
   summary: {
     gap: 10,
@@ -213,6 +272,18 @@ const styles = StyleSheet.create({
     fontFamily: 'Outfit-regular',
     width: '40%',
     textAlign: 'left',
+  },
+  checkIcon: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderBottomLeftRadius: 30,
+    height: 40,
+    width: 40,
+    zIndex: 1,
   },
 });
 
