@@ -118,15 +118,12 @@ export const styles = StyleSheet.create({
     gap: 50,
   },
   photoPicker: {
-    width: '90%',
+    width: '85%',
     borderRadius: 20,
     borderWidth: 0.5,
     borderColor: 'white',
-    padding: 20,
-    height: 400,
+    height: 350,
     backgroundColor: '#1E1E1E',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   uploadOptions: {
     flexDirection: 'row',
