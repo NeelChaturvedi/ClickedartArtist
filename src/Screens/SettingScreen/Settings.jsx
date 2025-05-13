@@ -12,7 +12,6 @@ import SettingsOptions from '../../components/SettingsOptions';
 
 const Settings = () => {
   const {clearUser} = useUserStore();
-  
 
   return (
     <SafeAreaView style={style.background}>
@@ -23,13 +22,13 @@ const Settings = () => {
         <Text style={style.headingText}>Settings</Text>
         <SearchBar />
         <ScrollView>
-          <SettingsOptions icon={'shield-outline'} label={'AccountSecurity'}/>
+          <SettingsOptions icon={'gpp-good'} label={'AccountSecurity'}/>
           <SettingsOptions icon={'lock'} label={'Privacy Policy'}/>
-          <SettingsOptions icon={'file-document-outline'} label={'Terms and Conditions'}/>
-          <SettingsOptions icon={'help-circle-outline'} label={'FAQS'} screen={'Faqs'}/>
-          <SettingsOptions icon={'star-outline'} label={'Membership'}/>
-          <SettingsOptions icon={'currency-inr'} label={'Monetize Account'}/>
-          <SettingsOptions icon={'contact'} label={'Help Center'}/>
+          <SettingsOptions icon={'edit-document'} label={'Terms and Conditions'} screen={'Terms'}/>
+          <SettingsOptions icon={'help'} label={'FAQS'} screen={'Faqs'}/>
+          <SettingsOptions icon={'star'} label={'Membership'} screen={'Membership'}/>
+          <SettingsOptions icon={'currency-rupee'} label={'Monetize Account'}/>
+          <SettingsOptions icon={'info'} label={'Help Center'}/>
         </ScrollView>
         <Button btnText={'LogOut'} onPress={clearUser} />
       </View>

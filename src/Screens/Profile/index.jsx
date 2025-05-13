@@ -47,18 +47,21 @@ const Profile = () => {
   const slideOptions = [
     {
       label: 'Cover Image',
+      icon: 'image',
       onPress: () => {
         console.log('Take Photo pressed');
       },
     },
     {
       label: 'Profile Image',
+      icon: 'account-circle',
       onPress: () => {
         console.log('Choose from Gallery pressed');
       },
     },
     {
       label: 'Edit Profile',
+      icon: 'edit',
       onPress: () => {
         console.log('Edit Profile pressed');
       },

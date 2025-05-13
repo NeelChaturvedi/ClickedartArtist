@@ -161,7 +161,7 @@ container: {
   },
   backButtonContainer: {
     position: 'absolute',
-    top: 25,
+    top: 30,
     left: 20,
   },
 });
