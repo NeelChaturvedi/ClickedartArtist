@@ -40,19 +40,22 @@ const Dashboard = () => {
   return (
     <SafeAreaView style={style.background}>
       <FilterDate />
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={style.sections}>
           <Text style={style.title}>SALES METRICS</Text>
           <View gap={14}>
             <Values
               heading={'DIGITAL SALE(S)'}
-              value={(stats?.totalDigitalDownloads || 0)}
+              value={stats?.totalDigitalDownloads || 0}
             />
             <Values
               heading={'PRINT SALE(S)'}
-              value={(stats?.totalPrintDownloads || 0)}
+              value={stats?.totalPrintDownloads || 0}
             />
-            <Values heading={'ACTIVE BUYER(S)'} value={(stats?.activeBuyers || 0)} />
+            <Values
+              heading={'ACTIVE BUYER(S)'}
+              value={stats?.activeBuyers || 0}
+            />
           </View>
         </View>
         <View style={style.sections}>
@@ -94,9 +97,12 @@ const Dashboard = () => {
           <View gap={14}>
             <Values
               heading={'APPROVED'}
-              value={(stats?.totalUploadingImgCount || 0)}
+              value={stats?.totalUploadingImgCount || 0}
             />
-            <Values heading={'PENDING'} value={(stats?.pendingImagesCount || 0)} />
+            <Values
+              heading={'PENDING'}
+              value={stats?.pendingImagesCount || 0}
+            />
           </View>
         </View>
       </ScrollView>

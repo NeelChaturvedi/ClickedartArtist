@@ -22,7 +22,7 @@ const Approved = () => {
       fetchUserPhotos();
     }, [user]);
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
         {photos?.map(item => (
           <View key={item._id} style={styles.imageBorder}>

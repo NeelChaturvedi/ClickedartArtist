@@ -118,6 +118,7 @@ const Profile = () => {
   return (
     <SafeAreaView style={[style.background, {flex: 1}]}>
       <ScrollView
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 30}}
         refreshControl={
           <RefreshControl

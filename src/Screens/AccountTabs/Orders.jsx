@@ -54,6 +54,7 @@ const Orders = () => {
   if (!loading && (!orders || orders?.length === 0)) {
     return (
       <ScrollView
+        showsVerticalScrollIndicator={false}
         style={styles.notFoundContainer}
         refreshControl={
           <RefreshControl
