@@ -1,5 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
-import {Image, Pressable, ScrollView, Text, View} from 'react-native';
+import {
+  Image,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+  Dimensions,
+} from 'react-native';
 import React, {useEffect} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
@@ -7,7 +14,7 @@ import BackButton from '../../components/Backbutton';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import api from '../../utils/apiClient';
 import {useRoute} from '@react-navigation/native';
-import WebView from 'react-native-webview';
+import AutoHeightWebView from 'react-native-autoheight-webview';
 
 const Blog = () => {
   const {blogId} = useRoute().params;
@@ -109,10 +116,34 @@ const Blog = () => {
                 source={{uri: blog.coverImage[0]}}
               />
             )}
-            <WebView
-              originWhitelist={['*']}
-              source={{html: htmlContent}}
-              style={styles.webView}
+            <AutoHeightWebView
+              style={{
+                width: Dimensions.get('window').width - 15,
+                marginTop: 35,
+                marginBottom: 100,
+              }}
+              customStyle={`
+              * {
+                  font-family: 'Outfit', sans-serif;
+                  color: #fff;
+                }
+                p {
+                  font-size: 16px;
+                }
+              `}
+              onSizeUpdated={size => console.log(size.height)}
+              files={[
+                {
+                  href: 'cssfileaddress',
+                  type: 'text/css',
+                  rel: 'stylesheet',
+                },
+              ]}
+              source={{
+                html: blog.content?.body,
+              }}
+              scalesPageToFit={false}
+              viewportContent={'width=device-width, user-scalable=no'}
             />
           </View>
         </ScrollView>

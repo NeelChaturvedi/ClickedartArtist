@@ -85,10 +85,4 @@ export const styles = StyleSheet.create({
     textTransform: 'capitalize',
     paddingRight: 10,
   },
-  webView: {
-    width: '100%',
-    height: 20000,
-    backgroundColor: 'white',
-    borderRadius: 10,
-  },
 });
