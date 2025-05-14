@@ -1,12 +1,33 @@
 /* eslint-disable react-native/no-inline-styles */
 import {Image, Pressable, ScrollView, Text, View} from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
 import BackButton from '../../components/Backbutton';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import api from '../../utils/apiClient';
+import { useRoute } from '@react-navigation/native';
 
 const Blog = () => {
+    const { blogId } = useRoute().params;
+    console.log(blogId);
+    const [blog, setBlog] = React.useState({});
+
+
+    useEffect(() => {
+        const fetchBlog = async () => {
+            try {
+                const response = await api.get(`/blog/get-blog-by-id?id=${blogId}`);
+                const data = await response.json();
+                setBlog(data);
+            } catch (error) {
+                console.error('Error fetching blog:', error);
+            }
+        };
+
+        fetchBlog();
+    }, [blogId]);
+
   return (
     <SafeAreaView style={styles.background}>
       <View style={styles.header}>
@@ -44,7 +65,7 @@ const Blog = () => {
             </View>
           </View>
 
-          <View style={styles.contentArea}>
+          <View gap={24}>
             <Text style={styles.summary}>
               Every shot is a lesson, every moment a masterpiece.
             </Text>

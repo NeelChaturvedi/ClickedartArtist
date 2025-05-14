@@ -14,7 +14,7 @@ const TabBlogs = ({blogs}) => {
         const isLastItem = index === blogs.length - 1;
 
         return (
-          <TouchableOpacity onPress={()=> navigation.navigate('BlogNavigator')}
+          <TouchableOpacity onPress={() => navigation.navigate('BlogNavigator', {blogId: item._id})}
             key={item._id}
             style={[styles.blogBorder, isLastItem && {borderBottomWidth: 0}]}>
             <View style={styles.blogDetails}>

@@ -8,8 +8,8 @@ export const styles = StyleSheet.create({
         alignItems:'center',
     },
     container:{
-        paddingHorizontal: 16,
-        paddingVertical: 24,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
     },
     headingText:{
         fontFamily: 'Outfit-bold',
@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingLeft: 20,
         paddingRight: 10,
-        paddingVertical: 10,
+        paddingTop: 10,
     },
     options:{
         flexDirection:'row',
@@ -47,9 +47,10 @@ export const styles = StyleSheet.create({
         lineHeight: 24,
     },
     coverImage:{
-        maxHeight: 300,
+        maxHeight: 200,
+        backgroundColor:'red',
         width: '100%',
-        resizeMode: 'contain',
+        resizeMode: 'fill',
     },
     description:{
         color: 'white',
