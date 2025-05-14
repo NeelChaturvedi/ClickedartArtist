@@ -29,6 +29,9 @@ const initialFormData = {
     pincode: '',
     area: '',
   },
+
+  // Step 4
+  profilePhoto: '',
 };
 
 export const useRegistrationStore = create((set) => ({
