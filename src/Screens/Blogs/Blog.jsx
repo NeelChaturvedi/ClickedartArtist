@@ -15,10 +15,10 @@ const Blog = () => {
         </View>
         <View style={styles.options}>
           <Pressable>
-            <Icon name="pen" size={24} color={'white'} />
+            <Icon name="edit" size={24} color={'white'} />
           </Pressable>
           <Pressable>
-            <Icon name="pen" size={24} color={'white'} />
+            <Icon name="share" size={24} color={'white'} />
           </Pressable>
         </View>
       </View>
