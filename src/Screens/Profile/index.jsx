@@ -1,12 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
 import {
-  Modal,
   Pressable,
   RefreshControl,
   ScrollView,
   Text,
-  TouchableWithoutFeedback,
   View,
+  Share,
+  Alert,
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {style} from './styles';
@@ -29,20 +29,22 @@ const Profile = () => {
   const [slideUp, setSlideUp] = useState(false);
 
   const [activeTab, setActiveTab] = useState('photos');
-  const [activeModal, setActiveModal] = useState(false);
   const [stats, setStats] = useState({});
   const [photos, setPhotos] = useState([]);
   const [catalogues, setCatalogues] = useState([]);
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const options = [
-    {icon: 'facebook', platform: 'Facebook'},
-    {icon: 'instagram', platform: 'Instagram'},
-    {icon: 'linkedin', platform: 'LinkedIn'},
-    {icon: 'twitter', platform: 'Twitter'},
-    {icon: 'clone', platform: 'Copy Link'},
-  ];
+
+  const onShare = async () => {
+    try {
+      await Share.share({
+        message: `Check out my profile: https://clickedart.com/photographer/${user.username}`,
+      });
+    } catch (error) {
+      Alert.alert(error.message);
+    }
+  };
 
   const slideOptions = [
     {
@@ -67,10 +69,6 @@ const Profile = () => {
       },
     },
   ];
-
-  const handleModalPress = () => {
-    setActiveModal(!activeModal);
-  };
 
   const handleTabPress = tab => {
     setActiveTab(tab);
@@ -145,41 +143,11 @@ const Profile = () => {
                 style={style.iconContainer}>
                 <Icon name="gear" size={20} />
               </Pressable>
-              <Pressable onPress={handleModalPress} style={style.iconContainer}>
+              <Pressable
+                onPress={onShare}
+                title="Share"
+                style={style.iconContainer}>
                 <Icon name="share" size={20} />
-                <Modal
-                  transparent={true}
-                  visible={activeModal}
-                  animationType="fade">
-                  <TouchableWithoutFeedback
-                    onPress={() => setActiveModal(false)}>
-                    <View style={style.modalContainer}>
-                      <Text style={style.modalTitle}>Select Social Media</Text>
-                      <View style={style.modalContent}>
-                        {options.map((option, index) => (
-                          <Pressable style={style.modalOptions} key={index}>
-                            <View
-                              style={{
-                                height: 30,
-                                width: 30,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                              }}>
-                              <Icon
-                                style={{color: 'white'}}
-                                name={option.icon}
-                                size={20}
-                              />
-                            </View>
-                            <Text style={style.platformName}>
-                              {option.platform}
-                            </Text>
-                          </Pressable>
-                        ))}
-                      </View>
-                    </View>
-                  </TouchableWithoutFeedback>
-                </Modal>
               </Pressable>
             </View>
           </View>
