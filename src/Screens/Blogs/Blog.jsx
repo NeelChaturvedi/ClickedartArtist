@@ -21,32 +21,6 @@ const Blog = () => {
   console.log(blogId);
   const [blog, setBlog] = React.useState({});
 
-  const htmlContent = `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <style>
-    body {
-      font-size: 18px;
-      line-height: 1.6;
-      padding: 16px;
-      color: #111;
-      font-family: -apple-system, Roboto, sans-serif;
-    }
-    h1, h2, h3 { font-weight: bold; margin-top: 24px; }
-    u { text-decoration: underline; }
-    em { font-style: italic; }
-    strong { font-weight: bold; }
-    s { text-decoration: line-through; }
-  </style>
-</head>
-<body>
-  ${blog.content?.body}
-</body>
-</html>
-`;
-
   useEffect(() => {
     const fetchBlog = async () => {
       try {
