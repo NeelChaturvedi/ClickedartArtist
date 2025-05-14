@@ -113,7 +113,7 @@ const Membership = () => {
     <SafeAreaView style={styles.background}>
       <View style={styles.headerContainer}>
         <View style={styles.backButtonContainer}>
-          <BackButton/>
+          <BackButton />
         </View>
         <Image
           style={styles.image}
@@ -142,12 +142,12 @@ const Membership = () => {
             key={plan.id}
             style={[
               styles.planContainer,
-              selectedPlan === plan.id && {
+              selectedPlan === plan.id && plan.id !== 1 && {
                 borderWidth: 3,
                 borderColor: 'white',
               },
             ]}>
-            {selectedPlan === plan.id && (
+            {selectedPlan === plan.id && plan.id !== 1 && (
               <View style={styles.checkIcon}>
                 <Icon name="flash-on" size={24} color="#1E1E1E" />
               </View>
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
   background: {
     width: '100%',
     height: '100%',
-    gap:20,
+    gap: 20,
     backgroundColor: 'black',
     alignItems: 'center',
     paddingBottom: 24,
