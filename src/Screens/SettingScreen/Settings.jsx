@@ -23,7 +23,7 @@ const Settings = () => {
         <SearchBar />
         <ScrollView>
           <SettingsOptions icon={'gpp-good'} label={'AccountSecurity'}/>
-          <SettingsOptions icon={'lock'} label={'Privacy Policy'}/>
+          <SettingsOptions icon={'lock'} label={'Privacy Policy'} screen={'PrivacyPolicy'}/>
           <SettingsOptions icon={'edit-document'} label={'Terms and Conditions'} screen={'Terms'}/>
           <SettingsOptions icon={'help'} label={'FAQS'} screen={'Faqs'}/>
           <SettingsOptions icon={'star'} label={'Membership'} screen={'Membership'}/>

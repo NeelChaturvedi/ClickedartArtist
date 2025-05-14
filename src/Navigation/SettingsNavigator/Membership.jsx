@@ -72,7 +72,7 @@ const Membership = () => {
       id: 3,
       name: 'Premium',
       price: '₹999/month',
-      desc: 'Take full control of your brand. Enjoy unlimited uploads, complete customization, advanced insights, and priority support. Everything you need to sell smart and scale fast. Designed for professionals, businesses & power users.',
+      desc: 'Take full control of your ART. Enjoy unlimited uploads, complete customization, advanced insights, and priority support. Everything you need to sell smart and scale fast. Designed for professionals, businesses & power users.',
       features: [
         {
           title: 'Advanced Tools',
