@@ -19,6 +19,9 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(false);
 
   const fetchStats = useCallback(async () => {
+    if (!user._id) {
+      return;
+    }
     try {
       setLoading(true);
       const res = await api.get(

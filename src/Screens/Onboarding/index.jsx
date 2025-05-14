@@ -3,9 +3,9 @@ import {View, Text, ImageBackground, TouchableOpacity} from 'react-native';
 import {styles} from './styles';
 import React, {useState} from 'react';
 import Button from '../../components/button';
-import Switch from '../../components/switch';
 import {MotiText} from 'moti';
 import {useOnboardingStore} from '../../store/onboarding';
+import Switch from '../../components/switch';
 
 const Onboarding = () => {
   const {setOnboardingCompleted} = useOnboardingStore();
