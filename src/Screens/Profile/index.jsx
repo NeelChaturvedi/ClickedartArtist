@@ -78,23 +78,42 @@ const Profile = () => {
     try {
       setLoading(true);
 
-      const [statsRes, photosRes, cataloguesRes, blogsRes] = await Promise.all([
-        api.get(
-          `/photographeranalytics/get-photographer-analytics?photographer=${user._id}`,
-        ),
-        api.get(`/images/get-images-by-photographer?photographer=${user._id}`),
-        api.get(
-          `/catalogue/get-catalogues-by-photographer?photographer=${user._id}`,
-        ),
-        api.get(`/blog/get-my-blogs?author=${user._id}`),
-      ]);
+      const [statsRes, photosRes, cataloguesRes, blogsRes] =
+        await Promise.allSettled([
+          api.get(
+            `/photographeranalytics/get-photographer-analytics?photographer=${user._id}`,
+          ),
+          api.get(
+            `/images/get-images-by-photographer?photographer=${user._id}`,
+          ),
+          api.get(
+            `/catalogue/get-catalogues-by-photographer?photographer=${user._id}`,
+          ),
+          api.get(`/blog/get-my-blogs?author=${user._id}`),
+        ]);
 
-      setStats(statsRes.data);
-      setPhotos(photosRes.data.photos);
-      setCatalogues(cataloguesRes.data.catalogues);
-      setBlogs(blogsRes.data.blogs);
+      if (statsRes.status === 'fulfilled') {
+        setStats(statsRes.value.data);
+      } else {
+        setStats({});
+      }
+      if (photosRes.status === 'fulfilled') {
+        setPhotos(photosRes.value.data.photos);
+      } else {
+        setPhotos([]);
+      }
+      if (cataloguesRes.status === 'fulfilled') {
+        setCatalogues(cataloguesRes.value.data.catalogues);
+      } else {
+        setCatalogues([]);
+      }
+      if (blogsRes.status === 'fulfilled') {
+        setBlogs(blogsRes.value.data.blogs);
+      } else {
+        setBlogs([]);
+      }
     } catch (error) {
-      console.error('Error fetching dashboard data:', error);
+      console.error('Unexpected error fetching dashboard data:', error);
     } finally {
       setLoading(false);
     }
@@ -112,6 +131,16 @@ const Profile = () => {
     }
     fetchAllData();
   }, [user, fetchAllData]);
+
+  if (loading) {
+    return (
+      <SafeAreaView style={[style.background, {flex: 1}]}>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Text style={{color: 'white'}}>Loading...</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={[style.background, {flex: 1}]}>
