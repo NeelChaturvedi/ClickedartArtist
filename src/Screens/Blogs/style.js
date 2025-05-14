@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
   },
   container: {
     paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingVertical: 5,
     width: '100%',
   },
   headingText: {

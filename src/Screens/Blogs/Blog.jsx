@@ -52,7 +52,7 @@ const Blog = () => {
         </View>
       </View>
       <View style={styles.container}>
-        <ScrollView contentContainerStyle={{gap: 30}}>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{gap: 30}}>
           <View style={styles.aboutBlog}>
             <View gap={10}>
               <Text style={styles.headingText}>{blog.content?.title}</Text>
