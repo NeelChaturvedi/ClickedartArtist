@@ -122,7 +122,7 @@ const TermsAndConditions = () => {
       </View>
       <Text style={styles.title}>Terms of Use</Text>
       <Text style={styles.lastUpdated}>Last Updated: 26 January 2025</Text>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={styles.introText}>
           Welcome to ClickedArt.com! These Terms of Use ("Terms") govern your
           access to and use of the website and services provided by

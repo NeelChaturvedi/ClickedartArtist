@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
   },
   emailText: {
     fontSize: 18,
-    color: '#ED3174',
+    color: '#ED3147',
     fontFamily: 'Outfit-bold',
     textDecorationLine: 'underline',
   },

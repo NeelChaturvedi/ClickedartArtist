@@ -87,7 +87,7 @@ const PrivacyPolicy = () => {
       </View>
       <Text style={styles.title}>Privacy Policy</Text>
       <Text style={styles.lastUpdated}>Effective Date: 26 January 2025</Text>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={styles.introText}>
           Welcome to ClickedArt.com. We are committed to safeguarding the privacy of our users, including both buyers and photographers. This Privacy Policy outlines how we collect, use, disclose, and protect your information.
         </Text>
