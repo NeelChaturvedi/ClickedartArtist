@@ -5,7 +5,6 @@ export const style = StyleSheet.create({
     backgroundColor: 'black',
     height: '100%',
     width: '100%',
-    alignItems: 'center',
   },
   headerIcons: {
     position: 'absolute',
@@ -120,7 +119,7 @@ export const style = StyleSheet.create({
   },
   tabText: {
     fontSize: 20,
-    color: 'white',
+    color: '#999',
     fontFamily: 'Outfit-medium',
   },
   modalContainer: {

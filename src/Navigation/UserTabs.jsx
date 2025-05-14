@@ -30,7 +30,8 @@ export const Tabs = () => {
           borderTopWidth: 0,
         },
       }}
-      initialRouteName="Profile">
+      initialRouteName="Profile"
+      backBehavior="initialRoute">
       <Tab.Screen
         name="Dashboard"
         component={Dashboard}

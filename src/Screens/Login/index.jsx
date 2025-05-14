@@ -82,7 +82,7 @@ const Login = () => {
               value={formData.password}
               style={styles.passwordTextInput}
               placeholder="Enter Password"
-              placeholderTextColor="#ffffff"
+              placeholderTextColor="white"
               secureTextEntry={secure}
               autoCapitalize="none"
               autoComplete="password"
@@ -95,7 +95,7 @@ const Login = () => {
               <FontAwesome5
                 name={secure ? 'eye-slash' : 'eye'}
                 size={20}
-                color="#ffffff"
+                color="#white"
               />
             </TouchableOpacity>
           </View>

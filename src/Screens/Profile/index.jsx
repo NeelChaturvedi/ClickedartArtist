@@ -70,6 +70,12 @@ const Profile = () => {
     },
   ];
 
+  const tabs = [
+    {label: 'Photos', key: 'photos'},
+    {label: 'Catalogues', key: 'catalogues'},
+    {label: 'Blogs', key: 'blogs'},
+  ];
+
   const handleTabPress = tab => {
     setActiveTab(tab);
   };
@@ -205,15 +211,17 @@ const Profile = () => {
         </View>
         <View style={style.tabsContainer}>
           <View style={style.tabs}>
-            <Pressable onPress={() => handleTabPress('photos')}>
-              <Text style={style.tabText}>Photos</Text>
-            </Pressable>
-            <Pressable onPress={() => handleTabPress('catalogues')}>
-              <Text style={style.tabText}>Catalogues</Text>
-            </Pressable>
-            <Pressable onPress={() => handleTabPress('blogs')}>
-              <Text style={style.tabText}>Blogs</Text>
-            </Pressable>
+            {tabs.map(tab => (
+              <Pressable key={tab.key} onPress={() => handleTabPress(tab.key)}>
+                <Text
+                  style={[
+                    style.tabText,
+                    activeTab === tab.key && {color: 'white'},
+                  ]}>
+                  {tab.label}
+                </Text>
+              </Pressable>
+            ))}
           </View>
           <View>
             {activeTab === 'photos' ? (

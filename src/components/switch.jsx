@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   },
   dot: {
     height: 10,
-    backgroundColor: 'whitefff',
+    backgroundColor: 'white',
     borderRadius: 5,
   },
 });

@@ -75,7 +75,7 @@ const style = StyleSheet.create({
     alignItems: 'center',
   },
   dateText: {
-    color: '#ffffff',
+    color: 'white',
     fontFamily: 'Outfit-medium',
     fontSize: 18,
   },
