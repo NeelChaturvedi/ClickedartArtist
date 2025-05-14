@@ -130,7 +130,7 @@ const Faqs = () => {
           <BackButton />
         </View>
         <Text style={style.text}>FAQs</Text>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           {faqs.map((faq, index) => (
             <Accordion key={index} title={faq.question} content={faq.answer} />
           ))}
@@ -148,7 +148,7 @@ const style = StyleSheet.create({
     paddingBottom: 70,
   },
 container: {
-    padding: 16,
+    padding: 10,
     gap: 20,
     position: 'relative',
     alignItems: 'center',
