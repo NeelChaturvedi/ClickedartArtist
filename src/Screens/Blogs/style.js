@@ -1,86 +1,94 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
-    background:{
-        height: '100%',
-        width: '100%',
-        backgroundColor: 'black',
-        alignItems:'center',
-    },
-    container:{
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-    },
-    headingText:{
-        fontFamily: 'Outfit-bold',
-        fontSize: 28,
-        color: 'white',
-    },
-    header: {
-        flexDirection:'row',
-        width: '100%',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingLeft: 20,
-        paddingRight: 10,
-        paddingTop: 10,
-    },
-    options:{
-        flexDirection:'row',
-        alignItems: 'center',
-        gap:20,
-        padding:20,
-    },
-    aboutBlog:{
-        gap:24,
-        flexDirection: 'column',
-        alignItems:'flex-start',
-    },
-    dateText: {
-        color:'#888',
-        fontFamily: 'Outfit-medium',
-        fontSize: 16,
-    },
-    summary:{
-        color: 'white',
-        fontSize: 20,
-        lineHeight: 24,
-    },
-    coverImage:{
-        maxHeight: 200,
-        backgroundColor:'red',
-        width: '100%',
-        resizeMode: 'fill',
-    },
-    description:{
-        color: 'white',
-        fontFamily: 'Outfit-regular',
-        fontSize: 16,
-    },
-    blogOwner:{
-        height: 70,
-        width:70,
-        resizeMode: 'fill',
-        borderRadius: 50,
-    },
-    aboutOwner:{
-        flexDirection:'row',
-        alignItems:'center',
-        gap:20,
-    },
-    ownerDetails:{
-        flexDirection:'column',
-        alignItems:'flex-start',
-        gap:5,
-    },
-    nameText:{
-        color:'white',
-        fontFamily: 'Outfit-Medium',
-        fontSize: 20,
-    },
-    typeText:{
-        color:'#888',
-        fontFamily: 'Outfit-regular',
-        fontSize: 16,
-    },
+  background: {
+    height: '100%',
+    width: '100%',
+    backgroundColor: 'black',
+    alignItems: 'center',
+  },
+  container: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    width: '100%',
+  },
+  headingText: {
+    fontFamily: 'Outfit-bold',
+    fontSize: 28,
+    color: 'white',
+  },
+  header: {
+    flexDirection: 'row',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingLeft: 20,
+    paddingRight: 10,
+    paddingTop: 10,
+  },
+  options: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 20,
+    padding: 20,
+  },
+  aboutBlog: {
+    gap: 24,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+  },
+  dateText: {
+    color: '#888',
+    fontFamily: 'Outfit-medium',
+    fontSize: 16,
+  },
+  summary: {
+    color: 'white',
+    fontSize: 20,
+    lineHeight: 24,
+  },
+  coverImage: {
+    height: 200,
+    width: '100%',
+    resizeMode: 'cover',
+  },
+  description: {
+    color: 'white',
+    fontFamily: 'Outfit-regular',
+    fontSize: 16,
+  },
+  blogOwner: {
+    height: 70,
+    width: 70,
+    resizeMode: 'fill',
+    borderRadius: 50,
+  },
+  aboutOwner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 20,
+  },
+  ownerDetails: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: 5,
+  },
+  nameText: {
+    color: 'white',
+    fontFamily: 'Outfit-Medium',
+    fontSize: 20,
+  },
+  typeText: {
+    color: '#888',
+    fontFamily: 'Outfit-regular',
+    fontSize: 16,
+    textTransform: 'capitalize',
+    paddingRight: 10,
+  },
+  webView: {
+    width: '100%',
+    height: 20000,
+    backgroundColor: 'white',
+    borderRadius: 10,
+  },
 });

@@ -125,6 +125,7 @@ export const styles = StyleSheet.create({
     height: 350,
     backgroundColor: '#1E1E1E',
   },
+  image: {width: '100%', height: '100%', borderRadius: 10},
   uploadOptions: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -135,16 +136,26 @@ export const styles = StyleSheet.create({
     height: 60,
     width: 60,
     borderRadius: 50,
-    backgroundColor:'white',
-    justifyContent:'center',
-    alignItems:'center',
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  centerButton:{
+  centerButton: {
     height: 75,
     width: 75,
     borderRadius: 50,
-    backgroundColor:'white',
-    justifyContent:'center',
-    alignItems:'center',
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  placeholder: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  placeholderText: {
+    color: '#ccc',
+    fontSize: 16,
+    marginTop: 10,
   },
 });

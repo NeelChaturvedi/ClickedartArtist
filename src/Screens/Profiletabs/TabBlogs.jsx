@@ -3,10 +3,9 @@ import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {styles} from './styles';
 import {Image} from 'moti';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const TabBlogs = ({blogs}) => {
-
   const navigation = useNavigation();
   return (
     <ScrollView>
@@ -14,17 +13,26 @@ const TabBlogs = ({blogs}) => {
         const isLastItem = index === blogs.length - 1;
 
         return (
-          <TouchableOpacity onPress={() => navigation.navigate('BlogNavigator', {blogId: item._id})}
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('BlogNavigator', {
+                screen: 'Blogs',
+                params: {
+                  blogId: item._id,
+                },
+              })
+            }
             key={item._id}
             style={[styles.blogBorder, isLastItem && {borderBottomWidth: 0}]}>
             <View style={styles.blogDetails}>
               <Text style={styles.imageText}>{item.content.title}</Text>
               <Text style={styles.blogDate}>
-                {item.createdAt && new Date(item.createdAt).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}
+                {item.createdAt &&
+                  new Date(item.createdAt).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
               </Text>
             </View>
             <Image
