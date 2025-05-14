@@ -6,6 +6,12 @@ export const styles = StyleSheet.create({
     backgroundColor: 'black',
     paddingVertical: 100,
     justifyContent: 'space-between',
+    position:'relative',
+  },
+  backButtonContainer:{
+    position:'absolute',
+    top:'10%',
+    left:20,
   },
   heading: {
     fontSize: 32,

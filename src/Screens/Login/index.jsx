@@ -95,7 +95,7 @@ const Login = () => {
               <FontAwesome5
                 name={secure ? 'eye-slash' : 'eye'}
                 size={20}
-                color="#white"
+                color="white"
               />
             </TouchableOpacity>
           </View>

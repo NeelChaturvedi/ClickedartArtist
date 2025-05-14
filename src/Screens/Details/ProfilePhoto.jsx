@@ -11,6 +11,8 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {useNavigation} from '@react-navigation/native';
+import BackButton from '../../components/Backbutton';
 
 const ProfilePhoto = () => {
   const [imageUri, setImageUri] = useState(null);
@@ -29,6 +31,8 @@ const ProfilePhoto = () => {
     }
   };
 
+  const navigation = useNavigation();
+
   const handleImageLibraryLaunch = async () => {
     setUploading(true);
     const result = await launchImageLibrary({
@@ -46,6 +50,9 @@ const ProfilePhoto = () => {
 
   return (
     <SafeAreaView style={styles.background}>
+      <View style={styles.backButtonContainer}>
+        <BackButton />
+      </View>
       <View style={styles.container}>
         <Text style={styles.heading}>Upload Photo</Text>
         <View style={styles.photoPicker}>
@@ -86,6 +93,7 @@ const ProfilePhoto = () => {
               'Photo uploaded successfully!',
               ToastAndroid.SHORT,
             );
+            navigation.navigate('OTP');
           }}>
           <Icon name="arrow-right" size={28} />
         </Pressable>

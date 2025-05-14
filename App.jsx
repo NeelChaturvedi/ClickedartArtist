@@ -10,6 +10,7 @@ import {useUserStore} from './src/store/auth';
 import {useOnboardingStore} from './src/store/onboarding';
 import Details from './src/Navigation/AuthStack';
 import SettingsNavigator from './src/Navigation/SettingsNavigator/SettingsNavigator';
+import OtpScreen from './src/Screens/OTP/OtpScreen';
 enableScreens();
 
 const Stack = createNativeStackNavigator();
@@ -29,6 +30,7 @@ export default function App() {
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Register" component={Register} />
             <Stack.Screen name="Details" component={Details} />
+            <Stack.Screen name="OTP" component={OtpScreen}/>
           </>
         ) : (
           <>
