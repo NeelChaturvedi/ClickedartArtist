@@ -11,6 +11,7 @@ import {useOnboardingStore} from './src/store/onboarding';
 import Details from './src/Navigation/AuthStack';
 import SettingsNavigator from './src/Navigation/SettingsNavigator/SettingsNavigator';
 import OtpScreen from './src/Screens/OTP/OtpScreen';
+import BlogNavigator from './src/Navigation/BlogNavigator/BlogNavigator';
 enableScreens();
 
 const Stack = createNativeStackNavigator();
@@ -36,6 +37,7 @@ export default function App() {
           <>
             <Stack.Screen name="BottomTab" component={Tabs} />
             <Stack.Screen name="Settings" component={SettingsNavigator} />
+            <Stack.Screen name="BlogNavigator" component={BlogNavigator} />
           </>
         )}
       </Stack.Navigator>

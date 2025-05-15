@@ -13,12 +13,14 @@ import {styles} from './style';
 import BackButton from '../../components/Backbutton';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import api from '../../utils/apiClient';
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
 
 const Blog = () => {
   const {blogId} = useRoute().params;
   const [blog, setBlog] = React.useState({});
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchBlog = async () => {
@@ -41,7 +43,7 @@ const Blog = () => {
           <BackButton />
         </View>
         <View style={styles.options}>
-          <Pressable>
+          <Pressable onPress={()=> navigation.navigate('BlogEdit')}>
             <Icon name="edit" size={24} color={'white'} />
           </Pressable>
           <Pressable>
@@ -95,6 +97,7 @@ const Blog = () => {
                 width: Dimensions.get('window').width - 15,
                 marginTop: 35,
                 marginBottom: 100,
+                backgroundColor: 'black',
               }}
               customStyle={`
                 body {
