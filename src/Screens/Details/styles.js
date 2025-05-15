@@ -167,4 +167,9 @@ export const styles = StyleSheet.create({
   disabledButton: {
     opacity: 0.5,
   },
+  errorText:{
+    fontFamily:'Outfit-regular',
+    color: 'red',
+    fontSize: 15,
+  },
 });
