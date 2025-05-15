@@ -1,5 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import {
+  ActivityIndicator,
   Image,
   Pressable,
   ScrollView,
@@ -24,7 +25,6 @@ const BlogEdit = () => {
   const [uploading, setUploading] = useState(false);
 
   const handleImageLibraryLaunch = async () => {
-    setUploading(true);
     const result = await ImagePicker.openPicker({
       mediaType: 'photo',
       quality: 1,
@@ -34,7 +34,6 @@ const BlogEdit = () => {
     if (result) {
       await uploadImageToServer(result.path);
     }
-    setUploading(false);
   };
 
   const uploadImageToServer = async imageUri => {
@@ -42,9 +41,7 @@ const BlogEdit = () => {
       ToastAndroid.show('No image selected', ToastAndroid.SHORT);
       return;
     }
-
     setUploading(true);
-
     const imgData = new FormData();
     imgData.append('image', {
       uri: imageUri,
@@ -109,16 +106,19 @@ const BlogEdit = () => {
           <View style={style.section}>
             <Text style={style.headingText}>Blog Image</Text>
             <View style={style.uploadContainer}>
-              {blog?.coverImage && blog?.coverImage.length > 0 && (
-                <Image
-                  style={style.blogImage}
-                  source={{uri: blog?.coverImage[0]}}
-                />
-              )}
+              {!uploading &&
+                blog?.coverImage &&
+                blog?.coverImage.length > 0 && (
+                  <Image
+                    style={style.blogImage}
+                    source={{uri: blog?.coverImage[0]}}
+                  />
+                )}
+              {uploading && <ActivityIndicator size={50} />}
               <Pressable
                 onPress={handleImageLibraryLaunch}
                 style={style.uploadBtn}>
-                <Icon name="upload" size={20} color={'black'} />
+                <Icon name="upload" size={20} color={'white'} />
               </Pressable>
             </View>
           </View>
@@ -215,7 +215,7 @@ const style = StyleSheet.create({
   uploadBtn: {
     width: '100%',
     height: 50,
-    backgroundColor: 'white',
+    backgroundColor: '#ED3147',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
