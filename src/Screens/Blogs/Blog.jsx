@@ -18,7 +18,6 @@ import AutoHeightWebView from 'react-native-autoheight-webview';
 
 const Blog = () => {
   const {blogId} = useRoute().params;
-  console.log(blogId);
   const [blog, setBlog] = React.useState({});
 
   useEffect(() => {
@@ -26,7 +25,6 @@ const Blog = () => {
       try {
         const response = await api.get(`/blog/get-blog-by-id?id=${blogId}`);
         const data = response.data;
-        console.log('Blog data:', data);
         setBlog(data.blog);
       } catch (error) {
         console.error('Error fetching blog:', error);
@@ -129,7 +127,6 @@ const Blog = () => {
                   color: #4FC3F7;
                 }
               `}
-              onSizeUpdated={size => console.log(size.height)}
               files={[
                 {
                   href: 'cssfileaddress',
