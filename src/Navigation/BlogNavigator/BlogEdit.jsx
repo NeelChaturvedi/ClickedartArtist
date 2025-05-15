@@ -39,12 +39,12 @@ const BlogEdit = () => {
             <AutoGrowTextInput />
           </View>
           <View style={style.section}>
-            <Text style={style.headingText}>Blog Description</Text>
+            <Text style={style.headingText}>Blog Body</Text>
             <AutoGrowTextInput />
           </View>
         </ScrollView>
+        <Button btnText={'Save Changes'} />
       </View>
-      <Button btnText={'Save Changes'} />
     </SafeAreaView>
   );
 };
