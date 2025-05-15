@@ -125,6 +125,10 @@ const Blog = () => {
                   color: rgb(255, 255, 255) !important; 
                   background-color: rgb(0, 0, 0) !important;
                 }
+                *[style*="background-color: rgb(255, 255, 255); color: rgb(10, 10, 10);"] {
+                  background-color: rgb(0, 0, 0) !important;
+                  color: rgb(255, 255, 255) !important; 
+                }
 
                 a {
                   color: #4FC3F7;
