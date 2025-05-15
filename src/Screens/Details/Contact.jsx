@@ -43,6 +43,7 @@ const Contact = () => {
   };
 
   const handleNext = () => {
+    setErrors({});
     const newErrors = validateForm();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
