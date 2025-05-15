@@ -12,6 +12,7 @@ export const styles = StyleSheet.create({
     position:'absolute',
     top:24,
     left:20,
+    zIndex: 1,
   },
   heading: {
     fontSize: 32,
