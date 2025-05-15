@@ -6,6 +6,8 @@ import {
   Text,
   View,
   Dimensions,
+  Share,
+  Alert,
 } from 'react-native';
 import React, {useEffect} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -36,6 +38,16 @@ const Blog = () => {
     fetchBlog();
   }, [blogId]);
 
+  const onShare = async () => {
+    try {
+      await Share.share({
+        message: `${blog.content.title}: https://clickedart.com/blog/${blog.slug}`,
+      });
+    } catch (error) {
+      Alert.alert(error.message);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.background}>
       <View style={styles.header}>
@@ -43,10 +55,10 @@ const Blog = () => {
           <BackButton />
         </View>
         <View style={styles.options}>
-          <Pressable onPress={()=> navigation.navigate(`BlogEdit`, {blogId})}>
+          <Pressable onPress={() => navigation.navigate(`BlogEdit`, {blogId})}>
             <Icon name="edit" size={24} color={'white'} />
           </Pressable>
-          <Pressable>
+          <Pressable onPress={onShare}>
             <Icon name="share" size={24} color={'white'} />
           </Pressable>
         </View>
@@ -67,7 +79,7 @@ const Blog = () => {
                   })}
               </Text>
             </View>
-            <View style={styles.aboutOwner}>
+            {/* <View style={styles.aboutOwner}>
               <Image
                 style={styles.blogOwner}
                 source={{uri: blog.authorInfo?.author.profileImage}}
@@ -81,7 +93,7 @@ const Blog = () => {
                   {blog.authorInfo?.author.rank}
                 </Text>
               </View>
-            </View>
+            </View> */}
           </View>
 
           <View gap={24}>

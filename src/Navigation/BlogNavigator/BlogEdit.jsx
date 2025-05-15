@@ -1,5 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
-import {Pressable, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
+import {
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  ToastAndroid,
+  View,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import BackButton from '../../components/Backbutton';
@@ -13,12 +21,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 const BlogEdit = () => {
   const {blogId} = useRoute().params;
   const [blog, setBlog] = useState({});
-  const [title, setTitle] = useState('');
-  const [summary, setSummary] = useState('');
-  const [body, setBody] = useState('');
-  const [imageUri, setImageUri] = useState(null);
   const [uploading, setUploading] = useState(false);
-  const [fileName ,setFileName] = useState(null);
 
   const handleImageLibraryLaunch = async () => {
     setUploading(true);
@@ -29,12 +32,43 @@ const BlogEdit = () => {
 
     console.log('Image result:', result);
     if (result) {
-      setImageUri(result.path);
-      setFileName(result.filename);
+      await uploadImageToServer(result.path);
     }
     setUploading(false);
   };
 
+  const uploadImageToServer = async imageUri => {
+    if (!imageUri) {
+      ToastAndroid.show('No image selected', ToastAndroid.SHORT);
+      return;
+    }
+
+    setUploading(true);
+
+    const imgData = new FormData();
+    imgData.append('image', {
+      uri: imageUri,
+      name: 'photo.jpg',
+      type: 'image/jpeg',
+    });
+
+    try {
+      const res = await api.post('/upload/uploadSingleImage', imgData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      const imageUrl = res.data;
+      setBlog({...blog, coverImage: [imageUrl]});
+      ToastAndroid.show('Image uploaded successfully!', ToastAndroid.SHORT);
+    } catch (err) {
+      console.error(err);
+      ToastAndroid.show('Upload failed', ToastAndroid.SHORT);
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const navigation = useNavigation();
 
@@ -44,10 +78,7 @@ const BlogEdit = () => {
         const response = await api.get(`/blog/get-blog-by-id?id=${blogId}`);
         const data = response.data;
         console.log('Blog data:', data.blog);
-        setBlog(data.blog);
-        setTitle(data.blog?.content?.title || '');
-        setSummary(data.blog?.content?.summary || '');
-        setBody(data.blog?.content?.body || '');
+        setBlog({...data.blog, blogId: data.blog._id, isActive: false});
       } catch (error) {
         console.error('Error fetching blog:', error);
       }
@@ -55,6 +86,15 @@ const BlogEdit = () => {
 
     fetchBlog();
   }, [blogId]);
+
+  const handleSaveChanges = async () => {
+    try {
+      await api.post('/blog/update-blog', blog);
+      navigation.goBack();
+    } catch (error) {
+      console.error('Error updating blog:', error.response.data);
+    }
+  };
 
   return (
     <SafeAreaView style={style.background}>
@@ -68,12 +108,15 @@ const BlogEdit = () => {
           <View style={style.section}>
             <Text style={style.headingText}>Blog Image</Text>
             <View style={style.uploadContainer}>
-              <TextInput
-                style={style.imageName}
-                editable={false}
-                value={fileName ? fileName : 'Uplaod Image'}
-              />
-              <Pressable onPress={handleImageLibraryLaunch} style={style.uploadBtn}>
+              {blog?.coverImage && blog?.coverImage.length > 0 && (
+                <Image
+                  style={style.blogImage}
+                  source={{uri: blog?.coverImage[0]}}
+                />
+              )}
+              <Pressable
+                onPress={handleImageLibraryLaunch}
+                style={style.uploadBtn}>
                 <Icon name="upload" size={20} color={'black'} />
               </Pressable>
             </View>
@@ -81,23 +124,48 @@ const BlogEdit = () => {
 
           <View style={style.section}>
             <Text style={style.headingText}>Blog Title</Text>
-            <AutoGrowTextInput value={title} onChangeText={setTitle} />
+            <AutoGrowTextInput
+              value={blog?.content?.title || ' '}
+              onChangeText={text =>
+                setBlog(prev => ({
+                  ...prev,
+                  content: {...prev.content, title: text},
+                }))
+              }
+            />
           </View>
 
           <View style={style.section}>
             <Text style={style.headingText}>Blog Summary</Text>
-            <AutoGrowTextInput value={summary} onChangeText={setSummary} />
+            <AutoGrowTextInput
+              value={blog?.content?.summary || ' '}
+              onChangeText={text =>
+                setBlog(prev => ({
+                  ...prev,
+                  content: {...prev.content, summary: text},
+                }))
+              }
+            />
           </View>
 
           <View style={style.section}>
             <Text style={style.headingText}>Blog Body</Text>
-            <AutoGrowTextInput value={body} onChangeText={setBody} />
+            <AutoGrowTextInput
+              value={blog?.content?.body || ' '}
+              onChangeText={text =>
+                setBlog(prev => ({
+                  ...prev,
+                  content: {...prev.content, body: text},
+                }))
+              }
+            />
           </View>
         </ScrollView>
 
         <Button
           btnText={'Save Changes'}
           onPress={() => {
+            handleSaveChanges();
           }}
         />
       </View>
@@ -129,23 +197,23 @@ const style = StyleSheet.create({
   },
   uploadContainer: {
     backgroundColor: '#1E1E1E',
+    width: '100%',
     borderRadius: 5,
     padding: 10,
     borderWidth: 0.5,
+    gap: 20,
     borderColor: 'white',
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'space-between',
   },
-  imageName: {
-    width: '88%',
-    fontSize: 18,
-    fontFamily: 'Outfit-medium',
-    color: 'white',
+  blogImage: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'cover',
   },
   uploadBtn: {
-    width: 40,
-    height: 40,
+    width: '100%',
+    height: 50,
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
