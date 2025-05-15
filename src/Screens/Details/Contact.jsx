@@ -1,31 +1,83 @@
-import {View, Text, Pressable, SafeAreaView, TextInput} from 'react-native';
+/* eslint-disable react-native/no-inline-styles */
+import {
+  View,
+  Text,
+  SafeAreaView,
+  TextInput,
+  ScrollView,
+} from 'react-native';
 import {styles} from './styles';
 import {useRegistrationStore} from '../../store/registration';
 import Button from '../../components/button';
 import {useNavigation} from '@react-navigation/native';
 import BackButton from '../../components/Backbutton';
+import {useState} from 'react';
 
 const Contact = () => {
   const {formData, setField, setNestedField} = useRegistrationStore();
   const navigation = useNavigation();
-  console.log('Form Data', formData);
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.mobile.trim()) {
+      newErrors.mobile = 'Mobile number is required.';
+    } else if (!/^\d+$/.test(formData.mobile)) {
+      newErrors.mobile = 'Invalid mobile number format.';
+    } else if (formData.mobile.length !== 10) {
+      newErrors.mobile = 'Mobile number must be 10 digits.';
+    }
+    if (!formData.shippingAddress.city.trim()) {
+      newErrors.city = 'City is required.';
+    }
+    if (!formData.shippingAddress.country.trim()) {
+      newErrors.country = 'Country is required.';
+    }
+    if (!formData.shippingAddress.state.trim()) {
+      newErrors.state = 'State is required.';
+    }
+    if (formData.shippingAddress.pincode && !/^\d+$/.test(formData.shippingAddress.pincode)) {
+      newErrors.pincode = 'Invalid pincode format.';
+    }
+    return newErrors;
+  };
+
+  const handleNext = () => {
+    const newErrors = validateForm();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    navigation.navigate('ProfilePhoto');
+  };
+
   return (
     <SafeAreaView style={styles.background}>
       <View style={styles.backButtonContainer}>
         <BackButton />
       </View>
       <Text style={styles.heading}>Contact Details</Text>
-      <View style={styles.form}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          gap: 20,
+          paddingVertical: 20,
+        }}
+        keyboardShouldPersistTaps="handled"
+        style={styles.form}>
         <View style={styles.formField}>
           <Text style={styles.inputTitle}>MOBILE NO</Text>
           <TextInput
             style={styles.inputbox}
-            placeholder="Optional"
+            placeholder="Required"
             placeholderTextColor={'#D9D9D9'}
             keyboardType="phone-pad"
-            value={formData.mobileNo}
-            onChangeText={text => setField('mobileNo', text)}
+            value={formData.mobile}
+            onChangeText={text => setField('mobile', text)}
           />
+          {errors.mobile && (
+            <Text style={styles.errorText}>{errors.mobile}</Text>
+          )}
         </View>
         <View style={styles.formField}>
           <Text style={styles.inputTitle}>ADDRESS</Text>
@@ -50,6 +102,7 @@ const Contact = () => {
               setNestedField('shippingAddress', 'city', text)
             }
           />
+          {errors.city && <Text style={styles.errorText}>{errors.city}</Text>}
         </View>
         <View style={styles.formField}>
           <Text style={styles.inputTitle}>COUNTRY</Text>
@@ -62,6 +115,9 @@ const Contact = () => {
               setNestedField('shippingAddress', 'country', text)
             }
           />
+          {errors.country && (
+            <Text style={styles.errorText}>{errors.country}</Text>
+          )}
         </View>
         <View style={styles.formField}>
           <View style={styles.row}>
@@ -76,6 +132,9 @@ const Contact = () => {
                   setNestedField('shippingAddress', 'state', text)
                 }
               />
+              {errors.state && (
+                <Text style={styles.errorText}>{errors.state}</Text>
+              )}
             </View>
             <View style={styles.twoField}>
               <Text style={styles.inputTitle}>PINCODE</Text>
@@ -84,21 +143,26 @@ const Contact = () => {
                 placeholder="Optional"
                 placeholderTextColor={'#D9D9D9'}
                 value={formData.shippingAddress.pincode}
+                keyboardType="phone-pad"
                 onChangeText={text =>
                   setNestedField('shippingAddress', 'pincode', text)
                 }
               />
+              {errors.pincode && (
+                <Text style={styles.errorText}>{errors.pincode}</Text>
+              )}
             </View>
           </View>
         </View>
+      </ScrollView>
+      <View style={{paddingTop: 20}}>
+        <Button
+          btnText={'Next'}
+          onPress={() => {
+            handleNext();
+          }}
+        />
       </View>
-      <Button
-        btnText={'Next'}
-        onPress={() => {
-          // nextStep();
-          navigation.navigate('ProfilePhoto');
-        }}
-      />
     </SafeAreaView>
   );
 };

@@ -4,7 +4,7 @@ export const styles = StyleSheet.create({
   background: {
     flex: 1,
     backgroundColor: 'black',
-    paddingVertical: 100,
+    paddingVertical: 65,
     justifyContent: 'space-between',
     position:'relative',
   },
@@ -16,6 +16,7 @@ export const styles = StyleSheet.create({
   heading: {
     fontSize: 32,
     color: 'white',
+    paddingBottom: 20,
     textAlign: 'center',
     fontFamily: 'Outfit-bold',
   },
