@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {
   View,
   Text,
@@ -22,7 +23,7 @@ const Contact = () => {
   const [errors, setErrors] = useState({});
 
   const validateForm = () => {
-    const newErrors: any = {};
+    const newErrors = {};
     if (!formData.mobile.trim()) {
       newErrors.mobile = 'Mobile number is required.';
     } else if (!/^\d+$/.test(formData.mobile)) {
