@@ -35,6 +35,13 @@ const Personal = () => {
     if (!formData.dob) {
       newErrors.dob = 'Date of birth is required.';
     }
+
+    if (formData.bio && formData.bio.trim().split(' ').length > 100) {
+      newErrors.bio = 'Bio must be less than 100 words.';
+    } else if (formData.bio && formData.bio.length > 500) {
+      newErrors.bio = 'Bio must be less than 500 characters.';
+    }
+
     if (formData.connectedAccounts.length === 0) {
       newErrors.connectedAccounts =
         'At least one social media account is required.';
@@ -101,6 +108,7 @@ const Personal = () => {
             value={formData.bio}
             onChangeText={text => setField('bio', text)}
           />
+          {errors.bio && <Text style={styles.errorText}>{errors.bio}</Text>}
         </View>
         <View style={styles.formField}>
           <Text style={styles.inputTitle}>DATE OF BIRTH</Text>
