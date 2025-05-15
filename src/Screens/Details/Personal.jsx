@@ -7,12 +7,17 @@ import {
   Pressable,
   Alert,
   TouchableWithoutFeedback,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
 } from 'react-native';
 import {styles} from './styles';
 import Button from '../../components/button';
 import {useNavigation} from '@react-navigation/native';
 import {useState} from 'react';
 import {useRegistrationStore} from '../../store/registration';
+import BackButton from '../../components/Backbutton';
 
 const Personal = () => {
   const navigation = useNavigation();
@@ -20,8 +25,6 @@ const Personal = () => {
   const {formData, setField, nextStep, setConnectedAccount} =
     useRegistrationStore();
   const options = ['Facebook', 'Instagram', 'LinkedIn', 'Twitter'];
-  console.log('Form Data', formData);
-
   const [errors, setErrors] = useState({});
 
   const validateForm = () => {
@@ -70,124 +73,144 @@ const Personal = () => {
 
   return (
     <SafeAreaView style={styles.background}>
-      <Text style={styles.heading}>Personal Details</Text>
-      <View style={styles.form}>
-        <View style={styles.row}>
-          <View style={styles.twoField}>
-            <Text style={styles.inputTitle}>FIRST NAME</Text>
-            <TextInput
-              style={styles.inputbox}
-              placeholder="Required"
-              placeholderTextColor={'#D9D9D9'}
-              value={formData.firstName}
-              onChangeText={text => setField('firstName', text)}
-            />
-            {errors.firstName && (
-              <Text style={styles.errorText}>{errors.firstName}</Text>
-            )}
-          </View>
-          <View style={styles.twoField}>
-            <Text style={styles.inputTitle}>LAST NAME</Text>
-            <TextInput
-              style={styles.inputbox}
-              placeholder="Optional"
-              placeholderTextColor={'#D9D9D9'}
-              value={formData.lastName}
-              onChangeText={text => setField('lastName', text)}
-            />
-          </View>
-        </View>
-        <View style={styles.formField}>
-          <Text style={styles.inputTitle}>BIO</Text>
-          <TextInput
-            style={styles.inputbox}
-            placeholder="Optional"
-            placeholderTextColor={'#D9D9D9'}
-            multiline={true}
-            numberOfLines={4}
-            textAlignVertical="top"
-            value={formData.bio}
-            onChangeText={text => setField('bio', text)}
-          />
-          {errors.bio && <Text style={styles.errorText}>{errors.bio}</Text>}
-        </View>
-        <View style={styles.formField}>
-          <Text style={styles.inputTitle}>DATE OF BIRTH</Text>
-          <TextInput
-            style={styles.inputbox}
-            placeholder="Required"
-            placeholderTextColor={'#D9D9D9'}
-            value={formData.dob}
-            onChangeText={text => setField('dob', text)}
-            keyboardType="numeric"
-          />
-          {errors.dob && <Text style={styles.errorText}>{errors.dob}</Text>}
-        </View>
-        <View style={styles.formField}>
-          <Text style={styles.inputTitle}>SOCIAL MEDIA LINK</Text>
-          <View style={styles.row}>
-            <View style={styles.twoField}>
-              <Modal
-                animationType="fade"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                  Alert.alert('Modal has been closed.');
-                  setModalVisible(!modalVisible);
-                }}>
-                <TouchableWithoutFeedback
-                  onPress={() => setModalVisible(false)}>
-                  <View style={styles.modalContainer}>
-                    <Text style={styles.modalTitle}>Select Social Media</Text>
-                    <View style={styles.modalContent}>
-                      {options.map((option, index) => (
-                        <Pressable
-                          key={index}
-                          onPress={() => {
-                            setModalVisible(false);
-                            setConnectedAccount(0, 'accountName', option);
-                          }}>
-                          <Text style={styles.modalOption}>{option}</Text>
-                        </Pressable>
-                      ))}
-                    </View>
-                  </View>
-                </TouchableWithoutFeedback>
-              </Modal>
-              <Pressable onPress={() => setModalVisible(true)}>
-                <Text
-                  style={styles.selectionText}
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 10 : 0}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <ScrollView
+            contentContainerStyle={{
+              flexGrow: 1,
+              justifyContent: 'space-between',
+              paddingVertical: 20,
+              gap: 40,
+              position: 'relative',
+            }}
+            keyboardShouldPersistTaps="handled">
+            <View style={styles.backButtonContainer}>
+              <BackButton />
+            </View>
+            <Text style={styles.heading}>Personal Details</Text>
+            <View style={styles.form}>
+              <View style={styles.row}>
+                <View style={styles.twoField}>
+                  <Text style={styles.inputTitle}>FIRST NAME</Text>
+                  <TextInput
+                    style={styles.inputbox}
+                    placeholder="Required"
+                    placeholderTextColor={'#D9D9D9'}
+                    value={formData.firstName}
+                    onChangeText={text => setField('firstName', text)}
+                  />
+                  {errors.firstName && (
+                    <Text style={styles.errorText}>{errors.firstName}</Text>
+                  )}
+                </View>
+                <View style={styles.twoField}>
+                  <Text style={styles.inputTitle}>LAST NAME</Text>
+                  <TextInput
+                    style={styles.inputbox}
+                    placeholder="Optional"
+                    placeholderTextColor={'#D9D9D9'}
+                    value={formData.lastName}
+                    onChangeText={text => setField('lastName', text)}
+                  />
+                </View>
+              </View>
+              <View style={styles.formField}>
+                <Text style={styles.inputTitle}>BIO</Text>
+                <TextInput
+                  style={styles.inputbox}
+                  placeholder="Optional"
+                  placeholderTextColor={'#D9D9D9'}
+                  multiline={true}
+                  numberOfLines={4}
+                  textAlignVertical="top"
+                  value={formData.bio}
+                  onChangeText={text => setField('bio', text)}
+                />
+                {errors.bio && (
+                  <Text style={styles.errorText}>{errors.bio}</Text>
+                )}
+              </View>
+              <View style={styles.formField}>
+                <Text style={styles.inputTitle}>DATE OF BIRTH</Text>
+                <TextInput
+                  style={styles.inputbox}
                   placeholder="Required"
-                  placeholderTextColor={'#D9D9D9'}>
-                  {formData.connectedAccounts[0].accountName
-                    ? formData.connectedAccounts[0].accountName
-                    : 'Select Social Media'}
-                </Text>
-              </Pressable>
+                  placeholderTextColor={'#D9D9D9'}
+                  value={formData.dob}
+                  onChangeText={text => setField('dob', text)}
+                  keyboardType="numeric"
+                />
+                {errors.dob && (
+                  <Text style={styles.errorText}>{errors.dob}</Text>
+                )}
+              </View>
+              <View style={styles.formField}>
+                <Text style={styles.inputTitle}>SOCIAL MEDIA LINK</Text>
+                <View style={styles.row}>
+                  <View style={styles.twoField}>
+                    <Modal
+                      animationType="fade"
+                      transparent={true}
+                      visible={modalVisible}
+                      onRequestClose={() => {
+                        Alert.alert('Modal has been closed.');
+                        setModalVisible(!modalVisible);
+                      }}>
+                      <TouchableWithoutFeedback
+                        onPress={() => setModalVisible(false)}>
+                        <View style={styles.modalContainer}>
+                          <Text style={styles.modalTitle}>
+                            Select Social Media
+                          </Text>
+                          <View style={styles.modalContent}>
+                            {options.map((option, index) => (
+                              <Pressable
+                                key={index}
+                                onPress={() => {
+                                  setModalVisible(false);
+                                  setConnectedAccount(0, 'accountName', option);
+                                }}>
+                                <Text style={styles.modalOption}>{option}</Text>
+                              </Pressable>
+                            ))}
+                          </View>
+                        </View>
+                      </TouchableWithoutFeedback>
+                    </Modal>
+                    <Pressable onPress={() => setModalVisible(true)}>
+                      <Text style={styles.selectionText}>
+                        {formData.connectedAccounts[0].accountName
+                          ? formData.connectedAccounts[0].accountName
+                          : 'Select Social Media'}
+                      </Text>
+                    </Pressable>
+                  </View>
+                  <View style={styles.twoField}>
+                    <TextInput
+                      style={styles.inputbox}
+                      placeholder="Required"
+                      placeholderTextColor={'#D9D9D9'}
+                      value={formData.connectedAccounts[0].accountLink}
+                      onChangeText={text =>
+                        setConnectedAccount(0, 'accountLink', text)
+                      }
+                    />
+                  </View>
+                </View>
+                {errors.connectedAccounts && (
+                  <Text style={styles.errorText}>
+                    {errors.connectedAccounts}
+                  </Text>
+                )}
+              </View>
             </View>
-            <View style={styles.twoField}>
-              <TextInput
-                style={styles.inputbox}
-                placeholder="Required"
-                placeholderTextColor={'#D9D9D9'}
-                value={formData.connectedAccounts[0].accountLink}
-                onChangeText={text =>
-                  setConnectedAccount(0, 'accountLink', text)
-                }
-              />
-            </View>
-          </View>
-          {errors.connectedAccounts && (
-            <Text style={styles.errorText}>{errors.connectedAccounts}</Text>
-          )}
-        </View>
-      </View>
-      <Button
-        btnText={'Next'}
-        onPress={() => {
-          handleNext();
-        }}
-      />
+            <Button btnText={'Next'} onPress={handleNext} />
+          </ScrollView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

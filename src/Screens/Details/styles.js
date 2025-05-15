@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
   },
   backButtonContainer:{
     position:'absolute',
-    top:'10%',
+    top:24,
     left:20,
   },
   heading: {
