@@ -19,7 +19,7 @@ import api from '../../utils/apiClient';
 import ImagePicker from 'react-native-image-crop-picker';
 
 const BlogEdit = () => {
-  const {blogId} = useRoute().params;
+  const {blogId, callBack} = useRoute().params;
   const [blog, setBlog] = useState({});
   const [uploading, setUploading] = useState(false);
 
@@ -90,6 +90,7 @@ const BlogEdit = () => {
   const handleSaveChanges = async () => {
     try {
       await api.post('/blog/update-blog', blog);
+      callBack(true);
       navigation.goBack();
     } catch (error) {
       console.error('Error updating blog:', error.response.data);
