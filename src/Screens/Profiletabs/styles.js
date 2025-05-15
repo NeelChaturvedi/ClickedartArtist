@@ -31,6 +31,7 @@ export const styles = StyleSheet.create({
   },
   imageText: {
     fontSize: 16,
+    width: '80%',
     fontFamily: 'Outfit-bold',
     color: 'white',
   },
@@ -63,21 +64,18 @@ export const styles = StyleSheet.create({
     color: 'white',
   },
   blogBorder: {
-    alignSelf: 'center',
-    gap: 24,
-    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderColor: 'white',
-    marginRight: 10,
-    padding: 14,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
     borderBottomWidth: 1,
     borderBottomColor: 'white',
+    width: '100%',
   },
   blogDetails: {
-    flexDirection: 'column',
-    gap: 20,
+    flex: 1,
+    gap: 8,
   },
   blogDate: {
     color: '#A9A9A9',
@@ -87,5 +85,12 @@ export const styles = StyleSheet.create({
   blogImage: {
     height: 60,
     width: 60,
+    borderRadius: 8,
+  },
+  imageContainer: {
+    width: 70,
+    height: 70,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
