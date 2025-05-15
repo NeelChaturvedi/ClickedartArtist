@@ -16,6 +16,7 @@ import {useNavigation} from '@react-navigation/native';
 import ImagePicker from 'react-native-image-crop-picker';
 import BackButton from '../../components/Backbutton';
 import api from '../../utils/apiClient';
+import {useRegistrationStore} from '../../store/registration';
 
 const requestCameraPermission = async () => {
   if (Platform.OS === 'android') {
@@ -40,8 +41,8 @@ const requestCameraPermission = async () => {
 };
 
 const ProfilePhoto = () => {
-  const [imageUri, setImageUri] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const {setField, formData} = useRegistrationStore();
   const navigation = useNavigation();
 
   const handleCameraLaunch = async () => {
@@ -64,7 +65,7 @@ const ProfilePhoto = () => {
         width: 1000,
         height: 1000,
       });
-      setImageUri(croppedImage.path);
+      await uploadImageToServer(croppedImage.path);
     } catch (error) {
       console.log('Camera error:', error);
     } finally {
@@ -86,7 +87,7 @@ const ProfilePhoto = () => {
         width: 1000,
         height: 1000,
       });
-      setImageUri(croppedImage.path);
+      await uploadImageToServer(croppedImage.path);
     } catch (error) {
       console.log('Picker error:', error);
     } finally {
@@ -94,7 +95,7 @@ const ProfilePhoto = () => {
     }
   };
 
-  const uploadImageToServer = async () => {
+  const uploadImageToServer = async imageUri => {
     if (!imageUri) {
       ToastAndroid.show('No image selected', ToastAndroid.SHORT);
       return;
@@ -102,27 +103,44 @@ const ProfilePhoto = () => {
 
     setUploading(true);
 
-    const formData = new FormData();
-    formData.append('image', {
+    const imgData = new FormData();
+    imgData.append('image', {
       uri: imageUri,
       name: 'photo.jpg',
       type: 'image/jpeg',
     });
 
     try {
-      const res = await api.post('/upload/uploadSingleImage', formData, {
+      const res = await api.post('/upload/uploadSingleImage', imgData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
       const imageUrl = res.data;
-      console.log('Image URL:', imageUrl);
+      setField('profileImage', imageUrl);
       ToastAndroid.show('Image uploaded successfully!', ToastAndroid.SHORT);
-      navigation.navigate('OTP');
     } catch (err) {
       console.error(err);
       ToastAndroid.show('Upload failed', ToastAndroid.SHORT);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleRegistration = async () => {
+    try {
+      setUploading(true);
+      const res = await api.post('/photographer/register', formData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log('Registration response:', res);
+      ToastAndroid.show('Registration successful!', ToastAndroid.SHORT);
+      navigation.navigate('OTP');
+    } catch (error) {
+      console.error('Upload error:', error.response?.data);
     } finally {
       setUploading(false);
     }
@@ -136,9 +154,9 @@ const ProfilePhoto = () => {
       <View style={styles.container}>
         <Text style={styles.heading}>Upload Photo</Text>
         <View style={styles.photoPicker}>
-          {imageUri && !uploading ? (
+          {formData.profileImage && !uploading ? (
             <Image
-              source={{uri: imageUri}}
+              source={{uri: formData.profileImage}}
               style={styles.image}
               resizeMode="cover"
             />
@@ -165,7 +183,13 @@ const ProfilePhoto = () => {
         <Pressable style={styles.centerButton} onPress={handleCameraLaunch}>
           <Icon name="camera" size={36} />
         </Pressable>
-        <Pressable style={styles.optionButton} onPress={uploadImageToServer}>
+        <Pressable
+          style={[
+            styles.optionButton,
+            formData.profileImage ? '' : styles.disabledButton,
+          ]}
+          disabled={!formData.profileImage}
+          onPress={handleRegistration}>
           <Icon name="arrow-right" size={28} />
         </Pressable>
       </View>

@@ -5,33 +5,93 @@ import {
   SafeAreaView,
   TextInput,
   TouchableOpacity,
-  ToastAndroid,
 } from 'react-native';
 import {styles} from './styles';
-import React, { useState} from 'react';
+import React, {useState} from 'react';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {AdvancedCheckbox} from 'react-native-advanced-checkbox';
 import Button from '../../components/button';
 import {useNavigation} from '@react-navigation/native';
 import {useRegistrationStore} from '../../store/registration';
-import { API_URL } from '@env';
+import api from '../../utils/apiClient';
 
 const Register = () => {
-  const {formData, setField, nextStep} = useRegistrationStore();
+  const {formData, setField} = useRegistrationStore();
   const [secure, setSecure] = useState(true);
   const [checked, setChecked] = useState(false);
   const navigation = useNavigation();
+  const [errors, setErrors] = useState({});
+
+  const validateForm1 = () => {
+    const newErrors = {};
+    if (!formData.username.trim()) {
+      newErrors.username = 'Username is required.';
+    } else if (formData.username.length < 3) {
+      newErrors.username = 'Username must be at least 3 characters.';
+    } else if (!/^[a-zA-Z0-9_]+$/.test(formData.username)) {
+      newErrors.username =
+        'Username can only contain letters, numbers, and underscores.';
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required.';
+    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+      newErrors.email = 'Invalid email format.';
+    }
+
+    if (!formData.password) {
+      newErrors.password = 'Password is required.';
+    } else if (formData.password.length < 8) {
+      newErrors.password = 'Password must be at least 8 characters.';
+    } else if (
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/.test(
+        formData.password,
+      )
+    ) {
+      newErrors.password =
+        'Password must contain at least 8 characters, including one uppercase, one lowercase, one number, and one special character.';
+    }
+    if (!checked) {
+      newErrors.terms = 'You must agree to the terms and conditions.';
+    }
+    return newErrors;
+  };
 
   const checkUsernameAvailability = async username => {
+    setErrors({});
+    const validationErrors = validateForm1();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
     try {
-      const response = await fetch(
-        `${API_URL}/api/photographer/check-username?username=${username}`,
-      );
-      const data = await response.json();
-      return data.available; // Assuming the API returns an object with an 'available' property
+      await api.post('/photographer/checkUsernameAndEmailExists', {
+        username: username,
+        email: formData.email,
+      });
+      navigation.navigate('Details');
     } catch (error) {
-      console.error('Error checking username availability:', error);
-      return false;
+      if (error.response) {
+        if (error.response.status === 409) {
+          if (error.response.data.usernameExists) {
+            setErrors({
+              ...errors,
+              username: 'Username already exists.',
+            });
+          }
+          if (error.response.data.emailExists) {
+            setErrors({
+              ...errors,
+              email: 'Email already exists.',
+            });
+          }
+        } else {
+          console.error(
+            'Error checking username availability:',
+            error.response,
+          );
+        }
+      }
     }
   };
 
@@ -54,6 +114,9 @@ const Register = () => {
             value={formData.username}
             onChangeText={text => setField('username', text)}
           />
+          {errors.username && (
+            <Text style={{color: 'red', marginTop: 5}}>{errors.username}</Text>
+          )}
         </View>
 
         <View style={styles.formField}>
@@ -66,6 +129,9 @@ const Register = () => {
             onChangeText={text => setField('email', text)}
             keyboardType="email-address"
           />
+          {errors.email && (
+            <Text style={{color: 'red', marginTop: 5}}>{errors.email}</Text>
+          )}
         </View>
 
         <View style={styles.formField}>
@@ -87,6 +153,9 @@ const Register = () => {
               />
             </TouchableOpacity>
           </View>
+          {errors.password && (
+            <Text style={{color: 'red', marginTop: 5}}>{errors.password}</Text>
+          )}
 
           <View
             style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
@@ -114,6 +183,9 @@ const Register = () => {
               </Text>
             </Text>
           </View>
+          {errors.terms && (
+            <Text style={{color: 'red', marginTop: 5}}>{errors.terms}</Text>
+          )}
         </View>
       </View>
 
@@ -121,25 +193,9 @@ const Register = () => {
         <Button
           btnText={'Create Account'}
           onPress={() => {
-            // if (!formData.username || !formData.email || !formData.password) {
-            //   ToastAndroid.show(
-            //     'Please fill all the fields',
-            //     ToastAndroid.SHORT,
-            //     ToastAndroid.BOTTOM,
-            //   );
-            //   return;
-            // }
-            // if (!checked) {
-            //   // alert('Please agree to the terms and conditions');
-            //   ToastAndroid.show(
-            //     'Please agree to the terms and conditions',
-            //     ToastAndroid.SHORT,
-            //     ToastAndroid.BOTTOM,
-            //   );
-            //   return;
-            // }
-            nextStep();
-            navigation.navigate('Details');
+            // nextStep();
+            // navigation.navigate('Details');
+            checkUsernameAvailability(formData.username);
           }}
         />
 
