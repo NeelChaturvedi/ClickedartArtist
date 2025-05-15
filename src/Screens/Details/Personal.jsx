@@ -22,6 +22,44 @@ const Personal = () => {
   const options = ['Facebook', 'Instagram', 'LinkedIn', 'Twitter'];
   console.log('Form Data', formData);
 
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.firstName.trim()) {
+      newErrors.firstName = 'First name is required.';
+    } else if (formData.firstName.length < 3) {
+      newErrors.firstName = 'First name must be at least 3 characters.';
+    }
+
+    if (!formData.dob) {
+      newErrors.dob = 'Date of birth is required.';
+    }
+    if (formData.connectedAccounts.length === 0) {
+      newErrors.connectedAccounts =
+        'At least one social media account is required.';
+    } else if (
+      formData.connectedAccounts.length === 1 &&
+      formData.connectedAccounts[0].accountName === '' &&
+      formData.connectedAccounts[0].accountLink === ''
+    ) {
+      newErrors.connectedAccounts =
+        'At least one social media account is required.';
+    }
+
+    return newErrors;
+  };
+
+  const handleNext = () => {
+    const newErrors = validateForm();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    nextStep();
+    navigation.navigate('Contact');
+  };
+
   return (
     <SafeAreaView style={styles.background}>
       <Text style={styles.heading}>Personal Details</Text>
@@ -36,6 +74,9 @@ const Personal = () => {
               value={formData.firstName}
               onChangeText={text => setField('firstName', text)}
             />
+            {errors.firstName && (
+              <Text style={styles.errorText}>{errors.firstName}</Text>
+            )}
           </View>
           <View style={styles.twoField}>
             <Text style={styles.inputTitle}>LAST NAME</Text>
@@ -67,10 +108,11 @@ const Personal = () => {
             style={styles.inputbox}
             placeholder="Required"
             placeholderTextColor={'#D9D9D9'}
-            value={formData.dateOfBirth}
-            onChangeText={text => setField('dateOfBirth', text)}
+            value={formData.dob}
+            onChangeText={text => setField('dob', text)}
             keyboardType="numeric"
           />
+          {errors.dob && <Text style={styles.errorText}>{errors.dob}</Text>}
         </View>
         <View style={styles.formField}>
           <Text style={styles.inputTitle}>SOCIAL MEDIA LINK</Text>
@@ -126,13 +168,15 @@ const Personal = () => {
               />
             </View>
           </View>
+          {errors.connectedAccounts && (
+            <Text style={styles.errorText}>{errors.connectedAccounts}</Text>
+          )}
         </View>
       </View>
       <Button
         btnText={'Next'}
         onPress={() => {
-          nextStep();
-          navigation.navigate('Contact');
+          handleNext();
         }}
       />
     </SafeAreaView>
