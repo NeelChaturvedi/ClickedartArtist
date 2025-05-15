@@ -22,7 +22,7 @@ const Register = () => {
   const navigation = useNavigation();
   const [errors, setErrors] = useState({});
 
-  const validateForm1 = () => {
+  const validateForm = () => {
     const newErrors = {};
     if (!formData.username.trim()) {
       newErrors.username = 'Username is required.';
@@ -59,7 +59,7 @@ const Register = () => {
 
   const checkUsernameAvailability = async username => {
     setErrors({});
-    const validationErrors = validateForm1();
+    const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
