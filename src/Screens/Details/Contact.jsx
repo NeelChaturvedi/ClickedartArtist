@@ -1,11 +1,4 @@
-/* eslint-disable react-native/no-inline-styles */
-import {
-  View,
-  Text,
-  SafeAreaView,
-  TextInput,
-  ScrollView,
-} from 'react-native';
+import {View, Text, Pressable, SafeAreaView, TextInput} from 'react-native';
 import {styles} from './styles';
 import {useRegistrationStore} from '../../store/registration';
 import Button from '../../components/button';
@@ -36,14 +29,10 @@ const Contact = () => {
     if (!formData.shippingAddress.state.trim()) {
       newErrors.state = 'State is required.';
     }
-    if (formData.shippingAddress.pincode && !/^\d+$/.test(formData.shippingAddress.pincode)) {
-      newErrors.pincode = 'Invalid pincode format.';
-    }
     return newErrors;
   };
 
   const handleNext = () => {
-    setErrors({});
     const newErrors = validateForm();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -58,14 +47,7 @@ const Contact = () => {
         <BackButton />
       </View>
       <Text style={styles.heading}>Contact Details</Text>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          gap: 20,
-          paddingVertical: 20,
-        }}
-        keyboardShouldPersistTaps="handled"
-        style={styles.form}>
+      <View style={styles.form}>
         <View style={styles.formField}>
           <Text style={styles.inputTitle}>MOBILE NO</Text>
           <TextInput
@@ -74,7 +56,7 @@ const Contact = () => {
             placeholderTextColor={'#D9D9D9'}
             keyboardType="phone-pad"
             value={formData.mobile}
-            onChangeText={text => setField('mobile', text)}
+            onChangeText={text => setField('phone', text)}
           />
           {errors.mobile && (
             <Text style={styles.errorText}>{errors.mobile}</Text>
@@ -143,8 +125,9 @@ const Contact = () => {
                 style={styles.inputbox}
                 placeholder="Optional"
                 placeholderTextColor={'#D9D9D9'}
-                value={formData.shippingAddress.pincode}
                 keyboardType="phone-pad"
+                maxLength={6}
+                value={formData.shippingAddress.pincode}
                 onChangeText={text =>
                   setNestedField('shippingAddress', 'pincode', text)
                 }
@@ -155,15 +138,13 @@ const Contact = () => {
             </View>
           </View>
         </View>
-      </ScrollView>
-      <View style={{paddingTop: 20}}>
-        <Button
-          btnText={'Next'}
-          onPress={() => {
-            handleNext();
-          }}
-        />
       </View>
+      <Button
+        btnText={'Next'}
+        onPress={() => {
+          handleNext();
+        }}
+      />
     </SafeAreaView>
   );
 };
