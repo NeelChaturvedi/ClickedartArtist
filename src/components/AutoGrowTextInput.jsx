@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {TextInput, StyleSheet} from 'react-native';
 
-const AutoGrowTextInput = () => {
+const AutoGrowTextInput = ({value, onChangeText}) => {
   const [height, setHeight] = useState(50);
 
   return (
@@ -10,7 +10,10 @@ const AutoGrowTextInput = () => {
       multiline
       onContentSizeChange={event => {
         setHeight(event.nativeEvent.contentSize.height);
-      }}/>
+      }}
+      value={value}
+      onChangeText={onChangeText}
+    />
   );
 };
 
@@ -25,6 +28,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlignVertical: 'top',
     fontFamily: 'Outfit-regular',
+    color: 'white',
   },
 });
 

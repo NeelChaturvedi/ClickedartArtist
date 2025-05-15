@@ -43,7 +43,7 @@ const Blog = () => {
           <BackButton />
         </View>
         <View style={styles.options}>
-          <Pressable onPress={()=> navigation.navigate('BlogEdit')}>
+          <Pressable onPress={()=> navigation.navigate(`BlogEdit`, {blogId})}>
             <Icon name="edit" size={24} color={'white'} />
           </Pressable>
           <Pressable>
