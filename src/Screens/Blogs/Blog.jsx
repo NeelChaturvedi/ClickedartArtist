@@ -54,7 +54,9 @@ const Blog = () => {
         </View>
       </View>
       <View style={styles.container}>
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{gap: 30}}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{gap: 30}}>
           <View style={styles.aboutBlog}>
             <View gap={10}>
               <Text style={styles.headingText}>{blog.content?.title}</Text>
@@ -100,12 +102,34 @@ const Blog = () => {
                 backgroundColor: 'black',
               }}
               customStyle={`
-              * {
+                body {
+                  background-color: #000 !important;
                   font-family: 'Outfit', sans-serif;
+                }
+
+                p, span, div, li, h1, h2, h3, h4, h5, h6 {
                   color: #fff;
                 }
-                p {
-                  font-size: 16px;
+
+                *[style*="color: #000"],
+                *[style*="color:#000"],
+                *[style*="color: #000000"],
+                *[style*="color:#000000"],
+                *[style*="color: rgb(0, 0, 0)"],
+                *[style*="color:rgba(0,0,0,1)"],
+                *[style*="color: rgb(1,1,1)"],
+                *[style*="color: black"],
+                *[style*="color: rgba(1,1,1,1)"] {
+                  color: #ffffff !important;
+                }
+
+                *[style*="color: rgb(10, 10, 10); background-color: rgb(255, 255, 255);"] {
+                  color: rgb(255, 255, 255) !important; 
+                  background-color: rgb(0, 0, 0) !important;
+                }
+
+                a {
+                  color: #4FC3F7;
                 }
               `}
               onSizeUpdated={size => console.log(size.height)}
