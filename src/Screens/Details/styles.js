@@ -3,15 +3,15 @@ import {StyleSheet} from 'react-native';
 export const styles = StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: 'black',
+    backgroundColor: 'red',
     paddingVertical: 65,
     justifyContent: 'space-between',
-    position:'relative',
+    position: 'relative',
   },
-  backButtonContainer:{
-    position:'absolute',
-    top:24,
-    left:20,
+  backButtonContainer: {
+    position: 'absolute',
+    top: 24,
+    left: 20,
     zIndex: 1,
   },
   heading: {
@@ -169,8 +169,8 @@ export const styles = StyleSheet.create({
   disabledButton: {
     opacity: 0.5,
   },
-  errorText:{
-    fontFamily:'Outfit-regular',
+  errorText: {
+    fontFamily: 'Outfit-regular',
     color: 'red',
     fontSize: 15,
   },
