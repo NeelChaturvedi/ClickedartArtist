@@ -8,7 +8,7 @@ import AutoGrowTextInput from '../../components/AutoGrowTextInput';
 import Button from '../../components/button';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import api from '../../utils/apiClient';
-import { launchImageLibrary } from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 
 const BlogEdit = () => {
   const {blogId} = useRoute().params;
@@ -22,18 +22,15 @@ const BlogEdit = () => {
 
   const handleImageLibraryLaunch = async () => {
     setUploading(true);
-    const result = await launchImageLibrary({
+    const result = await ImagePicker.openPicker({
       mediaType: 'photo',
-      selectionLimit: 1,
-      includeBase64: true,
       quality: 1,
-      includeExif: true,
     });
 
-
-    if (!result.didCancel && result.assets?.length) {
-      setImageUri(result.assets[0].uri);
-      setFileName(result.assets[0].fileName);
+    console.log('Image result:', result);
+    if (result) {
+      setImageUri(result.path);
+      setFileName(result.filename);
     }
     setUploading(false);
   };

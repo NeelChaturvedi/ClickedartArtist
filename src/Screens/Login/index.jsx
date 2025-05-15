@@ -62,7 +62,7 @@ const Login = () => {
             textContentType="emailAddress"
             enterKeyHint="next"
             autoCapitalize="none"
-            autoFocus={true}
+            // autoFocus={true}
             autoComplete="email"
             keyboardType="email-address"
             onSubmitEditing={() => {

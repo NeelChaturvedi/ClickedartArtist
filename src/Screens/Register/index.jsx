@@ -121,23 +121,23 @@ const Register = () => {
         <Button
           btnText={'Create Account'}
           onPress={() => {
-            if (!formData.username || !formData.email || !formData.password) {
-              ToastAndroid.show(
-                'Please fill all the fields',
-                ToastAndroid.SHORT,
-                ToastAndroid.BOTTOM,
-              );
-              return;
-            }
-            if (!checked) {
-              // alert('Please agree to the terms and conditions');
-              ToastAndroid.show(
-                'Please agree to the terms and conditions',
-                ToastAndroid.SHORT,
-                ToastAndroid.BOTTOM,
-              );
-              return;
-            }
+            // if (!formData.username || !formData.email || !formData.password) {
+            //   ToastAndroid.show(
+            //     'Please fill all the fields',
+            //     ToastAndroid.SHORT,
+            //     ToastAndroid.BOTTOM,
+            //   );
+            //   return;
+            // }
+            // if (!checked) {
+            //   // alert('Please agree to the terms and conditions');
+            //   ToastAndroid.show(
+            //     'Please agree to the terms and conditions',
+            //     ToastAndroid.SHORT,
+            //     ToastAndroid.BOTTOM,
+            //   );
+            //   return;
+            // }
             nextStep();
             navigation.navigate('Details');
           }}
