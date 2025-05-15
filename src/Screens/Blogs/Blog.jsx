@@ -8,6 +8,7 @@ import {
   Dimensions,
   Share,
   Alert,
+  RefreshControl,
 } from 'react-native';
 import React, {useEffect} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -21,22 +22,36 @@ import AutoHeightWebView from 'react-native-autoheight-webview';
 const Blog = () => {
   const {blogId} = useRoute().params;
   const [blog, setBlog] = React.useState({});
+  const [loading, setLoading] = React.useState(true);
+  const [val, setVal] = React.useState(false);
+
+  const onRefresh = () => {
+    setLoading(true);
+    fetchBlog();
+  };
+
+  const callBack = value => {
+    setVal(value);
+  };
 
   const navigation = useNavigation();
 
-  useEffect(() => {
-    const fetchBlog = async () => {
-      try {
-        const response = await api.get(`/blog/get-blog-by-id?id=${blogId}`);
-        const data = response.data;
-        setBlog(data.blog);
-      } catch (error) {
-        console.error('Error fetching blog:', error);
-      }
-    };
-
-    fetchBlog();
+  const fetchBlog = React.useCallback(async () => {
+    try {
+      const response = await api.get(`/blog/get-blog-by-id?id=${blogId}`);
+      const data = response.data;
+      setBlog(data.blog);
+    } catch (error) {
+      console.error('Error fetching blog:', error);
+    } finally {
+      setLoading(false);
+      setVal(false);
+    }
   }, [blogId]);
+
+  useEffect(() => {
+    fetchBlog();
+  }, [fetchBlog, val]);
 
   const onShare = async () => {
     try {
@@ -55,7 +70,8 @@ const Blog = () => {
           <BackButton />
         </View>
         <View style={styles.options}>
-          <Pressable onPress={() => navigation.navigate('BlogEdit', {blogId})}>
+          <Pressable
+            onPress={() => navigation.navigate('BlogEdit', {blogId, callBack})}>
             <Icon name="edit" size={24} color={'white'} />
           </Pressable>
           <Pressable onPress={onShare}>
@@ -66,6 +82,13 @@ const Blog = () => {
       <View style={styles.container}>
         <ScrollView
           showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={loading}
+              onRefresh={onRefresh}
+              tintColor={'#fff'}
+            />
+          }
           contentContainerStyle={{gap: 30}}>
           <View style={styles.aboutBlog}>
             <View gap={10}>
