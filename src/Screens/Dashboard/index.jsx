@@ -9,6 +9,7 @@ import Values from '../../components/Values';
 import api from '../../utils/apiClient';
 import {useUserStore} from '../../store/auth';
 import {LineChart} from 'react-native-chart-kit';
+import Button from '@components/button';
 
 const Dashboard = () => {
   const {user} = useUserStore();
