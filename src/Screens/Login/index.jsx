@@ -103,7 +103,9 @@ const Login = () => {
       </View>
 
       <View style={styles.formField}>
-        <Button btnText={'Login'} onPress={handleLogin} />
+        <View style={styles.form}>
+          <Button btnText={'Login'} onPress={handleLogin} />
+        </View>
         <View style={styles.createAccount}>
           <Text style={styles.createAccountText}>Don't have an account? </Text>
           <TouchableOpacity

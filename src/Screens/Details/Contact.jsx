@@ -67,7 +67,7 @@ const Contact = () => {
               style={{
                 flexGrow: 1,
                 justifyContent: 'space-between',
-                paddingVertical: 80,
+                paddingVertical: 70,
                 position: 'relative',
               }}>
               <View style={styles.backButtonContainer}>
@@ -175,7 +175,7 @@ const Contact = () => {
                   </View>
                 </View>
               </View>
-              <View style={{marginTop: 30}}>
+              <View style={[styles.form, {marginTop: 30}]}>
                 <Button btnText={'Next'} onPress={handleNext} />
               </View>
             </View>

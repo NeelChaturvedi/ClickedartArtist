@@ -190,14 +190,16 @@ const Register = () => {
       </View>
 
       <View style={styles.formField}>
-        <Button
-          btnText={'Create Account'}
-          onPress={() => {
-            // nextStep();
-            // navigation.navigate('Details');
-            checkUsernameAvailability(formData.username);
-          }}
-        />
+        <View style={styles.form}>
+          <Button
+            btnText={'Create Account'}
+            onPress={() => {
+              // nextStep();
+              // navigation.navigate('Details');
+              checkUsernameAvailability(formData.username);
+            }}
+          />
+        </View>
 
         <View style={styles.LoginPage}>
           <Text
