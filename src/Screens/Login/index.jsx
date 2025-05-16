@@ -60,9 +60,8 @@ const Login = () => {
             placeholder="Enter Email"
             placeholderTextColor="white"
             textContentType="emailAddress"
-            enterKeyHint="next"
+            enterKeyHint={formData.password.length === 0 ? 'next' : 'done'}
             autoCapitalize="none"
-            // autoFocus={true}
             autoComplete="email"
             keyboardType="email-address"
             onSubmitEditing={() => {
@@ -88,7 +87,7 @@ const Login = () => {
               autoComplete="password"
               keyboardType="default"
               textContentType="password"
-              enterKeyHint="next"
+              enterKeyHint="done"
               onSubmitEditing={handleLogin}
             />
             <TouchableOpacity onPress={() => setSecure(!secure)}>
