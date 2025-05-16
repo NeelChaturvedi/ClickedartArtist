@@ -7,8 +7,11 @@ import {
   Image,
   TouchableOpacity,
   ToastAndroid,
+  Modal,
+  TouchableWithoutFeedback,
+  Pressable,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/button';
 import LinearGradient from 'react-native-linear-gradient';
@@ -28,9 +31,12 @@ const Membership = () => {
   const {user} = useUserStore();
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  // const [subscriptions, setSubscriptions] = useState([]);
+  const [activePlan, setActivePlan] = useState(false);
   const [plans, setPlans] = useState([]);
-  const [selectedPlanPrice, setSelectedPlanPrice] = useState();
-  const [selectedPlanDuration, setSelectedPlanDuration] = useState();
+
+  console.log('activePlan:', activePlan);
 
   const toggleAccordion = id => {
     setIsExpanded(prevId => (prevId === id ? null : id));
@@ -72,9 +78,7 @@ const Membership = () => {
         try {
           const paymentId = res.razorpay_payment_id;
           if (paymentId) {
-            setSelectedPlan(planId);
-            setSelectedPlanPrice(price);
-            setSelectedPlanDuration(duration);
+            console.log('Payment successful:', paymentId);
           }
         } catch (error) {
           console.error('Payment failed:', error);
@@ -93,7 +97,7 @@ const Membership = () => {
     RazorpayCheckout.open(options)
       .then(data => {
         console.log('Payment success:', data);
-        handleSubscribe(selectedPlan, selectedPlanPrice, selectedPlanDuration);
+        handleSubscribe(planId, price, duration);
       })
       .catch(error => {
         console.log('Payment failed:', error);
@@ -110,24 +114,43 @@ const Membership = () => {
         duration,
       });
     } catch (error) {
-      console.error('req', error.request);
-      console.error('res', error.response);
+      console.error('Subscription Error', error.response);
     }
   };
 
+  const fetchSubscriptions = useCallback(async () => {
+    try {
+      const res = await api.get(
+        `/subscriptions/get-user-subscription?userId=${user?._id}`,
+      );
+      console.log('Subscriptions:', res.data.subscriptions);
+      // setSubscriptions(res.data.subscriptions);
+      const activePlanId = res.data.subscriptions.find(
+        subscription => subscription.isActive === true,
+      )?.planId?._id;
+      setActivePlan(activePlanId);
+    } catch (err) {
+      console.log(err.response);
+    }
+  }, [user?._id]);
+
+  const fetchPlans = async () => {
+    try {
+      const response = await api.get('/plans/get-all-plans');
+      console.log('Plans:', response.data);
+      const sortedPlans = response.data.plans.sort((a, b) => {
+        return a.name.localeCompare(b.name);
+      });
+      setPlans(sortedPlans);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
   useEffect(() => {
-    const fetchPlans = async () => {
-      try {
-        const response = await api.get('/plans/get-all-plans');
-        console.log('Plans:', response.data);
-        const sortedPlans = response.data.plans.sort((a, b) => {
-          return a.name.localeCompare(b.name);
-        });
-        setPlans(sortedPlans);
-      } catch (error) {
-        console.log(error.response);
-      }
-    };
+    fetchSubscriptions();
+  }, [fetchSubscriptions]);
+
+  useEffect(() => {
     fetchPlans();
   }, []);
 
@@ -164,13 +187,13 @@ const Membership = () => {
             key={index}
             style={[
               styles.planContainer,
-              selectedPlan === plan._id &&
+              selectedPlan?._id === plan._id &&
                 plan.name !== 'Basic' && {
                   borderWidth: 3,
                   borderColor: 'white',
                 },
             ]}>
-            {selectedPlan === plan._id && plan.name !== 'Basic' && (
+            {selectedPlan?._id === plan._id && plan.name !== 'Basic' && (
               <View style={styles.checkIcon}>
                 <Icon name="flash-on" size={24} color="#1E1E1E" />
               </View>
@@ -179,9 +202,7 @@ const Membership = () => {
               style={styles.summary}
               onPress={() => {
                 toggleAccordion(plan._id);
-                setSelectedPlan(plan._id);
-                setSelectedPlanPrice(plan.cost[0].price);
-                setSelectedPlanDuration(plan.cost[0].duration);
+                setSelectedPlan(plan);
               }}>
               <View style={styles.priceAndType}>
                 <Text style={styles.typeText}>{plan.name}</Text>
@@ -269,11 +290,41 @@ const Membership = () => {
         ))}
       </ScrollView>
       <View style={{width: '100%', paddingHorizontal: 16}}>
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}>
+          <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+            <View style={styles.modalContainer}>
+              <View style={styles.modalContent}>
+                <Text style={styles.modalTitle}>Select Plan</Text>
+                {selectedPlan?.cost.map((option, index) => (
+                  <Pressable
+                    key={index}
+                    onPress={() => {
+                      setModalVisible(false);
+                      handlePayment(
+                        selectedPlan._id,
+                        option.price,
+                        option.duration,
+                      );
+                    }}>
+                    <Text style={styles.modalOption}>
+                      ₹{option.price} - {option.duration}
+                    </Text>
+                  </Pressable>
+                ))}
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        </Modal>
         <Button
+          disabled={activePlan === selectedPlan?._id || selectedPlan?.cost[0]?.price === 0 || !selectedPlan}
           btnText={'Purchase'}
-          onPress={() =>
-            handlePayment(selectedPlan, selectedPlanPrice, selectedPlanDuration)
-          }
+          onPress={() => setModalVisible(true)}
         />
       </View>
     </SafeAreaView>
@@ -392,6 +443,32 @@ const styles = StyleSheet.create({
     top: 20,
     left: 20,
     zIndex: 1,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+  },
+  modalContent: {
+    backgroundColor: '#1E1E1E',
+    width: '80%',
+    gap: 10,
+    padding: 20,
+    borderRadius: 20,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: 'white',
+  },
+  modalOption: {
+    fontSize: 18,
+    width: '100%',
+    paddingVertical: 10,
+    color: 'white',
   },
 });
 
