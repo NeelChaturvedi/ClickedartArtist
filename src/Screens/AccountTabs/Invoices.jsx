@@ -26,7 +26,7 @@ const Invoices = () => {
       );
       setInvoices(res.data.payoutHistory);
     } catch (error) {
-      console.error('Failed to fetch invoices:', error);
+      console.log('Failed to fetch invoices:', error.response);
     } finally {
       setLoading(false);
     }

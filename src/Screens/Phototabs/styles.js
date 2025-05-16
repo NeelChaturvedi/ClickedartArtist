@@ -30,14 +30,14 @@ export const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     zIndex: 10,
-    justifyContent:'center',
-    alignItems:'center',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  overlay:{
+  overlay: {
     backgroundColor: 'white',
     opacity: 0.4,
-    width:'100%',
-    height:'100%',
+    width: '100%',
+    height: '100%',
   },
   pending: {
     position: 'absolute',
@@ -57,5 +57,23 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Outfit-bold',
     color: 'white',
+  },
+  notFoundContainer: {
+    flex: 1,
+    marginTop: 100,
+    textAlign: 'center',
+  },
+  notFoundTitle: {
+    color: 'white',
+    fontSize: 16,
+    fontFamily: 'Outfit-medium',
+    textAlign: 'center',
+  },
+  notFoundDesc: {
+    color: '#A1A1A1',
+    fontSize: 14,
+    textAlign: 'center',
+    marginTop: 8,
+    fontFamily: 'Outfit-regular',
   },
 });

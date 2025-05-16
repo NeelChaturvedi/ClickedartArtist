@@ -29,7 +29,7 @@ const Orders = () => {
       console.log('Orders:', res.data);
       setOrders(res.data.orders);
     } catch (error) {
-      console.error('Error fetching orders:', error);
+      console.log('Error fetching orders:', error.response);
     } finally {
       setLoading(false);
     }
