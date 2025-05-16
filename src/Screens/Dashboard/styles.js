@@ -23,19 +23,19 @@ export const style = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     gap: 40,
-    alignItems:'center',
+    alignItems: 'center',
   },
   growthType: {
     flexDirection: 'row',
-    alignItems:'center',
+    alignItems: 'center',
     gap: 10,
   },
-  growthText:{
-    color:'white',
-    fontFamily:'Outfit-medium',
+  growthText: {
+    color: 'white',
+    fontFamily: 'Outfit-medium',
     fontSize: 16,
   },
-  growthTypeIndicator:{
+  growthTypeIndicator: {
     width: 24,
     height: 16,
     backgroundColor: 'white',
