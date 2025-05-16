@@ -6,11 +6,11 @@ export const style = StyleSheet.create({
     height: '100%',
     paddingHorizontal: 20,
     width: '100%',
-    gap: 40,
+    gap: 24,
   },
   sections: {
     gap: 30,
-    marginBottom: 30,
+    marginBottom: 10,
     alignItems: 'flex-start',
     width: '100%',
   },
