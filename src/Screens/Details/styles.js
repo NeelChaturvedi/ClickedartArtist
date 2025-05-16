@@ -45,6 +45,7 @@ export const styles = StyleSheet.create({
   inputbox: {
     height: 54,
     color: 'white',
+    justifyContent: 'center',
     backgroundColor: '#1A1A1A',
     fontFamily: 'Outfit-regular',
     paddingHorizontal: 16,

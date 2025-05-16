@@ -139,7 +139,6 @@ const Personal = () => {
               </View>
               <View style={styles.formField}>
                 <Text style={styles.inputTitle}>DATE OF BIRTH</Text>
-                <View style={{flexDirection: 'row'}}></View>
                 <Pressable
                   onPress={() => {
                     setOpenPicker(true);
