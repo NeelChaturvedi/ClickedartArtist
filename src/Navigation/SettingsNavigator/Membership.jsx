@@ -6,109 +6,131 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/button';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import BackButton from '../../components/Backbutton';
+import api from 'src/utils/apiClient';
+import RazorpayCheckout from 'react-native-razorpay';
+import {useUserStore} from 'src/store/auth';
+
+const desc = [
+  'Perfect for newcomers! Create your first catalogue, test out essential tools, and start selling with zero cost.Great for trying before upgrading.',
+  'Unlock your creative potential. With more catalogues, better tools, detailed analytics, and flexible licensing, this plan is built for serious sellers ready to scale.Best value for growing creators and freelancers.',
+  'Take full control of your ART. Enjoy unlimited uploads, complete customization, advanced insights, and priority support. Everything you need to sell smart and scale fast. Designed for professionals, businesses & power users.',
+];
 
 const Membership = () => {
+  const {user} = useUserStore();
   const [isExpanded, setIsExpanded] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState(null);
+  const [plans, setPlans] = useState([]);
+  const [selectedPlanPrice, setSelectedPlanPrice] = useState();
+  const [selectedPlanDuration, setSelectedPlanDuration] = useState();
 
   const toggleAccordion = id => {
     setIsExpanded(prevId => (prevId === id ? null : id));
   };
 
-  const [selectedPlan, setSelectedPlan] = useState(null);
+  const handlePayment = async (planId, price, duration) => {
+    if (!planId) {
+      console.error('No plan selected');
+      return;
+    }
+    if (!user._id) {
+      console.error('No user found');
+      return;
+    }
+    const result = await api
+      .post('/subscriptions/payment', {
+        total: price,
+        userId: user._id,
+      })
+      .then(res => {
+        console.log('Payment response:', res.data);
+        return res;
+      })
+      .catch(err => {
+        ToastAndroid.show('Payment Failed', ToastAndroid.SHORT);
+        console.log('Payment error:', err);
+        return err;
+      });
 
-  const plans = [
-    {
-      id: 1,
-      name: 'Basic',
-      price: 'Free',
-      desc: 'Perfect for newcomers! Create your first catalogue, test out essential tools, and start selling with zero cost.Great for trying before upgrading.',
-      features: [
-        {title: 'Advanced Tools', value: 'Not Available'},
-        {title: 'Catalogue Creation', value: '1'},
-        {title: 'Custom Pricing', value: 'Yes'},
-        {title: 'Image Uplaod', value: '10'},
-        {title: 'Licensing Options', value: 'Fixed licensing only'},
-        {title: 'Priority Support', value: 'Not Available'},
-        {title: 'Promotional Tools', value: 'No Promotions'},
-        {title: 'Sales Reports', value: 'Simple monthly reports'},
-        {title: 'Social Media Auto Posting', value: 'Not Available'},
-        {title: 'Social Media Integration', value: 'Limited to sharing'},
-        {title: 'Watermarking Tools', value: 'Basic watermark'},
-      ],
-    },
-    {
-      id: 2,
-      name: 'Intermediate',
-      price: '₹499/month',
-      desc: 'Unlock your creative potential. With more catalogues, better tools, detailed analytics, and flexible licensing, this plan is built for serious sellers ready to scale.Best value for growing creators and freelancers.',
-      features: [
-        {title: 'Advanced Tools', value: 'Limited Templates'},
-        {title: 'Catalogue Creation', value: '5'},
-        {title: 'Custom Pricing', value: 'Yes'},
-        {title: 'Image Uplaod', value: '50'},
-        {
-          title: 'Licensing Options',
-          value: 'Fixed licensing (commerical, personal)',
-        },
-        {title: 'Priority Support', value: 'Standard (24-48 hrs response)'},
-        {title: 'Promotional Tools', value: 'Seasonal Promotions'},
-        {title: 'Sales Reports', value: 'Detailed sales analytics'},
-        {title: 'Social Media Auto Posting', value: 'Single platform posting'},
-        {
-          title: 'Social Media Integration',
-          value: 'Full integration (auto-posting tools)',
-        },
-        {title: 'Watermarking Tools', value: 'Custom watermark'},
-      ],
-    },
-    {
-      id: 3,
-      name: 'Premium',
-      price: '₹999/month',
-      desc: 'Take full control of your ART. Enjoy unlimited uploads, complete customization, advanced insights, and priority support. Everything you need to sell smart and scale fast. Designed for professionals, businesses & power users.',
-      features: [
-        {
-          title: 'Advanced Tools',
-          value: 'Full customization and analytics dashboard',
-        },
-        {title: 'Catalogue Creation', value: 'Unlimited'},
-        {title: 'Custom Pricing', value: 'Yes'},
-        {title: 'Image Uplaod', value: 'Unlimited'},
-        {title: 'Licensing Options', value: 'Full licensing customization'},
-        {
-          title: 'Priority Support',
-          value: 'Premium (12-24 hrs response, dedicated)',
-        },
-        {
-          title: 'Promotional Tools',
-          value: 'Full promotional toolkit (coupons, discounts)',
-        },
-        {
-          title: 'Sales Reports',
-          value: 'Advanced analytics with customer insights',
-        },
-        {
-          title: 'Social Media Auto Posting',
-          value: 'Multi-platform posting with scheduling',
-        },
-        {
-          title: 'Social Media Integration',
-          value: 'Enhanced social media and website embeds',
-        },
-        {
-          title: 'Watermarking Tools',
-          value: 'Advanced watermark and branding options',
-        },
-      ],
-    },
-  ];
+    var options = {
+      key: result.data.result.notes.key,
+      amount: result.data.result.amount,
+      currency: 'INR',
+      name: 'ClickedArt',
+      description: 'Total Payment',
+      image: '/assets/Logo.png',
+      order_id: result.data.id,
+      handler: async res => {
+        try {
+          const paymentId = res.razorpay_payment_id;
+          if (paymentId) {
+            setSelectedPlan(planId);
+            setSelectedPlanPrice(price);
+            setSelectedPlanDuration(duration);
+          }
+        } catch (error) {
+          console.error('Payment failed:', error);
+        }
+      },
+      prefill: {
+        email: user?.email,
+        contact: user?.mobile,
+        name: `${user?.firstName} ${user?.lastName}`,
+      },
+
+      theme: {
+        color: '#3399cc',
+      },
+    };
+    RazorpayCheckout.open(options)
+      .then(data => {
+        console.log('Payment success:', data);
+        handleSubscribe(selectedPlan, selectedPlanPrice, selectedPlanDuration);
+      })
+      .catch(error => {
+        console.log('Payment failed:', error);
+        ToastAndroid.show('Payment Failed', ToastAndroid.SHORT);
+      });
+  };
+
+  const handleSubscribe = async (planId, price, duration) => {
+    try {
+      await api.post('/subscriptions/add-subscription', {
+        userId: user._id,
+        planId,
+        price,
+        duration,
+      });
+    } catch (error) {
+      console.error('req', error.request);
+      console.error('res', error.response);
+    }
+  };
+
+  useEffect(() => {
+    const fetchPlans = async () => {
+      try {
+        const response = await api.get('/plans/get-all-plans');
+        console.log('Plans:', response.data);
+        const sortedPlans = response.data.plans.sort((a, b) => {
+          return a.name.localeCompare(b.name);
+        });
+        setPlans(sortedPlans);
+      } catch (error) {
+        console.log(error.response);
+      }
+    };
+    fetchPlans();
+  }, []);
+
   return (
     <SafeAreaView style={styles.background}>
       <View style={styles.headerContainer}>
@@ -128,7 +150,7 @@ const Membership = () => {
         </View>
       </View>
       <ScrollView style={styles.scrollContainer}>
-        {plans.map(plan => (
+        {plans.map((plan, index) => (
           <LinearGradient
             colors={
               plan.name === 'Basic'
@@ -139,16 +161,16 @@ const Membership = () => {
             }
             start={{x: 0, y: 0}}
             end={{x: 1, y: 1}}
-            key={plan.id}
+            key={index}
             style={[
               styles.planContainer,
-              selectedPlan === plan.id &&
-                plan.id !== 1 && {
+              selectedPlan === plan._id &&
+                plan.name !== 'Basic' && {
                   borderWidth: 3,
                   borderColor: 'white',
                 },
             ]}>
-            {selectedPlan === plan.id && plan.id !== 1 && (
+            {selectedPlan === plan._id && plan.name !== 'Basic' && (
               <View style={styles.checkIcon}>
                 <Icon name="flash-on" size={24} color="#1E1E1E" />
               </View>
@@ -156,30 +178,103 @@ const Membership = () => {
             <TouchableOpacity
               style={styles.summary}
               onPress={() => {
-                toggleAccordion(plan.id);
-                setSelectedPlan(plan.id);
+                toggleAccordion(plan._id);
+                setSelectedPlan(plan._id);
+                setSelectedPlanPrice(plan.cost[0].price);
+                setSelectedPlanDuration(plan.cost[0].duration);
               }}>
               <View style={styles.priceAndType}>
                 <Text style={styles.typeText}>{plan.name}</Text>
-                <Text style={styles.subHeadingText}>{plan.price}</Text>
+                <View>
+                  {plan.cost[0].price === 0 ? (
+                    <Text style={styles.subHeadingText}>FREE</Text>
+                  ) : (
+                    plan.cost.map((cost, constIndex) => (
+                      <Text key={constIndex} style={styles.subHeadingText}>
+                        ₹{cost.price} {cost.duration}
+                      </Text>
+                    ))
+                  )}
+                </View>
               </View>
-              <Text style={styles.typeDescription}>{plan.desc}</Text>
+              <Text style={styles.typeDescription}>{desc[index]}</Text>
             </TouchableOpacity>
-            {isExpanded === plan.id && (
+            {isExpanded === plan._id && (
               <View>
-                {plan.features.map((feature, index) => (
-                  <View key={index} style={styles.featureContainer}>
-                    <Text style={styles.featureText}>{feature.title}</Text>
-                    <Text style={styles.valueText}>{feature.value}</Text>
-                  </View>
-                ))}
+                <View style={styles.featureContainer}>
+                  <Text style={styles.featureText}>Advanced Tools</Text>
+                  <Text style={styles.valueText}>{plan.advancedTools}</Text>
+                </View>
+                <View style={styles.featureContainer}>
+                  <Text style={styles.featureText}>Catalogue Creation</Text>
+                  <Text style={styles.valueText}>
+                    {plan.catalogCreation > 999
+                      ? 'Unlimited'
+                      : plan.catalogCreation}
+                  </Text>
+                </View>
+                <View style={styles.featureContainer}>
+                  <Text style={styles.featureText}>Custom Pricing</Text>
+                  <Text style={styles.valueText}>
+                    {plan.customPricing ? 'Yes' : 'No'}
+                  </Text>
+                </View>
+                <View style={styles.featureContainer}>
+                  <Text style={styles.featureText}>Image Upload Limit</Text>
+                  <Text style={styles.valueText}>
+                    {plan.imageUploadLimit > 999
+                      ? 'Unlimited'
+                      : plan.imageUploadLimit}
+                  </Text>
+                </View>
+                <View style={styles.featureContainer}>
+                  <Text style={styles.featureText}>Licensing Options</Text>
+                  <Text style={styles.valueText}>{plan.licensingOptions}</Text>
+                </View>
+                <View style={styles.featureContainer}>
+                  <Text style={styles.featureText}>Priority Support</Text>
+                  <Text style={styles.valueText}>{plan.prioritySupport}</Text>
+                </View>
+                <View style={styles.featureContainer}>
+                  <Text style={styles.featureText}>Promotional Tools</Text>
+                  <Text style={styles.valueText}>{plan.promotionalTools}</Text>
+                </View>
+                <View style={styles.featureContainer}>
+                  <Text style={styles.featureText}>Sales Reports</Text>
+                  <Text style={styles.valueText}>{plan.salesReports}</Text>
+                </View>
+                <View style={styles.featureContainer}>
+                  <Text style={styles.featureText}>
+                    Social Media Auto Posting
+                  </Text>
+                  <Text style={styles.valueText}>
+                    {plan.socialMediaAutoPosting}
+                  </Text>
+                </View>
+                <View style={styles.featureContainer}>
+                  <Text style={styles.featureText}>
+                    Social Media Integration
+                  </Text>
+                  <Text style={styles.valueText}>
+                    {plan.socialMediaIntegration}
+                  </Text>
+                </View>
+                <View style={styles.featureContainer}>
+                  <Text style={styles.featureText}>Watermarking Tools</Text>
+                  <Text style={styles.valueText}>{plan.watermarkingTools}</Text>
+                </View>
               </View>
             )}
           </LinearGradient>
         ))}
       </ScrollView>
       <View style={{width: '100%', paddingHorizontal: 16}}>
-        <Button btnText={'Purchase'} />
+        <Button
+          btnText={'Purchase'}
+          onPress={() =>
+            handlePayment(selectedPlan, selectedPlanPrice, selectedPlanDuration)
+          }
+        />
       </View>
     </SafeAreaView>
   );
