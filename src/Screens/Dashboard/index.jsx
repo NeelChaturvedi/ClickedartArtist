@@ -187,7 +187,7 @@ const Dashboard = () => {
             />
           </View>
         </View>
-        {stats?.monthlyData && (
+        {stats?.monthlyData && stats?.monthlyData.length > 0 && (
           <View style={style.sections}>
             <Text style={style.title}>MONTHLY GROWTH REPORT</Text>
             <View gap={16}>
@@ -221,7 +221,7 @@ const Dashboard = () => {
                   <Text style={style.growthText}>Royalty Amount</Text>
                 </View>
               </View>
-              <LineChart
+              {/* <LineChart
                 data={{
                   labels: months,
                   datasets: [
@@ -266,7 +266,7 @@ const Dashboard = () => {
                   borderWidth: 0.5,
                   borderColor: 'white',
                 }}
-              />
+              /> */}
             </View>
           </View>
         )}
