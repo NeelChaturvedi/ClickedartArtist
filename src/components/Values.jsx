@@ -23,6 +23,7 @@ const style = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 0.3,
     borderColor: 'white',
+    width: '100%',
   },
   heading:{
     width: '50%',

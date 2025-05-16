@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {style} from './styles';
@@ -35,7 +36,9 @@ const Dashboard = () => {
     'Nov',
     'Dec',
   ];
-  const months = monthlyData.map(data => `${monthNames[data.month ? (data.month - 1) : 0]}`);
+  const months = monthlyData.map(
+    data => `${monthNames[data.month ? data.month - 1 : 0]}`,
+  );
 
   const fetchStats = useCallback(async () => {
     if (!user._id) {
@@ -66,15 +69,15 @@ const Dashboard = () => {
           <Text style={style.title}>SALES METRICS</Text>
           <View gap={14}>
             <Values
-              heading={'DIGITAL SALE(S)'}
+              heading={'Digital Sale(s)'}
               value={stats?.totalDigitalDownloads || 0}
             />
             <Values
-              heading={'PRINT SALE(S)'}
+              heading={'Print Sale(s)'}
               value={stats?.totalPrintDownloads || 0}
             />
             <Values
-              heading={'ACTIVE BUYER(S)'}
+              heading={'Active Buyer(s)'}
               value={stats?.activeBuyers || 0}
             />
           </View>
@@ -83,11 +86,11 @@ const Dashboard = () => {
           <Text style={style.title}>REVENUE OVERVIEW</Text>
           <View gap={14}>
             <Values
-              heading={'TOTAL DIGITAL SALES'}
+              heading={'Total Digital Sales'}
               value={'₹' + (stats?.totalSales || 0)}
             />
             <Values
-              heading={'TOTAL PRINT SALES'}
+              heading={'Total Print Sales'}
               value={'₹' + (stats?.totalPrintSales || 0)}
             />
           </View>
@@ -96,19 +99,19 @@ const Dashboard = () => {
           <Text style={style.title}>EARNING</Text>
           <View gap={14}>
             <Values
-              heading={'TOTAL DIGITAL ROYALTY AMOUNT'}
+              heading={'Total Digital Royalty Amount'}
               value={'₹' + (stats?.totalRoyaltyAmount || 0)}
             />
             <Values
-              heading={'TOTAL PRINT ROYALTY AMOUNT'}
+              heading={'Total Print Royalty Amount'}
               value={'₹' + (stats?.totalPrintCutAmount || 0)}
             />
             <Values
-              heading={'TOTAL REFERRAL AMOUNT'}
+              heading={'Total Referral Amount'}
               value={'₹' + (stats?.totalReferralAmount || 0)}
             />
             <Values
-              heading={'TOTAL PAID AMOUNT'}
+              heading={'Total Paid Amount'}
               value={'₹' + (stats?.totalPaidAmount || 0)}
             />
           </View>
@@ -117,67 +120,100 @@ const Dashboard = () => {
           <Text style={style.title}>PHOTOS</Text>
           <View gap={14}>
             <Values
-              heading={'APPROVED'}
+              heading={'Approved'}
               value={stats?.totalUploadingImgCount || 0}
             />
             <Values
-              heading={'PENDING'}
+              heading={'Pending'}
               value={stats?.pendingImagesCount || 0}
             />
           </View>
         </View>
         <View style={style.sections}>
-          <Text style={style.title}>SALES AND ROYALTY AMOUNT MONTHLY</Text>
-          <View>
-            <Text>Bezier Line Chart</Text>
-            <LineChart
-              data={{
-                labels: months,
-                datasets: [
-                  {
-                    label: 'Sales',
-                    data: salesData,
-                    color: (opacity = 1) => `rgba(255, 99, 132, ${opacity})`, // bright red line
-                    strokeWidth: 2,
-                    fill: true,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          <Text style={style.title}>MONTHLY GROWTH REPORT</Text>
+          <View gap={16}>
+            <View style={style.typeContainer}>
+              <View style={style.growthType}>
+                <View
+                  style={[
+                    style.growthTypeIndicator,
+                    {
+                      backgroundColor: '#FF6384',
+                      opacity: 0.6,
+                      borderWidth: 4,
+                      borderColor: '#FF6384',
+                    },
+                  ]}
+                />
+                <Text style={style.growthText}>Sales</Text>
+              </View>
+              <View style={style.growthType}>
+                <View
+                  style={[
+                    style.growthTypeIndicator,
+                    {
+                      backgroundColor: '#36A2EB',
+                      opacity: 0.6,
+                      borderWidth: 4,
+                      borderColor: '#36A2EB',
+                    },
+                  ]}
+                />
+                <Text style={style.growthText}>Royalty Amount</Text>
+              </View>
+            </View>
+            {stats?.monthlyData ? (
+              <LineChart
+                data={{
+                  labels: months,
+                  datasets: [
+                    {
+                      label: 'Sales',
+                      data: salesData,
+                      color: (opacity = 1) => `rgba(255, 99, 132, ${opacity})`,
+                      strokeWidth: 2,
+                      fill: true,
+                      backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    },
+                    {
+                      label: 'Royalty Amount',
+                      data: royaltyData,
+                      color: (opacity = 1) => `rgba(54, 162, 235, ${opacity})`,
+                      strokeWidth: 2,
+                      fill: false,
+                      backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    },
+                  ],
+                }}
+                width={Dimensions.get('window').width - 41}
+                height={220}
+                yAxisLabel="₹"
+                yAxisInterval={1}
+                chartConfig={{
+                  backgroundGradientFrom: '#1E1E1E',
+                  backgroundGradientTo: '#1E1E1E',
+                  decimalPlaces: 2,
+                  color: () => 'rgba(255, 255, 255, 0.3)',
+                  labelColor: () => 'rgba(255, 255, 255, 0.7)',
+                  style: {borderRadius: 16},
+                  propsForDots: {
+                    r: '6',
+                    strokeWidth: '2',
+                    stroke: '#ffffff',
                   },
-                  {
-                    label: 'Royalty Amount',
-                    data: royaltyData,
-                    color: (opacity = 1) => `rgba(54, 162, 235, ${opacity})`, // bright blue line
-                    strokeWidth: 2,
-                    fill: false,
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                  },
-                ],
-              }}
-              width={Dimensions.get('window').width - 64}
-              height={220}
-              yAxisLabel="₹"
-              yAxisInterval={1}
-              chartConfig={{
-                backgroundColor: '#1e1e1e',
-                // backgroundGradientFrom: '#1e1e1e',
-                // backgroundGradientTo: '#ffa726',
-                decimalPlaces: 2,
-                color: () => `rgba(255, 255, 255, 0.3)`,
-                labelColor: () => `rgba(255, 255, 255, 0.7)`,
-                style: {borderRadius: 16},
-                propsForDots: {
-                  r: '6',
-                  strokeWidth: '2',
-                  stroke: '#ffffff', // This applies to all dots
-                },
-              }}
-              bezier
-              style={{
-                borderRadius: 12,
-                borderWidth: 1,
-                borderColor: 'white',
-                padding: 16,
-              }}
-            />
+                }}
+                bezier
+                style={{
+                  borderRadius: 12,
+                  borderWidth: 0.5,
+                  borderColor: 'white',
+                }}
+              />
+            ) : (
+              <Text style={{color: 'white', textAlign: 'center'}}>
+                No data available
+              </Text>
+            )}
           </View>
         </View>
       </ScrollView>
