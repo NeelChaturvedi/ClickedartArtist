@@ -39,9 +39,6 @@ const Dashboard = () => {
   const months = monthlyData.map(
     data => `${monthNames[data.month ? data.month - 1 : 0]}`,
   );
-  const months = monthlyData.map(
-    data => `${monthNames[data.month ? data.month - 1 : 0]}`,
-  );
 
   const fetchStats = useCallback(async () => {
     if (!user._id) {
