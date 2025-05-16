@@ -9,6 +9,7 @@ import Values from '../../components/Values';
 import api from '../../utils/apiClient';
 import {useUserStore} from '../../store/auth';
 import {LineChart} from 'react-native-chart-kit';
+import Button from '@components/button';
 
 const Dashboard = () => {
   const {user} = useUserStore();
@@ -63,7 +64,10 @@ const Dashboard = () => {
   }, [fetchStats]);
   return (
     <SafeAreaView style={style.background}>
-      <FilterDate />
+      <View gap={20}>
+        <FilterDate />
+        <Button btnText={'Overall Data'} />
+      </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={style.sections}>
           <Text style={style.title}>SALES METRICS</Text>
