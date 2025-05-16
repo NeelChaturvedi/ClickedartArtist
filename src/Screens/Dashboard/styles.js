@@ -17,4 +17,9 @@ export const style = StyleSheet.create({
     fontSize: 24,
     color: 'white',
   },
+  smallText: {
+    fontFamily: 'Outfit-regular',
+    fontSize: 18,
+    color: '#A0A0A0',
+  },
 });

@@ -35,7 +35,9 @@ const Dashboard = () => {
     'Nov',
     'Dec',
   ];
-  const months = monthlyData.map(data => `${monthNames[data.month ? (data.month - 1) : 0]}`);
+  const months = monthlyData.map(
+    data => `${monthNames[data.month ? data.month - 1 : 0]}`,
+  );
 
   const fetchStats = useCallback(async () => {
     if (!user._id) {
@@ -46,6 +48,7 @@ const Dashboard = () => {
       const res = await api.get(
         `/photographeranalytics/get-photographer-analytics?photographer=${user._id}`,
       );
+      console.log(res.data);
       setStats(res.data);
       setIsCustomDate(false);
     } catch (error) {
@@ -55,14 +58,56 @@ const Dashboard = () => {
     }
   }, [user._id]);
 
+  const fetchCustomStats = useCallback(async () => {
+    if (!user._id) {
+      return;
+    }
+    try {
+      setLoading(true);
+      const res = await api.get(
+        `/photographeranalytics/custom-analytics-by-date?photographer=${user._id}&startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`,
+      );
+      setStats(res.data);
+      setIsCustomDate(true);
+      console.log(res.data);
+    } catch (error) {
+      console.log(error.response);
+    } finally {
+      setLoading(false);
+    }
+  }, [dateRange.endDate, dateRange.startDate, user._id]);
+
   useEffect(() => {
     fetchStats();
   }, [fetchStats]);
   return (
     <SafeAreaView style={style.background}>
-      <FilterDate />
+      <FilterDate
+        dateRange={dateRange}
+        setDateRange={setDateRange}
+        fetchCustomStats={fetchCustomStats}
+      />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={style.sections}>
+          {isCustomDate ? (
+            <Text style={style.smallText}>
+              {dateRange.startDate &&
+                new Date(dateRange.startDate).toLocaleDateString('en-IN', {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                })}{' '}
+              -{' '}
+              {dateRange.endDate &&
+                new Date(dateRange.endDate).toLocaleDateString('en-IN', {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                })}
+            </Text>
+          ) : (
+            <Text style={style.smallText}>Overall Data</Text>
+          )}
           <Text style={style.title}>SALES METRICS</Text>
           <View gap={14}>
             <Values
@@ -127,57 +172,62 @@ const Dashboard = () => {
           </View>
         </View>
         <View style={style.sections}>
-          <Text style={style.title}>SALES AND ROYALTY AMOUNT MONTHLY</Text>
+          <Text style={style.title}>MONTHLY GROWTH REPORT</Text>
           <View>
-            <Text>Bezier Line Chart</Text>
-            <LineChart
-              data={{
-                labels: months,
-                datasets: [
-                  {
-                    label: 'Sales',
-                    data: salesData,
-                    color: (opacity = 1) => `rgba(255, 99, 132, ${opacity})`, // bright red line
-                    strokeWidth: 2,
-                    fill: true,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            {stats?.monthlyData ? (
+              <LineChart
+                data={{
+                  labels: months,
+                  datasets: [
+                    {
+                      label: 'Sales',
+                      data: salesData,
+                      color: (opacity = 1) => `rgba(255, 99, 132, ${opacity})`, // bright red line
+                      strokeWidth: 2,
+                      fill: true,
+                      backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    },
+                    {
+                      label: 'Royalty Amount',
+                      data: royaltyData,
+                      color: (opacity = 1) => `rgba(54, 162, 235, ${opacity})`, // bright blue line
+                      strokeWidth: 2,
+                      fill: false,
+                      backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    },
+                  ],
+                }}
+                width={Dimensions.get('window').width - 64}
+                height={220}
+                yAxisLabel="₹"
+                yAxisInterval={1}
+                chartConfig={{
+                  backgroundColor: '#1e1e1e',
+                  // backgroundGradientFrom: '#1e1e1e',
+                  // backgroundGradientTo: '#ffa726',
+                  decimalPlaces: 2,
+                  color: () => `rgba(255, 255, 255, 0.3)`,
+                  labelColor: () => `rgba(255, 255, 255, 0.7)`,
+                  style: {borderRadius: 16},
+                  propsForDots: {
+                    r: '6',
+                    strokeWidth: '2',
+                    stroke: '#ffffff', // This applies to all dots
                   },
-                  {
-                    label: 'Royalty Amount',
-                    data: royaltyData,
-                    color: (opacity = 1) => `rgba(54, 162, 235, ${opacity})`, // bright blue line
-                    strokeWidth: 2,
-                    fill: false,
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                  },
-                ],
-              }}
-              width={Dimensions.get('window').width - 64}
-              height={220}
-              yAxisLabel="₹"
-              yAxisInterval={1}
-              chartConfig={{
-                backgroundColor: '#1e1e1e',
-                // backgroundGradientFrom: '#1e1e1e',
-                // backgroundGradientTo: '#ffa726',
-                decimalPlaces: 2,
-                color: () => `rgba(255, 255, 255, 0.3)`,
-                labelColor: () => `rgba(255, 255, 255, 0.7)`,
-                style: {borderRadius: 16},
-                propsForDots: {
-                  r: '6',
-                  strokeWidth: '2',
-                  stroke: '#ffffff', // This applies to all dots
-                },
-              }}
-              bezier
-              style={{
-                borderRadius: 12,
-                borderWidth: 1,
-                borderColor: 'white',
-                padding: 16,
-              }}
-            />
+                }}
+                bezier
+                style={{
+                  borderRadius: 12,
+                  borderWidth: 1,
+                  borderColor: 'white',
+                  padding: 16,
+                }}
+              />
+            ) : (
+              <Text style={{color: 'white', textAlign: 'center'}}>
+                No data available
+              </Text>
+            )}
           </View>
         </View>
       </ScrollView>

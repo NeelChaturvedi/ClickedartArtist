@@ -3,19 +3,34 @@ import {Pressable, StyleSheet, Text, View} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import dayjs from 'dayjs';
 
-const FilterDate = () => {
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+const FilterDate = ({dateRange, setDateRange, fetchCustomStats}) => {
   const [openPicker, setOpenPicker] = useState(false);
   const [isStart, setIsStart] = useState(true);
 
   const handleDateConfirm = date => {
     if (isStart) {
-      setStartDate(date);
+      if (dateRange.endDate && date > dateRange.endDate) {
+        setDateRange(prev => ({
+          ...prev,
+          startDate: dateRange.endDate,
+        }));
+      } else {
+        setDateRange(prev => ({...prev, startDate: date}));
+      }
     } else {
-      setEndDate(date);
+      if (!dateRange.startDate || date < dateRange.startDate) {
+        setDateRange(prev => ({
+          ...prev,
+          endDate: dateRange.startDate,
+        }));
+      } else {
+        setDateRange(prev => ({...prev, endDate: date}));
+      }
     }
     setOpenPicker(false);
+    if(dateRange.startDate && dateRange.endDate) {
+      fetchCustomStats();
+    }
   };
 
   return (
@@ -28,7 +43,9 @@ const FilterDate = () => {
           }}
           style={style.dateButton}>
           <Text style={style.dateText}>
-            {startDate ? dayjs(startDate).format('DD-MM-YYYY') : 'Start Date'}
+            {dateRange?.startDate
+              ? dayjs(dateRange?.startDate).format('DD-MM-YYYY')
+              : 'Start Date'}
           </Text>
         </Pressable>
 
@@ -39,7 +56,9 @@ const FilterDate = () => {
           }}
           style={style.dateButton}>
           <Text style={style.dateText}>
-            {endDate ? dayjs(endDate).format('DD-MM-YYYY') : 'End Date'}
+            {dateRange?.endDate
+              ? dayjs(dateRange?.endDate).format('DD-MM-YYYY')
+              : 'End Date'}
           </Text>
         </Pressable>
       </View>
@@ -48,7 +67,11 @@ const FilterDate = () => {
         modal
         mode="date"
         open={openPicker}
-        date={isStart ? startDate || new Date() : endDate || new Date()}
+        date={
+          isStart
+            ? dateRange?.startDate || new Date()
+            : dateRange?.endDate || new Date()
+        }
         onConfirm={handleDateConfirm}
         onCancel={() => setOpenPicker(false)}
       />
@@ -57,8 +80,7 @@ const FilterDate = () => {
 };
 
 const style = StyleSheet.create({
-  background: {
-  },
+  background: {},
   datePickerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
