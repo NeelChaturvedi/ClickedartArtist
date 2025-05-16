@@ -19,10 +19,13 @@ import {useNavigation} from '@react-navigation/native';
 import {useState} from 'react';
 import {useRegistrationStore} from '../../store/registration';
 import BackButton from '../../components/Backbutton';
+import DatePicker from 'react-native-date-picker';
+import dayjs from 'dayjs';
 
 const Personal = () => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
+  const [openPicker, setOpenPicker] = useState(false);
   const {formData, setField, nextStep, setConnectedAccount} =
     useRegistrationStore();
   const options = ['Facebook', 'Instagram', 'LinkedIn', 'Twitter'];
@@ -136,14 +139,32 @@ const Personal = () => {
               </View>
               <View style={styles.formField}>
                 <Text style={styles.inputTitle}>DATE OF BIRTH</Text>
-                <TextInput
-                  style={styles.inputbox}
-                  placeholder="Required"
-                  placeholderTextColor={'#D9D9D9'}
-                  value={formData.dob}
-                  onChangeText={text => setField('dob', text)}
-                  keyboardType="numeric"
-                />
+                <View style={{flexDirection: 'row'}}></View>
+                <Pressable
+                  onPress={() => {
+                    setOpenPicker(true);
+                  }}
+                  style={styles.inputbox}>
+                  <Text style={styles.inputTitle}>
+                    {formData.dob
+                      ? dayjs(formData.dob).format('DD-MM-YYYY')
+                      : 'Select Date of Birth'}
+                  </Text>
+                  <DatePicker
+                    modal
+                    mode="date"
+                    open={openPicker}
+                    date={formData.dob ? new Date(formData.dob) : new Date()}
+                    onConfirm={date => {
+                      setOpenPicker(false);
+                      setField('dob', date.toISOString());
+                    }}
+                    onCancel={() => {
+                      setOpenPicker(false);
+                    }}
+                  />
+                </Pressable>
+
                 {errors.dob && (
                   <Text style={styles.errorText}>{errors.dob}</Text>
                 )}
