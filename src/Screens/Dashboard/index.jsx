@@ -18,6 +18,24 @@ const Dashboard = () => {
   });
   const [isCustomDate, setIsCustomDate] = useState(false);
   const [loading, setLoading] = useState(false);
+  const monthlyData = stats?.monthlyData || [];
+  const salesData = monthlyData.map(data => data.sales);
+  const royaltyData = monthlyData.map(data => data.royaltyAmount);
+  const monthNames = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+  const months = monthlyData.map(data => `${monthNames[data.month ? (data.month - 1) : 0]}`);
 
   const fetchStats = useCallback(async () => {
     if (!user._id) {
@@ -28,7 +46,6 @@ const Dashboard = () => {
       const res = await api.get(
         `/photographeranalytics/get-photographer-analytics?photographer=${user._id}`,
       );
-      console.log('Stats:', res.data);
       setStats(res.data);
       setIsCustomDate(false);
     } catch (error) {
@@ -115,52 +132,50 @@ const Dashboard = () => {
             <Text>Bezier Line Chart</Text>
             <LineChart
               data={{
-                labels: [
-                  'January',
-                  'February',
-                  'March',
-                  'April',
-                  'May',
-                  'June',
-                ],
+                labels: months,
                 datasets: [
                   {
-                    data: [
-                      Math.random() * 100,
-                      Math.random() * 100,
-                      Math.random() * 100,
-                      Math.random() * 100,
-                      Math.random() * 100,
-                      Math.random() * 100,
-                    ],
+                    label: 'Sales',
+                    data: salesData,
+                    color: (opacity = 1) => `rgba(255, 99, 132, ${opacity})`, // bright red line
+                    strokeWidth: 2,
+                    fill: true,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                  },
+                  {
+                    label: 'Royalty Amount',
+                    data: royaltyData,
+                    color: (opacity = 1) => `rgba(54, 162, 235, ${opacity})`, // bright blue line
+                    strokeWidth: 2,
+                    fill: false,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
                   },
                 ],
               }}
-              width={Dimensions.get('window').width} // from react-native
+              width={Dimensions.get('window').width - 64}
               height={220}
-              yAxisLabel="$"
-              yAxisSuffix="k"
-              yAxisInterval={1} // optional, defaults to 1
+              yAxisLabel="₹"
+              yAxisInterval={1}
               chartConfig={{
-                backgroundColor: '#e26a00',
-                backgroundGradientFrom: '#fb8c00',
-                backgroundGradientTo: '#ffa726',
-                decimalPlaces: 2, // optional, defaults to 2dp
-                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                style: {
-                  borderRadius: 16,
-                },
+                backgroundColor: '#1e1e1e',
+                // backgroundGradientFrom: '#1e1e1e',
+                // backgroundGradientTo: '#ffa726',
+                decimalPlaces: 2,
+                color: () => `rgba(255, 255, 255, 0.3)`,
+                labelColor: () => `rgba(255, 255, 255, 0.7)`,
+                style: {borderRadius: 16},
                 propsForDots: {
                   r: '6',
                   strokeWidth: '2',
-                  stroke: '#ffa726',
+                  stroke: '#ffffff', // This applies to all dots
                 },
               }}
               bezier
               style={{
-                marginVertical: 8,
-                borderRadius: 16,
+                borderRadius: 12,
+                borderWidth: 1,
+                borderColor: 'white',
+                padding: 16,
               }}
             />
           </View>

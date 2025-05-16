@@ -29,8 +29,6 @@ const BlogEdit = () => {
       mediaType: 'photo',
       quality: 1,
     });
-
-    console.log('Image result:', result);
     if (result) {
       await uploadImageToServer(result.path);
     }
@@ -74,7 +72,6 @@ const BlogEdit = () => {
       try {
         const response = await api.get(`/blog/get-blog-by-id?id=${blogId}`);
         const data = response.data;
-        console.log('Blog data:', data.blog);
         setBlog({...data.blog, blogId: data.blog._id, isActive: false});
       } catch (error) {
         console.error('Error fetching blog:', error);
