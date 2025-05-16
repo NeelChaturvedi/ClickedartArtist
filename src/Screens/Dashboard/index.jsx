@@ -103,7 +103,7 @@ const Dashboard = () => {
           />
         )}
       </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView contentContainerStyle={{gap: 20}} showsVerticalScrollIndicator={false}>
         <View style={style.sections}>
           {isCustomDate ? (
             <Text style={style.smallText}>
@@ -221,7 +221,7 @@ const Dashboard = () => {
                   <Text style={style.growthText}>Royalty Amount</Text>
                 </View>
               </View>
-              {/* <LineChart
+              <LineChart
                 data={{
                   labels: months,
                   datasets: [
@@ -266,7 +266,7 @@ const Dashboard = () => {
                   borderWidth: 0.5,
                   borderColor: 'white',
                 }}
-              /> */}
+              />
             </View>
           </View>
         )}
