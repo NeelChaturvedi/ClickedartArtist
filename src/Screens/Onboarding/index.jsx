@@ -82,10 +82,12 @@ const Onboarding = () => {
               total={screenText.length}
               dotsPress={handleDotsPress}
             />
-            <Button
-              btnText={screenText[currentIndex].btnText}
-              onPress={handleTextChange}
-            />
+            <View style={{paddingHorizontal: 30}}>
+              <Button
+                btnText={screenText[currentIndex].btnText}
+                onPress={handleTextChange}
+              />
+            </View>
           </View>
         </View>
       </View>
