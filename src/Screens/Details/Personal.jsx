@@ -83,7 +83,7 @@ const Personal = () => {
             contentContainerStyle={{
               flexGrow: 1,
               justifyContent: 'space-between',
-              paddingVertical: 20,
+              paddingVertical: 60,
               gap: 40,
               position: 'relative',
             }}
@@ -208,7 +208,9 @@ const Personal = () => {
                 )}
               </View>
             </View>
-            <Button btnText={'Next'} onPress={handleNext} />
+            <View style={styles.form}>
+              <Button btnText={'Next'} onPress={handleNext} />
+            </View>
           </ScrollView>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>

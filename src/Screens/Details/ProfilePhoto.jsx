@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {
   Pressable,
@@ -148,7 +149,7 @@ const ProfilePhoto = () => {
 
   return (
     <SafeAreaView style={styles.background}>
-      <View style={styles.backButtonContainer}>
+      <View style={{position: 'absolute', top: '10%', left: 24}}>
         <BackButton />
       </View>
       <View style={styles.container}>
