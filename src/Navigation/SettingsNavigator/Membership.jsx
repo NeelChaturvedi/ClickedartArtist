@@ -142,10 +142,11 @@ const Membership = () => {
             key={plan.id}
             style={[
               styles.planContainer,
-              selectedPlan === plan.id && plan.id !== 1 && {
-                borderWidth: 3,
-                borderColor: 'white',
-              },
+              selectedPlan === plan.id &&
+                plan.id !== 1 && {
+                  borderWidth: 3,
+                  borderColor: 'white',
+                },
             ]}>
             {selectedPlan === plan.id && plan.id !== 1 && (
               <View style={styles.checkIcon}>
@@ -177,7 +178,9 @@ const Membership = () => {
           </LinearGradient>
         ))}
       </ScrollView>
-      <Button btnText={'Purchase'} />
+      <View style={{width: '100%', paddingHorizontal: 16}}>
+        <Button btnText={'Purchase'} />
+      </View>
     </SafeAreaView>
   );
 };
