@@ -46,13 +46,13 @@ const ProfilePhoto = () => {
   const {setField, formData} = useRegistrationStore();
   const navigation = useNavigation();
 
+  console.log('Form Data:', formData);
   const handleCameraLaunch = async () => {
     const hasPermission = await requestCameraPermission();
     if (!hasPermission) {
       ToastAndroid.show('Camera permission denied', ToastAndroid.SHORT);
       return;
     }
-
     try {
       setUploading(true);
       const image = await ImagePicker.openCamera({

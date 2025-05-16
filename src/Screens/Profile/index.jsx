@@ -7,6 +7,7 @@ import {
   View,
   Share,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {style} from './styles';
@@ -142,7 +143,7 @@ const Profile = () => {
     return (
       <SafeAreaView style={[style.background, {flex: 1}]}>
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <Text style={{color: 'white'}}>Loading...</Text>
+          <ActivityIndicator size={100} color="#ed3147" />
         </View>
       </SafeAreaView>
     );

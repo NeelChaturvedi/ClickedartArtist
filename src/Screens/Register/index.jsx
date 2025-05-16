@@ -112,7 +112,9 @@ const Register = () => {
             placeholder="Enter Username"
             placeholderTextColor="#888888"
             value={formData.username}
-            onChangeText={text => setField('username', text)}
+            autoCapitalize="none"
+            autoCorrect={false}
+            onChangeText={text => setField('username', text.toLowerCase())}
           />
           {errors.username && (
             <Text style={{color: 'red', marginTop: 5}}>{errors.username}</Text>
@@ -126,6 +128,8 @@ const Register = () => {
             placeholder="Enter Email"
             placeholderTextColor="#888888"
             value={formData.email}
+            autoCapitalize="none"
+            autoCorrect={false}
             onChangeText={text => setField('email', text)}
             keyboardType="email-address"
           />
@@ -143,6 +147,8 @@ const Register = () => {
               placeholderTextColor="#888888"
               secureTextEntry={secure}
               value={formData.password}
+              autoCapitalize="none"
+              autoCorrect={false}
               onChangeText={text => setField('password', text)}
             />
             <TouchableOpacity onPress={() => setSecure(!secure)}>
