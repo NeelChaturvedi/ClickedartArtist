@@ -7,6 +7,11 @@ import {Image} from 'react-native';
 import {View} from 'moti';
 import ProfileNavigator from './ProfileNavigator/ProfileNavigator';
 import AccountNavigator from './AccountNavigator/AccountNavigator';
+import DashboardIcon from '../assets/svgs/DashBoardIcon.svg';
+import AccountsIcon from '../assets/svgs/AccountsIcon.svg';
+import PhotosIcon from '../assets/svgs/PhotosIcon.svg';
+import ProfileIcon from '../assets/svgs/ProfileIcon.svg';
+import PostsIcon from '../assets/svgs/PostsIcon.svg';
 
 export const Tabs = () => {
   const Tab = createBottomTabNavigator();
@@ -37,14 +42,10 @@ export const Tabs = () => {
         component={Dashboard}
         options={{
           tabBarIcon: ({focused}) => (
-            <Image
-              source={require('../assets/tabIcons/dashboard.png')}
-              resizeMode="contain"
-              style={{
-                width: 20,
-                height: 20,
-                tintColor: focused ? '#ED3147' : 'white',
-              }}
+            <DashboardIcon
+              width={24}
+              height={24}
+              color={focused ? '#ED3147' : 'white'}
             />
           ),
         }}
@@ -54,14 +55,10 @@ export const Tabs = () => {
         component={Photos}
         options={{
           tabBarIcon: ({focused}) => (
-            <Image
-              source={require('../assets/tabIcons/photos.png')}
-              resizeMode="contain"
-              style={{
-                width: 22,
-                height: 22,
-                tintColor: focused ? '#ED3147' : 'white',
-              }}
+            <PhotosIcon
+              width={24}
+              height={24}
+              color={focused ? '#ED3147' : 'white'}
             />
           ),
         }}
@@ -81,14 +78,10 @@ export const Tabs = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-              <Image
-                source={require('../assets/tabIcons/posts.png')}
-                resizeMode="contain"
-                style={{
-                  width: 24,
-                  height: 24,
-                  tintColor: 'white',
-                }}
+              <PostsIcon
+                width={24}
+                height={24}
+                color={focused ? '#ED3147' : 'white'}
               />
             </View>
           ),
@@ -106,14 +99,10 @@ export const Tabs = () => {
         component={AccountNavigator}
         options={{
           tabBarIcon: ({focused}) => (
-            <Image
-              source={require('../assets/tabIcons/accounts.png')}
-              resizeMode="contain"
-              style={{
-                width: 22,
-                height: 22,
-                tintColor: focused ? '#ED3147' : 'white',
-              }}
+            <AccountsIcon
+              width={24}
+              height={24}
+              color={focused ? '#ED3147' : 'white'}
             />
           ),
         }}
@@ -123,14 +112,10 @@ export const Tabs = () => {
         component={ProfileNavigator}
         options={{
           tabBarIcon: ({focused}) => (
-            <Image
-              source={require('../assets/tabIcons/profile.png')}
-              resizeMode="contain"
-              style={{
-                width: 22,
-                height: 22,
-                tintColor: focused ? '#ED3147' : 'white',
-              }}
+            <ProfileIcon
+              width={24}
+              height={24}
+              color={focused ? '#ED3147' : 'white'}
             />
           ),
         }}
