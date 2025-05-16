@@ -53,6 +53,10 @@ const Dashboard = () => {
       console.log(res.data);
       setStats(res.data);
       setIsCustomDate(false);
+      setDateRange({
+        startDate: '',
+        endDate: '',
+      });
     } catch (error) {
       console.log(error);
     } finally {
@@ -84,11 +88,21 @@ const Dashboard = () => {
   }, [fetchStats]);
   return (
     <SafeAreaView style={style.background}>
-      <FilterDate
-        dateRange={dateRange}
-        setDateRange={setDateRange}
-        fetchCustomStats={fetchCustomStats}
-      />
+      <View gap={20}>
+        <FilterDate
+          dateRange={dateRange}
+          setDateRange={setDateRange}
+          fetchCustomStats={fetchCustomStats}
+        />
+        {isCustomDate && (
+          <Button
+            btnText={'Fetch Overall'}
+            onPress={() => {
+              fetchStats();
+            }}
+          />
+        )}
+      </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={style.sections}>
           {isCustomDate ? (
@@ -173,40 +187,40 @@ const Dashboard = () => {
             />
           </View>
         </View>
-        <View style={style.sections}>
-          <Text style={style.title}>MONTHLY GROWTH REPORT</Text>
-          <View gap={16}>
-            <View style={style.typeContainer}>
-              <View style={style.growthType}>
-                <View
-                  style={[
-                    style.growthTypeIndicator,
-                    {
-                      backgroundColor: '#FF6384',
-                      opacity: 0.6,
-                      borderWidth: 4,
-                      borderColor: '#FF6384',
-                    },
-                  ]}
-                />
-                <Text style={style.growthText}>Sales</Text>
+        {stats?.monthlyData && (
+          <View style={style.sections}>
+            <Text style={style.title}>MONTHLY GROWTH REPORT</Text>
+            <View gap={16}>
+              <View style={style.typeContainer}>
+                <View style={style.growthType}>
+                  <View
+                    style={[
+                      style.growthTypeIndicator,
+                      {
+                        backgroundColor: '#FF6384',
+                        opacity: 0.6,
+                        borderWidth: 4,
+                        borderColor: '#FF6384',
+                      },
+                    ]}
+                  />
+                  <Text style={style.growthText}>Sales</Text>
+                </View>
+                <View style={style.growthType}>
+                  <View
+                    style={[
+                      style.growthTypeIndicator,
+                      {
+                        backgroundColor: '#36A2EB',
+                        opacity: 0.6,
+                        borderWidth: 4,
+                        borderColor: '#36A2EB',
+                      },
+                    ]}
+                  />
+                  <Text style={style.growthText}>Royalty Amount</Text>
+                </View>
               </View>
-              <View style={style.growthType}>
-                <View
-                  style={[
-                    style.growthTypeIndicator,
-                    {
-                      backgroundColor: '#36A2EB',
-                      opacity: 0.6,
-                      borderWidth: 4,
-                      borderColor: '#36A2EB',
-                    },
-                  ]}
-                />
-                <Text style={style.growthText}>Royalty Amount</Text>
-              </View>
-            </View>
-            {stats?.monthlyData ? (
               <LineChart
                 data={{
                   labels: months,
@@ -253,13 +267,9 @@ const Dashboard = () => {
                   borderColor: 'white',
                 }}
               />
-            ) : (
-              <Text style={{color: 'white', textAlign: 'center'}}>
-                No data available
-              </Text>
-            )}
+            </View>
           </View>
-        </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );

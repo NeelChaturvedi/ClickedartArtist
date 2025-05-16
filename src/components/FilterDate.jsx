@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import dayjs from 'dayjs';
@@ -28,10 +28,13 @@ const FilterDate = ({dateRange, setDateRange, fetchCustomStats}) => {
       }
     }
     setOpenPicker(false);
-    if(dateRange.startDate && dateRange.endDate) {
+  };
+
+  useEffect(() => {
+    if (dateRange.startDate && dateRange.endDate) {
       fetchCustomStats();
     }
-  };
+  }, [dateRange.startDate, dateRange.endDate, fetchCustomStats]);
 
   return (
     <View style={style.background}>
