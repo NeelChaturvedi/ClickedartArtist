@@ -234,7 +234,7 @@ const Profile = () => {
     return (
       <SafeAreaView style={[style.background, {flex: 1}]}>
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <ActivityIndicator size={100} color="#ed3147" />
+          <ActivityIndicator size={'large'} color="#ed3147" />
         </View>
       </SafeAreaView>
     );
