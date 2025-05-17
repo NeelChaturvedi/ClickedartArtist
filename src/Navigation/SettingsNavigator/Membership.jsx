@@ -32,7 +32,6 @@ const Membership = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-  // const [subscriptions, setSubscriptions] = useState([]);
   const [activePlan, setActivePlan] = useState(false);
   const [plans, setPlans] = useState([]);
 
@@ -124,7 +123,7 @@ const Membership = () => {
         `/subscriptions/get-user-subscription?userId=${user?._id}`,
       );
       console.log('Subscriptions:', res.data.subscriptions);
-      // setSubscriptions(res.data.subscriptions);
+
       const activePlanId = res.data.subscriptions.find(
         subscription => subscription.isActive === true,
       )?.planId?._id;
@@ -188,12 +187,12 @@ const Membership = () => {
             style={[
               styles.planContainer,
               selectedPlan?._id === plan._id &&
-                plan.name !== 'Basic' && {
+                selectedPlan?._id !== activePlan && {
                   borderWidth: 3,
                   borderColor: 'white',
                 },
             ]}>
-            {selectedPlan?._id === plan._id && plan.name !== 'Basic' && (
+            {selectedPlan?._id === plan._id && selectedPlan?._id !== activePlan && (
               <View style={styles.checkIcon}>
                 <Icon name="flash-on" size={24} color="#1E1E1E" />
               </View>
@@ -322,7 +321,7 @@ const Membership = () => {
           </TouchableWithoutFeedback>
         </Modal>
         <Button
-          disabled={activePlan === selectedPlan?._id || selectedPlan?.cost[0]?.price === 0 || !selectedPlan}
+          disabled={activePlan === selectedPlan?._id || !selectedPlan}
           btnText={'Purchase'}
           onPress={() => setModalVisible(true)}
         />
