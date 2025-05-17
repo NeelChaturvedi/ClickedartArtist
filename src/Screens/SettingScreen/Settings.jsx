@@ -24,11 +24,11 @@ const Settings = () => {
         <ScrollView>
           <SettingsOptions icon={'gpp-good'} label={'AccountSecurity'}/>
           <SettingsOptions icon={'lock'} label={'Privacy Policy'} screen={'PrivacyPolicy'}/>
-          <SettingsOptions icon={'edit-document'} label={'Terms and Conditions'} screen={'Terms'}/>
+          <SettingsOptions icon={'edit-document'} label={'Terms of Use'} screen={'Terms'}/>
           <SettingsOptions icon={'help'} label={'FAQS'} screen={'Faqs'}/>
           <SettingsOptions icon={'star'} label={'Membership'} screen={'Membership'}/>
           <SettingsOptions icon={'currency-rupee'} label={'Monetize Account'}/>
-          <SettingsOptions icon={'info'} label={'Help Center'}/>
+          <SettingsOptions icon={'info'} label={'Help Center'} screen={'HelpCenter'}/>
         </ScrollView>
         <Button btnText={'LogOut'} onPress={clearUser} />
       </View>

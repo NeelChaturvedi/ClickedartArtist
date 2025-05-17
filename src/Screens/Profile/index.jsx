@@ -217,10 +217,10 @@ const Profile = () => {
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
-    await fetchAllData();
+    // await fetchAllData();
     await useUserStore.getState().fetchUserFromToken();
     setRefreshing(false);
-  }, [fetchAllData]);
+  }, []);
 
   useEffect(() => {
     if (!user?._id) {
