@@ -18,9 +18,6 @@ import ImagePicker from 'react-native-image-crop-picker';
 import BackButton from '../../components/Backbutton';
 import api from '../../utils/apiClient';
 import {useRegistrationStore} from '../../store/registration';
-import { StatusBar } from 'react-native';
-
-StatusBar.setHidden(true);
 
 const requestCameraPermission = async () => {
   if (Platform.OS === 'android') {
