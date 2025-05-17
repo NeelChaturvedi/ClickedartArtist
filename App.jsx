@@ -11,45 +11,29 @@ import Details from './src/Navigation/AuthStack';
 import SettingsNavigator from './src/Navigation/SettingsNavigator/SettingsNavigator';
 import OtpScreen from './src/Screens/OTP/OtpScreen';
 import BlogNavigator from './src/Navigation/BlogNavigator/BlogNavigator';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ActivityIndicator} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {View} from 'moti';
 import ProfileEditScreen from 'src/Screens/ProfileEdit/ProfileEditScreen';
+import {useOnboardingStore} from 'src/store/onboarding';
 enableScreens();
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const {fetchUserFromToken, user} = useUserStore();
+  const {loadToken, user} = useUserStore();
   const [isLoading, setIsLoading] = React.useState(true);
-  const [isOnboardingCompleted, setIsOnboardingCompleted] =
-    React.useState(false);
+  const {isOnboardingCompleted, loadOnboardingStatus} = useOnboardingStore();
 
   React.useEffect(() => {
     const checkStatus = async () => {
-      try {
-        setIsLoading(true);
-        const token = await AsyncStorage.getItem('token');
-        if (token) {
-          await fetchUserFromToken(token);
-        }
-        const onboardingStatus = await AsyncStorage.getItem(
-          'isOnboardingCompleted',
-        );
-        if (onboardingStatus) {
-          setIsOnboardingCompleted(JSON.parse(onboardingStatus));
-        } else {
-          setIsOnboardingCompleted(false);
-        }
-      } catch (error) {
-        console.error('Error fetching token from AsyncStorage:', error);
-      } finally {
-        setIsLoading(false);
-      }
+      setIsLoading(true);
+      await loadOnboardingStatus();
+      await loadToken();
+      setIsLoading(false);
     };
     checkStatus();
-  }, [fetchUserFromToken]);
+  }, [loadOnboardingStatus, loadToken]);
 
   if (isLoading) {
     return (
