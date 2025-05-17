@@ -106,7 +106,7 @@ export const style = StyleSheet.create({
     color: 'white',
   },
   tabsContainer: {
-    marginTop: 40,
+    marginTop: 20,
     gap: 35,
     width: '100%',
     alignSelf: 'center',
