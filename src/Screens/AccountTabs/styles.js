@@ -118,6 +118,16 @@ export const styles = StyleSheet.create({
     color: '#A1A1A1',
     fontSize: 12,
   },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  // loading: {
+  //   color: 'white',
+  //   fontSize: 18,
+  //   textAlign: 'center',
+  // },
   notFoundContainer: {
     flex: 1,
     marginTop: 100,

@@ -6,6 +6,7 @@ import {
   FlatList,
   RefreshControl,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import {styles} from './styles';
 // import SearchBar from '../../components/SearchBar';
@@ -15,7 +16,7 @@ import api from '../../utils/apiClient';
 const Orders = () => {
   const {user} = useUserStore();
   const [orders, setOrders] = React.useState([]);
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
 
   const fetchOrders = React.useCallback(async () => {
     if (!user?._id) {
@@ -46,7 +47,9 @@ const Orders = () => {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <Text style={styles.loadingText}>Loading...</Text>
+        <View>
+          <ActivityIndicator size="large" color="#ED3147" />
+        </View>
       </View>
     );
   }
