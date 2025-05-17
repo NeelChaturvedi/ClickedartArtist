@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ActivityIndicator} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {View} from 'moti';
+import ProfileEditScreen from 'src/Screens/ProfileEdit/ProfileEditScreen';
 enableScreens();
 
 const Stack = createNativeStackNavigator();
@@ -86,6 +87,7 @@ export default function App() {
             <Stack.Screen name="BottomTab" component={Tabs} />
             <Stack.Screen name="Settings" component={SettingsNavigator} />
             <Stack.Screen name="BlogNavigator" component={BlogNavigator} />
+            <Stack.Screen name="ProfileEdit" component={ProfileEditScreen} />
           </>
         )}
       </Stack.Navigator>
