@@ -156,7 +156,7 @@ const Profile = () => {
       label: 'Edit Profile',
       icon: 'edit',
       onPress: () => {
-        console.log('Edit Profile pressed');
+        navigation.navigate('ProfileEdit');
       },
     },
   ];

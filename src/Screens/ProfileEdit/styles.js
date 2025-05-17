@@ -1,0 +1,102 @@
+import {StyleSheet} from 'react-native';
+
+export const styles = StyleSheet.create({
+  background: {
+    paddingTop: 20,
+    backgroundColor: 'black',
+    width: '100%',
+    height: '100%',
+    position: 'relative',
+  },
+  backButtonContainer: {
+    position: 'absolute',
+    top: '7.5%',
+    left: 20,
+  },
+  container: {
+    flexGrow: 1,
+    flexDirection: 'column',
+    paddingVertical: 30,
+    alignItems: 'center',
+    width: '100%',
+    gap: 50,
+  },
+  headingText: {
+    color: 'white',
+    fontFamily: 'Outfit-bold',
+    fontSize: 28,
+    textAlign: 'center',
+    paddingBottom: 20,
+  },
+  subHeadingText: {
+    color: 'white',
+    fontFamily: 'Outfit-medium',
+    fontSize: 20,
+  },
+  fieldContainer: {
+    gap: 30,
+    flexDirection: 'column',
+    width: '100%',
+    paddingHorizontal: 30,
+  },
+  form: {
+    gap: 20,
+    width: '100%',
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 12,
+  },
+  twoField: {
+    flex: 1,
+    width: '50%',
+    gap: 10,
+  },
+  formField: {
+    gap: 10,
+    width: '100%',
+  },
+  inputTitle: {
+    fontSize: 16,
+    fontFamily: 'Outfit-medium',
+    color: 'white',
+  },
+  inputbox: {
+    height: 54,
+    width: '100%',
+    color: 'white',
+    justifyContent: 'center',
+    backgroundColor: '#1A1A1A',
+    fontFamily: 'Outfit-regular',
+    paddingHorizontal: 16,
+    borderRadius: 10,
+    borderWidth: 0.5,
+    borderColor: '#8C8C8C',
+  },
+  bioInput: {
+    height: 120,
+    width: '100%',
+    color: 'white',
+    backgroundColor: '#1A1A1A',
+    fontFamily: 'Outfit-regular',
+    paddingHorizontal: 16,
+    borderRadius: 10,
+    borderWidth: 0.5,
+    borderColor: '#8C8C8C',
+  },
+  button: {
+    backgroundColor: '#ea324a',
+    paddingVertical: 18,
+    alignSelf: 'center',
+    width: '84%',
+    borderRadius: 10,
+    marginTop: 40,
+  },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: '900',
+  },
+});
