@@ -91,6 +91,8 @@ const Register = () => {
             error.response,
           );
         }
+      } else {
+        console.error('Error checking username availability:', error);
       }
     }
   };

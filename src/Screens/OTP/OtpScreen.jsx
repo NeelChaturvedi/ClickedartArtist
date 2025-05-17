@@ -6,25 +6,29 @@ import BackButton from '../../components/Backbutton';
 import OtpInput from '../../components/OtpInput';
 import {useRegistrationStore} from '../../store/registration';
 import api from '../../utils/apiClient';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const OtpScreen = () => {
   const navigation = useNavigation();
   const {formData} = useRegistrationStore();
+  const [otpChecked, setOtpChecked] = React.useState(false);
+  const [otpValid, setOtpValid] = React.useState(false);
   const handleOtpComplete = async otp => {
     try {
+      setOtpChecked(false);
       await api.post('/photographer/verify-photographer-profile/', {
         email: formData.email,
         otp: otp,
       });
       console.log('OTP verified successfully');
-      ToastAndroid.show(
-        'OTP verified successfully',
-        ToastAndroid.SHORT,
-      );
+      ToastAndroid.show('OTP verified successfully', ToastAndroid.SHORT);
       navigation.navigate('Login');
+      setOtpValid(true);
     } catch (error) {
       console.error('Error in OTP completion:', error.response);
+      setOtpValid(false);
+    } finally {
+      setOtpChecked(true);
     }
   };
   return (
@@ -42,7 +46,7 @@ const OtpScreen = () => {
             <Text style={styles.emailText}>{formData.email}</Text>
           </View>
         </View>
-        <OtpInput length={6} onComplete={handleOtpComplete} />
+        <OtpInput length={6} otpChecked={otpChecked} otpValid={otpValid} onComplete={handleOtpComplete} />
         <View style={styles.subHeadingContainer}>
           <Text style={styles.subHeading}>Didn't receive the OTP?</Text>
           <TouchableOpacity>

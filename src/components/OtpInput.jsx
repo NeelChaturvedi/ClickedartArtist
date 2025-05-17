@@ -7,7 +7,7 @@ import {
   Keyboard,
 } from 'react-native';
 
-const OtpInput = ({length, onComplete}) => {
+const OtpInput = ({length, onComplete, otpChecked, otpValid}) => {
   const [otp, setOtp] = useState(Array(length).fill(''));
   const inputRefs = useRef([]);
 
@@ -38,7 +38,12 @@ const OtpInput = ({length, onComplete}) => {
         {otp.map((digit, index) => (
           <TextInput
             key={index}
-            style={styles.input}
+            style={[
+              styles.input,
+              otpChecked &&
+                otp.length === 6 &&
+                (otpValid ? styles.success : styles.error),
+            ]}
             maxLength={1}
             keyboardType="number-pad"
             value={digit}
@@ -66,6 +71,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 20,
     color: 'white',
+  },
+  error: {
+    borderColor: 'red',
+  },
+  success: {
+    borderColor: 'green',
   },
 });
 

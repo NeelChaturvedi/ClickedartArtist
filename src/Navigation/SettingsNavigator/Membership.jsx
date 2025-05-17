@@ -41,6 +41,20 @@ const Membership = () => {
     setIsExpanded(prevId => (prevId === id ? null : id));
   };
 
+  const cancelActivePlan = async () => {
+    if (!activePlan) {
+      console.log('No active plan to cancel');
+      ToastAndroid.show('No active plan to cancel', ToastAndroid.SHORT);
+      return;
+    }
+    try {
+      await api.post('/subscriptions/cancel-subscription', {activePlan});
+      fetchSubscriptions();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handlePayment = async (planId, price, duration) => {
     if (!planId) {
       console.error('No plan selected');
@@ -192,11 +206,12 @@ const Membership = () => {
                   borderColor: 'white',
                 },
             ]}>
-            {selectedPlan?._id === plan._id && selectedPlan?._id !== activePlan && (
-              <View style={styles.checkIcon}>
-                <Icon name="flash-on" size={24} color="#1E1E1E" />
-              </View>
-            )}
+            {selectedPlan?._id === plan._id &&
+              selectedPlan?._id !== activePlan && (
+                <View style={styles.checkIcon}>
+                  <Icon name="flash-on" size={24} color="#1E1E1E" />
+                </View>
+              )}
             <TouchableOpacity
               style={styles.summary}
               onPress={() => {
