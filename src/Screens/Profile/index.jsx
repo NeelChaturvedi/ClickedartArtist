@@ -8,6 +8,7 @@ import {
   Share,
   Alert,
   ActivityIndicator,
+  ToastAndroid,
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {style} from './styles';
@@ -21,9 +22,12 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import api from '../../utils/apiClient';
 import SlideUpModal from '../../components/SlideupModal';
+import ImagePicker from 'react-native-image-crop-picker';
+import axios from 'axios';
+import {API_URL} from '@env';
 
 const Profile = () => {
-  const {user} = useUserStore();
+  const {user, fetchUserFromToken} = useUserStore();
 
   const navigation = useNavigation();
 
@@ -36,6 +40,7 @@ const Profile = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [profileUploading, setProfileUploading] = useState(false);
 
   const onShare = async () => {
     try {
@@ -47,19 +52,103 @@ const Profile = () => {
     }
   };
 
+  const uploadImageToServer = async (dataName, imageUri) => {
+    if (!imageUri) {
+      ToastAndroid.show('No image selected', ToastAndroid.SHORT);
+      return;
+    }
+    const imgData = new FormData();
+    imgData.append('image', {
+      uri: imageUri,
+      name: 'photo.jpg',
+      type: 'image/jpeg',
+    });
+    try {
+      const res = await axios.post(
+        `${API_URL}/api/upload/uploadSingleImage`,
+        imgData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+      const imageUrl = res.data;
+      await handleProfileEdit(dataName, imageUrl);
+      ToastAndroid.show('Image uploaded successfully!', ToastAndroid.SHORT);
+    } catch (err) {
+      console.error('Upload error:', err);
+    }
+  };
+
+  const handleProfileImageUpdate = async () => {
+    try {
+      setProfileUploading(true);
+      const image = await ImagePicker.openPicker({
+        mediaType: 'photo',
+        cropping: false,
+      });
+      let croppedImage = await ImagePicker.openCropper({
+        cropperToolbarTitle: 'Crop Image',
+        cropperCircleOverlay: true,
+        path: image.path,
+        width: 1000,
+        height: 1000,
+      });
+      await uploadImageToServer('profileImage', croppedImage.path);
+    } catch (error) {
+      console.log('Picker error:', error);
+    } finally {
+      setProfileUploading(false);
+    }
+  };
+
+  const handleCoverImageUpdate = async () => {
+    try {
+      setProfileUploading(true);
+      const image = await ImagePicker.openPicker({
+        mediaType: 'photo',
+        cropping: false,
+      });
+      let croppedImage = await ImagePicker.openCropper({
+        cropperToolbarTitle: 'Crop Image',
+        path: image.path,
+        width: 1600,
+        height: 900,
+      });
+      await uploadImageToServer('coverImage', croppedImage.path);
+    } catch (error) {
+      console.log('Picker error:', error);
+    } finally {
+      setProfileUploading(false);
+    }
+  };
+
+  const handleProfileEdit = async (dataName, dataValue) => {
+    try {
+      await api.post('/photographer/update-profile', {
+        [dataName]: dataValue,
+        photographerId: user._id,
+      });
+      fetchUserFromToken();
+    } catch (error) {
+      console.error('Profile Edit Error', error.response);
+    }
+  };
+
   const slideOptions = [
     {
       label: 'Cover Image',
       icon: 'image',
       onPress: () => {
-        console.log('Take Photo pressed');
+        handleCoverImageUpdate();
       },
     },
     {
       label: 'Profile Image',
       icon: 'account-circle',
       onPress: () => {
-        console.log('Choose from Gallery pressed');
+        handleProfileImageUpdate();
       },
     },
     {
@@ -129,6 +218,7 @@ const Profile = () => {
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
     await fetchAllData();
+    await useUserStore.getState().fetchUserFromToken();
     setRefreshing(false);
   }, [fetchAllData]);
 
@@ -156,7 +246,7 @@ const Profile = () => {
         contentContainerStyle={{paddingBottom: 30}}
         refreshControl={
           <RefreshControl
-            refreshing={refreshing}
+            refreshing={refreshing || profileUploading}
             onRefresh={onRefresh}
             tintColor="#000"
           />
