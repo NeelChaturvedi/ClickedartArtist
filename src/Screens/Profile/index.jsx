@@ -9,6 +9,7 @@ import {
   Alert,
   ActivityIndicator,
   ToastAndroid,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {style} from './styles';
@@ -194,14 +195,7 @@ const Profile = () => {
         setStats({});
       }
       if (photosRes.status === 'fulfilled') {
-        // set photos 10 times more than the original
-        const photoss = photosRes.value.data.photos;
-        const photos10x = [];
-        for (let i = 0; i < 10; i++) {
-          photos10x.push(...photoss);
-        }
-        setPhotos(photos10x);
-        // setPhotos(photosRes.value.data.photos);
+        setPhotos(photosRes.value.data.photos);
       } else {
         setPhotos([]);
       }
@@ -250,6 +244,7 @@ const Profile = () => {
     <SafeAreaView style={[style.background, {flex: 1}]}>
       <ScrollView
         stickyHeaderIndices={[3]}
+        stickyHeaderHiddenOnScroll={true}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 30}}
         refreshControl={
@@ -258,7 +253,8 @@ const Profile = () => {
             onRefresh={onRefresh}
             tintColor="#000"
           />
-        }>
+        }
+        >
         <View style={style.profileHeader}>
           <View style={style.coverImageContainer}>
             <Image
@@ -340,7 +336,9 @@ const Profile = () => {
         <View style={style.stickyTabs}>
           <View style={style.tabs}>
             {tabs.map(tab => (
-              <Pressable key={tab.key} onPress={() => handleTabPress(tab.key)}>
+              <TouchableOpacity
+                key={tab.key}
+                onPress={() => handleTabPress(tab.key)}>
                 <Text
                   style={[
                     style.tabText,
@@ -348,7 +346,7 @@ const Profile = () => {
                   ]}>
                   {tab.label}
                 </Text>
-              </Pressable>
+              </TouchableOpacity>
             ))}
           </View>
         </View>
