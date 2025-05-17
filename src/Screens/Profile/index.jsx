@@ -195,10 +195,10 @@ const Profile = () => {
       }
       if (photosRes.status === 'fulfilled') {
         // set photos 10 times more than the original
-        const photos = photosRes.value.data.photos;
+        const photoss = photosRes.value.data.photos;
         const photos10x = [];
         for (let i = 0; i < 10; i++) {
-          photos10x.push(...photos);
+          photos10x.push(...photoss);
         }
         setPhotos(photos10x);
         // setPhotos(photosRes.value.data.photos);
@@ -249,6 +249,7 @@ const Profile = () => {
   return (
     <SafeAreaView style={[style.background, {flex: 1}]}>
       <ScrollView
+        stickyHeaderIndices={[3]}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 30}}
         refreshControl={
@@ -336,7 +337,7 @@ const Profile = () => {
             <Text style={style.count}>{stats.downloads || 0}</Text>
           </View>
         </View>
-        <View style={style.tabsContainer}>
+        <View style={style.stickyTabs}>
           <View style={style.tabs}>
             {tabs.map(tab => (
               <Pressable key={tab.key} onPress={() => handleTabPress(tab.key)}>
@@ -350,6 +351,8 @@ const Profile = () => {
               </Pressable>
             ))}
           </View>
+        </View>
+        <View style={style.tabsContainer}>
           <View>
             {activeTab === 'photos' ? (
               <TabPhotos photos={photos} />

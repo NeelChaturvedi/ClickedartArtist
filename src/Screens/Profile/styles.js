@@ -111,6 +111,14 @@ export const style = StyleSheet.create({
     width: '100%',
     alignSelf: 'center',
   },
+  stickyTabs: {
+    marginTop: 40,
+    gap: 35,
+    width: '100%',
+    alignSelf: 'center',
+    paddingVertical: 20,
+    backgroundColor: 'black',
+  },
   tabs: {
     flexDirection: 'row',
     justifyContent: 'center',
