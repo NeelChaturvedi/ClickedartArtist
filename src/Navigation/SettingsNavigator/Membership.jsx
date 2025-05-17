@@ -207,10 +207,10 @@ const Membership = () => {
                 <Text style={styles.typeText}>{plan.name}</Text>
                 <View>
                   {plan.cost[0].price === 0 ? (
-                    <Text style={styles.subHeadingText}>FREE</Text>
+                    <Text style={styles.priceText}>FREE</Text>
                   ) : (
                     plan.cost.map((cost, constIndex) => (
-                      <Text key={constIndex} style={styles.subHeadingText}>
+                      <Text key={constIndex} style={styles.priceText}>
                         ₹{cost.price} {cost.duration}
                       </Text>
                     ))
@@ -362,12 +362,13 @@ const styles = StyleSheet.create({
   },
   headingText: {
     color: 'white',
-    fontSize: 36,
+    fontSize: 32,
     fontFamily: 'Outfit-bold',
   },
   subHeadingText: {
     color: 'white',
-    fontSize: 20,
+    fontSize: 16,
+    paddingHorizontal: 30,
     fontFamily: 'Outfit-medium',
     textAlign: 'center',
   },
@@ -389,7 +390,7 @@ const styles = StyleSheet.create({
   priceAndType: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   typeText: {
     fontFamily: 'Outfit-bold',
@@ -398,12 +399,12 @@ const styles = StyleSheet.create({
   },
   priceText: {
     fontFamily: 'Outfit-bold',
-    fontSize: 20,
+    fontSize: 16,
     color: 'white',
   },
   typeDescription: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: 'Outfit-medium',
   },
   featureContainer: {
