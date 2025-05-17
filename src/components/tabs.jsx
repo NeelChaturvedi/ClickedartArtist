@@ -5,33 +5,31 @@ import {
   Animated,
   StyleSheet,
   Easing,
-  ActivityIndicator,
 } from 'react-native';
 import React, {useState, useRef} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 const Tabs = ({tabs, contentComponents}) => {
   const [activeTab, setActiveTab] = useState(tabs[0].key);
-  const [isLoading, setIsLoading] = useState(false);
   const slideAnim = useRef(new Animated.Value(0)).current;
   const [containerWidth, setContainerWidth] = useState(0);
 
   const handleTabPress = (tabKey, index) => {
-    setIsLoading(true);
+    setActiveTab(tabKey);
     Animated.timing(slideAnim, {
       toValue: index * (containerWidth / tabs.length),
       duration: 500,
       easing: Easing.out(Easing.exp),
       useNativeDriver: false,
     }).start(() => {
-      setActiveTab(tabKey);
-      setIsLoading(false);
     });
   };
 
   return (
     <SafeAreaView style={style.background}>
-      <View style={style.tabContainer}  onLayout={e => setContainerWidth(e.nativeEvent.layout.width)}>
+      <View
+        style={style.tabContainer}
+        onLayout={e => setContainerWidth(e.nativeEvent.layout.width)}>
         <Animated.View style={[style.activeTab, {left: slideAnim}]} />
         {tabs.map((tab, index) => (
           <Pressable
@@ -42,15 +40,7 @@ const Tabs = ({tabs, contentComponents}) => {
           </Pressable>
         ))}
       </View>
-      <View style={style.content}>
-        {isLoading ? (
-          <View style={style.loading}>
-            <ActivityIndicator size="large" color="#ED3147" />
-          </View>
-        ) : (
-          contentComponents[activeTab]
-        )}
-      </View>
+      <View style={style.content}>{contentComponents[activeTab]}</View>
     </SafeAreaView>
   );
 };
@@ -107,7 +97,7 @@ const style = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
   },
-  loading:{
+  loading: {
     flex: 1,
     justifyContent: 'center',
   },
