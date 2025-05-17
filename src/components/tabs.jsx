@@ -14,11 +14,12 @@ const Tabs = ({tabs, contentComponents}) => {
   const [activeTab, setActiveTab] = useState(tabs[0].key);
   const [isLoading, setIsLoading] = useState(false);
   const slideAnim = useRef(new Animated.Value(0)).current;
+  const [containerWidth, setContainerWidth] = useState(0);
 
   const handleTabPress = (tabKey, index) => {
     setIsLoading(true);
     Animated.timing(slideAnim, {
-      toValue: index * 140,
+      toValue: index * (containerWidth / tabs.length),
       duration: 500,
       easing: Easing.out(Easing.exp),
       useNativeDriver: false,
@@ -30,7 +31,7 @@ const Tabs = ({tabs, contentComponents}) => {
 
   return (
     <SafeAreaView style={style.background}>
-      <View style={style.tabContainer}>
+      <View style={style.tabContainer}  onLayout={e => setContainerWidth(e.nativeEvent.layout.width)}>
         <Animated.View style={[style.activeTab, {left: slideAnim}]} />
         {tabs.map((tab, index) => (
           <Pressable
@@ -69,7 +70,6 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: 60,
     width: '70%',
     borderRadius: 100,
     backgroundColor: '#1E1E1E',
@@ -80,6 +80,8 @@ const style = StyleSheet.create({
   },
   tabs: {
     width: '50%',
+    height: 60,
+    justifyContent: 'center',
     alignItems: 'center',
   },
   activeTab: {
