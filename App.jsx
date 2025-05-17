@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -23,7 +22,6 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   const {fetchUserFromToken, user} = useUserStore();
-  const [token, setToken] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(true);
   const [isOnboardingCompleted, setIsOnboardingCompleted] =
     React.useState(false);
@@ -32,10 +30,9 @@ export default function App() {
     const checkStatus = async () => {
       try {
         setIsLoading(true);
-        const tokenStorage = await AsyncStorage.getItem('token');
-        if (tokenStorage) {
-          setToken(tokenStorage);
-          await fetchUserFromToken(tokenStorage);
+        const token = await AsyncStorage.getItem('token');
+        if (token) {
+          await fetchUserFromToken(token);
         }
         const onboardingStatus = await AsyncStorage.getItem(
           'isOnboardingCompleted',
@@ -56,14 +53,8 @@ export default function App() {
 
   if (isLoading) {
     return (
-      <SafeAreaView
-        style={{
-          flex: 1,
-          backgroundColor: 'black',
-          height: '100%',
-          width: '100%',
-        }}>
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <SafeAreaView style={styles.loadingContainer}>
+        <View style={styles.loader}>
           <ActivityIndicator size={'large'} color="#ed3147" />
         </View>
       </SafeAreaView>
@@ -95,3 +86,17 @@ export default function App() {
     </NavigationContainer>
   );
 }
+
+const styles = {
+  loadingContainer: {
+    flex: 1,
+    backgroundColor: 'black',
+    height: '100%',
+    width: '100%',
+  },
+  loader: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+};
