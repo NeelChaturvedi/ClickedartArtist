@@ -103,7 +103,9 @@ const Dashboard = () => {
           />
         )}
       </View>
-      <ScrollView contentContainerStyle={{gap: 20}} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={{gap: 20}}
+        showsVerticalScrollIndicator={false}>
         <View style={style.sections}>
           {isCustomDate ? (
             <Text style={style.smallText}>

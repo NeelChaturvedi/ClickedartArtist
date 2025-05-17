@@ -9,7 +9,7 @@ export const style = StyleSheet.create({
     gap: 24,
   },
   sections: {
-    gap: 16,
+    gap: 20,
     marginBottom: 10,
     alignItems: 'flex-start',
     width: '100%',
