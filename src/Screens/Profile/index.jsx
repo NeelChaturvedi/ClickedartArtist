@@ -194,7 +194,14 @@ const Profile = () => {
         setStats({});
       }
       if (photosRes.status === 'fulfilled') {
-        setPhotos(photosRes.value.data.photos);
+        // set photos 10 times more than the original
+        const photos = photosRes.value.data.photos;
+        const photos10x = [];
+        for (let i = 0; i < 10; i++) {
+          photos10x.push(...photos);
+        }
+        setPhotos(photos10x);
+        // setPhotos(photosRes.value.data.photos);
       } else {
         setPhotos([]);
       }
@@ -217,10 +224,10 @@ const Profile = () => {
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
-    await fetchAllData();
+    // await fetchAllData();
     await useUserStore.getState().fetchUserFromToken();
     setRefreshing(false);
-  }, [fetchAllData]);
+  }, []);
 
   useEffect(() => {
     if (!user?._id) {

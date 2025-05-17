@@ -8,6 +8,7 @@ import Faqs from './Faqs';
 import TermsAndConditions from './TermsConditions';
 import Membership from './Membership';
 import PrivacyPolicy from './PrivacyPolicy';
+import HelpCenter from './HelpCenter';
 enableScreens();
 
 const Stack = createNativeStackNavigator();
@@ -22,6 +23,7 @@ export default function SettingsNavigator() {
       <Stack.Screen name="Terms" component={TermsAndConditions}/>
       <Stack.Screen name="Membership" component={Membership}/>
       <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy}/>
+      <Stack.Screen name="HelpCenter" component={HelpCenter}/>
     </Stack.Navigator>
   );
 }
