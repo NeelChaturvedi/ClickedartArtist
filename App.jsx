@@ -71,9 +71,7 @@ export default function App() {
                 headerStyle: {
                   backgroundColor: 'black',
                 },
-                headerTitle: {
-                  color: 'white',
-                },
+                headerTitle: 'Edit Profile',
                 headerTintColor: 'white',
               }}
               component={ProfileEditScreen}
