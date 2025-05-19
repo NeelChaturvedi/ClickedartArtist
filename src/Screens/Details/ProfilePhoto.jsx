@@ -16,6 +16,8 @@ import {useNavigation} from '@react-navigation/native';
 import ImagePicker from 'react-native-image-crop-picker';
 import api from '../../utils/apiClient';
 import {useRegistrationStore} from '../../store/registration';
+import axios from 'axios';
+import {API_URL} from '@env';
 
 const requestCameraPermission = async () => {
   if (Platform.OS === 'android') {
@@ -103,24 +105,28 @@ const ProfilePhoto = () => {
     setUploading(true);
 
     const imgData = new FormData();
+    console.log('Image URI:', imageUri);
     imgData.append('image', {
       uri: imageUri,
       name: 'photo.jpg',
       type: 'image/jpeg',
     });
+    console.log('Image Data:', imgData);
 
     try {
-      const res = await api.post('/upload/uploadSingleImage', imgData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
+      const res = await axios.post(
+        `${API_URL}/api/upload/uploadSingleImage`,
+        imgData,
+        {
+          headers: {'Content-Type': 'multipart/form-data'},
         },
-      });
-
+      );
+      console.log('Upload response:', res);
       const imageUrl = res.data;
-      setField('profileImage', imageUrl);
+      await setField('profileImage', imageUrl);
       ToastAndroid.show('Image uploaded successfully!', ToastAndroid.SHORT);
     } catch (err) {
-      console.error(err);
+      console.error('Upload Error', err);
       ToastAndroid.show('Upload failed', ToastAndroid.SHORT);
     } finally {
       setUploading(false);
