@@ -2,28 +2,24 @@ import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
   background: {
-    flex: 1,
+    height: '100%',
     backgroundColor: 'black',
-    paddingVertical: 65,
-    justifyContent: 'space-between',
     position: 'relative',
   },
-  backButtonContainer: {
-    position: 'absolute',
-    top: 24,
-    left: 20,
-    zIndex: 1,
-  },
-  heading: {
-    fontSize: 32,
-    color: 'white',
-    paddingBottom: 20,
-    textAlign: 'center',
-    fontFamily: 'Outfit-bold',
-  },
   form: {
-    gap: 20,
+    justifyContent: 'flex-start',
+    gap: 30,
     paddingHorizontal: 30,
+    paddingVertical: 30,
+  },
+  subHeadingText: {
+    fontSize: 18,
+    color: '#777',
+    fontFamily: 'Outfit-regular',
+    textAlign: 'center',
+    paddingTop:20,
+    paddingBottom:10,
+    paddingHorizontal:30,
   },
   row: {
     flexDirection: 'row',
@@ -109,6 +105,12 @@ export const styles = StyleSheet.create({
     height: '100%',
     alignItems: 'center',
   },
+  buttonContainer: {
+    paddingHorizontal: 30,
+    paddingBottom: 40,
+    paddingTop: 20,
+    backgroundColor: 'black',
+  },
   selectionText: {
     height: 54,
     fontFamily: 'Outfit-regular',
@@ -125,6 +127,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     gap: 50,
+    justifyContent: 'center',
   },
   photoPicker: {
     width: 320,
@@ -139,7 +142,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 50,
+    padding: 50,
   },
   optionButton: {
     height: 60,
