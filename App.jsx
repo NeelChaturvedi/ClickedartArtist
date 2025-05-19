@@ -16,6 +16,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {View} from 'moti';
 import ProfileEditScreen from 'src/Screens/ProfileEdit/ProfileEditScreen';
 import {useOnboardingStore} from 'src/store/onboarding';
+import UploadImage from 'src/Screens/UploadImage';
 enableScreens();
 
 const Stack = createNativeStackNavigator();
@@ -76,6 +77,20 @@ export default function App() {
                 headerTintColor: 'white',
               }}
               component={ProfileEditScreen}
+            />
+            <Stack.Screen
+              name="Upload Image"
+              options={{
+                headerShown: true,
+                headerStyle: {
+                  backgroundColor: 'black',
+                },
+                headerTitle: {
+                  color: 'white',
+                },
+                headerTintColor: 'white',
+              }}
+              component={UploadImage}
             />
           </>
         )}

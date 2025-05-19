@@ -23,7 +23,16 @@ const Accordion = ({title, content}) => {
       </TouchableOpacity>
       {isExpanded && (
         <View style={styles.content}>
-          <Text style={styles.contentText}>{content}</Text>
+          {Array.isArray(content) ? (
+            content.map((item, index) => (
+              <View key={index} style={styles.bulletItem}>
+                <Text style={styles.bullet}>{'\u2022'}</Text>
+                <Text style={styles.contentText}>{item}</Text>
+              </View>
+            ))
+          ) : (
+            <Text style={styles.contentText}>{content}</Text>
+          )}
         </View>
       )}
     </View>
@@ -60,6 +69,17 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontFamily: 'Outfit-regular',
+    flexShrink: 1,
+  },
+  bulletItem: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 6,
+  },
+  bullet: {
+    color: 'white',
+    fontSize: 16,
+    marginRight: 6,
   },
 });
 

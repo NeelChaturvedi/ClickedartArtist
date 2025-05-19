@@ -7,7 +7,9 @@ import {
   View,
   SafeAreaView,
   Alert,
+  TouchableOpacity,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import api from 'src/utils/apiClient';
 
@@ -69,9 +71,9 @@ const HelpCenter = () => {
           </View>
         ))}
       </ScrollView>
-      <View>
-        <Text style={styles.contactUs}>Contact</Text>
-      </View>
+      <TouchableOpacity style={styles.contactUs}>
+        <Icon name="message" size={30} color="white" />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -124,9 +126,15 @@ const styles = StyleSheet.create({
   },
   contactUs: {
     position: 'absolute',
-    bottom: 20,
-    right: 10,
-    fontSize: 16,
+    bottom: 30,
+    right: 12,
+    height: 70,
+    width: 70,
+    elevation: 10,
+    backgroundColor: '#ED3147',
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
     fontFamily: 'Outfit-medium',
     color: 'white',
   },
