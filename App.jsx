@@ -17,6 +17,7 @@ import {View} from 'moti';
 import ProfileEditScreen from 'src/Screens/ProfileEdit/ProfileEditScreen';
 import {useOnboardingStore} from 'src/store/onboarding';
 import UploadImage from 'src/Screens/UploadImage';
+import ImageScreen from 'src/Screens/ImageScreen';
 enableScreens();
 
 const Stack = createNativeStackNavigator();
@@ -89,6 +90,20 @@ export default function App() {
                 headerTintColor: 'white',
               }}
               component={UploadImage}
+            />
+            <Stack.Screen
+              name="Image Details"
+              options={{
+                headerShown: true,
+                headerStyle: {
+                  backgroundColor: 'black',
+                },
+                headerTitle: {
+                  color: 'white',
+                },
+                headerTintColor: 'white',
+              }}
+              component={ImageScreen}
             />
           </>
         )}

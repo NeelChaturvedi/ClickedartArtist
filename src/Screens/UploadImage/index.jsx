@@ -77,7 +77,7 @@ const UploadImage = () => {
                   </Pressable>
                 </View>
                 {selectedTab === 'text' && (
-                  <AutoGrowTextInput placeholder={'Custom Text Watermark'} />
+                  <AutoGrowTextInput value={'ClickedArt'} />
                 )}
 
                 {selectedTab === 'image' && (
@@ -177,26 +177,6 @@ const UploadImage = () => {
                 </View>
               </ScrollView>
               <View style={styles.buttonsContainer}>
-                {/* <Pressable
-                  style={styles.nextBtn}
-                  onPress={() => {
-                    if (step === 0) {
-                    } else {
-                      setStep(0);
-                    }
-                  }}>
-                  <Text style={styles.proceedBtn}>Back</Text>
-                </Pressable>
-                <Pressable
-                  style={styles.nextBtn}
-                  onPress={() => {
-                    if (step === 0) {
-                    } else {
-                      setStep(0);
-                    }
-                  }}>
-                  <Text style={styles.proceedBtn}>Next</Text>
-                </Pressable> */}
                 <View style={{width: '48%'}}>
                   <Button btnText={'Back'} onPress={() => setStep(0)}/>
                 </View>

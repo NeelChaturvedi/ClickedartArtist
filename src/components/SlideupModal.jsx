@@ -91,6 +91,7 @@ const SlideUpModal = ({visible, onClose, options = []}) => {
                     <Text style={styles.optionText}>{option.label}</Text>
                   </View>
                 </View>
+                <Icon name="chevron-right" size={24} color="white" />
               </TouchableOpacity>
             ))}
             {/* Cancel button */}
@@ -113,17 +114,20 @@ const styles = StyleSheet.create({
   modalContainer: {
     backgroundColor: '#1E1E1E',
     padding: 20,
+    width: '100%',
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
-    alignItems: 'center',
   },
   option: {
     paddingVertical: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   optionContainer: {
     flexDirection: 'row',
+    gap:10,
     alignItems: 'center',
-    justifyContent: 'center',
   },
   iconWrapper: {
     width: 40,
@@ -134,7 +138,7 @@ const styles = StyleSheet.create({
   },
   optionText: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: 'Outfit-medium',
   },
   cancel: {

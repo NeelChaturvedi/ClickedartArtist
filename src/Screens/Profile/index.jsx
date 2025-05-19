@@ -138,7 +138,7 @@ const Profile = () => {
     }
   };
 
-  const slideOptions = [
+  const profileOptions = [
     {
       label: 'Cover Image',
       icon: 'image',
@@ -161,6 +161,7 @@ const Profile = () => {
       },
     },
   ];
+
 
   const tabs = [
     {label: 'Photos', key: 'photos'},
@@ -188,9 +189,7 @@ const Profile = () => {
             `/catalogue/get-catalogues-by-photographer?photographer=${user._id}`,
           ),
           api.get(`/blog/get-my-blogs?author=${user._id}`),
-          api.get(
-            `/blog/get-my-pending-blogs?author=${user._id}`,
-          ),
+          api.get(`/blog/get-my-pending-blogs?author=${user._id}`),
         ]);
 
       if (statsRes.status === 'fulfilled') {
@@ -263,8 +262,7 @@ const Profile = () => {
             onRefresh={onRefresh}
             tintColor="#000"
           />
-        }
-        >
+        }>
         <View style={style.profileHeader}>
           <View style={style.coverImageContainer}>
             <Image
@@ -309,7 +307,7 @@ const Profile = () => {
             <SlideUpModal
               visible={slideUp}
               onClose={() => setSlideUp(false)}
-              options={slideOptions}
+              options={profileOptions}
             />
           </View>
         </View>

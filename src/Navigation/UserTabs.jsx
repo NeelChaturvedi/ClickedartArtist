@@ -24,19 +24,19 @@ export const Tabs = () => {
 
   const postsOptions = [
     {
-      label: 'Upload Image',
+      label: 'Upload an Image',
       icon: 'image',
       onPress: () => {
         navigation.navigate('Upload Image');
       },
     },
     {
-      label: 'Upload Catalogue',
-      icon: 'account-circle',
+      label: 'Create a Catalogue',
+      icon: 'photo-library',
       onPress: () => {},
     },
     {
-      label: 'Upload Blog',
+      label: 'Upload a Blog',
       icon: 'edit',
       onPress: () => {},
     },
