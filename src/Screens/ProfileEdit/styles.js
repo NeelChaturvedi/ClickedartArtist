@@ -2,16 +2,11 @@ import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
   background: {
-    paddingTop: 20,
     backgroundColor: 'black',
     width: '100%',
     height: '100%',
+    paddingBottom: 20,
     position: 'relative',
-  },
-  backButtonContainer: {
-    position: 'absolute',
-    top: '7.5%',
-    left: 20,
   },
   container: {
     flexGrow: 1,

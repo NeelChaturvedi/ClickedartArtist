@@ -63,7 +63,20 @@ export default function App() {
             <Stack.Screen name="BottomTab" component={Tabs} />
             <Stack.Screen name="Settings" component={SettingsNavigator} />
             <Stack.Screen name="BlogNavigator" component={BlogNavigator} />
-            <Stack.Screen name="ProfileEdit" component={ProfileEditScreen} />
+            <Stack.Screen
+              name="ProfileEdit"
+              options={{
+                headerShown: true,
+                headerStyle: {
+                  backgroundColor: 'black',
+                },
+                headerTitle: {
+                  color: 'white',
+                },
+                headerTintColor: 'white',
+              }}
+              component={ProfileEditScreen}
+            />
           </>
         )}
       </Stack.Navigator>

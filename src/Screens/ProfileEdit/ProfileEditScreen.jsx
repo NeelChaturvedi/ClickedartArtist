@@ -6,22 +6,17 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  SafeAreaView,
   TextInput,
   Pressable,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './styles';
 import Button from '@components/button';
 import DatePicker from 'react-native-date-picker';
-import BackButton from '@components/Backbutton';
 
 const ProfileEditScreen = () => {
   return (
     <SafeAreaView style={styles.background}>
-      <Text style={styles.headingText}>Edit Profile</Text>
-      <View style={styles.backButtonContainer}>
-        <BackButton />
-      </View>
       <KeyboardAvoidingView
         style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
