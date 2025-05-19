@@ -39,6 +39,7 @@ const Profile = () => {
   const [photos, setPhotos] = useState([]);
   const [catalogues, setCatalogues] = useState([]);
   const [blogs, setBlogs] = useState([]);
+  const [pendingBlogs, setPendingBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [profileUploading, setProfileUploading] = useState(false);
@@ -175,7 +176,7 @@ const Profile = () => {
     try {
       setLoading(true);
 
-      const [statsRes, photosRes, cataloguesRes, blogsRes] =
+      const [statsRes, photosRes, cataloguesRes, blogsRes, pendingBlogsRes] =
         await Promise.allSettled([
           api.get(
             `/photographeranalytics/get-photographer-analytics?photographer=${user._id}`,
@@ -187,6 +188,9 @@ const Profile = () => {
             `/catalogue/get-catalogues-by-photographer?photographer=${user._id}`,
           ),
           api.get(`/blog/get-my-blogs?author=${user._id}`),
+          api.get(
+            `/blog/get-my-pending-blogs?author=${user._id}`,
+          ),
         ]);
 
       if (statsRes.status === 'fulfilled') {
@@ -208,6 +212,12 @@ const Profile = () => {
         setBlogs(blogsRes.value.data.blogs);
       } else {
         setBlogs([]);
+      }
+      if (pendingBlogsRes.status === 'fulfilled') {
+        console.log('Pending blogs:', pendingBlogsRes.value.data.blogs);
+        setPendingBlogs(pendingBlogsRes.value.data.blogs);
+      } else {
+        setPendingBlogs([]);
       }
     } catch (error) {
       console.error('Unexpected error fetching dashboard data:', error);
@@ -357,7 +367,7 @@ const Profile = () => {
             ) : activeTab === 'catalogues' ? (
               <TabCatalogues catalogues={catalogues} />
             ) : (
-              <TabBlogs blogs={blogs} />
+              <TabBlogs blogs={blogs} pendingBlogs={pendingBlogs} />
             )}
           </View>
         </View>
