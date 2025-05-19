@@ -52,7 +52,7 @@ const HelpCenter = () => {
   }, []);
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={{width: '100%', paddingVertical: 10}}>
+      <ScrollView showsVerticalScrollIndicator={false} style={{width: '100%', paddingVertical: 10}}>
         <Text style={styles.title}>Support Videos</Text>
         <Text style={styles.introText}>
           Here are some videos that can help you with common issues and
