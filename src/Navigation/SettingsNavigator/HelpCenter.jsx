@@ -1,21 +1,8 @@
 import React from 'react';
-import { ScrollView, Text, StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import BackButton from '../../components/Backbutton';
+import {ScrollView, Text, StyleSheet, View, SafeAreaView} from 'react-native';
 
 const HelpCenter = () => {
-
-  return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.backButtonContainer}>
-        <BackButton />
-      </View>
-      <Text style={styles.title}>Help Center</Text>
-      {/* <Text style={styles.lastUpdated}>Effective Date: 26 January 2025</Text> */}
-      <ScrollView showsVerticalScrollIndicator={false}>
-      </ScrollView>
-    </SafeAreaView>
-  );
+  return <SafeAreaView style={styles.container}></SafeAreaView>;
 };
 
 const styles = StyleSheet.create({

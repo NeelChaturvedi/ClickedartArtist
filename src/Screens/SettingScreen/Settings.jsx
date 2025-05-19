@@ -1,12 +1,10 @@
-import {Text, View} from 'react-native';
+import {SafeAreaView, View} from 'react-native';
 import React from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {style} from './styles';
 import SearchBar from '../../components/SearchBar';
 import {ScrollView} from 'moti';
 import Button from '../../components/button';
 import {useUserStore} from '../../store/auth';
-import Backbutton from '../../components/Backbutton';
 import SettingsOptions from '../../components/SettingsOptions';
 
 
@@ -16,10 +14,6 @@ const Settings = () => {
   return (
     <SafeAreaView style={style.background}>
       <View style={style.container}>
-        <View style={style.backButtonContainer}>
-          <Backbutton />
-        </View>
-        <Text style={style.headingText}>Settings</Text>
         <SearchBar />
         <ScrollView>
           <SettingsOptions icon={'gpp-good'} label={'AccountSecurity'}/>

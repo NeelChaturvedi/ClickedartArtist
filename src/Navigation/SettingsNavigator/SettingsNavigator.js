@@ -1,4 +1,3 @@
-// App.js
 import * as React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {enableScreens} from 'react-native-screens';
@@ -16,9 +15,17 @@ const Stack = createNativeStackNavigator();
 export default function SettingsNavigator() {
   return (
     <Stack.Navigator
-      initialRouteName="SettingsMain"
-      screenOptions={{headerShown: false}}>
-      <Stack.Screen name="SettingsMain" component={Settings}/>
+      initialRouteName="Settings"
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: 'black',
+        },
+        headerTitleStyle:{
+          color: 'white',
+        },
+        headerTintColor:'white',
+      }}>
+      <Stack.Screen name="Settings" component={Settings}/>
       <Stack.Screen name="Faqs" component={Faqs}/>
       <Stack.Screen name="Terms" component={TermsAndConditions}/>
       <Stack.Screen name="Membership" component={Membership}/>

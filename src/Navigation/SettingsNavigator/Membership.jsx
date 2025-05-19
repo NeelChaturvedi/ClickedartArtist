@@ -10,13 +10,12 @@ import {
   Modal,
   TouchableWithoutFeedback,
   Pressable,
+  SafeAreaView,
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/button';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import BackButton from '../../components/Backbutton';
 import api from 'src/utils/apiClient';
 import RazorpayCheckout from 'react-native-razorpay';
 import {useUserStore} from 'src/store/auth';
@@ -169,141 +168,146 @@ const Membership = () => {
 
   return (
     <SafeAreaView style={styles.background}>
-      <View style={styles.headerContainer}>
-        <View style={styles.backButtonContainer}>
-          <BackButton />
+      <ScrollView>
+        <View style={styles.headerContainer}>
+          <Image
+            style={styles.image}
+            source={require('../../assets/images/membershipHeader.png')}
+          />
+          <View style={styles.contentContainer}>
+            <Text style={styles.headingText}>Choose a Plan</Text>
+            <Text style={styles.subHeadingText}>
+              Unlock exclusive features to showcase your creativity and boost
+              your sales!
+            </Text>
+          </View>
         </View>
-        <Image
-          style={styles.image}
-          source={require('../../assets/images/membershipHeader.png')}
-        />
-        <View style={styles.contentContainer}>
-          <Text style={styles.headingText}>Choose a Plan</Text>
-          <Text style={styles.subHeadingText}>
-            Unlock exclusive features to showcase your creativity and boost your
-            sales!
-          </Text>
-        </View>
-      </View>
-      <ScrollView style={styles.scrollContainer}>
-        {plans.map((plan, index) => (
-          <LinearGradient
-            colors={
-              plan.name === 'Basic'
-                ? ['#00693B', '#4FBD8F']
-                : plan.name === 'Intermediate'
-                ? ['#7A8204', '#D9D455']
-                : ['#004B69', '#21C4C4']
-            }
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 1}}
-            key={index}
-            style={[
-              styles.planContainer,
-              selectedPlan?._id === plan._id &&
-                selectedPlan?._id !== activePlan && {
-                  borderWidth: 3,
-                  borderColor: 'white',
-                },
-            ]}>
-            {selectedPlan?._id === plan._id &&
-              selectedPlan?._id !== activePlan && (
-                <View style={styles.checkIcon}>
-                  <Icon name="flash-on" size={24} color="#1E1E1E" />
+        <View style={styles.optionsContainer}>
+          {plans.map((plan, index) => (
+            <LinearGradient
+              colors={
+                plan.name === 'Basic'
+                  ? ['#00693B', '#4FBD8F']
+                  : plan.name === 'Intermediate'
+                  ? ['#7A8204', '#D9D455']
+                  : ['#004B69', '#21C4C4']
+              }
+              start={{x: 0, y: 0}}
+              end={{x: 1, y: 1}}
+              key={index}
+              style={[
+                styles.planContainer,
+                selectedPlan?._id === plan._id &&
+                  selectedPlan?._id !== activePlan && {
+                    borderWidth: 3,
+                    borderColor: 'white',
+                  },
+              ]}>
+              {selectedPlan?._id === plan._id &&
+                selectedPlan?._id !== activePlan && (
+                  <View style={styles.checkIcon}>
+                    <Icon name="flash-on" size={24} color="#1E1E1E" />
+                  </View>
+                )}
+              <TouchableOpacity
+                style={styles.summary}
+                onPress={() => {
+                  toggleAccordion(plan._id);
+                  setSelectedPlan(plan);
+                }}>
+                <View style={styles.priceAndType}>
+                  <Text style={styles.typeText}>{plan.name}</Text>
+                  <View>
+                    {plan.cost[0].price === 0 ? (
+                      <Text style={styles.priceText}>FREE</Text>
+                    ) : (
+                      plan.cost.map((cost, constIndex) => (
+                        <Text key={constIndex} style={styles.priceText}>
+                          ₹{cost.price} {cost.duration}
+                        </Text>
+                      ))
+                    )}
+                  </View>
+                </View>
+                <Text style={styles.typeDescription}>{desc[index]}</Text>
+              </TouchableOpacity>
+              {isExpanded === plan._id && (
+                <View>
+                  <View style={styles.featureContainer}>
+                    <Text style={styles.featureText}>Advanced Tools</Text>
+                    <Text style={styles.valueText}>{plan.advancedTools}</Text>
+                  </View>
+                  <View style={styles.featureContainer}>
+                    <Text style={styles.featureText}>Catalogue Creation</Text>
+                    <Text style={styles.valueText}>
+                      {plan.catalogCreation > 999
+                        ? 'Unlimited'
+                        : plan.catalogCreation}
+                    </Text>
+                  </View>
+                  <View style={styles.featureContainer}>
+                    <Text style={styles.featureText}>Custom Pricing</Text>
+                    <Text style={styles.valueText}>
+                      {plan.customPricing ? 'Yes' : 'No'}
+                    </Text>
+                  </View>
+                  <View style={styles.featureContainer}>
+                    <Text style={styles.featureText}>Image Upload Limit</Text>
+                    <Text style={styles.valueText}>
+                      {plan.imageUploadLimit > 999
+                        ? 'Unlimited'
+                        : plan.imageUploadLimit}
+                    </Text>
+                  </View>
+                  <View style={styles.featureContainer}>
+                    <Text style={styles.featureText}>Licensing Options</Text>
+                    <Text style={styles.valueText}>
+                      {plan.licensingOptions}
+                    </Text>
+                  </View>
+                  <View style={styles.featureContainer}>
+                    <Text style={styles.featureText}>Priority Support</Text>
+                    <Text style={styles.valueText}>{plan.prioritySupport}</Text>
+                  </View>
+                  <View style={styles.featureContainer}>
+                    <Text style={styles.featureText}>Promotional Tools</Text>
+                    <Text style={styles.valueText}>
+                      {plan.promotionalTools}
+                    </Text>
+                  </View>
+                  <View style={styles.featureContainer}>
+                    <Text style={styles.featureText}>Sales Reports</Text>
+                    <Text style={styles.valueText}>{plan.salesReports}</Text>
+                  </View>
+                  <View style={styles.featureContainer}>
+                    <Text style={styles.featureText}>
+                      Social Media Auto Posting
+                    </Text>
+                    <Text style={styles.valueText}>
+                      {plan.socialMediaAutoPosting}
+                    </Text>
+                  </View>
+                  <View style={styles.featureContainer}>
+                    <Text style={styles.featureText}>
+                      Social Media Integration
+                    </Text>
+                    <Text style={styles.valueText}>
+                      {plan.socialMediaIntegration}
+                    </Text>
+                  </View>
+                  <View style={styles.featureContainer}>
+                    <Text style={styles.featureText}>Watermarking Tools</Text>
+                    <Text style={styles.valueText}>
+                      {plan.watermarkingTools}
+                    </Text>
+                  </View>
                 </View>
               )}
-            <TouchableOpacity
-              style={styles.summary}
-              onPress={() => {
-                toggleAccordion(plan._id);
-                setSelectedPlan(plan);
-              }}>
-              <View style={styles.priceAndType}>
-                <Text style={styles.typeText}>{plan.name}</Text>
-                <View>
-                  {plan.cost[0].price === 0 ? (
-                    <Text style={styles.priceText}>FREE</Text>
-                  ) : (
-                    plan.cost.map((cost, constIndex) => (
-                      <Text key={constIndex} style={styles.priceText}>
-                        ₹{cost.price} {cost.duration}
-                      </Text>
-                    ))
-                  )}
-                </View>
-              </View>
-              <Text style={styles.typeDescription}>{desc[index]}</Text>
-            </TouchableOpacity>
-            {isExpanded === plan._id && (
-              <View>
-                <View style={styles.featureContainer}>
-                  <Text style={styles.featureText}>Advanced Tools</Text>
-                  <Text style={styles.valueText}>{plan.advancedTools}</Text>
-                </View>
-                <View style={styles.featureContainer}>
-                  <Text style={styles.featureText}>Catalogue Creation</Text>
-                  <Text style={styles.valueText}>
-                    {plan.catalogCreation > 999
-                      ? 'Unlimited'
-                      : plan.catalogCreation}
-                  </Text>
-                </View>
-                <View style={styles.featureContainer}>
-                  <Text style={styles.featureText}>Custom Pricing</Text>
-                  <Text style={styles.valueText}>
-                    {plan.customPricing ? 'Yes' : 'No'}
-                  </Text>
-                </View>
-                <View style={styles.featureContainer}>
-                  <Text style={styles.featureText}>Image Upload Limit</Text>
-                  <Text style={styles.valueText}>
-                    {plan.imageUploadLimit > 999
-                      ? 'Unlimited'
-                      : plan.imageUploadLimit}
-                  </Text>
-                </View>
-                <View style={styles.featureContainer}>
-                  <Text style={styles.featureText}>Licensing Options</Text>
-                  <Text style={styles.valueText}>{plan.licensingOptions}</Text>
-                </View>
-                <View style={styles.featureContainer}>
-                  <Text style={styles.featureText}>Priority Support</Text>
-                  <Text style={styles.valueText}>{plan.prioritySupport}</Text>
-                </View>
-                <View style={styles.featureContainer}>
-                  <Text style={styles.featureText}>Promotional Tools</Text>
-                  <Text style={styles.valueText}>{plan.promotionalTools}</Text>
-                </View>
-                <View style={styles.featureContainer}>
-                  <Text style={styles.featureText}>Sales Reports</Text>
-                  <Text style={styles.valueText}>{plan.salesReports}</Text>
-                </View>
-                <View style={styles.featureContainer}>
-                  <Text style={styles.featureText}>
-                    Social Media Auto Posting
-                  </Text>
-                  <Text style={styles.valueText}>
-                    {plan.socialMediaAutoPosting}
-                  </Text>
-                </View>
-                <View style={styles.featureContainer}>
-                  <Text style={styles.featureText}>
-                    Social Media Integration
-                  </Text>
-                  <Text style={styles.valueText}>
-                    {plan.socialMediaIntegration}
-                  </Text>
-                </View>
-                <View style={styles.featureContainer}>
-                  <Text style={styles.featureText}>Watermarking Tools</Text>
-                  <Text style={styles.valueText}>{plan.watermarkingTools}</Text>
-                </View>
-              </View>
-            )}
-          </LinearGradient>
-        ))}
+            </LinearGradient>
+          ))}
+        </View>
       </ScrollView>
-      <View style={{width: '100%', paddingHorizontal: 16}}>
+      <View style={{width: '100%', paddingHorizontal: 16, paddingBottom: 10}}>
         <Modal
           animationType="fade"
           transparent={true}
@@ -348,7 +352,7 @@ const Membership = () => {
 const styles = StyleSheet.create({
   background: {
     width: '100%',
-    height: '100%',
+    flex: 1,
     gap: 20,
     backgroundColor: 'black',
     alignItems: 'center',
@@ -387,7 +391,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Outfit-medium',
     textAlign: 'center',
   },
-  scrollContainer: {
+  optionsContainer: {
     paddingHorizontal: 16,
   },
   planContainer: {

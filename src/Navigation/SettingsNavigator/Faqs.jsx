@@ -1,9 +1,8 @@
-import {View, Text, StyleSheet} from 'react-native';
+/* eslint-disable react-native/no-inline-styles */
+import {View, StyleSheet, SafeAreaView} from 'react-native';
 import React from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import Accordion from '../../components/Accordian';
 import {ScrollView} from 'moti';
-import BackButton from '../../components/Backbutton';
 
 const Faqs = () => {
   const faqs = [
@@ -126,11 +125,7 @@ const Faqs = () => {
   return (
     <SafeAreaView style={style.background}>
       <View style={style.container}>
-        <View style={style.backButtonContainer}>
-          <BackButton />
-        </View>
-        <Text style={style.text}>FAQs</Text>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView contentContainerStyle={{paddingBottom: 40}} showsVerticalScrollIndicator={false}>
           {faqs.map((faq, index) => (
             <Accordion key={index} title={faq.question} content={faq.answer} />
           ))}
@@ -145,10 +140,10 @@ const style = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: 'black',
-    paddingBottom: 70,
+    paddingBottom: 50,
   },
 container: {
-    padding: 10,
+    paddingHorizontal: 10,
     gap: 20,
     position: 'relative',
     alignItems: 'center',

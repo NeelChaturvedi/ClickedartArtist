@@ -1,7 +1,5 @@
 import React from 'react';
-import {ScrollView, Text, StyleSheet, View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import BackButton from '../../components/Backbutton';
+import {ScrollView, Text, StyleSheet, View, SafeAreaView} from 'react-native';
 
 const TermsAndConditions = () => {
   const termsSections = [
@@ -117,10 +115,6 @@ const TermsAndConditions = () => {
   ];
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.backButtonContainer}>
-        <BackButton />
-      </View>
-      <Text style={styles.title}>Terms of Use</Text>
       <Text style={styles.lastUpdated}>Last Updated: 26 January 2025</Text>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={styles.introText}>
@@ -155,12 +149,7 @@ const styles = StyleSheet.create({
     paddingBottom: 90,
     backgroundColor: 'black',
     position: 'relative',
-    alignItems: 'center',
-  },
-  backButtonContainer:{
-    position: 'absolute',
-    top: 70,
-    left: 24,
+    alignItems: 'flex-start',
   },
   title: {
     fontSize: 32,
@@ -170,9 +159,10 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   lastUpdated: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#888',
     marginBottom: 20,
+    textAlign: 'center',
   },
   introText: {
     fontSize: 15,

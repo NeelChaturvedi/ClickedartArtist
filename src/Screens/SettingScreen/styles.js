@@ -3,18 +3,20 @@ import {StyleSheet} from 'react-native';
 export const style = StyleSheet.create({
   background: {
     backgroundColor: 'black',
-    height: '100%',
+    flex: 1,
     width: '100%',
     alignItems: 'center',
+
   },
   container: {
     flex: 1,
-    gap: 30,
+    gap: 10,
     alignItems: 'center',
+    paddingTop: 16,
     position: 'relative',
     width: '100%',
     paddingHorizontal: 16,
-    paddingVertical: 30,
+    paddingBottom: 50,
   },
   headingText: {
     fontFamily: 'Outfit-bold',
@@ -47,10 +49,5 @@ export const style = StyleSheet.create({
     flex: 0,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  backButtonContainer: {
-    position: 'absolute',
-    top: 35,
-    left: 20,
   },
 });

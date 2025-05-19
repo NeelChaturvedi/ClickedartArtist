@@ -1,7 +1,5 @@
 import React from 'react';
-import { ScrollView, Text, StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import BackButton from '../../components/Backbutton';
+import {ScrollView, Text, StyleSheet, View, SafeAreaView} from 'react-native';
 
 const PrivacyPolicy = () => {
   const policySections = [
@@ -54,7 +52,7 @@ const PrivacyPolicy = () => {
       ],
     },
     {
-      title: '7. Children\'s Privacy',
+      title: "7. Children's Privacy",
       items: [
         'Our service is not intended for individuals under 16. We do not knowingly collect information from children. If we become aware of such data, we will take steps to delete it.',
       ],
@@ -82,21 +80,22 @@ const PrivacyPolicy = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.backButtonContainer}>
-        <BackButton />
-      </View>
-      <Text style={styles.title}>Privacy Policy</Text>
       <Text style={styles.lastUpdated}>Effective Date: 26 January 2025</Text>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={styles.introText}>
-          Welcome to ClickedArt.com. We are committed to safeguarding the privacy of our users, including both buyers and photographers. This Privacy Policy outlines how we collect, use, disclose, and protect your information.
+          Welcome to ClickedArt.com. We are committed to safeguarding the
+          privacy of our users, including both buyers and photographers. This
+          Privacy Policy outlines how we collect, use, disclose, and protect
+          your information.
         </Text>
 
         {policySections.map((section, index) => (
           <View key={index} style={styles.section}>
             <Text style={styles.sectionTitle}>{section.title}</Text>
             {section.items.map((item, idx) => (
-              <Text key={idx} style={styles.bullet}>• {item}</Text>
+              <Text key={idx} style={styles.bullet}>
+                • {item}
+              </Text>
             ))}
           </View>
         ))}
@@ -112,12 +111,7 @@ const styles = StyleSheet.create({
     paddingBottom: 90,
     backgroundColor: 'black',
     position: 'relative',
-    alignItems: 'center',
-  },
-  backButtonContainer: {
-    position: 'absolute',
-    top: 70,
-    left: 24,
+    alignItems: 'flex-start',
   },
   title: {
     fontSize: 32,
@@ -127,7 +121,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   lastUpdated: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#888',
     marginBottom: 20,
   },
