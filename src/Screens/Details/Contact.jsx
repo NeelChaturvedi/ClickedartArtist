@@ -8,13 +8,12 @@ import {
   Keyboard,
   Platform,
   ScrollView,
+  SafeAreaView,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './styles';
 import {useRegistrationStore} from '../../store/registration';
 import Button from '../../components/button';
 import {useNavigation} from '@react-navigation/native';
-import BackButton from '../../components/Backbutton';
 import {useState} from 'react';
 
 const Contact = () => {
@@ -49,33 +48,24 @@ const Contact = () => {
       setErrors(newErrors);
       return;
     }
-    navigation.navigate('ProfilePhoto');
+    navigation.navigate('Upload Profile');
   };
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: 'black'}}>
+    <SafeAreaView style={styles.background}>
       <KeyboardAvoidingView
         style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 10 : 0}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <ScrollView
-            contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}
-            keyboardShouldPersistTaps="handled"
-            showsVerticalScrollIndicator={false}>
-            <View
-              style={{
-                flexGrow: 1,
-                justifyContent: 'space-between',
-                paddingVertical: 70,
-                position: 'relative',
-              }}>
-              <View style={styles.backButtonContainer}>
-                <BackButton />
-              </View>
-
-              <Text style={styles.heading}>Contact Details</Text>
-
+          <View style={{flex: 1}}>
+            <ScrollView
+              contentContainerStyle={{paddingBottom: 30}}
+              keyboardShouldPersistTaps="handled"
+              showsVerticalScrollIndicator={false}>
+              <Text style={styles.subHeadingText}>
+                Please provide your contact details,So we can reach out to you.
+              </Text>
               <View style={styles.form}>
                 <View style={styles.formField}>
                   <Text style={styles.inputTitle}>MOBILE NO</Text>
@@ -168,18 +158,16 @@ const Contact = () => {
                           setNestedField('shippingAddress', 'pincode', text)
                         }
                       />
-                      {errors.pincode && (
-                        <Text style={styles.errorText}>{errors.pincode}</Text>
-                      )}
                     </View>
                   </View>
                 </View>
               </View>
-              <View style={[styles.form, {marginTop: 30}]}>
-                <Button btnText={'Next'} onPress={handleNext} />
-              </View>
+            </ScrollView>
+
+            <View style={styles.buttonContainer}>
+              <Button btnText={'Next'} onPress={handleNext} />
             </View>
-          </ScrollView>
+          </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
     </SafeAreaView>

@@ -13,11 +13,19 @@ const Stack = createNativeStackNavigator();
 export default function Details() {
   return (
     <Stack.Navigator
-      initialRouteName="Personal"
-      screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Personal" component={Personal} />
-      <Stack.Screen name="Contact" component={Contact} />
-      <Stack.Screen name="ProfilePhoto" component={ProfilePhoto}/>
+      initialRouteName="Personal Details"
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: 'black',
+        },
+        headerTitleStyle: {
+          color: 'white',
+        },
+        headerTintColor: 'white',
+      }}>
+      <Stack.Screen name="Personal Details" component={Personal} />
+      <Stack.Screen name="Contact Details" component={Contact} />
+      <Stack.Screen name="Upload Profile" component={ProfilePhoto} />
     </Stack.Navigator>
   );
 }

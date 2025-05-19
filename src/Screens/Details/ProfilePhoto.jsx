@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {
   Pressable,
@@ -9,13 +8,12 @@ import {
   ActivityIndicator,
   Platform,
   PermissionsAndroid,
+  SafeAreaView,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
 import ImagePicker from 'react-native-image-crop-picker';
-import BackButton from '../../components/Backbutton';
 import api from '../../utils/apiClient';
 import {useRegistrationStore} from '../../store/registration';
 
@@ -149,11 +147,7 @@ const ProfilePhoto = () => {
 
   return (
     <SafeAreaView style={styles.background}>
-      <View style={{position: 'absolute', top: '10%', left: 24}}>
-        <BackButton />
-      </View>
       <View style={styles.container}>
-        <Text style={styles.heading}>Upload Photo</Text>
         <View style={styles.photoPicker}>
           {formData.profileImage && !uploading ? (
             <Image
