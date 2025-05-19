@@ -92,7 +92,8 @@ const ProfileEditScreen = () => {
     setRefreshing(false);
   }, [user]);
 
-  const onRefresh = () => {
+  const onRefresh = async () => {
+    await fetchUserFromToken();
     handleDataHydration();
   };
 

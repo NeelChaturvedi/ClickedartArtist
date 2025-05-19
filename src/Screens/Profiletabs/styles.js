@@ -93,4 +93,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  pendingContainer: {
+    position: 'relative',
+    opacity: 0.4,
+  },
 });
