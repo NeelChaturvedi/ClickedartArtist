@@ -55,8 +55,8 @@ export const styles = StyleSheet.create({
     gap: 20,
   },
   catalogueImage: {
-    width: 150,
-    height: 150,
+    width: 160,
+    height: 160,
   },
   catalougeText: {
     fontFamily: 'Outfit-Bold',
