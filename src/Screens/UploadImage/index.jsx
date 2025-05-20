@@ -21,7 +21,6 @@ import Button from '@components/button';
 import AutoGrowTextInput from '@components/AutoGrowTextInput';
 import ImagePicker from 'react-native-image-crop-picker';
 import AWS from 'aws-sdk';
-import {Buffer} from 'buffer';
 import {
   AWS_BUCKET_NAME,
   AWS_REGION,
@@ -39,54 +38,115 @@ const s3 = new AWS.S3({
 const UploadImage = () => {
   const [selectedTab, setSelectedTab] = useState('text');
   const [step, setStep] = useState(0);
-
   const [imageUri, setImageUri] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+
+  const PART_SIZE = 5 * 1024 * 1024;
+  const MAX_RETRIES = 3;
 
   const pickImage = async () => {
     try {
       const image = await ImagePicker.openPicker({
         cropping: false,
         mediaType: 'photo',
-        includeBase64: true,
+        includeBase64: false,
       });
-      await uploadImageToS3(image.path, image.data);
+      await uploadImageToS3(image.path);
     } catch (error) {
       Alert.alert('Error', 'Failed to pick image: ' + error.message);
     }
   };
 
-  const uploadImageToS3 = async (imgUri, imgData) => {
-    if (!imgUri || !imgData) {
+  const uploadImageToS3 = async imgUri => {
+    if (!imgUri) {
       Alert.alert('Error', 'Please select an image first');
       return;
     }
-
+    setUploadProgress(0);
     setUploading(true);
     try {
-      const buffer = Buffer.from(imgData, 'base64');
-      const params = {
+      const response = await fetch(imgUri);
+      const blob = await response.blob();
+      const fileSize = blob.size;
+      const fileName = `images/${Date.now()}.jpg`;
+
+      const createUploadParams = {
         Bucket: AWS_BUCKET_NAME,
-        Key: `images/${Date.now()}.jpg`,
-        Body: buffer,
+        Key: fileName,
         ContentType: 'image/jpeg',
       };
+      const {UploadId} = await s3
+        .createMultipartUpload(createUploadParams)
+        .promise();
 
-      // Upload to S3
-      const upload = s3.upload(params);
+      const parts = [];
+      let partNumber = 1;
+      let start = 0;
 
-      upload.on('httpUploadProgress', progress => {
-        const percent = Math.round((progress.loaded / progress.total) * 50);
-        console.log(`Upload Progress: ${percent}%`);
-        setUploadProgress(percent);
-      });
+      while (start < fileSize) {
+        const end = Math.min(start + PART_SIZE, fileSize);
+        const partBlob = blob.slice(start, end);
+        let retries = 0;
 
-      const data = await upload.promise();
+        while (retries < MAX_RETRIES) {
+          try {
+            const uploadPartParams = {
+              Bucket: AWS_BUCKET_NAME,
+              Key: fileName,
+              PartNumber: partNumber,
+              UploadId,
+              Body: partBlob,
+            };
+
+            const partData = await s3.uploadPart(uploadPartParams).promise();
+            parts.push({
+              ETag: partData.ETag,
+              PartNumber: partNumber,
+            });
+
+            const progress = Math.round((end / fileSize) * 100);
+            setUploadProgress(progress);
+            console.log(`Uploaded part ${partNumber}: ${progress}%`);
+
+            break;
+          } catch (error) {
+            retries++;
+            if (retries >= MAX_RETRIES) {
+              throw new Error(
+                `Failed to upload part ${partNumber} after ${MAX_RETRIES} attempts: ${error.message}`,
+              );
+            }
+            console.log(`Retrying part ${partNumber}, attempt ${retries + 1}`);
+            await new Promise(resolve => setTimeout(resolve, 1000 * retries));
+          }
+        }
+
+        start += PART_SIZE;
+        partNumber++;
+      }
+
+      const completeParams = {
+        Bucket: AWS_BUCKET_NAME,
+        Key: fileName,
+        UploadId,
+        MultipartUpload: {Parts: parts},
+      };
+      const data = await s3.completeMultipartUpload(completeParams).promise();
       console.log('Image URL:', data.Location);
       setImageUri(data.Location);
     } catch (error) {
       Alert.alert('Error', `Failed to upload image: ${error.message}`);
+
+      if (error.UploadId) {
+        await s3
+          .abortMultipartUpload({
+            Bucket: AWS_BUCKET_NAME,
+            Key: `images/${Date.now()}.jpg`,
+            UploadId: error.UploadId,
+          })
+          .promise();
+      }
     } finally {
       setUploading(false);
     }
@@ -110,6 +170,7 @@ const UploadImage = () => {
 
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
   return (
     <SafeAreaView style={styles.background}>
       <KeyboardAvoidingView
@@ -181,7 +242,6 @@ const UploadImage = () => {
                 {selectedTab === 'text' && (
                   <AutoGrowTextInput value={'ClickedArt'} />
                 )}
-
                 {selectedTab === 'image' && (
                   <View style={styles.watermarkImage}>
                     <TextInput
@@ -226,7 +286,7 @@ const UploadImage = () => {
                   </View>
                   <View gap={16} style={{width: '48%'}}>
                     <Text style={styles.headingText}>Category</Text>
-                    <AutoGrowTextInput placeholder={'Enter Image Price'} />
+                    <AutoGrowTextInput placeholder={'Enter Image Category'} />
                   </View>
                 </View>
                 <View gap={16}>
@@ -237,7 +297,7 @@ const UploadImage = () => {
                   <Text style={styles.headingText}>Keywords</Text>
                   <TextInput
                     style={styles.addContainer}
-                    placeholder="Enter Image Title"
+                    placeholder="Enter Keywords"
                     placeholderTextColor={'#888'}
                   />
                 </View>
