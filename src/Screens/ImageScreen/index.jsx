@@ -1,15 +1,26 @@
-import {SafeAreaView, View, ScrollView, Text, Pressable} from 'react-native';
+import {
+  SafeAreaView,
+  View,
+  ScrollView,
+  Text,
+  Pressable,
+  Alert,
+} from 'react-native';
 import React, {useState} from 'react';
 import {styles} from './styles';
 import DropdownModal from '@components/DropdownModal';
 
 const ImageScreen = () => {
-  const mediaOptions = [
+  const options = [
     {id: 1, name: 'Image'},
     {id: 2, name: 'Video'},
     {id: 3, name: 'Audio'},
-    {id: 4, name: 'Document'},
   ];
+
+  const handleSelect = item => {
+    Alert.alert('Selected', item.name);
+    // Or do something with the selected item
+  };
   return (
     <SafeAreaView style={styles.background}>
       <ScrollView contentContainerStyle={styles.container}>
@@ -22,16 +33,16 @@ const ImageScreen = () => {
           </View>
           <View style={styles.section}>
             <Text style={styles.nameText}>Media Type</Text>
-            <DropdownModal options={mediaOptions} />
+            <DropdownModal options={options} onSelect={handleSelect} />
           </View>
           <View style={styles.infoContainer}>
             <View style={styles.subSection}>
               <Text style={styles.nameText}>Media Type</Text>
-              <DropdownModal options={mediaOptions} />
+              <DropdownModal options={options} onSelect={handleSelect} />
             </View>
             <View style={styles.subSection}>
               <Text style={styles.nameText}>Media Type</Text>
-              <DropdownModal options={mediaOptions} />
+              <DropdownModal options={options} onSelect={handleSelect} />
             </View>
           </View>
         </View>
