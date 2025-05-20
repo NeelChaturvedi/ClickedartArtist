@@ -18,6 +18,7 @@ import ProfileEditScreen from 'src/Screens/ProfileEdit/ProfileEditScreen';
 import {useOnboardingStore} from 'src/store/onboarding';
 import UploadImage from 'src/Screens/UploadImage';
 import ImageScreen from 'src/Screens/ImageScreen';
+import UploadBlog from 'src/Screens/UploadBlog';
 enableScreens();
 
 const Stack = createNativeStackNavigator();
@@ -104,6 +105,20 @@ export default function App() {
                 headerTintColor: 'white',
               }}
               component={ImageScreen}
+            />
+            <Stack.Screen
+              name="Write a blog"
+              options={{
+                headerShown: true,
+                headerStyle: {
+                  backgroundColor: 'black',
+                },
+                headerTitle: {
+                  color: 'white',
+                },
+                headerTintColor: 'white',
+              }}
+              component={UploadBlog}
             />
           </>
         )}

@@ -33,12 +33,16 @@ export const Tabs = () => {
     {
       label: 'Create a Catalogue',
       icon: 'photo-library',
-      onPress: () => {},
+      onPress: () => {
+        navigation.navigate('Upload Image');
+      },
     },
     {
       label: 'Upload a Blog',
       icon: 'edit',
-      onPress: () => {},
+      onPress: () => {
+        navigation.navigate('Write a blog');
+      },
     },
   ];
 
