@@ -102,21 +102,6 @@ const Blog = () => {
                   })}
               </Text>
             </View>
-            {/* <View style={styles.aboutOwner}>
-              <Image
-                style={styles.blogOwner}
-                source={{uri: blog.authorInfo?.author.profileImage}}
-              />
-              <View style={styles.ownerDetails}>
-                <Text style={styles.nameText}>
-                  {blog.authorInfo?.author.firstName || ''}{' '}
-                  {blog.authorInfo?.author.lastName || ''}
-                </Text>
-                <Text style={styles.typeText}>
-                  {blog.authorInfo?.author.rank}
-                </Text>
-              </View>
-            </View> */}
           </View>
 
           <View gap={24}>
@@ -129,7 +114,7 @@ const Blog = () => {
             )}
             <AutoHeightWebView
               style={{
-                width: Dimensions.get('window').width - 15,
+                width: Dimensions.get('window') ,
                 marginTop: 35,
                 marginBottom: 100,
                 backgroundColor: 'black',
@@ -138,6 +123,7 @@ const Blog = () => {
                 body {
                   background-color: #000 !important;
                   font-family: 'Outfit', sans-serif;
+                  line-height: 1.3;
                 }
 
                 p, span, div, li, h1, h2, h3, h4, h5, h6 {
