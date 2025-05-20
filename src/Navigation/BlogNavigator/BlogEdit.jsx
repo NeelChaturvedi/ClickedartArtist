@@ -10,10 +10,9 @@ import {
   Text,
   ToastAndroid,
   View,
+  SafeAreaView,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import BackButton from '../../components/Backbutton';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AutoGrowTextInput from '../../components/AutoGrowTextInput';
 import Button from '../../components/button';
@@ -118,9 +117,6 @@ const BlogEdit = () => {
         keyboardVerticalOffset={Platform.OS === 'ios' ? 10 : 0}>
         <View style={{flex: 1}}>
           <View style={style.container}>
-            <View>
-              <BackButton />
-            </View>
             <ScrollView
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{gap: 30}}>
@@ -207,7 +203,8 @@ const style = StyleSheet.create({
   },
   container: {
     paddingHorizontal: 20,
-    paddingVertical: 20,
+    paddingTop: 10,
+    paddingBottom: 40,
     width: '100%',
     height: '100%',
     gap: 30,

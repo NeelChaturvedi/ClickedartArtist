@@ -14,7 +14,18 @@ export default function BlogNavigator() {
       initialRouteName="Blogs"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="Blogs" component={Blog} />
-      <Stack.Screen name="BlogEdit" component={BlogEdit} />
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+          headerTitle: 'Edit Blog',
+          headerTintColor: 'white',
+        }}
+        name="BlogEdit"
+        component={BlogEdit}
+      />
     </Stack.Navigator>
   );
 }
