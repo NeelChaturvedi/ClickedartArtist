@@ -106,83 +106,95 @@ const BlogEdit = () => {
     }
   };
 
-  if (!blog) return <ActivityIndicator size="large" color="white" />;
+  if (!blog) {
+    return <ActivityIndicator size="large" color="white" />;
+  }
 
   return (
-    <SafeAreaView nestedScrollEnabled={true}  style={style.background}>
-      <View style={style.container}>
-        <View>
-          <BackButton />
+    <SafeAreaView nestedScrollEnabled={true} style={style.background}>
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 10 : 0}>
+        <View style={{flex: 1}}>
+          <View style={style.container}>
+            <View>
+              <BackButton />
+            </View>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{gap: 30}}>
+              <View style={style.section}>
+                <Text style={style.headingText}>Blog Image</Text>
+                <View style={style.uploadContainer}>
+                  {!uploading &&
+                    blog?.coverImage &&
+                    blog?.coverImage.length > 0 && (
+                      <Image
+                        style={style.blogImage}
+                        source={{uri: blog?.coverImage[0]}}
+                      />
+                    )}
+                  {uploading && <ActivityIndicator size={50} />}
+                  <Pressable
+                    onPress={handleImageLibraryLaunch}
+                    style={style.uploadBtn}>
+                    <Icon name="upload" size={20} color={'white'} />
+                  </Pressable>
+                </View>
+              </View>
+
+              <View style={style.section}>
+                <Text style={style.headingText}>Blog Title</Text>
+                <AutoGrowTextInput
+                  value={blog?.content?.title || ' '}
+                  onChangeText={text =>
+                    setBlog(prev => ({
+                      ...prev,
+                      content: {...prev.content, title: text},
+                    }))
+                  }
+                />
+              </View>
+
+              <View style={style.section}>
+                <Text style={style.headingText}>Blog Summary</Text>
+                <AutoGrowTextInput
+                  value={blog?.content?.summary || ' '}
+                  onChangeText={text =>
+                    setBlog(prev => ({
+                      ...prev,
+                      content: {...prev.content, summary: text},
+                    }))
+                  }
+                />
+              </View>
+
+              <View style={style.section}>
+                <Text style={style.headingText}>Blog Body</Text>
+                <View style={style.richTextContainer}>
+                  <View style={{flex: 1, paddingHorizontal: 16}}>
+                    <RichText nestedScrollEnabled={true} editor={editor} />
+                  </View>
+
+                  <KeyboardAvoidingView
+                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                    style={style.keyboardAvoidingView}>
+                    <Toolbar editor={editor} />
+                  </KeyboardAvoidingView>
+                </View>
+              </View>
+            </ScrollView>
+
+            <Button
+              btnText={'Save Changes'}
+              onPress={() => {
+                handleSaveChanges();
+              }}
+            />
+          </View>
         </View>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{gap: 30}}>
-          <View style={style.section}>
-            <Text style={style.headingText}>Blog Image</Text>
-            <View style={style.uploadContainer}>
-              {!uploading &&
-                blog?.coverImage &&
-                blog?.coverImage.length > 0 && (
-                  <Image
-                    style={style.blogImage}
-                    source={{uri: blog?.coverImage[0]}}
-                  />
-                )}
-              {uploading && <ActivityIndicator size={50} />}
-              <Pressable
-                onPress={handleImageLibraryLaunch}
-                style={style.uploadBtn}>
-                <Icon name="upload" size={20} color={'white'} />
-              </Pressable>
-            </View>
-          </View>
-
-          <View style={style.section}>
-            <Text style={style.headingText}>Blog Title</Text>
-            <AutoGrowTextInput
-              value={blog?.content?.title || ' '}
-              onChangeText={text =>
-                setBlog(prev => ({
-                  ...prev,
-                  content: {...prev.content, title: text},
-                }))
-              }
-            />
-          </View>
-
-          <View style={style.section}>
-            <Text style={style.headingText}>Blog Summary</Text>
-            <AutoGrowTextInput
-              value={blog?.content?.summary || ' '}
-              onChangeText={text =>
-                setBlog(prev => ({
-                  ...prev,
-                  content: {...prev.content, summary: text},
-                }))
-              }
-            />
-          </View>
-
-          <View style={style.section}>
-            <Text style={style.headingText}>Blog Body</Text>
-            <View style={style.richTextContainer}>
-              <RichText editor={editor} />
-              <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                style={style.keyboardAvoidingView}>
-                <Toolbar editor={editor} />
-              </KeyboardAvoidingView>
-            </View>
-          </View>
-        </ScrollView>
-
-        <Button
-          btnText={'Save Changes'}
-          onPress={() => {
-            handleSaveChanges();
-          }}
-        />
-      </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -234,12 +246,13 @@ const style = StyleSheet.create({
     borderRadius: 5,
   },
   richTextContainer: {
-    backgroundColor: '#fff',
     borderRadius: 5,
     minHeight: 200,
     maxHeight: 400,
     borderWidth: 0.5,
+    backgroundColor: 'white',
     width: '100%',
+    borderColor: 'white',
     overflow: 'hidden',
     paddingBottom: 50,
   },
