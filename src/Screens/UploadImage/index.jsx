@@ -42,6 +42,7 @@ const UploadImage = () => {
 
   const [imageUri, setImageUri] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   const pickImage = async () => {
     try {
@@ -73,7 +74,15 @@ const UploadImage = () => {
       };
 
       // Upload to S3
-      const data = await s3.upload(params).promise();
+      const upload = s3.upload(params);
+
+      upload.on('httpUploadProgress', progress => {
+        const percent = Math.round((progress.loaded / progress.total) * 50);
+        console.log(`Upload Progress: ${percent}%`);
+        setUploadProgress(percent);
+      });
+
+      const data = await upload.promise();
       console.log('Image URL:', data.Location);
       setImageUri(data.Location);
     } catch (error) {
@@ -129,6 +138,24 @@ const UploadImage = () => {
                     </>
                   )}
                 </Pressable>
+                {uploading && (
+                  <View
+                    style={{
+                      width: '100%',
+                      height: 10,
+                      backgroundColor: '#ccc',
+                      borderRadius: 5,
+                      marginTop: 10,
+                    }}>
+                    <View
+                      style={{
+                        width: `${uploadProgress}%`,
+                        height: '100%',
+                        backgroundColor: '#ED3174',
+                        borderRadius: 5,
+                      }}></View>
+                  </View>
+                )}
                 <Accordion title={'Upload Guidelines'} content={guidelines} />
                 <View style={styles.tabContainer}>
                   <Pressable onPress={() => setSelectedTab('text')}>
