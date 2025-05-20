@@ -9,6 +9,7 @@ const AutoGrowTextInput = ({value, onChangeText, placeholder}) => {
       style={[styles.input, {height: Math.max(45, height)}]}
       multiline
       placeholder={placeholder}
+      placeholderTextColor={'#888'}
       onContentSizeChange={event => {
         setHeight(event.nativeEvent.contentSize.height);
       }}
