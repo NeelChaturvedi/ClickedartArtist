@@ -356,7 +356,7 @@ const styles = StyleSheet.create({
     gap: 20,
     backgroundColor: 'black',
     alignItems: 'center',
-    paddingBottom: 24,
+    paddingBottom: 20,
   },
   headerContainer: {
     width: '100%',

@@ -7,13 +7,22 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
+  Image,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {styles} from './styles';
 import DropdownModal from '@components/DropdownModal';
 import Button from '@components/button';
+import LinearGradient from 'react-native-linear-gradient';
 
 const ImageScreen = () => {
+  const [startColor, setStartColor] = useState('rgb(0, 136, 209)');
+  const [endColor, setEndColor] = useState('rgb(0, 50, 150)');
+
+  const [imageUri, setImageUri] = useState(
+    require('../../assets/images/mockup.webp'),
+  );
+
   const options = [
     {id: 1, name: 'Image'},
     {id: 2, name: 'Video'},
@@ -33,7 +42,18 @@ const ImageScreen = () => {
           <ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{padding: 20, gap: 40}}>
-            <View style={styles.imageContainer} />
+            <LinearGradient
+              colors={[startColor, endColor]}
+              style={styles.imageContainer}>
+              <Image
+                source={imageUri}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                }}
+                resizeMode="contain"
+              />
+            </LinearGradient>
             <View style={styles.formContainer}>
               <Text style={styles.headingTitle}>Cooling-Off</Text>
               <View style={styles.infoContainer}>
@@ -43,16 +63,13 @@ const ImageScreen = () => {
               <View style={styles.detailsContainer}>
                 <Text style={styles.nameText}>Image Description</Text>
                 <Text style={styles.aboutText}>
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Id
-                  corporis fugit cumque libero placeat doloribus obcaecati
-                  reprehenderit earum aspernatur architecto! Expedita, nobis!
-                  Soluta vel provident voluptatem odit at. Officia beatae
-                  commodi, necessitatibus similique facere iste, nemo neque
-                  officiis, doloremque expedita accusamus? Recusandae rerum
-                  tempore cumque suscipit labore quaerat totam odio minus, autem
-                  ducimus. Iste ex, distinctio id tenetur nesciunt possimus
-                  fugit et consequatur excepturi libero enim dicta fugiat sint
-                  voluptatum.
+                  Witness the majestic male elephant enjoying a dust bath in the
+                  wilderness of Dhikala Zone, Jim Corbett Tiger Reserve. The
+                  monochrome effect captures the raw power, grace, and texture
+                  of this magnificent being, making the moment feel even more
+                  timeless. As he throws dust into the air, it's a display of
+                  both playfulness and survival—keeping cool, protecting his
+                  skin, and marking his presence in the wild.
                 </Text>
               </View>
               <View style={styles.section}>

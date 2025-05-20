@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: '#1E1E1E',
     padding: 20,
     width: '80%',
     borderRadius: 10,
@@ -73,13 +73,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     marginBottom: 12,
-    fontWeight: 'bold',
+    fontFamily: 'Outfit-bold',
+    color: 'white',
   },
   option: {
     paddingVertical: 12,
     fontSize: 16,
-    borderBottomWidth: 0.5,
-    borderColor: '#ccc',
+    color: 'white',
+    fontFamily: 'Outfit-medium',
   },
   selectionContainer: {
     width: '100%',

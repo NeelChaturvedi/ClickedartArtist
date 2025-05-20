@@ -13,10 +13,10 @@ export const styles = StyleSheet.create({
     },
     imageContainer:{
         width: '100%',
-        height: 250,
+        height: 247,
+        overflow:'hidden',
         backgroundColor: '#1E1E1E',
-        borderColor: 'white',
-        borderWidth: 0.5,
+        position:'relative',
     },
     formContainer:{
         gap:40,
@@ -47,11 +47,16 @@ export const styles = StyleSheet.create({
         alignItems:'flex-start',
     },
     detailsContainer:{
-        gap:20,
+        width: '100%',
+        padding: 16,
+        backgroundColor: '#1E1E1E',
+        borderColor: 'white',
+        borderWidth: 0.5,
+        gap:14,
     },
     aboutText:{
         fontFamily: 'Outfit-regular',
         color:'white',
-        fontSize: 15,
+        fontSize: 14,
     },
 });

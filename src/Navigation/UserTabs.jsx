@@ -57,7 +57,7 @@ export const Tabs = () => {
           tabBarInactiveTintColor: 'white',
           tabBarActiveTintColor: '#ED3147',
           tabBarStyle: {
-            height: 100,
+            height: 90,
             backgroundColor: '#000',
             paddingTop: 20,
             paddingHorizontal: 10,
