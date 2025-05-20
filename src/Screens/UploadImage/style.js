@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     flexGrow: 1,
     padding: 20,
     gap: 20,
-    width:'100%',
+    width: '100%',
   },
   uploadContainer: {
     height: 250,
@@ -48,8 +48,11 @@ export const styles = StyleSheet.create({
   addContainer: {
     backgroundColor: '#1E1E1E',
     height: 55,
+    color: 'white',
+    fontFamily: 'Outfit-medium',
+    fontSize: 16,
     borderWidth: 0.5,
-    borderColor:'white',
+    borderColor: 'white',
     borderRadius: 10,
     padding: 16,
   },
@@ -100,25 +103,41 @@ export const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Outfit-medium',
   },
-  section:{
-    alignItems:'flex-start',
-    gap:16,
+  section: {
+    alignItems: 'flex-start',
+    gap: 16,
   },
-  headingText:{
+  headingText: {
     fontSize: 20,
     fontFamily: 'Outfit-bold',
-    color:'white',
+    color: 'white',
   },
-  twoFields:{
+  twoFields: {
     flexDirection: 'row',
-    justifyContent:'space-between',
-    alignItems:'center',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   descriptionContainer: {
     backgroundColor: '#1E1E1E',
     height: 120,
     borderRadius: 10,
     padding: 16,
-    textAlignVertical:'top',
+    textAlignVertical: 'top',
+  },
+  watermarkRemove: {
+    color: 'white',
+    fontSize: 18,
+    backgroundColor: 'red',
+    textAlign: 'center',
+    padding: 10,
+    paddingBottom: 12,
+    borderRadius: 10,
+    marginTop: 20,
+    fontFamily: 'Outfit-medium',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 14,
+    fontFamily: 'Outfit-medium',
   },
 });

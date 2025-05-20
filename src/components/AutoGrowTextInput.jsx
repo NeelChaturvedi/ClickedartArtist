@@ -13,7 +13,6 @@ const AutoGrowTextInput = ({value, onChangeText, placeholder, keyboardType}) => 
       onContentSizeChange={event => {
         setHeight(event.nativeEvent.contentSize.height);
       }}
-      placeholderTextColor={'#888'}
       value={value}
       onChangeText={onChangeText}
       keyboardType={keyboardType}

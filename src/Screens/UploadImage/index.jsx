@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import {
   View,
@@ -13,7 +14,7 @@ import {
   ActivityIndicator,
   Image,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {styles} from './style';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Accordion from '@components/Accordian';
@@ -26,7 +27,13 @@ import {
   AWS_REGION,
   AWS_ACCESS_KEY_ID,
   AWS_SECRET_ACCESS_KEY,
+  API_URL,
 } from '@env';
+import api from 'src/utils/apiClient';
+import {useUserStore} from 'src/store/auth';
+import axios from 'axios';
+import MultiSelectModal from '@components/MultiSelectModal';
+import {useNavigation} from '@react-navigation/native';
 
 const s3 = new AWS.S3({
   accessKeyId: AWS_ACCESS_KEY_ID,
@@ -36,14 +43,195 @@ const s3 = new AWS.S3({
 });
 
 const UploadImage = () => {
+  const {user} = useUserStore();
+  const navigation = useNavigation();
+
   const [selectedTab, setSelectedTab] = useState('text');
   const [step, setStep] = useState(0);
   const [imageUri, setImageUri] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [watermarkUploading, setWatermarkUploading] = useState(false);
+  const [processing, setProcessing] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [errors, setErrors] = useState({});
+  const [activePlan, setActivePlan] = useState('basic');
+  const [customText, setCustomText] = useState('ClickedArt');
+  const [watermark, setWatermark] = useState(null);
+  const [limit, setLimit] = useState(10);
+  const [photosLength, setPhotosLength] = useState(0);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [photo, setPhoto] = useState({
+    category: '',
+    photographer: '',
+    imageLinks: {},
+    resolutions: {},
+    description: '',
+    story: '',
+    keywords: [],
+    location: '',
+    photoPrivacy: 'Public',
+    watermark: false,
+    cameraDetails: {
+      camera: '',
+      lens: '',
+      settings: {
+        focalLength: '',
+        aperture: '',
+        shutterSpeed: '',
+        iso: '',
+      },
+    },
+    notForSale: false,
+    price: 0,
+    title: '',
+    isActive: false,
+  });
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => {
+    setIsEnabled(previousState => !previousState);
+    setPhoto({...photo, notForSale: !isEnabled, price: 0});
+  };
 
-  const PART_SIZE = 5 * 1024 * 1024;
-  const MAX_RETRIES = 3;
+  const categoriesList = categories.map(category => ({
+    id: category._id,
+    name: category.name,
+  }));
+
+  const [keywordInput, setKeywordInput] = useState(photo.keywords.join(', '));
+
+  const validate = () => {
+    let error = {};
+    if (!photo.title) {
+      error.title = 'Title is required';
+    }
+    if (!photo.category) {
+      error.category = 'Category is required';
+    }
+    if (!photo.notForSale && !photo.price) {
+      error.price = 'Price is required';
+    }
+    if (photo.keywords.length < 5) {
+      error.keywords = 'At least 5 keywords are required';
+    }
+    if (photo.price && isNaN(photo.price)) {
+      error.price = 'Price must be a number';
+    }
+    if (photo.price && photo.price < 200) {
+      error.price = 'Price must be greater than 200';
+    }
+    if (photo.price && photo.price > 100000) {
+      error.price = 'Price must be less than 100000';
+    }
+    setErrors(error);
+    return Object.keys(error).length === 0;
+  };
+
+  const handleWatermarkPicker = async () => {
+    try {
+      setWatermarkUploading(true);
+      const image = await ImagePicker.openPicker({
+        mediaType: 'photo',
+        cropping: false,
+      });
+      await uploadImageToServer(image.path);
+    } catch (error) {
+      console.log('Picker error:', error);
+    } finally {
+      setWatermarkUploading(false);
+    }
+  };
+
+  const handleWatermarkAdd = async watermarkUrl => {
+    try {
+      const response = await api.post('/customwatermark/add-custom-watermark', {
+        photographer: user?._id,
+        watermarkImage: watermarkUrl,
+      });
+      console.log('Watermark added:', response.data);
+      setWatermark(response.data.watermark);
+      setPhoto({...photo, imageLinks: {image: imageUri}});
+    } catch (error) {
+      console.error('Error adding watermark:', error);
+    }
+  };
+
+  const handleWatermarkRemove = async id => {
+    try {
+      await api.delete(`/customwatermark/delete-custom-watermark?id=${id}`);
+      console.log('Watermark removed');
+      setWatermark('');
+      setPhoto({...photo, imageLinks: {image: imageUri}});
+    } catch (error) {
+      console.error('Error removing watermark:', error);
+    }
+  };
+
+  const getWatermarks = async () => {
+    try {
+      const response = await api.get(
+        `/customwatermark/get-custom-watermark?photographer=${user?._id}`,
+      );
+      setWatermark(response.data.watermarkImage);
+    } catch (error) {
+      console.log('Watermark not found');
+    }
+  };
+
+  const getResolutions = async () => {
+    try {
+      setStep(1);
+      setProcessing(true);
+      if (photo.imageLinks.original) {
+        return;
+      }
+      const response = await api.post(
+        '/upload/handle-photos-with-watermark-and-resolutions-options',
+        {
+          photographer: user?._id,
+          imageUrl: imageUri,
+          plan: activePlan,
+          isCustomText:
+            activePlan === 'basic' || (watermark && selectedTab === 'image')
+              ? 'false'
+              : 'true',
+          customText:
+            (watermark || activePlan === 'basic') && selectedTab === 'image'
+              ? ''
+              : customText || 'ClickedArt',
+        },
+      );
+      const data = response.data;
+      console.log('Resolutions:', data);
+      setPhoto(prevPhoto => ({
+        ...prevPhoto,
+        imageLinks: data.urls,
+        resolutions: data.resolutions,
+      }));
+    } catch (error) {
+      console.error('Error fetching resolutions:', error.response);
+    } finally {
+      setProcessing(false);
+    }
+  };
+
+  const handleUpload = async () => {
+    if (!validate()) {
+      return;
+    }
+    setErrors({});
+    // setLoading(true);
+    try {
+      const response = await api.post('/images/add-image-in-vault', photo);
+      console.log('Image uploaded successfully:', response.data);
+      Alert.alert('Success', 'Image uploaded and is under review');
+      setImageUri(null);
+      navigation.goBack();
+    } catch (error) {
+      console.log(error.response);
+    } finally {
+      // setLoading(false);
+    }
+  };
 
   const pickImage = async () => {
     try {
@@ -57,6 +245,9 @@ const UploadImage = () => {
       Alert.alert('Error', 'Failed to pick image: ' + error.message);
     }
   };
+
+  const PART_SIZE = 5 * 1024 * 1024;
+  const MAX_RETRIES = 3;
 
   const uploadImageToS3 = async imgUri => {
     if (!imgUri) {
@@ -134,7 +325,9 @@ const UploadImage = () => {
       };
       const data = await s3.completeMultipartUpload(completeParams).promise();
       console.log('Image URL:', data.Location);
-      setImageUri(data.Location);
+      const fileUrl = data.Location;
+      setImageUri(fileUrl);
+      setPhoto({...photo, imageLinks: {image: fileUrl}});
     } catch (error) {
       Alert.alert('Error', `Failed to upload image: ${error.message}`);
 
@@ -149,6 +342,34 @@ const UploadImage = () => {
       }
     } finally {
       setUploading(false);
+    }
+  };
+
+  const uploadImageToServer = async watermarkUri => {
+    if (!watermarkUri) {
+      console.error('No image Uri');
+      return;
+    }
+    const imgData = new FormData();
+    imgData.append('image', {
+      uri: watermarkUri,
+      name: 'photo.jpg',
+      type: 'image/jpeg',
+    });
+    try {
+      const res = await axios.post(
+        `${API_URL}/api/upload/uploadSingleImage`,
+        imgData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+      const watermarkUrl = res.data;
+      await handleWatermarkAdd(watermarkUrl);
+    } catch (err) {
+      console.error('Upload error:', err);
     }
   };
 
@@ -168,8 +389,80 @@ const UploadImage = () => {
     'Ensure the photo has no distracting elements unless integral to the subject.',
   ];
 
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  useEffect(() => {
+    if (activePlan === 'premium') {
+      getWatermarks();
+    }
+  }, [activePlan]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await api.get('/category/get?pageSize=1000');
+        const data = response.data;
+        console.log('Categories:', data.categories);
+        setCategories(data.categories);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+
+    const fetchActivePlan = async () => {
+      if (!user || !user._id) {
+        return;
+      }
+      setPhoto({...photo, photographer: user?._id});
+      try {
+        const res = await api.get(
+          `/subscriptions/get-user-active-subscription?photographer=${user._id}`,
+        );
+        console.log(
+          'Active Plan',
+          res.data.subscription?.planId?.name?.toLowerCase(),
+        );
+        setActivePlan(res.data.subscription?.planId?.name?.toLowerCase());
+        if (res.data.subscription?.planId?.name?.toLowerCase() === 'basic') {
+          setLimit(10);
+        } else if (
+          res.data.subscription?.planId?.name?.toLowerCase() === 'intermediate'
+        ) {
+          setLimit(50);
+        } else if (
+          res.data.subscription?.planId?.name?.toLowerCase() === 'premium'
+        ) {
+          setLimit(999999);
+        }
+      } catch (error) {
+        console.log(error.response ? error.response.data : error.message);
+      }
+    };
+
+    const fetchPhotos = async () => {
+      try {
+        // setLoading(true);
+        const res = await api.get(
+          `/images/get-images-by-photographer?photographer=${user._id}&pageSize=1000`,
+        );
+        console.log('Photos:', res.data);
+        setPhotosLength(res.data.photos?.length);
+      } catch (error) {
+        console.log(error.response ? error.response.data : error.message);
+      } finally {
+        // setLoading(false);
+      }
+    };
+
+    fetchActivePlan();
+    fetchPhotos();
+  }, [user]);
 
   return (
     <SafeAreaView style={styles.background}>
@@ -220,7 +513,11 @@ const UploadImage = () => {
                 )}
                 <Accordion title={'Upload Guidelines'} content={guidelines} />
                 <View style={styles.tabContainer}>
-                  <Pressable onPress={() => setSelectedTab('text')}>
+                  <Pressable
+                    onPress={() => {
+                      setSelectedTab('text');
+                      setPhoto({...photo, imageLinks: {image: imageUri}});
+                    }}>
                     <Text
                       style={[
                         styles.tabText,
@@ -229,7 +526,11 @@ const UploadImage = () => {
                       Text Watermark
                     </Text>
                   </Pressable>
-                  <Pressable onPress={() => setSelectedTab('image')}>
+                  <Pressable
+                    onPress={() => {
+                      setSelectedTab('image');
+                      setPhoto({...photo, imageLinks: {image: imageUri}});
+                    }}>
                     <Text
                       style={[
                         styles.tabText,
@@ -240,23 +541,68 @@ const UploadImage = () => {
                   </Pressable>
                 </View>
                 {selectedTab === 'text' && (
-                  <AutoGrowTextInput value={'ClickedArt'} />
+                  <AutoGrowTextInput
+                    value={customText}
+                    onChangeText={text => setCustomText(text)}
+                  />
                 )}
                 {selectedTab === 'image' && (
                   <View style={styles.watermarkImage}>
-                    <TextInput
-                      editable={false}
-                      style={{width: '80%', color: 'white'}}
-                      value="Choose a file"
-                    />
-                    <Pressable style={styles.uploadBtn}>
-                      <Icon name="upload" size={20} color="white" />
-                    </Pressable>
+                    {watermark ? (
+                      <>
+                        <Image
+                          source={{uri: watermark.watermarkImage}}
+                          style={{
+                            width: '50%',
+                            height: 80,
+                          }}
+                        />
+                        <Pressable
+                          style={{
+                            width: '50%',
+                            height: 80,
+                            alignItems: 'center',
+                          }}
+                          onPress={() => handleWatermarkRemove(watermark?._id)}>
+                          <Text style={styles.watermarkRemove}>Remove</Text>
+                        </Pressable>
+                      </>
+                    ) : (
+                      <>
+                        <TextInput
+                          editable={false}
+                          style={{width: '80%', color: 'white'}}
+                          value={
+                            watermarkUploading
+                              ? 'Uploading...'
+                              : 'Choose a file'
+                          }
+                        />
+                        <Pressable
+                          style={styles.uploadBtn}
+                          disabled={watermarkUploading}
+                          onPress={handleWatermarkPicker}>
+                          <Icon name="upload" size={20} color="white" />
+                        </Pressable>
+                      </>
+                    )}
                   </View>
                 )}
               </ScrollView>
               <View paddingHorizontal={20} paddingVertical={30}>
-                <Button btnText={'Proceed'} onPress={() => setStep(1)} />
+                <Button
+                  disabled={
+                    !imageUri ||
+                    uploading ||
+                    processing ||
+                    watermarkUploading ||
+                    photosLength >= limit ||
+                    (selectedTab === 'image' && !watermark) ||
+                    (selectedTab === 'text' && !customText)
+                  }
+                  btnText={'Proceed'}
+                  onPress={() => getResolutions()}
+                />
               </View>
             </>
           )}
@@ -265,6 +611,38 @@ const UploadImage = () => {
               <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.container}>
+                <View style={styles.uploadContainer}>
+                  {photo.imageLinks?.thumbnail ? (
+                    <Image
+                      source={{uri: photo.imageLinks?.thumbnail}}
+                      style={styles.image}
+                    />
+                  ) : processing ? (
+                    <>
+                      <View style={[styles.image, {position: 'relative'}]}>
+                        <View
+                          style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: [{translateX: -25}, {translateY: -25}],
+                            zIndex: 1,
+                          }}>
+                          <ActivityIndicator size={50} color={'#ed3147'} />
+                        </View>
+                        <Image
+                          source={{uri: imageUri}}
+                          style={[styles.image, {opacity: 0.5}]}
+                        />
+                      </View>
+                    </>
+                  ) : (
+                    <>
+                      <Icon name="warning" size={24} color="white" />
+                      <Text style={styles.uploadText}>No Image Found</Text>
+                    </>
+                  )}
+                </View>
                 <View style={styles.toggleContainer}>
                   <Text style={styles.switchText}>Not For Sale</Text>
                   <Switch
@@ -277,65 +655,201 @@ const UploadImage = () => {
                 </View>
                 <View gap={16}>
                   <Text style={styles.headingText}>Title</Text>
-                  <AutoGrowTextInput placeholder={'Enter Image Title'} />
+                  <AutoGrowTextInput
+                    placeholder={'Enter Image Title'}
+                    onChangeText={text => setPhoto({...photo, title: text})}
+                    value={photo.title}
+                  />
+                  {errors.title && (
+                    <Text style={styles.errorText}>{errors.title}</Text>
+                  )}
                 </View>
                 <View style={styles.twoFields}>
-                  <View gap={16} style={{width: '48%'}}>
-                    <Text style={styles.headingText}>Price</Text>
-                    <AutoGrowTextInput placeholder={'Enter Image Price'} />
-                  </View>
-                  <View gap={16} style={{width: '48%'}}>
+                  {!photo.notForSale && (
+                    <View gap={16} style={{width: '48%'}}>
+                      <Text style={styles.headingText}>Price</Text>
+                      <AutoGrowTextInput
+                        placeholder={'Enter Image Price'}
+                        onChangeText={text => {
+                          setPhoto({...photo, price: text});
+                        }}
+                        value={photo.price}
+                        keyboardType="numeric"
+                      />
+                    </View>
+                  )}
+                  <View
+                    gap={16}
+                    style={{width: photo.notForSale ? '100%' : '48%'}}>
                     <Text style={styles.headingText}>Category</Text>
-                    <AutoGrowTextInput placeholder={'Enter Image Category'} />
+                    <MultiSelectModal
+                      options={categoriesList}
+                      value={photo.category}
+                      onChange={ids =>
+                        setPhoto(prev => ({...prev, category: ids}))
+                      }
+                      placeholder={'Select Categories'}
+                    />
                   </View>
                 </View>
+                {errors.price && (
+                  <Text style={styles.errorText}>{errors.price}</Text>
+                )}
                 <View gap={16}>
                   <Text style={styles.headingText}>Description</Text>
-                  <AutoGrowTextInput placeholder={'Maximum 1000 words'} />
+                  <AutoGrowTextInput
+                    placeholder={'Maximum 1000 words'}
+                    onChangeText={text => {
+                      setPhoto({...photo, description: text});
+                    }}
+                    value={photo.description}
+                  />
+                  {errors.description && (
+                    <Text style={styles.errorText}>{errors.description}</Text>
+                  )}
                 </View>
                 <View gap={16}>
                   <Text style={styles.headingText}>Keywords</Text>
-                  <TextInput
-                    style={styles.addContainer}
+                  <AutoGrowTextInput
                     placeholder="Enter Keywords"
-                    placeholderTextColor={'#888'}
+                    value={keywordInput}
+                    onChangeText={text => {
+                      setKeywordInput(text);
+                      setPhoto({
+                        ...photo,
+                        keywords: text.split(',').map(item => item.trim()),
+                      });
+                    }}
                   />
+                  {errors.keywords && (
+                    <Text style={styles.errorText}>{errors.keywords}</Text>
+                  )}
                 </View>
                 <View gap={16}>
                   <Text style={styles.headingText}>Story</Text>
-                  <AutoGrowTextInput />
+                  <AutoGrowTextInput
+                    placeholder={'Maximum 1000 words'}
+                    onChangeText={text => {
+                      setPhoto({...photo, story: text});
+                    }}
+                    value={photo.story}
+                  />
                 </View>
                 <View gap={16}>
                   <Text style={styles.headingText}>Camera</Text>
-                  <AutoGrowTextInput />
+                  <AutoGrowTextInput
+                    placeholder={'Enter Camera Name'}
+                    onChangeText={text => {
+                      setPhoto({
+                        ...photo,
+                        cameraDetails: {...photo.cameraDetails, camera: text},
+                      });
+                    }}
+                    value={photo.cameraDetails.camera}
+                  />
                 </View>
                 <View gap={16}>
                   <Text style={styles.headingText}>Lens</Text>
-                  <AutoGrowTextInput />
+                  <AutoGrowTextInput
+                    placeholder={'Enter Lens Name'}
+                    onChangeText={text => {
+                      setPhoto({
+                        ...photo,
+                        cameraDetails: {...photo.cameraDetails, lens: text},
+                      });
+                    }}
+                    value={photo.cameraDetails.lens}
+                  />
                 </View>
                 <View style={styles.twoFields}>
                   <View gap={16} style={{width: '48%'}}>
                     <Text style={styles.headingText}>Focal Length</Text>
-                    <AutoGrowTextInput />
+                    <AutoGrowTextInput
+                      placeholder={'Enter Focal Length'}
+                      onChangeText={text => {
+                        setPhoto({
+                          ...photo,
+                          cameraDetails: {
+                            ...photo.cameraDetails,
+                            settings: {
+                              ...photo.cameraDetails.settings,
+                              focalLength: text,
+                            },
+                          },
+                        });
+                      }}
+                      value={photo.cameraDetails.settings.focalLength}
+                    />
                   </View>
                   <View gap={16} style={{width: '48%'}}>
                     <Text style={styles.headingText}>Aperture</Text>
-                    <AutoGrowTextInput />
+                    <AutoGrowTextInput
+                      placeholder={'Enter Aperture'}
+                      onChangeText={text => {
+                        setPhoto({
+                          ...photo,
+                          cameraDetails: {
+                            ...photo.cameraDetails,
+                            settings: {
+                              ...photo.cameraDetails.settings,
+                              aperture: text,
+                            },
+                          },
+                        });
+                      }}
+                      value={photo.cameraDetails.settings.aperture}
+                    />
                   </View>
                 </View>
                 <View style={styles.twoFields}>
                   <View gap={16} style={{width: '48%'}}>
                     <Text style={styles.headingText}>Shutter Speed</Text>
-                    <AutoGrowTextInput />
+                    <AutoGrowTextInput
+                      placeholder={'Enter Shutter Speed'}
+                      onChangeText={text => {
+                        setPhoto({
+                          ...photo,
+                          cameraDetails: {
+                            ...photo.cameraDetails,
+                            settings: {
+                              ...photo.cameraDetails.settings,
+                              shutterSpeed: text,
+                            },
+                          },
+                        });
+                      }}
+                      value={photo.cameraDetails.settings.shutterSpeed}
+                    />
                   </View>
                   <View gap={16} style={{width: '48%'}}>
                     <Text style={styles.headingText}>ISO</Text>
-                    <AutoGrowTextInput />
+                    <AutoGrowTextInput
+                      placeholder={'Enter ISO'}
+                      onChangeText={text => {
+                        setPhoto({
+                          ...photo,
+                          cameraDetails: {
+                            ...photo.cameraDetails,
+                            settings: {
+                              ...photo.cameraDetails.settings,
+                              iso: text,
+                            },
+                          },
+                        });
+                      }}
+                      value={photo.cameraDetails.settings.iso}
+                    />
                   </View>
                 </View>
                 <View gap={16}>
                   <Text style={styles.headingText}>Location</Text>
-                  <AutoGrowTextInput />
+                  <AutoGrowTextInput
+                    placeholder={'Enter Location'}
+                    onChangeText={text => {
+                      setPhoto({...photo, location: text});
+                    }}
+                    value={photo.location}
+                  />
                 </View>
               </ScrollView>
               <View style={styles.buttonsContainer}>
@@ -343,7 +857,7 @@ const UploadImage = () => {
                   <Button btnText={'Back'} onPress={() => setStep(0)} />
                 </View>
                 <View style={{width: '48%'}}>
-                  <Button btnText={'Upload'} />
+                  <Button btnText={'Upload'} onPress={() => handleUpload()} />
                 </View>
               </View>
             </>
