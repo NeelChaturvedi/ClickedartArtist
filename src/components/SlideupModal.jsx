@@ -64,17 +64,14 @@ const SlideUpModal = ({visible, onClose, options = []}) => {
       animationType="none"
       visible={visible}
       onRequestClose={onClose}>
-      {/* Backdrop */}
       <TouchableOpacity
         style={styles.backdrop}
         onPress={onClose}
         activeOpacity={1}>
-        {/* Prevents double taps on the modal container */}
         <TouchableOpacity activeOpacity={1}>
           <Animated.View
             style={[styles.modalContainer, {transform: [{translateY}]}]}
             {...panResponder.panHandlers}>
-            {/* Options */}
             {options.map((option, index) => (
               <TouchableOpacity
                 key={index}
@@ -94,7 +91,7 @@ const SlideUpModal = ({visible, onClose, options = []}) => {
                 <Icon name="chevron-right" size={24} color="white" />
               </TouchableOpacity>
             ))}
-            {/* Cancel button */}
+
             <TouchableOpacity style={styles.cancel} onPress={onClose}>
               <Text style={styles.cancelText}>Cancel</Text>
             </TouchableOpacity>
@@ -126,7 +123,7 @@ const styles = StyleSheet.create({
   },
   optionContainer: {
     flexDirection: 'row',
-    gap:10,
+    gap: 10,
     alignItems: 'center',
   },
   iconWrapper: {

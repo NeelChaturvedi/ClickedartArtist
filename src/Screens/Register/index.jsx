@@ -202,8 +202,6 @@ const Register = () => {
           <Button
             btnText={'Create Account'}
             onPress={() => {
-              // nextStep();
-              // navigation.navigate('Details');
               checkUsernameAvailability(formData.username);
             }}
           />

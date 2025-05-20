@@ -153,7 +153,8 @@ const UploadImage = () => {
                         height: '100%',
                         backgroundColor: '#ED3174',
                         borderRadius: 5,
-                      }}></View>
+                      }}
+                    />
                   </View>
                 )}
                 <Accordion title={'Upload Guidelines'} content={guidelines} />
