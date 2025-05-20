@@ -1,7 +1,6 @@
-import {View, Text, Image, RefreshControl} from 'react-native';
+import {View, Text, Image, RefreshControl, ScrollView} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {styles} from './styles';
-import {ScrollView} from 'moti';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useUserStore} from '../../store/auth';
 import {API_URL} from '@env';

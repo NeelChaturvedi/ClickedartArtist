@@ -1,9 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState, ScrollView} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {style} from './styles';
 import FilterDate from '../../components/FilterDate';
-import {ScrollView} from 'moti';
 import {Dimensions, Text, View} from 'react-native';
 import Values from '../../components/Values';
 import api from '../../utils/apiClient';

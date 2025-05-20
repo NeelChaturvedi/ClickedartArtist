@@ -29,8 +29,8 @@ export default function SettingsNavigator() {
       <Stack.Screen name="Faqs" component={Faqs}/>
       <Stack.Screen name="Terms" component={TermsAndConditions}/>
       <Stack.Screen name="Membership" component={Membership}/>
-      <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy}/>
-      <Stack.Screen name="HelpCenter" component={HelpCenter}/>
+      <Stack.Screen name="Privacy Policy" component={PrivacyPolicy}/>
+      <Stack.Screen name="Help Center" component={HelpCenter}/>
     </Stack.Navigator>
   );
 }

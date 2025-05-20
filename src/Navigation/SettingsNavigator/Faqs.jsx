@@ -1,8 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
-import {View, StyleSheet, SafeAreaView} from 'react-native';
+import {View, StyleSheet, SafeAreaView, ScrollView} from 'react-native';
 import React from 'react';
 import Accordion from '../../components/Accordian';
-import {ScrollView} from 'moti';
 
 const Faqs = () => {
   const faqs = [

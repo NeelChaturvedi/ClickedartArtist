@@ -168,7 +168,7 @@ const Membership = () => {
 
   return (
     <SafeAreaView style={styles.background}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.headerContainer}>
           <Image
             style={styles.image}
@@ -370,7 +370,6 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: 'black',
     opacity: 0.8,
-    borderBottomRightRadius: 60,
     resizeMode: 'cover',
   },
   contentContainer: {
@@ -392,7 +391,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   optionsContainer: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
   },
   planContainer: {
     flexDirection: 'column',
