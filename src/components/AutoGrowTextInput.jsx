@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {TextInput, StyleSheet} from 'react-native';
 
-const AutoGrowTextInput = ({value, onChangeText, placeholder}) => {
+const AutoGrowTextInput = ({value, onChangeText, placeholder, keyboardType}) => {
   const [height, setHeight] = useState(50);
 
   return (
@@ -12,8 +12,10 @@ const AutoGrowTextInput = ({value, onChangeText, placeholder}) => {
       onContentSizeChange={event => {
         setHeight(event.nativeEvent.contentSize.height);
       }}
+      placeholderTextColor={'#888'}
       value={value}
       onChangeText={onChangeText}
+      keyboardType={keyboardType}
     />
   );
 };
