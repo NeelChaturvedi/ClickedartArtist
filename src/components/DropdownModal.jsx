@@ -9,18 +9,19 @@ import {
   FlatList,
 } from 'react-native';
 
-const DropdownModal = ({ options }) => {
+const DropdownModal = ({ options, onSelect }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
 
   const handleSelect = (item) => {
     setSelectedOption(item);
+    onSelect(item);
     setModalVisible(false);
   };
 
   return (
     <View style={styles.selectionContainer}>
-      <Pressable onPress={() => setModalVisible(true)} style={styles.selector}>
+      <Pressable onPress={() => setModalVisible(true)} >
         <Text style={styles.selectionText}>
           {selectedOption?.name || 'Select option'}
         </Text>
@@ -63,39 +64,34 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalContainer: {
-    backgroundColor: '#1E1E1E',
+    backgroundColor: '#fff',
     padding: 20,
     width: '80%',
     borderRadius: 10,
     maxHeight: '60%',
   },
   title: {
-    fontSize: 20,
+    fontSize: 18,
     marginBottom: 12,
-    fontFamily:'Outfit-bold',
-    textAlign: 'center',
-    color: 'white',
+    fontWeight: 'bold',
   },
   option: {
     paddingVertical: 12,
     fontSize: 16,
-    fontFamily:'Outfit-medium',
-    color: 'white',
+    borderBottomWidth: 0.5,
+    borderColor: '#ccc',
   },
   selectionContainer: {
     width: '100%',
     height: 60,
-    paddingVertical: 10,
-    paddingHorizontal: 16,
+    padding: 16,
     backgroundColor: '#1E1E1E',
     justifyContent: 'center',
     borderColor: 'white',
     borderWidth: 0.5,
     borderRadius: 10,
   },
-  selector: {
-    paddingVertical: 8,
-  },
+
   selectionText: {
     color: 'white',
     fontSize: 16,
