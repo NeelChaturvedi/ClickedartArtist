@@ -21,8 +21,10 @@ const Dashboard = () => {
   const [isCustomDate, setIsCustomDate] = useState(false);
   const [loading, setLoading] = useState(false);
   const monthlyData = stats?.monthlyData || [];
-  const salesData = monthlyData.map(data => data.sales);
-  const royaltyData = monthlyData.map(data => data.royaltyAmount);
+  const salesData = monthlyData.map(
+    data => data.sales + data.printCutAmount * 10,
+  );
+  const royaltyData = monthlyData.map(data => data.royaltyAmount + data.printCutAmount);
   const monthNames = [
     'Jan',
     'Feb',
@@ -57,6 +59,7 @@ const Dashboard = () => {
         startDate: '',
         endDate: '',
       });
+      console.log(res.data);
     } catch (error) {
       console.log(error);
     } finally {
