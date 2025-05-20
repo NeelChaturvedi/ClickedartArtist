@@ -45,5 +45,13 @@ export const styles = StyleSheet.create({
         gap: 16,
         width:'48%',
         alignItems:'flex-start',
-    }
+    },
+    detailsContainer:{
+        gap:20,
+    },
+    aboutText:{
+        fontFamily: 'Outfit-regular',
+        color:'white',
+        fontSize: 15,
+    },
 });

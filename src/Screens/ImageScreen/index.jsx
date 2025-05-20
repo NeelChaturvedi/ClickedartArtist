@@ -39,6 +39,21 @@ const ImageScreen = () => {
                 <Text style={styles.nameText}>Bhanu Sharma</Text>
                 <Text style={styles.nameText}>₹ 14,000</Text>
               </View>
+              <View style={styles.detailsContainer}>
+                <Text style={styles.nameText}>Image Description</Text>
+                <Text style={styles.aboutText}>
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Id
+                  corporis fugit cumque libero placeat doloribus obcaecati
+                  reprehenderit earum aspernatur architecto! Expedita, nobis!
+                  Soluta vel provident voluptatem odit at. Officia beatae
+                  commodi, necessitatibus similique facere iste, nemo neque
+                  officiis, doloremque expedita accusamus? Recusandae rerum
+                  tempore cumque suscipit labore quaerat totam odio minus, autem
+                  ducimus. Iste ex, distinctio id tenetur nesciunt possimus
+                  fugit et consequatur excepturi libero enim dicta fugiat sint
+                  voluptatum.
+                </Text>
+              </View>
               <View style={styles.section}>
                 <Text style={styles.nameText}>Media Type</Text>
                 <DropdownModal options={options} onSelect={handleSelect} />
