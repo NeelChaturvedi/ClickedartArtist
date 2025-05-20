@@ -9,6 +9,9 @@ import {
   KeyboardAvoidingView,
   Platform,
   Switch,
+  Alert,
+  ActivityIndicator,
+  Image,
 } from 'react-native';
 import React, {useState} from 'react';
 import {styles} from './style';
@@ -16,10 +19,69 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Accordion from '@components/Accordian';
 import Button from '@components/button';
 import AutoGrowTextInput from '@components/AutoGrowTextInput';
+import ImagePicker from 'react-native-image-crop-picker';
+import AWS from 'aws-sdk';
+import {Buffer} from 'buffer';
+import {
+  AWS_BUCKET_NAME,
+  AWS_REGION,
+  AWS_ACCESS_KEY_ID,
+  AWS_SECRET_ACCESS_KEY,
+} from '@env';
+
+const s3 = new AWS.S3({
+  accessKeyId: AWS_ACCESS_KEY_ID,
+  secretAccessKey: AWS_SECRET_ACCESS_KEY,
+  region: AWS_REGION,
+  signatureVersion: 'v4',
+});
 
 const UploadImage = () => {
   const [selectedTab, setSelectedTab] = useState('text');
   const [step, setStep] = useState(0);
+
+  const [imageUri, setImageUri] = useState(null);
+  const [uploading, setUploading] = useState(false);
+
+  const pickImage = async () => {
+    try {
+      const image = await ImagePicker.openPicker({
+        cropping: false,
+        mediaType: 'photo',
+        includeBase64: true,
+      });
+      await uploadImageToS3(image.path, image.data);
+    } catch (error) {
+      Alert.alert('Error', 'Failed to pick image: ' + error.message);
+    }
+  };
+
+  const uploadImageToS3 = async (imgUri, imgData) => {
+    if (!imgUri || !imgData) {
+      Alert.alert('Error', 'Please select an image first');
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const buffer = Buffer.from(imgData, 'base64');
+      const params = {
+        Bucket: AWS_BUCKET_NAME,
+        Key: `images/${Date.now()}.jpg`,
+        Body: buffer,
+        ContentType: 'image/jpeg',
+      };
+
+      // Upload to S3
+      const data = await s3.upload(params).promise();
+      console.log('Image URL:', data.Location);
+      setImageUri(data.Location);
+    } catch (error) {
+      Alert.alert('Error', `Failed to upload image: ${error.message}`);
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const guidelines = [
     'File size should be more than 5MB ',
@@ -51,9 +113,21 @@ const UploadImage = () => {
               <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.container}>
-                <Pressable style={styles.uploadContainer}>
-                  <Icon name="upload" size={24} color="white" />
-                  <Text style={styles.uploadText}>Upload your image here</Text>
+                <Pressable style={styles.uploadContainer} onPress={pickImage}>
+                  {imageUri && !uploading ? (
+                    <Image source={{uri: imageUri}} style={styles.image} />
+                  ) : uploading ? (
+                    <View>
+                      <ActivityIndicator size={50} />
+                    </View>
+                  ) : (
+                    <>
+                      <Icon name="upload" size={24} color="white" />
+                      <Text style={styles.uploadText}>
+                        Upload your image here
+                      </Text>
+                    </>
+                  )}
                 </Pressable>
                 <Accordion title={'Upload Guidelines'} content={guidelines} />
                 <View style={styles.tabContainer}>
@@ -178,7 +252,7 @@ const UploadImage = () => {
               </ScrollView>
               <View style={styles.buttonsContainer}>
                 <View style={{width: '48%'}}>
-                  <Button btnText={'Back'} onPress={() => setStep(0)}/>
+                  <Button btnText={'Back'} onPress={() => setStep(0)} />
                 </View>
                 <View style={{width: '48%'}}>
                   <Button btnText={'Upload'} />

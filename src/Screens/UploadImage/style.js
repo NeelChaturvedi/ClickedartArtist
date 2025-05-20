@@ -23,6 +23,12 @@ export const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#1E1E1E',
   },
+  image: {
+    height: '100%',
+    width: '100%',
+    borderRadius: 10,
+    resizeMode: 'cover',
+  },
   uploadText: {
     color: 'white',
     fontSize: 20,
