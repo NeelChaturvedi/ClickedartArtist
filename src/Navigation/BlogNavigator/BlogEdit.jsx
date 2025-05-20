@@ -2,6 +2,8 @@
 import {
   ActivityIndicator,
   Image,
+  KeyboardAvoidingView,
+  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -18,11 +20,18 @@ import Button from '../../components/button';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import api from '../../utils/apiClient';
 import ImagePicker from 'react-native-image-crop-picker';
+import {RichText, Toolbar, useEditorBridge} from '@10play/tentap-editor';
 
 const BlogEdit = () => {
   const {blogId, callBack} = useRoute().params;
-  const [blog, setBlog] = useState({});
+  const navigation = useNavigation();
+  const [blog, setBlog] = useState(null); // Start with null
   const [uploading, setUploading] = useState(false);
+  const editor = useEditorBridge({
+    autofocus: true,
+    avoidIosKeyboard: true,
+    initialContent: blog?.content?.body || '',
+  });
 
   const handleImageLibraryLaunch = async () => {
     const result = await ImagePicker.openPicker({
@@ -65,8 +74,6 @@ const BlogEdit = () => {
     }
   };
 
-  const navigation = useNavigation();
-
   useEffect(() => {
     const fetchBlog = async () => {
       try {
@@ -83,16 +90,26 @@ const BlogEdit = () => {
 
   const handleSaveChanges = async () => {
     try {
-      await api.post('/blog/update-blog', blog);
+      const updatedContent = await editor.getHTML(); // Get updated body
+      const updatedBlog = {
+        ...blog,
+        content: {
+          ...blog.content,
+          body: updatedContent,
+        },
+      };
+      await api.post('/blog/update-blog', updatedBlog);
       callBack(true);
       navigation.goBack();
     } catch (error) {
-      console.error('Error updating blog:', error.response.data);
+      console.error('Error updating blog:', error.response?.data || error);
     }
   };
 
+  if (!blog) return <ActivityIndicator size="large" color="white" />;
+
   return (
-    <SafeAreaView style={style.background}>
+    <SafeAreaView nestedScrollEnabled={true}  style={style.background}>
       <View style={style.container}>
         <View>
           <BackButton />
@@ -148,15 +165,14 @@ const BlogEdit = () => {
 
           <View style={style.section}>
             <Text style={style.headingText}>Blog Body</Text>
-            <AutoGrowTextInput
-              value={blog?.content?.body || ' '}
-              onChangeText={text =>
-                setBlog(prev => ({
-                  ...prev,
-                  content: {...prev.content, body: text},
-                }))
-              }
-            />
+            <View style={style.richTextContainer}>
+              <RichText editor={editor} />
+              <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                style={style.keyboardAvoidingView}>
+                <Toolbar editor={editor} />
+              </KeyboardAvoidingView>
+            </View>
           </View>
         </ScrollView>
 
@@ -216,6 +232,30 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
+  },
+  richTextContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    minHeight: 200,
+    maxHeight: 400,
+    borderWidth: 0.5,
+    width: '100%',
+    overflow: 'hidden',
+    paddingBottom: 50,
+  },
+  keyboardAvoidingView: {
+    width: '100%',
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    borderWidth: 0.5,
+    borderColor: 'white',
+    padding: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
   },
 });
 
