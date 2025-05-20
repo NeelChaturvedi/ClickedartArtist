@@ -16,7 +16,7 @@ export const style = StyleSheet.create({
     position: 'relative',
     width: '100%',
     paddingHorizontal: 16,
-    paddingBottom: 50,
+    paddingBottom: 30,
   },
   headingText: {
     fontFamily: 'Outfit-bold',

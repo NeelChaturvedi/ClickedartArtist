@@ -2,11 +2,12 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
     background:{
-        flex:1,
+        height: '100%',
         width: '100%',
         backgroundColor: 'black',
     },
     container:{
+        flex: 1,
         padding: 20,
         gap: 40,
     },

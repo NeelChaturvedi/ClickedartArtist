@@ -307,7 +307,7 @@ const Membership = () => {
           ))}
         </View>
       </ScrollView>
-      <View style={{width: '100%', paddingHorizontal: 16, paddingBottom: 10}}>
+      <View style={{width: '100%', paddingHorizontal: 16}}>
         <Modal
           animationType="fade"
           transparent={true}

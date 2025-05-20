@@ -3,12 +3,14 @@ import {
   View,
   ScrollView,
   Text,
-  Pressable,
   Alert,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import {styles} from './styles';
 import DropdownModal from '@components/DropdownModal';
+import Button from '@components/button';
 
 const ImageScreen = () => {
   const options = [
@@ -19,34 +21,45 @@ const ImageScreen = () => {
 
   const handleSelect = item => {
     Alert.alert('Selected', item.name);
-    // Or do something with the selected item
   };
+
   return (
     <SafeAreaView style={styles.background}>
-      <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.imageContainer} />
-        <View style={styles.formContainer}>
-          <Text style={styles.headingTitle}>Cooling-Off</Text>
-          <View style={styles.infoContainer}>
-            <Text style={styles.nameText}>Bhanu Sharma</Text>
-            <Text style={styles.nameText}>₹ 14,000</Text>
-          </View>
-          <View style={styles.section}>
-            <Text style={styles.nameText}>Media Type</Text>
-            <DropdownModal options={options} onSelect={handleSelect} />
-          </View>
-          <View style={styles.infoContainer}>
-            <View style={styles.subSection}>
-              <Text style={styles.nameText}>Media Type</Text>
-              <DropdownModal options={options} onSelect={handleSelect} />
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+        <View style={{flex: 1}}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{padding: 20, gap: 40}}>
+            <View style={styles.imageContainer} />
+            <View style={styles.formContainer}>
+              <Text style={styles.headingTitle}>Cooling-Off</Text>
+              <View style={styles.infoContainer}>
+                <Text style={styles.nameText}>Bhanu Sharma</Text>
+                <Text style={styles.nameText}>₹ 14,000</Text>
+              </View>
+              <View style={styles.section}>
+                <Text style={styles.nameText}>Media Type</Text>
+                <DropdownModal options={options} onSelect={handleSelect} />
+              </View>
+              <View style={styles.infoContainer}>
+                <View style={styles.subSection}>
+                  <Text style={styles.nameText}>Size</Text>
+                  <DropdownModal options={options} onSelect={handleSelect} />
+                </View>
+                <View style={styles.subSection}>
+                  <Text style={styles.nameText}>Frame</Text>
+                  <DropdownModal options={options} onSelect={handleSelect} />
+                </View>
+              </View>
             </View>
-            <View style={styles.subSection}>
-              <Text style={styles.nameText}>Media Type</Text>
-              <DropdownModal options={options} onSelect={handleSelect} />
-            </View>
+          </ScrollView>
+          <View style={{paddingHorizontal: 20, paddingVertical: 20}}>
+            <Button btnText={'Add to cart'} />
           </View>
         </View>
-      </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

@@ -139,7 +139,6 @@ const style = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: 'black',
-    paddingBottom: 50,
   },
 container: {
     paddingHorizontal: 10,
@@ -152,11 +151,6 @@ container: {
     fontSize: 36,
     fontFamily: 'Outfit-bold',
     marginTop: 10,
-  },
-  backButtonContainer: {
-    position: 'absolute',
-    top: 30,
-    left: 20,
   },
 });
 
