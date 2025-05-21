@@ -17,7 +17,6 @@ import {View} from 'moti';
 import ProfileEditScreen from 'src/Screens/ProfileEdit/ProfileEditScreen';
 import {useOnboardingStore} from 'src/store/onboarding';
 import UploadImage from 'src/Screens/UploadImage';
-import ImageScreen from 'src/Screens/ImageScreen';
 import UploadBlog from 'src/Screens/UploadBlog';
 import ImageNavigator from 'src/Navigation/ImageNavigator/ImageNavigator';
 enableScreens();
