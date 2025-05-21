@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
   selectionText: {
     color: 'white',
     fontSize: 16,
+    lineHeight: 24,
   },
 });
 

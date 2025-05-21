@@ -97,4 +97,34 @@ export const styles = StyleSheet.create({
     position: 'relative',
     opacity: 0.4,
   },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+  },
+  modalContent: {
+    backgroundColor: '#1E1E1E',
+    width: '85%',
+    gap: 30,
+    padding: 20,
+    borderRadius: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontFamily: 'Outfit-bold',
+    color: 'white',
+    textAlign: 'center',
+  },
+  inputSection: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: 16,
+    width: '100%',
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontFamily: 'Outfit-medium',
+    color: 'white',
+  },
 });

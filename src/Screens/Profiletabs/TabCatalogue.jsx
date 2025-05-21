@@ -1,16 +1,19 @@
 /* eslint-disable no-shadow */
 
-import {View, Text, Pressable} from 'react-native';
+import {View, Text, Pressable, Modal} from 'react-native';
 import {styles} from './styles';
 import React, {useState} from 'react';
 import {Image} from 'moti';
 import {useNavigation} from '@react-navigation/native';
 import SlideUpModal from '@components/SlideupModal';
+import AutoGrowTextInput from '@components/AutoGrowTextInput';
+import Button from '@components/button';
 
 const TabCatalogues = ({catalogues}) => {
   const navigation = useNavigation();
 
   const [slideUp, setSlideUp] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const imageOptions = [
     {
@@ -25,7 +28,7 @@ const TabCatalogues = ({catalogues}) => {
     {
       label: 'Edit',
       icon: 'edit',
-      onPress: () => {},
+      onPress: () => {setShowModal(true);},
     },
     {
       label: 'Delete',
@@ -60,7 +63,33 @@ const TabCatalogues = ({catalogues}) => {
         onClose={() => setSlideUp(false)}
         options={imageOptions}
       />
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={showModal}
+        onRequestClose={() => {
+          setShowModal(false);
+        }}>
+        <Pressable
+          style={styles.modalContainer}
+          onPress={() => setShowModal(false)}>
+          <Pressable style={styles.modalContent} onPress={() => {}}>
+            <Text style={styles.title}>Edit Catalogue</Text>
+            <View style={styles.inputSection}>
+              <Text style={styles.sectionTitle}>Catalogue Name</Text>
+              <AutoGrowTextInput placeholder={'Enter Title'} />
+            </View>
+            <View style={styles.inputSection}>
+              <Text style={styles.sectionTitle}>Description</Text>
+              <AutoGrowTextInput placeholder={'Enter Description'} />
+            </View>
+            <Button btnText="Save Changes" />
+          </Pressable>
+        </Pressable>
+      </Modal>
     </View>
+
   );
 };
 

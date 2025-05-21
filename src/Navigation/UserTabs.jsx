@@ -8,7 +8,7 @@ import ProfileNavigator from './ProfileNavigator/ProfileNavigator';
 import AccountNavigator from './AccountNavigator/AccountNavigator';
 import DashboardIcon from '../assets/svgs/DashBoardIcon.svg';
 import AccountsIcon from '../assets/svgs/AccountsIcon.svg';
-import PhotosIcon from '../assets/svgs/PhotosIcon.svg';
+import CartIcon from '../assets/svgs/CartIcon.svg';
 import ProfileIcon from '../assets/svgs/ProfileIcon.svg';
 import PostsIcon from '../assets/svgs/PostsIcon.svg';
 import SlideUpModal from '@components/SlideupModal';
@@ -86,11 +86,11 @@ export const Tabs = () => {
           }}
         />
         <Tab.Screen
-          name="Photos"
+          name="Cart Items"
           component={Photos}
           options={{
             tabBarIcon: ({focused}) => (
-              <PhotosIcon
+              <CartIcon
                 width={24}
                 height={24}
                 color={focused ? '#ED3147' : 'white'}
@@ -184,7 +184,7 @@ export const Tabs = () => {
               <Text style={styles.sectionTitle}>Description</Text>
               <AutoGrowTextInput placeholder={'Enter Description'} />
             </View>
-            <Button btnText="Create"/>
+            <Button btnText="Create" />
           </Pressable>
         </Pressable>
       </Modal>

@@ -194,7 +194,7 @@ const ImageScreen = ({setImageTitle}) => {
                   width: width,
                   height: height,
                   position: 'absolute',
-                  top: 10,
+                  top: 12,
                   left: '50%',
                   transform: [{translateX: -(imgWidth / 2)}],
                 }}
