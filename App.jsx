@@ -19,6 +19,7 @@ import {useOnboardingStore} from 'src/store/onboarding';
 import UploadImage from 'src/Screens/UploadImage';
 import UploadBlog from 'src/Screens/UploadBlog';
 import ImageNavigator from 'src/Navigation/ImageNavigator/ImageNavigator';
+import CatalogueNavigator from 'src/Navigation/CatalogueNavigator/CatalogueNavigator';
 enableScreens();
 
 const Stack = createNativeStackNavigator();
@@ -98,6 +99,7 @@ export default function App() {
               component={UploadImage}
             />
             <Stack.Screen name="ImageNavigator" component={ImageNavigator} />
+            <Stack.Screen name="CatalogueNavigator" component={CatalogueNavigator} />
             <Stack.Screen
               name="Write a blog"
               options={{
