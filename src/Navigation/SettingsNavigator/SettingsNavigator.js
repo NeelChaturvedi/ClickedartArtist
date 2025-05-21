@@ -23,11 +23,12 @@ export default function SettingsNavigator() {
         headerTitleStyle:{
           color: 'white',
         },
+        headerTitleAlign: 'center',
         headerTintColor:'white',
       }}>
       <Stack.Screen name="Settings" component={Settings}/>
       <Stack.Screen name="Faqs" component={Faqs}/>
-      <Stack.Screen name="Terms" component={TermsAndConditions}/>
+      <Stack.Screen name="Terms of Use" component={TermsAndConditions}/>
       <Stack.Screen name="Membership" component={Membership}/>
       <Stack.Screen name="Privacy Policy" component={PrivacyPolicy}/>
       <Stack.Screen name="Help Center" component={HelpCenter}/>

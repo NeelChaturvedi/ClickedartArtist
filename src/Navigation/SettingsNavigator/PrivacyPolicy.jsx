@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {ScrollView, Text, StyleSheet, View, SafeAreaView} from 'react-native';
 
@@ -80,8 +81,10 @@ const PrivacyPolicy = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.lastUpdated}>Effective Date: 26 January 2025</Text>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{marginTop: 20}}>
+        <Text style={styles.lastUpdated}>Effective Date: 26 January 2025</Text>
         <Text style={styles.introText}>
           Welcome to ClickedArt.com. We are committed to safeguarding the
           privacy of our users, including both buyers and photographers. This
@@ -107,8 +110,7 @@ const PrivacyPolicy = () => {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
-    paddingTop: 20,
-    paddingBottom: 90,
+    paddingBottom: 20,
     backgroundColor: 'black',
     position: 'relative',
     alignItems: 'flex-start',

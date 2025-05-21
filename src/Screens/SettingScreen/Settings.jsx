@@ -17,7 +17,7 @@ const Settings = () => {
         <ScrollView>
           <SettingsOptions icon={'gpp-good'} label={'AccountSecurity'}/>
           <SettingsOptions icon={'lock'} label={'Privacy Policy'} screen={'Privacy Policy'}/>
-          <SettingsOptions icon={'edit-document'} label={'Terms of Use'} screen={'Terms'}/>
+          <SettingsOptions icon={'edit-document'} label={'Terms of Use'} screen={'Terms of Use'}/>
           <SettingsOptions icon={'help'} label={'FAQS'} screen={'Faqs'}/>
           <SettingsOptions icon={'star'} label={'Membership'} screen={'Membership'}/>
           <SettingsOptions icon={'currency-rupee'} label={'Monetize Account'}/>
