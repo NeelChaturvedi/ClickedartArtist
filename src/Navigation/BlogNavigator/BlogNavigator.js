@@ -12,7 +12,7 @@ export default function BlogNavigator() {
   return (
     <Stack.Navigator
       initialRouteName="Blogs"
-      screenOptions={{headerShown: false}}>
+      screenOptions={{headerShown: false, headerTitleAlign: 'center'}}>
       <Stack.Screen name="Blogs" component={Blog} />
       <Stack.Screen
         options={{

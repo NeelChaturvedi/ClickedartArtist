@@ -21,6 +21,7 @@ export default function Details() {
         headerTitleStyle: {
           color: 'white',
         },
+        headerTitleAlign: 'center',
         headerTintColor: 'white',
       }}>
       <Stack.Screen name="Personal Details" component={Personal} />

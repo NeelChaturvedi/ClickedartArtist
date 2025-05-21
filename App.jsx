@@ -50,7 +50,12 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false, navigationBarHidden: true}}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          navigationBarHidden: true,
+          headerTitleAlign: 'center',
+        }}>
         {!user ? (
           <>
             {!isOnboardingCompleted && (
