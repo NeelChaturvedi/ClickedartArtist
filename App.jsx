@@ -97,20 +97,7 @@ export default function App() {
               }}
               component={UploadImage}
             />
-            <Stack.Screen
-              name="ImageNavigator"
-              options={{
-                headerShown: true,
-                headerStyle: {
-                  backgroundColor: 'black',
-                },
-                headerTitle: {
-                  color: 'white',
-                },
-                headerTintColor: 'white',
-              }}
-              component={ImageNavigator}
-            />
+            <Stack.Screen name="ImageNavigator" component={ImageNavigator} />
             <Stack.Screen
               name="Write a blog"
               options={{
