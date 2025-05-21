@@ -16,15 +16,14 @@ import DropdownModal from '@components/DropdownModal';
 import Button from '@components/button';
 import LinearGradient from 'react-native-linear-gradient';
 import chroma from 'chroma-js';
-import ColorPicker, {Panel1, Preview, HueSlider} from 'reanimated-color-picker';
+import ColorPicker, {Panel1, HueSlider} from 'reanimated-color-picker';
 import {runOnJS} from 'react-native-reanimated';
 import {useRoute} from '@react-navigation/native';
 import api from 'src/utils/apiClient';
 
-const ImageScreen = () => {
+const ImageScreen = ({setImageTitle}) => {
   const {imageData} = useRoute().params;
-  const image = imageData ? JSON.parse(imageData) : {};
-  console.log('Image Data: ', image);
+  const image = React.useMemo(() => (imageData ? JSON.parse(imageData) : {}), [imageData]);
   const [showModal, setShowModal] = useState(false);
 
   const mockupUri = require('../../assets/images/mockup.webp');
@@ -55,25 +54,48 @@ const ImageScreen = () => {
 
   const handlePaperSelect = item => {
     const paper = papers.find(p => p._id === item.id);
+    console.log('Selected Paper: ', paper);
     setSelectedPaper(paper);
-    setSelectedSize(null);
+    setSelectedSize(paper.customDimensions[0]);
     setSelectedFrame(null);
+    setPrice(paper.customDimensions[0].price);
   };
 
   const handleSizeSelect = item => {
     const size = selectedPaper.customDimensions.find(s => s._id === item.id);
     setSelectedSize(size);
+    setPrice(size.price);
   };
 
   const handleFrameSelect = item => {
     const frame = frames.find(f => f._id === item.id);
     setSelectedFrame(frame);
+    setPrice(selectedSize.price + frame.price);
   };
 
   const onSelectColor = ({hex}) => {
     'worklet';
     runOnJS(setColor)(hex);
   };
+
+  useEffect(() => {
+    const calculateSubtotal = () => {
+      if (selectedSize) {
+        const width = selectedSize?.width || 0;
+        const height = selectedSize?.height || 0;
+        const framePrice = selectedFrame
+          ? width * height * selectedFrame.basePricePerLinearInch
+          : 0;
+
+        const selectedSizePrice = selectedSize?.price || 0;
+        const subTotal = selectedSizePrice + framePrice;
+        return subTotal;
+      } else {
+        return 0;
+      }
+    };
+    setPrice(calculateSubtotal());
+  }, [selectedSize, selectedPaper, selectedFrame]);
 
   useEffect(() => {
     const fetchPapers = async () => {
@@ -105,8 +127,13 @@ const ImageScreen = () => {
       setSelectedSize(defaultPaper.customDimensions[0]);
       setPrice(defaultPaper.customDimensions[0].price);
     }
-  }
-  , [papers]);
+  }, [papers]);
+
+  useEffect(() => {
+    if (image) {
+      setImageTitle(image.title);
+    }
+  }, [image, setImageTitle]);
 
   return (
     <SafeAreaView style={styles.background}>
@@ -183,11 +210,31 @@ const ImageScreen = () => {
               <Text style={styles.headingTitle}>{image?.title}</Text>
               <View style={styles.infoContainer}>
                 <Text style={styles.nameText}>Bhanu Sharma</Text>
-                <Text style={styles.nameText}>₹ {price || 0}</Text>
+                <View style={{flexDirection: 'row', gap: 10}}>
+                  {selectedPaper?.photographerDiscount && (
+                    <View>
+                      <Text style={styles.discountedText}>₹ {price || 0}</Text>
+                    </View>
+                  )}
+                  <View style={{flexDirection: 'column', gap: 5}}>
+                    <Text style={styles.priceText}>
+                      ₹{' '}
+                      {selectedPaper?.photographerDiscount
+                        ? price -
+                          price * (selectedPaper?.photographerDiscount / 100)
+                        : price || 0}
+                    </Text>
+                    <Text style={styles.discountPercentage}>
+                      ({selectedPaper?.photographerDiscount} % off)
+                    </Text>
+                  </View>
+                </View>
               </View>
               <View style={styles.detailsContainer}>
                 <Text style={styles.nameText}>Image Description</Text>
-                <Text style={styles.aboutText}>{image?.description || '...'}</Text>
+                <Text style={styles.aboutText}>
+                  {image?.description || '...'}
+                </Text>
               </View>
               <View style={styles.section}>
                 <Text style={styles.nameText}>Media Type</Text>
@@ -203,7 +250,11 @@ const ImageScreen = () => {
                   <DropdownModal
                     options={sizeOptions}
                     onSelect={handleSizeSelect}
-                    value={selectedSize ? `${selectedSize?.width} x ${selectedSize?.height}` : 'Select Size'}
+                    value={
+                      selectedSize
+                        ? `${selectedSize?.width} x ${selectedSize?.height}`
+                        : 'Select Size'
+                    }
                   />
                 </View>
                 <View style={styles.subSection}>

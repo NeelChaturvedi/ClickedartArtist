@@ -8,11 +8,25 @@ enableScreens();
 const Stack = createNativeStackNavigator();
 
 export default function ImageNavigator() {
+  const [imageTitle, setImageTitle] = React.useState('');
   return (
     <Stack.Navigator
       initialRouteName="ImageScreen"
-      screenOptions={{headerShown: false}}>
-      <Stack.Screen name="ImageScreen" component={ImageScreen} />
+      screenOptions={{
+        headerShown: true,
+        headerStyle: {
+          backgroundColor: 'black',
+        },
+        headerTitleAlign: 'center',
+        headerTitle: imageTitle,
+        headerTintColor: 'white',
+      }}>
+      <Stack.Screen
+        name="ImageScreen"
+        children={props => (
+          <ImageScreen {...props} setImageTitle={setImageTitle} />
+        )}
+      />
     </Stack.Navigator>
   );
 }

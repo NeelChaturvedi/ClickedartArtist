@@ -9,15 +9,13 @@ enableScreens();
 
 const Stack = createNativeStackNavigator();
 
-export default function PhotosNavigator() {
-export default function PhotosNavigator() {
+export default function ProfileNavigator() {
   return (
     <Stack.Navigator
       initialRouteName="Photos"
-      initialRouteName="Photos"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="Photos" component={Photos}/>
-      <Stack.Screen name="PhotoDetails" component={PhotoDetails} />
+      <Stack.Screen name="EditProfile" component={PhotoDetails} />
     </Stack.Navigator>
   );
 }

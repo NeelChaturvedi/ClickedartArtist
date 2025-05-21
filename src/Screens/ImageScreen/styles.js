@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
   infoContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   section: {
     gap: 16,
@@ -41,6 +41,25 @@ export const styles = StyleSheet.create({
     fontFamily: 'Outfit-medium',
     color: 'white',
     fontSize: 18,
+  },
+  discountedText: {
+    fontFamily: 'Outfit-medium',
+    color: 'white',
+    fontSize: 18,
+    opacity: 0.7,
+    textDecorationLine: 'line-through',
+    textDecorationStyle: 'solid',
+  },
+  priceText: {
+    fontFamily: 'Outfit-bold',
+    color: 'white',
+    fontSize: 18,
+  },
+  discountPercentage: {
+    fontFamily: 'Outfit-medium',
+    color: '#ed3147',
+    fontSize: 18,
+    opacity: 1,
   },
   subSection: {
     gap: 16,
