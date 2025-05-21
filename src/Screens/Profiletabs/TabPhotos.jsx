@@ -3,7 +3,6 @@ import {
   Text,
   Image,
   Pressable,
-  Alert,
   PermissionsAndroid,
   Platform,
   ToastAndroid,
