@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
     position: 'relative',
   },
   formContainer: {
-    gap: 40,
+    gap: 20,
   },
   infoContainer: {
     flexDirection: 'row',
