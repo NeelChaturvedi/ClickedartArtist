@@ -1,4 +1,13 @@
-import {View, Text, Image, Pressable, Alert, PermissionsAndroid, Platform, ToastAndroid} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  Pressable,
+  Alert,
+  PermissionsAndroid,
+  Platform,
+  ToastAndroid,
+} from 'react-native';
 import React, {useState} from 'react';
 import {styles} from './styles';
 import SlideUpModal from '@components/SlideupModal';
@@ -48,10 +57,14 @@ const TabPhotos = ({photos}) => {
       );
 
       const imageLinks = response.data.photo.imageLinks;
-      if (!imageLinks) {throw new Error('No image links found');}
+      if (!imageLinks) {
+        throw new Error('No image links found');
+      }
 
       const imageUrl = Object.values(imageLinks)[0];
-      if (!imageUrl) {throw new Error('Image URL not found');}
+      if (!imageUrl) {
+        throw new Error('Image URL not found');
+      }
 
       const formattedTitle = title?.replace(/\s+/g, '_')?.toLowerCase() || id;
       const fileName = `image_${formattedTitle}_${resolution}.jpg`;
@@ -79,7 +92,12 @@ const TabPhotos = ({photos}) => {
       label: 'Open',
       icon: 'open-in-new',
       onPress: () => {
-        navigation.navigate('Image Details');
+        navigation.navigate('ImageNavigator', {
+          screen: 'ImageScreen',
+          params: {
+            imageData: JSON.stringify(selectedImage),
+          },
+        });
       },
     },
     {
