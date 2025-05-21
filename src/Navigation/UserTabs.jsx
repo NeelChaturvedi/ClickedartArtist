@@ -14,11 +14,15 @@ import PostsIcon from '../assets/svgs/PostsIcon.svg';
 import SlideUpModal from '@components/SlideupModal';
 import {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import {Modal, Pressable, StyleSheet, Text} from 'react-native';
+import Button from '@components/button';
+import AutoGrowTextInput from '@components/AutoGrowTextInput';
 
 export const Tabs = () => {
   const Tab = createBottomTabNavigator();
 
   const [slideUp, setSlideUp] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const navigation = useNavigation();
 
@@ -34,7 +38,7 @@ export const Tabs = () => {
       label: 'Create a Catalogue',
       icon: 'photo-library',
       onPress: () => {
-        navigation.navigate('Upload Image');
+        setShowModal(true);
       },
     },
     {
@@ -159,6 +163,64 @@ export const Tabs = () => {
         onClose={() => setSlideUp(false)}
         options={postsOptions}
       />
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={showModal}
+        onRequestClose={() => {
+          setShowModal(false);
+        }}>
+        <Pressable
+          style={styles.modalContainer}
+          onPress={() => setShowModal(false)}>
+          <Pressable style={styles.modalContent} onPress={() => {}}>
+            <Text style={styles.title}>Create Catalogue</Text>
+            <View style={styles.inputSection}>
+              <Text style={styles.sectionTitle}>Catalogue Name</Text>
+              <AutoGrowTextInput placeholder={'Enter Title'} />
+            </View>
+            <View style={styles.inputSection}>
+              <Text style={styles.sectionTitle}>Description</Text>
+              <AutoGrowTextInput placeholder={'Enter Description'} />
+            </View>
+            <Button btnText="Create"/>
+          </Pressable>
+        </Pressable>
+      </Modal>
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+  },
+  modalContent: {
+    backgroundColor: '#1E1E1E',
+    width: '85%',
+    gap: 30,
+    padding: 20,
+    borderRadius: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontFamily: 'Outfit-bold',
+    color: 'white',
+    textAlign: 'center',
+  },
+  inputSection: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: 16,
+    width: '100%',
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontFamily: 'Outfit-medium',
+    color: 'white',
+  },
+});
