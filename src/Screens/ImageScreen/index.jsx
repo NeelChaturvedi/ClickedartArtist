@@ -9,6 +9,8 @@ import {
   Platform,
   Image,
   Modal,
+  Dimensions,
+  Pressable,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {styles} from './styles';
@@ -20,12 +22,17 @@ import ColorPicker, {Panel1, HueSlider} from 'reanimated-color-picker';
 import {runOnJS} from 'react-native-reanimated';
 import {useRoute} from '@react-navigation/native';
 import api from 'src/utils/apiClient';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const ImageScreen = ({setImageTitle}) => {
   const {imageData} = useRoute().params;
-  const image = React.useMemo(() => (imageData ? JSON.parse(imageData) : {}), [imageData]);
-  const [showModal, setShowModal] = useState(false);
+  const image = React.useMemo(
+    () => (imageData ? JSON.parse(imageData) : {}),
+    [imageData],
+  );
+  const screenWidth = Dimensions.get('window').width;
 
+  const [showModal, setShowModal] = useState(false);
   const mockupUri = require('../../assets/images/mockup.webp');
   const [color, setColor] = useState('#5F91AB');
 
@@ -43,10 +50,13 @@ const ImageScreen = ({setImageTitle}) => {
     id: paper._id,
     name: paper.name,
   }));
-  const frameOptions = frames.map(frame => ({
-    id: frame._id,
-    name: frame.name,
-  }));
+  const frameOptions = [
+    {id: 'none', name: 'None'},
+    ...frames.map(frame => ({
+      id: frame._id,
+      name: frame.name,
+    })),
+  ];
   const sizeOptions = selectedPaper?.customDimensions.map(size => ({
     id: size._id,
     name: `${size.width} x ${size.height}`,
@@ -58,19 +68,21 @@ const ImageScreen = ({setImageTitle}) => {
     setSelectedPaper(paper);
     setSelectedSize(paper.customDimensions[0]);
     setSelectedFrame(null);
-    setPrice(paper.customDimensions[0].price);
   };
 
   const handleSizeSelect = item => {
     const size = selectedPaper.customDimensions.find(s => s._id === item.id);
     setSelectedSize(size);
-    setPrice(size.price);
   };
 
   const handleFrameSelect = item => {
+    if (item.id === 'none') {
+      setSelectedFrame(null);
+      return;
+    }
+
     const frame = frames.find(f => f._id === item.id);
     setSelectedFrame(frame);
-    setPrice(selectedSize.price + frame.price);
   };
 
   const onSelectColor = ({hex}) => {
@@ -135,6 +147,33 @@ const ImageScreen = ({setImageTitle}) => {
     }
   }, [image, setImageTitle]);
 
+  const minHSize = 10 * 18;
+  const maxHSize = 44 * 72;
+
+  const scaleFactor =
+    selectedPaper && selectedSize
+      ? (selectedSize.height * selectedSize.width - minHSize) /
+        (maxHSize - minHSize)
+      : 0;
+
+  const minScale = 20;
+  const maxScale = 40;
+
+  const clampedHeight =
+    selectedPaper && selectedSize
+      ? minScale + scaleFactor * (maxScale - minScale)
+      : 100;
+  const clampedWidth =
+    selectedPaper && selectedSize
+      ? minScale + scaleFactor * (maxScale - minScale)
+      : 100;
+
+  const height = clampedHeight + '%';
+  const width = clampedWidth + '%';
+
+  const widthPercent = clampedWidth;
+  const imgWidth = (widthPercent / 100) * screenWidth;
+
   return (
     <SafeAreaView style={styles.background}>
       <KeyboardAvoidingView
@@ -152,14 +191,16 @@ const ImageScreen = ({setImageTitle}) => {
               <Image
                 source={{uri: image?.imageLinks.thumbnail}}
                 style={{
-                  width: '40%',
-                  height: '40%',
-                  top: 10,
-                  transform: [{translateX: '50%'}],
+                  width: width,
+                  height: height,
                   position: 'absolute',
+                  top: 10,
+                  left: '50%',
+                  transform: [{translateX: -(imgWidth / 2)}],
                 }}
                 resizeMode="contain"
               />
+
               <Image
                 source={mockupUri}
                 style={{
@@ -168,74 +209,82 @@ const ImageScreen = ({setImageTitle}) => {
                 }}
                 resizeMode="cover"
               />
-            </LinearGradient>
-            <View style={styles.container}>
-              <Button
-                btnText="Color Picker"
-                onPress={() => setShowModal(true)}
-              />
-              <Modal
-                animationType="fade"
-                transparent={true}
-                visible={showModal}
-                onRequestClose={() => {
-                  Alert.alert('Modal has been closed.');
-                  setShowModal(!showModal);
-                }}>
-                <View style={styles.modalContainer}>
-                  <View style={styles.modalContent}>
-                    <ColorPicker
-                      style={{
-                        width: '100%',
-                        marginHorizontal: 'auto',
-                        gap: 20,
-                        marginTop: 20,
-                      }}
-                      value="#51ddf4"
-                      onComplete={onSelectColor}>
-                      <View>
-                        <Panel1 />
-                      </View>
-                      <HueSlider />
-                    </ColorPicker>
-                    <Button
-                      btnText="Close"
-                      onPress={() => setShowModal(false)}
+              <View style={{position: 'absolute', bottom: 10, right: 10}}>
+                <Pressable onPress={() => setShowModal(true)}>
+                  <View
+                    style={{
+                      padding: 6,
+                      borderRadius: 10,
+                      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                      justifyContent: 'center',
+                    }}>
+                    <Icon
+                      name="color-palette-outline"
+                      size={20}
+                      color="white"
                     />
                   </View>
-                </View>
-              </Modal>
-            </View>
+                </Pressable>
+                <Modal
+                  animationType="fade"
+                  transparent={true}
+                  visible={showModal}
+                  onRequestClose={() => {
+                    Alert.alert('Modal has been closed.');
+                    setShowModal(!showModal);
+                  }}>
+                  <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                      <ColorPicker
+                        style={{
+                          width: '100%',
+                          marginHorizontal: 'auto',
+                          gap: 20,
+                          marginTop: 20,
+                        }}
+                        value="#51ddf4"
+                        onComplete={onSelectColor}>
+                        <View>
+                          <Panel1 />
+                        </View>
+                        <HueSlider />
+                      </ColorPicker>
+                      <Button
+                        btnText="Close"
+                        onPress={() => setShowModal(false)}
+                      />
+                    </View>
+                  </View>
+                </Modal>
+              </View>
+            </LinearGradient>
             <View style={styles.formContainer}>
               <Text style={styles.headingTitle}>{image?.title}</Text>
-              <View style={styles.infoContainer}>
-                <Text style={styles.nameText}>Bhanu Sharma</Text>
-                <View style={{flexDirection: 'row', gap: 10}}>
-                  {selectedPaper?.photographerDiscount && (
-                    <View>
-                      <Text style={styles.discountedText}>₹ {price || 0}</Text>
-                    </View>
-                  )}
-                  <View style={{flexDirection: 'column', gap: 5}}>
-                    <Text style={styles.priceText}>
-                      ₹{' '}
-                      {selectedPaper?.photographerDiscount
-                        ? price -
-                          price * (selectedPaper?.photographerDiscount / 100)
-                        : price || 0}
-                    </Text>
-                    <Text style={styles.discountPercentage}>
-                      ({selectedPaper?.photographerDiscount} % off)
-                    </Text>
+              <View style={{flexDirection: 'row', gap: 10}}>
+                {selectedPaper?.photographerDiscount && (
+                  <View>
+                    <Text style={styles.discountedText}>₹ {price || 0}</Text>
                   </View>
+                )}
+                <View style={{flexDirection: 'row', gap: 10}}>
+                  <Text style={styles.priceText}>
+                    ₹{' '}
+                    {selectedPaper?.photographerDiscount
+                      ? price -
+                        price * (selectedPaper?.photographerDiscount / 100)
+                      : price || 0}
+                  </Text>
+                  <Text style={styles.discountPercentage}>
+                    ({selectedPaper?.photographerDiscount} % off)
+                  </Text>
                 </View>
               </View>
-              <View style={styles.detailsContainer}>
-                <Text style={styles.nameText}>Image Description</Text>
-                <Text style={styles.aboutText}>
-                  {image?.description || '...'}
+              {/* <View style={styles.infoContainer}>
+                <Text style={styles.nameText}>
+                  {image?.photographer?.firstName}{' '}
+                  {image?.photographer?.lastName}
                 </Text>
-              </View>
+              </View> */}
               <View style={styles.section}>
                 <Text style={styles.nameText}>Media Type</Text>
                 <DropdownModal
@@ -265,6 +314,12 @@ const ImageScreen = ({setImageTitle}) => {
                     value={selectedFrame ? selectedFrame.name : 'Select Frame'}
                   />
                 </View>
+              </View>
+              <View style={styles.detailsContainer}>
+                <Text style={styles.nameText}>Image Description</Text>
+                <Text style={styles.aboutText}>
+                  {image?.description || '...'}
+                </Text>
               </View>
             </View>
           </ScrollView>

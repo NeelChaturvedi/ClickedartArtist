@@ -69,7 +69,7 @@ export const style = StyleSheet.create({
     color: 'white',
     fontFamily: 'Outfit-medium',
     fontSize: 24,
-    marginTop: 14,
+    marginTop: 0,
   },
   userAddress: {
     color: '#D9D9D9',
@@ -80,13 +80,13 @@ export const style = StyleSheet.create({
     color: 'white',
     fontFamily: 'Outfit-medium',
     fontSize: 18,
-    marginTop: 30,
+    marginTop: 0,
   },
   accountInfo: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 40,
+    marginTop: 28,
     gap: 40,
   },
   summary: {
@@ -106,17 +106,18 @@ export const style = StyleSheet.create({
     color: 'white',
   },
   tabsContainer: {
-    marginTop: 20,
+    marginTop: 0,
     gap: 35,
     width: '100%',
     alignSelf: 'center',
   },
   stickyTabs: {
-    marginTop: 40,
+    marginTop: 20,
+    marginBottom: 10,
     gap: 35,
     width: '100%',
     alignSelf: 'center',
-    paddingVertical: 20,
+    paddingVertical: 12,
     backgroundColor: 'black',
   },
   tabs: {
