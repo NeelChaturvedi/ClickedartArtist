@@ -21,6 +21,7 @@
     "aws-sdk": "^2.1692.0",
     "axios": "^1.9.0",
     "buffer": "^6.0.3",
+    "chroma-js": "^3.1.2",
     "moti": "^0.30.0",
     "react": "19.0.0",
     "react-native": "0.79.2",
@@ -41,6 +42,7 @@
     "react-native-vector-icons": "^10.2.0",
     "react-native-webview": "^13.13.5",
     "react-native-youtube-iframe": "^2.3.0",
+    "reanimated-color-picker": "^4.0.1",
     "zustand": "^5.0.4"
   },
   "devDependencies": {

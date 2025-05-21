@@ -9,7 +9,7 @@ import {
   FlatList,
 } from 'react-native';
 
-const DropdownModal = ({ options, onSelect }) => {
+const DropdownModal = ({ options, onSelect, value }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -23,7 +23,7 @@ const DropdownModal = ({ options, onSelect }) => {
     <View style={styles.selectionContainer}>
       <Pressable onPress={() => setModalVisible(true)} >
         <Text style={styles.selectionText}>
-          {selectedOption?.name || 'Select option'}
+          {value ? value : selectedOption?.name || 'Select option'}
         </Text>
       </Pressable>
 

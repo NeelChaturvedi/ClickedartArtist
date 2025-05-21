@@ -19,6 +19,7 @@ import {useOnboardingStore} from 'src/store/onboarding';
 import UploadImage from 'src/Screens/UploadImage';
 import ImageScreen from 'src/Screens/ImageScreen';
 import UploadBlog from 'src/Screens/UploadBlog';
+import ImageNavigator from 'src/Navigation/ImageNavigator/ImageNavigator';
 enableScreens();
 
 const Stack = createNativeStackNavigator();
@@ -50,7 +51,8 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false, navigationBarHidden: true}}>
+      <Stack.Navigator
+        screenOptions={{headerShown: false, navigationBarHidden: true}}>
         {!user ? (
           <>
             {!isOnboardingCompleted && (
@@ -93,7 +95,7 @@ export default function App() {
               component={UploadImage}
             />
             <Stack.Screen
-              name="Image Details"
+              name="ImageNavigator"
               options={{
                 headerShown: true,
                 headerStyle: {
@@ -104,7 +106,7 @@ export default function App() {
                 },
                 headerTintColor: 'white',
               }}
-              component={ImageScreen}
+              component={ImageNavigator}
             />
             <Stack.Screen
               name="Write a blog"

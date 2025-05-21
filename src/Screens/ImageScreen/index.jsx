@@ -8,30 +8,105 @@ import {
   KeyboardAvoidingView,
   Platform,
   Image,
+  Modal,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {styles} from './styles';
 import DropdownModal from '@components/DropdownModal';
 import Button from '@components/button';
 import LinearGradient from 'react-native-linear-gradient';
+import chroma from 'chroma-js';
+import ColorPicker, {Panel1, Preview, HueSlider} from 'reanimated-color-picker';
+import {runOnJS} from 'react-native-reanimated';
+import {useRoute} from '@react-navigation/native';
+import api from 'src/utils/apiClient';
 
 const ImageScreen = () => {
-  const [startColor, setStartColor] = useState('rgb(0, 136, 209)');
-  const [endColor, setEndColor] = useState('rgb(0, 50, 150)');
+  const {imageData} = useRoute().params;
+  const image = imageData ? JSON.parse(imageData) : {};
+  console.log('Image Data: ', image);
+  const [showModal, setShowModal] = useState(false);
 
-  const [imageUri, setImageUri] = useState(
-    require('../../assets/images/mockup.webp'),
-  );
+  const mockupUri = require('../../assets/images/mockup.webp');
+  const [color, setColor] = useState('#5F91AB');
 
-  const options = [
-    {id: 1, name: 'Image'},
-    {id: 2, name: 'Video'},
-    {id: 3, name: 'Audio'},
-  ];
+  const startColor = chroma(color).brighten(1).hex();
+  const endColor = chroma(color).darken(1).hex();
 
-  const handleSelect = item => {
-    Alert.alert('Selected', item.name);
+  const [papers, setPapers] = useState([]);
+  const [frames, setFrames] = useState([]);
+  const [selectedPaper, setSelectedPaper] = useState(null);
+  const [selectedFrame, setSelectedFrame] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [price, setPrice] = useState(0);
+
+  const paperOptions = papers.map(paper => ({
+    id: paper._id,
+    name: paper.name,
+  }));
+  const frameOptions = frames.map(frame => ({
+    id: frame._id,
+    name: frame.name,
+  }));
+  const sizeOptions = selectedPaper?.customDimensions.map(size => ({
+    id: size._id,
+    name: `${size.width} x ${size.height}`,
+  }));
+
+  const handlePaperSelect = item => {
+    const paper = papers.find(p => p._id === item.id);
+    setSelectedPaper(paper);
+    setSelectedSize(null);
+    setSelectedFrame(null);
   };
+
+  const handleSizeSelect = item => {
+    const size = selectedPaper.customDimensions.find(s => s._id === item.id);
+    setSelectedSize(size);
+  };
+
+  const handleFrameSelect = item => {
+    const frame = frames.find(f => f._id === item.id);
+    setSelectedFrame(frame);
+  };
+
+  const onSelectColor = ({hex}) => {
+    'worklet';
+    runOnJS(setColor)(hex);
+  };
+
+  useEffect(() => {
+    const fetchPapers = async () => {
+      try {
+        const res = await api.get('/paper/get-paper');
+        setPapers(res.data.papers);
+      } catch (error) {
+        console.error('Error fetching papers:', error.response);
+      }
+    };
+
+    const fetchFrames = async () => {
+      try {
+        const res = await api.get('/frames/get-frames');
+        setFrames(res.data.frames);
+      } catch (error) {
+        console.error('Error fetching frames:', error.response);
+      }
+    };
+
+    fetchPapers();
+    fetchFrames();
+  }, []);
+
+  useEffect(() => {
+    if (papers.length > 0) {
+      const defaultPaper = papers[0];
+      setSelectedPaper(defaultPaper);
+      setSelectedSize(defaultPaper.customDimensions[0]);
+      setPrice(defaultPaper.customDimensions[0].price);
+    }
+  }
+  , [papers]);
 
   return (
     <SafeAreaView style={styles.background}>
@@ -44,46 +119,101 @@ const ImageScreen = () => {
             contentContainerStyle={{padding: 20, gap: 40}}>
             <LinearGradient
               colors={[startColor, endColor]}
+              useAngle={true}
+              angle={90}
               style={styles.imageContainer}>
               <Image
-                source={imageUri}
+                source={{uri: image?.imageLinks.thumbnail}}
+                style={{
+                  width: '40%',
+                  height: '40%',
+                  top: 10,
+                  transform: [{translateX: '50%'}],
+                  position: 'absolute',
+                }}
+                resizeMode="contain"
+              />
+              <Image
+                source={mockupUri}
                 style={{
                   width: '100%',
                   height: '100%',
                 }}
-                resizeMode="contain"
+                resizeMode="cover"
               />
             </LinearGradient>
+            <View style={styles.container}>
+              <Button
+                btnText="Color Picker"
+                onPress={() => setShowModal(true)}
+              />
+              <Modal
+                animationType="fade"
+                transparent={true}
+                visible={showModal}
+                onRequestClose={() => {
+                  Alert.alert('Modal has been closed.');
+                  setShowModal(!showModal);
+                }}>
+                <View style={styles.modalContainer}>
+                  <View style={styles.modalContent}>
+                    <ColorPicker
+                      style={{
+                        width: '100%',
+                        marginHorizontal: 'auto',
+                        gap: 20,
+                        marginTop: 20,
+                      }}
+                      value="#51ddf4"
+                      onComplete={onSelectColor}>
+                      <View>
+                        <Preview />
+                        <Panel1 />
+                      </View>
+                      <HueSlider />
+                    </ColorPicker>
+                    <Button
+                      btnText="Close"
+                      onPress={() => setShowModal(false)}
+                    />
+                  </View>
+                </View>
+              </Modal>
+            </View>
             <View style={styles.formContainer}>
-              <Text style={styles.headingTitle}>Cooling-Off</Text>
+              <Text style={styles.headingTitle}>{image?.title}</Text>
               <View style={styles.infoContainer}>
                 <Text style={styles.nameText}>Bhanu Sharma</Text>
-                <Text style={styles.nameText}>₹ 14,000</Text>
+                <Text style={styles.nameText}>₹ {price || 0}</Text>
               </View>
               <View style={styles.detailsContainer}>
                 <Text style={styles.nameText}>Image Description</Text>
-                <Text style={styles.aboutText}>
-                  Witness the majestic male elephant enjoying a dust bath in the
-                  wilderness of Dhikala Zone, Jim Corbett Tiger Reserve. The
-                  monochrome effect captures the raw power, grace, and texture
-                  of this magnificent being, making the moment feel even more
-                  timeless. As he throws dust into the air, it's a display of
-                  both playfulness and survival—keeping cool, protecting his
-                  skin, and marking his presence in the wild.
-                </Text>
+                <Text style={styles.aboutText}>{image?.description || '...'}</Text>
               </View>
               <View style={styles.section}>
                 <Text style={styles.nameText}>Media Type</Text>
-                <DropdownModal options={options} onSelect={handleSelect} />
+                <DropdownModal
+                  options={paperOptions}
+                  onSelect={handlePaperSelect}
+                  value={selectedPaper ? selectedPaper.name : 'Select Paper'}
+                />
               </View>
               <View style={styles.infoContainer}>
                 <View style={styles.subSection}>
                   <Text style={styles.nameText}>Size</Text>
-                  <DropdownModal options={options} onSelect={handleSelect} />
+                  <DropdownModal
+                    options={sizeOptions}
+                    onSelect={handleSizeSelect}
+                    value={selectedSize ? `${selectedSize?.width} x ${selectedSize?.height}` : 'Select Size'}
+                  />
                 </View>
                 <View style={styles.subSection}>
                   <Text style={styles.nameText}>Frame</Text>
-                  <DropdownModal options={options} onSelect={handleSelect} />
+                  <DropdownModal
+                    options={frameOptions}
+                    onSelect={handleFrameSelect}
+                    value={selectedFrame ? selectedFrame.name : 'Select Frame'}
+                  />
                 </View>
               </View>
             </View>
