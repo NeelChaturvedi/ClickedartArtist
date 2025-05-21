@@ -167,7 +167,6 @@ const ImageScreen = () => {
                       value="#51ddf4"
                       onComplete={onSelectColor}>
                       <View>
-                        <Preview />
                         <Panel1 />
                       </View>
                       <HueSlider />
