@@ -1,6 +1,7 @@
 import {create} from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from 'src/utils/apiClient';
+import useCartStore from './cart';
 
 export const useUserStore = create((set, get) => ({
   user: null,
@@ -14,7 +15,9 @@ export const useUserStore = create((set, get) => ({
   },
 
   clearUser: async () => {
+    const {clearCart} = useCartStore.getState();
     await AsyncStorage.removeItem('token');
+    clearCart();
     set({user: null, token: null});
   },
 
@@ -28,6 +31,7 @@ export const useUserStore = create((set, get) => ({
 
   fetchUserFromToken: async (tokenParam = null) => {
     const {token} = get();
+    const {clearCart} = useCartStore.getState();
     const validToken = tokenParam || token;
 
     if (validToken) {
@@ -38,6 +42,8 @@ export const useUserStore = create((set, get) => ({
         console.error('Failed to fetch user:', error.response);
         await get().clearUser();
       }
+    } else {
+      clearCart();
     }
   },
 }));
