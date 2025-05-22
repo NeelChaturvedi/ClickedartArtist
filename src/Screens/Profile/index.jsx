@@ -213,7 +213,6 @@ const Profile = () => {
         setBlogs([]);
       }
       if (pendingBlogsRes.status === 'fulfilled') {
-        console.log('Pending blogs:', pendingBlogsRes.value.data.blogs);
         setPendingBlogs(pendingBlogsRes.value.data.blogs);
       } else {
         setPendingBlogs([]);
@@ -227,7 +226,6 @@ const Profile = () => {
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
-    // await fetchAllData();
     await useUserStore.getState().fetchUserFromToken();
     setRefreshing(false);
   }, []);

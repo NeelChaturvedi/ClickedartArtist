@@ -65,12 +65,13 @@ const TabCatalogues = ({catalogues}) => {
 
   const handleCatalogueUpdate = async () => {
     try {
-      await api.post(`/catalogue/update-catalogue`, {
+      await api.post('/catalogue/update-catalogue', {
         catalogueId: selectedCatalogue._id,
         photographer: user._id,
         name: selectedCatalogue?.name,
         description: selectedCatalogue?.description,
       });
+      useUserStore.getState().fetchUserFromToken();
       setShowModal(false);
     } catch (err) {
       console.log('err', err.response.data.message);
@@ -84,7 +85,7 @@ const TabCatalogues = ({catalogues}) => {
         `/catalogue/delete-catalogue?catalogueId=${selectedCatalogue._id}`,
       );
       ToastAndroid.show('Catalogue deleted successfully.', ToastAndroid.SHORT);
-      // fetchCatalogues();
+      useUserStore.getState().fetchUserFromToken();
     } catch (err) {
       console.log('err', err);
     } finally {
