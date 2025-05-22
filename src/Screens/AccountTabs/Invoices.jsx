@@ -14,6 +14,7 @@ import SearchBar from '../../components/SearchBar';
 import {useUserStore} from '../../store/auth';
 import api from '../../utils/apiClient';
 import SlideUpModal from '@components/SlideupModal';
+import {Share} from 'react-native';
 
 const Invoices = () => {
   const {user} = useUserStore();
@@ -21,6 +22,13 @@ const Invoices = () => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [slideUp, setSlideUp] = useState(false);
+  const [selectedInvoice, setSelectedInvoice] = useState(null);
+
+  const onShare = async () => {
+    await Share.share({
+      message: `Check out this invoice: https://clickedart.com/invoice/${selectedInvoice?._id}`,
+    });
+  };
 
   const imageOptions = [
     {
@@ -34,6 +42,9 @@ const Invoices = () => {
     {
       label: 'Share',
       icon: 'share',
+      onPress: () => {
+        onShare();
+      },
     },
   ];
 
@@ -68,6 +79,7 @@ const Invoices = () => {
     <Pressable
       onPress={() => {
         setSlideUp(true);
+        setSelectedInvoice(item);
       }}
       style={styles.invoiceCard}>
       <View style={styles.row}>
