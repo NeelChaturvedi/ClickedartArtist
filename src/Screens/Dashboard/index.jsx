@@ -109,7 +109,6 @@ const Dashboard = () => {
       <ScrollView
         contentContainerStyle={{gap: 20}}
         showsVerticalScrollIndicator={false}>
-        <View style={style.sections}>
           {isCustomDate ? (
             <Text style={style.smallText}>
               {dateRange.startDate &&
@@ -129,6 +128,7 @@ const Dashboard = () => {
           ) : (
             <Text style={style.smallText}>Overall Data</Text>
           )}
+        <View style={style.sections}>
           <Text style={style.title}>SALES METRICS</Text>
           <View gap={14}>
             <Values
@@ -194,8 +194,8 @@ const Dashboard = () => {
         </View>
         {stats?.monthlyData && stats?.monthlyData.length > 0 && (
           <View style={style.sections}>
-            <Text style={style.title}>MONTHLY GROWTH REPORT</Text>
-            <View gap={16}>
+            <Text style={style.title}>Monthly Growth Report</Text>
+            <View gap={30}>
               <View style={style.typeContainer}>
                 <View style={style.growthType}>
                   <View
@@ -266,11 +266,6 @@ const Dashboard = () => {
                   },
                 }}
                 bezier
-                style={{
-                  borderRadius: 12,
-                  borderWidth: 0.5,
-                  borderColor: 'white',
-                }}
               />
             </View>
           </View>
