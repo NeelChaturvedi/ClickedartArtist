@@ -20,6 +20,7 @@ import UploadImage from 'src/Screens/UploadImage';
 import UploadBlog from 'src/Screens/UploadBlog';
 import ImageNavigator from 'src/Navigation/ImageNavigator/ImageNavigator';
 import CatalogueNavigator from 'src/Navigation/CatalogueNavigator/CatalogueNavigator';
+import CheckOut from 'src/Screens/CheckOut/CheckOut';
 enableScreens();
 
 const Stack = createNativeStackNavigator();
@@ -113,6 +114,20 @@ export default function App() {
                 headerTintColor: 'white',
               }}
               component={UploadBlog}
+            />
+            <Stack.Screen
+              name="Place Order"
+              options={{
+                headerShown: true,
+                headerStyle: {
+                  backgroundColor: 'black',
+                },
+                headerTitle: {
+                  color: 'white',
+                },
+                headerTintColor: 'white',
+              }}
+              component={CheckOut}
             />
           </>
         )}

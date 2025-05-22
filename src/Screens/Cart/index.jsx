@@ -12,6 +12,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '@components/button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import useCartStore from 'src/store/cart';
+import { useNavigation } from '@react-navigation/native';
 
 const Cart = () => {
   const {removeItemFromCart, cartItems} = useCartStore();
@@ -23,6 +24,8 @@ const Cart = () => {
       ToastAndroid.BOTTOM,
     );
   };
+
+  const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.background}>
       <ScrollView contentContainerStyle={styles.container}>
@@ -78,7 +81,7 @@ const Cart = () => {
       </ScrollView>
       {cartItems?.length > 0 && (
         <View style={styles.btnContainer}>
-          <Button btnText={'CheckOut'} />
+          <Button btnText={'CheckOut'} onPress={() => navigation.navigate('Place Order')} />
         </View>
       )}
     </SafeAreaView>
