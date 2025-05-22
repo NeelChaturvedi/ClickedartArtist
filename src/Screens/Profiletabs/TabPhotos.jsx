@@ -113,7 +113,7 @@ const TabPhotos = ({photos}) => {
         navigation.navigate('ImageNavigator', {
           screen: 'EditImage',
           params: {
-            imageId: selectedImage._id,
+            id: selectedImage._id,
           },
         });
       },

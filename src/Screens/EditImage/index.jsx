@@ -10,6 +10,7 @@ import {
   Switch,
   ActivityIndicator,
   Image,
+  ToastAndroid,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {styles} from './style';
@@ -19,10 +20,12 @@ import AutoGrowTextInput from '@components/AutoGrowTextInput';
 import api from 'src/utils/apiClient';
 import {useUserStore} from 'src/store/auth';
 import MultiSelectModal from '@components/MultiSelectModal';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
 const EditImage = () => {
   const {user} = useUserStore();
+  const {id} = useRoute().params;
+  console.log('id', id);
   const navigation = useNavigation();
 
   const [selectedTab, setSelectedTab] = useState('text');
@@ -65,6 +68,7 @@ const EditImage = () => {
     title: '',
     isActive: false,
   });
+  const [updatedPhoto, setUpdatedPhoto] = useState(null);
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => {
     setIsEnabled(previousState => !previousState);
@@ -105,20 +109,96 @@ const EditImage = () => {
     return Object.keys(error).length === 0;
   };
 
+  const handleUpdate = async () => {
+    if (!validate()) {
+      return;
+    }
+    setErrors({});
+    try {
+      const response = await api.post(
+        `/images/update-image-in-vault`,
+        updatedPhoto,
+      );
+      // toast.success("Image updated successfully");
+      ToastAndroid.show('Image updated successfully', ToastAndroid.SHORT);
+      navigation.goBack();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await api.get('/category/get?pageSize=1000');
-        const data = response.data;
-        console.log('Categories:', data.categories);
-        setCategories(data.categories);
+        const res = await api.get(`/category/get`);
+        setCategories(res.data.categories);
       } catch (error) {
-        console.error('Error fetching categories:', error);
+        console.log(error);
+      }
+    };
+
+    const fetchPhoto = async () => {
+      try {
+        const res = await api.get(`/images/get-image-by-id?id=${id}`);
+        setPhoto(res.data.photo);
+      } catch (error) {
+        console.log(error.response);
+      } finally {
+      }
+    };
+
+    const fetchActivePlan = async () => {
+      if (!user || !user._id) {
+        console.log('Photographer data is missing');
+        return;
+      }
+      try {
+        const res = await api.get(
+          `/subscriptions/get-user-active-subscription?photographer=${user._id}`,
+        );
+        setActivePlan(res.data.subscription?.planId?.name?.toLowerCase());
+        if (res.data.subscription?.planId?.name?.toLowerCase() === 'basic') {
+          setLimit(10);
+        } else if (
+          res.data.subscription?.planId?.name?.toLowerCase() === 'intermediate'
+        ) {
+          setLimit(50);
+        } else if (
+          res.data.subscription?.planId?.name?.toLowerCase() === 'premium'
+        ) {
+          setLimit(999999);
+        }
+      } catch (error) {
+        console.log(error.response ? error.response.data : error.message);
       }
     };
 
     fetchCategories();
-  }, []);
+    fetchPhoto();
+    fetchActivePlan();
+  }, [user]);
+
+  useEffect(() => {
+    if (photo) {
+      setUpdatedPhoto(prev => ({
+        ...prev,
+        id: photo._id,
+        title: photo.title,
+        price: photo.notForSale ? 0 : photo.price?.original || 0,
+        category: photo.category,
+        description: photo.description,
+        keywords: photo.keywords,
+        story: photo.story,
+        cameraDetails: photo.cameraDetails,
+        location: photo.location,
+        notForSale: photo.notForSale,
+        imageLinks: photo.imageLinks,
+        photographer: photo.photographer._id,
+      }));
+    }
+  }, [photo]);
+
+  console.log('photo', photo);
 
   return (
     <SafeAreaView style={styles.background}>
@@ -131,9 +211,9 @@ const EditImage = () => {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.container}>
             <View style={styles.uploadContainer}>
-              {photo.imageLinks?.thumbnail ? (
+              {updatedPhoto?.imageLinks?.thumbnail ? (
                 <Image
-                  source={{uri: photo.imageLinks?.thumbnail}}
+                  source={{uri: updatedPhoto?.imageLinks?.thumbnail}}
                   style={styles.image}
                 />
               ) : processing ? (
@@ -176,23 +256,25 @@ const EditImage = () => {
               <Text style={styles.headingText}>Title</Text>
               <AutoGrowTextInput
                 placeholder={'Enter Image Title'}
-                onChangeText={text => setPhoto({...photo, title: text})}
-                value={photo.title}
+                onChangeText={text =>
+                  setUpdatedPhoto({...updatedPhoto, title: text})
+                }
+                value={updatedPhoto?.title}
               />
               {errors.title && (
                 <Text style={styles.errorText}>{errors.title}</Text>
               )}
             </View>
             <View style={styles.twoFields}>
-              {!photo.notForSale && (
+              {!updatedPhoto?.notForSale && (
                 <View gap={16} style={{width: '48%'}}>
                   <Text style={styles.headingText}>Price</Text>
                   <AutoGrowTextInput
                     placeholder={'Enter Image Price'}
                     onChangeText={text => {
-                      setPhoto({...photo, price: text});
+                      setUpdatedPhoto({...updatedPhoto, price: text});
                     }}
-                    value={photo.price}
+                    value={updatedPhoto?.price}
                     keyboardType="numeric"
                   />
                 </View>
@@ -201,8 +283,10 @@ const EditImage = () => {
                 <Text style={styles.headingText}>Category</Text>
                 <MultiSelectModal
                   options={categoriesList}
-                  value={photo.category}
-                  onChange={ids => setPhoto(prev => ({...prev, category: ids}))}
+                  value={updatedPhoto?.category}
+                  onChange={ids =>
+                    setUpdatedPhoto(prev => ({...prev, category: ids}))
+                  }
                   placeholder={'Select Categories'}
                 />
               </View>
@@ -215,9 +299,9 @@ const EditImage = () => {
               <AutoGrowTextInput
                 placeholder={'Maximum 1000 words'}
                 onChangeText={text => {
-                  setPhoto({...photo, description: text});
+                  setUpdatedPhoto({...updatedPhoto, description: text});
                 }}
-                value={photo.description}
+                value={updatedPhoto?.description}
               />
               {errors.description && (
                 <Text style={styles.errorText}>{errors.description}</Text>
@@ -227,11 +311,11 @@ const EditImage = () => {
               <Text style={styles.headingText}>Keywords</Text>
               <AutoGrowTextInput
                 placeholder="Enter Keywords"
-                value={keywordInput}
+                value={keywordInput || photo.keywords.join(', ')}
                 onChangeText={text => {
                   setKeywordInput(text);
-                  setPhoto({
-                    ...photo,
+                  setUpdatedPhoto({
+                    ...updatedPhoto,
                     keywords: text.split(',').map(item => item.trim()),
                   });
                 }}
@@ -245,9 +329,9 @@ const EditImage = () => {
               <AutoGrowTextInput
                 placeholder={'Maximum 1000 words'}
                 onChangeText={text => {
-                  setPhoto({...photo, story: text});
+                  setUpdatedPhoto({...updatedPhoto, story: text});
                 }}
-                value={photo.story}
+                value={updatedPhoto?.story}
               />
             </View>
             <View gap={16}>
@@ -255,12 +339,15 @@ const EditImage = () => {
               <AutoGrowTextInput
                 placeholder={'Enter Camera Name'}
                 onChangeText={text => {
-                  setPhoto({
-                    ...photo,
-                    cameraDetails: {...photo.cameraDetails, camera: text},
+                  setUpdatedPhoto({
+                    ...updatedPhoto,
+                    cameraDetails: {
+                      ...updatedPhoto.cameraDetails,
+                      camera: text,
+                    },
                   });
                 }}
-                value={photo.cameraDetails.camera}
+                value={updatedPhoto?.cameraDetails.camera}
               />
             </View>
             <View gap={16}>
@@ -268,12 +355,12 @@ const EditImage = () => {
               <AutoGrowTextInput
                 placeholder={'Enter Lens Name'}
                 onChangeText={text => {
-                  setPhoto({
-                    ...photo,
-                    cameraDetails: {...photo.cameraDetails, lens: text},
+                  setUpdatedPhoto({
+                    ...updatedPhoto,
+                    cameraDetails: {...updatedPhoto.cameraDetails, lens: text},
                   });
                 }}
-                value={photo.cameraDetails.lens}
+                value={updatedPhoto?.cameraDetails.lens}
               />
             </View>
             <View style={styles.twoFields}>
@@ -282,18 +369,18 @@ const EditImage = () => {
                 <AutoGrowTextInput
                   placeholder={'Enter Focal Length'}
                   onChangeText={text => {
-                    setPhoto({
-                      ...photo,
+                    setUpdatedPhoto({
+                      ...updatedPhoto,
                       cameraDetails: {
-                        ...photo.cameraDetails,
+                        ...updatedPhoto.cameraDetails,
                         settings: {
-                          ...photo.cameraDetails.settings,
+                          ...updatedPhoto.cameraDetails.settings,
                           focalLength: text,
                         },
                       },
                     });
                   }}
-                  value={photo.cameraDetails.settings.focalLength}
+                  value={updatedPhoto?.cameraDetails.settings.focalLength}
                 />
               </View>
               <View gap={16} style={{width: '48%'}}>
@@ -301,18 +388,18 @@ const EditImage = () => {
                 <AutoGrowTextInput
                   placeholder={'Enter Aperture'}
                   onChangeText={text => {
-                    setPhoto({
-                      ...photo,
+                    setUpdatedPhoto({
+                      ...updatedPhoto,
                       cameraDetails: {
-                        ...photo.cameraDetails,
+                        ...updatedPhoto.cameraDetails,
                         settings: {
-                          ...photo.cameraDetails.settings,
+                          ...updatedPhoto.cameraDetails.settings,
                           aperture: text,
                         },
                       },
                     });
                   }}
-                  value={photo.cameraDetails.settings.aperture}
+                  value={updatedPhoto?.cameraDetails.settings.aperture}
                 />
               </View>
             </View>
@@ -322,37 +409,38 @@ const EditImage = () => {
                 <AutoGrowTextInput
                   placeholder={'Enter Shutter Speed'}
                   onChangeText={text => {
-                    setPhoto({
-                      ...photo,
+                    setUpdatedPhoto({
+                      ...updatedPhoto,
                       cameraDetails: {
-                        ...photo.cameraDetails,
+                        ...updatedPhoto?.cameraDetails,
                         settings: {
-                          ...photo.cameraDetails.settings,
+                          ...updatedPhoto?.cameraDetails.settings,
                           shutterSpeed: text,
                         },
                       },
                     });
                   }}
-                  value={photo.cameraDetails.settings.shutterSpeed}
+                  value={updatedPhoto?.cameraDetails.settings.shutterSpeed}
                 />
               </View>
               <View gap={16} style={{width: '48%'}}>
                 <Text style={styles.headingText}>ISO</Text>
                 <AutoGrowTextInput
                   placeholder={'Enter ISO'}
+                  keyboardType={'numeric'}
                   onChangeText={text => {
-                    setPhoto({
-                      ...photo,
+                    setUpdatedPhoto({
+                      ...updatedPhoto,
                       cameraDetails: {
-                        ...photo.cameraDetails,
+                        ...updatedPhoto?.cameraDetails,
                         settings: {
-                          ...photo.cameraDetails.settings,
+                          ...updatedPhoto?.cameraDetails.settings,
                           iso: text,
                         },
                       },
                     });
                   }}
-                  value={photo.cameraDetails.settings.iso}
+                  value={String(updatedPhoto?.cameraDetails.settings.iso || '')}
                 />
               </View>
             </View>
@@ -361,14 +449,14 @@ const EditImage = () => {
               <AutoGrowTextInput
                 placeholder={'Enter Location'}
                 onChangeText={text => {
-                  setPhoto({...photo, location: text});
+                  setUpdatedPhoto({...updatedPhoto, location: text});
                 }}
-                value={photo.location}
+                value={updatedPhoto?.location}
               />
             </View>
           </ScrollView>
           <View style={styles.buttonsContainer}>
-            <Button btnText={'Save Changes'} />
+            <Button btnText={'Save Changes'} onPress={() => handleUpdate()} />
           </View>
         </View>
       </KeyboardAvoidingView>
