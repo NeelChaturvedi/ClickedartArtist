@@ -47,7 +47,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 10,
     borderWidth: 0.5,
-    borderColor: '#8C8C8C',
+    borderColor: 'white',
   },
   bioInput: {
     height: 120,
