@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow */
 
-import {View, Text, Pressable, Modal, ToastAndroid} from 'react-native';
+import {View, Text, Pressable, Modal, ToastAndroid, Share} from 'react-native';
 import {styles} from './styles';
 import React, {useState} from 'react';
 import {Image} from 'moti';
@@ -20,6 +20,12 @@ const TabCatalogues = ({catalogues}) => {
   const [showModal, setShowModal] = useState(false);
 
   const [selectedCatalogue, setSelectedCatalogue] = useState(null);
+
+  const onShare = async () => {
+    await Share.share({
+      message: `Check out my catalogue: https://clickedart.com/catalogue/${selectedCatalogue?._id}`,
+    });
+  };
 
   const imageOptions = [
     {
@@ -46,6 +52,13 @@ const TabCatalogues = ({catalogues}) => {
       icon: 'delete',
       onPress: () => {
         handleCatalogueDelete();
+      },
+    },
+    {
+      label: 'Share',
+      icon: 'share',
+      onPress: () => {
+        onShare();
       },
     },
   ];

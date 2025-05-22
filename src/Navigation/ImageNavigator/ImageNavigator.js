@@ -2,6 +2,7 @@ import * as React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {enableScreens} from 'react-native-screens';
 import ImageScreen from 'src/Screens/ImageScreen';
+import EditImage from 'src/Screens/EditImage';
 
 enableScreens();
 
@@ -25,6 +26,12 @@ export default function ImageNavigator() {
         name="ImageScreen"
         children={props => (
           <ImageScreen {...props} setImageTitle={setImageTitle} />
+        )}
+      />
+      <Stack.Screen
+        name="EditImage"
+        children={props => (
+          <EditImage {...props} setImageTitle={setImageTitle} />
         )}
       />
     </Stack.Navigator>
