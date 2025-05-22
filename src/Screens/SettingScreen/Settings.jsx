@@ -15,7 +15,7 @@ const Settings = () => {
       <View style={style.container}>
         <SearchBar />
         <ScrollView>
-          <SettingsOptions icon={'gpp-good'} label={'AccountSecurity'}/>
+          <SettingsOptions icon={'key'} label={'Change Password'} screen={'Change Password'}/>
           <SettingsOptions icon={'lock'} label={'Privacy Policy'} screen={'Privacy Policy'}/>
           <SettingsOptions icon={'edit-document'} label={'Terms of Use'} screen={'Terms of Use'}/>
           <SettingsOptions icon={'help'} label={'FAQS'} screen={'Faqs'}/>
