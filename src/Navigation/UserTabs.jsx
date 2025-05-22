@@ -2,7 +2,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Dashboard from '../Screens/Dashboard';
-import Photos from '../Screens/Photos';
 import {View} from 'moti';
 import ProfileNavigator from './ProfileNavigator/ProfileNavigator';
 import AccountNavigator from './AccountNavigator/AccountNavigator';
@@ -17,6 +16,7 @@ import {useNavigation} from '@react-navigation/native';
 import {Modal, Pressable, StyleSheet, Text} from 'react-native';
 import Button from '@components/button';
 import AutoGrowTextInput from '@components/AutoGrowTextInput';
+import Cart from 'src/Screens/Cart';
 
 export const Tabs = () => {
   const Tab = createBottomTabNavigator();
@@ -87,7 +87,7 @@ export const Tabs = () => {
         />
         <Tab.Screen
           name="Cart Items"
-          component={Photos}
+          component={Cart}
           options={{
             tabBarIcon: ({focused}) => (
               <CartIcon
