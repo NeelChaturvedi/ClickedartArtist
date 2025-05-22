@@ -7,17 +7,35 @@ import {
   RefreshControl,
   ScrollView,
   ActivityIndicator,
+  Pressable,
 } from 'react-native';
 import {styles} from './styles';
 import SearchBar from '../../components/SearchBar';
 import {useUserStore} from '../../store/auth';
 import api from '../../utils/apiClient';
+import SlideUpModal from '@components/SlideupModal';
 
 const Invoices = () => {
   const {user} = useUserStore();
   const [invoices, setInvoices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [slideUp, setSlideUp] = useState(false);
+
+  const imageOptions = [
+    {
+      label: 'Open',
+      icon: 'open-in-new',
+    },
+    {
+      label: 'Download',
+      icon: 'download',
+    },
+    {
+      label: 'Share',
+      icon: 'share',
+    },
+  ];
 
   const handleRefresh = React.useCallback(async () => {
     setRefreshing(true);
@@ -47,7 +65,11 @@ const Invoices = () => {
   }, [fetchInvoices]);
 
   const renderItem = ({item}) => (
-    <View style={styles.invoiceCard}>
+    <Pressable
+      onPress={() => {
+        setSlideUp(true);
+      }}
+      style={styles.invoiceCard}>
       <View style={styles.row}>
         <Text style={styles.invoiceText}>{item.invoiceId}</Text>
         <Text style={styles.amount}>&#8377;{item.totalAmountPayable}</Text>
@@ -69,7 +91,7 @@ const Invoices = () => {
           <Text style={styles.invoiceStatus}>{item.paymentStatus}</Text>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 
   if (loading) {
@@ -123,6 +145,12 @@ const Invoices = () => {
           />
         </>
       )}
+
+      <SlideUpModal
+        visible={slideUp}
+        onClose={() => setSlideUp(false)}
+        options={imageOptions}
+      />
     </View>
   );
 };
