@@ -98,4 +98,16 @@ export const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: '#ED3147',
   },
+  emptyContainer: {
+    flex: 1,
+    height: 200,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyText: {
+    color: 'white',
+    opacity: 0.7,
+    fontFamily: 'Outfit-medium',
+    fontSize: 20,
+  },
 });

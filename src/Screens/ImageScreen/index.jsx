@@ -11,6 +11,7 @@ import {
   Modal,
   Dimensions,
   Pressable,
+  ToastAndroid,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {styles} from './styles';
@@ -23,6 +24,7 @@ import {runOnJS} from 'react-native-reanimated';
 import {useRoute} from '@react-navigation/native';
 import api from 'src/utils/apiClient';
 import Icon from 'react-native-vector-icons/Ionicons';
+import useCartStore from 'src/store/cart';
 
 const ImageScreen = ({setImageTitle}) => {
   const {imageData} = useRoute().params;
@@ -30,8 +32,11 @@ const ImageScreen = ({setImageTitle}) => {
     () => (imageData ? JSON.parse(imageData) : {}),
     [imageData],
   );
+  const mode = 'print';
   const screenWidth = Dimensions.get('window').width;
-
+  const {addItemToCart, removeItemFromCart, isItemInCart, cartItems} =
+    useCartStore();
+  console.log(cartItems);
   const [showModal, setShowModal] = useState(false);
   const mockupUri = require('../../assets/images/mockup.webp');
   const [color, setColor] = useState('#5F91AB');
@@ -45,6 +50,7 @@ const ImageScreen = ({setImageTitle}) => {
   const [selectedFrame, setSelectedFrame] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const [price, setPrice] = useState(0);
+  const [inCart, setInCart] = useState(false);
 
   const paperOptions = papers.map(paper => ({
     id: paper._id,
@@ -90,6 +96,76 @@ const ImageScreen = ({setImageTitle}) => {
     runOnJS(setColor)(hex);
   };
 
+  const onAddToCart = () => {
+    if (!selectedPaper) {
+      ToastAndroid.show(
+        'Please select a Media Type!',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+      );
+      return;
+    }
+    if (!selectedSize) {
+      ToastAndroid.show(
+        'Please select a Size!',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+      );
+      return;
+    }
+
+    const productToAdd = {
+      imageInfo: {
+        image: image._id,
+        slug: image.slug,
+        title: image.title,
+        photographer: image.photographer,
+        resolution: selectedSize,
+        price: image.price?.original.toFixed(2) || 0,
+        thumbnail: image.imageLinks?.thumbnail || image.imageLinks?.original,
+      },
+      paperInfo: {
+        paper: selectedPaper._id,
+        price: selectedSize.price,
+        size: selectedSize,
+        name: selectedPaper.name,
+      },
+      frameInfo: selectedFrame
+        ? {
+            frame: selectedFrame._id,
+            price:
+              selectedSize?.width *
+              selectedSize?.height *
+              selectedFrame.basePricePerLinearInch,
+            name: selectedFrame.name,
+          }
+        : null,
+      subTotal: price - (price * selectedPaper.photographerDiscount) / 100,
+      mode,
+      delivery: selectedSize?.width * selectedSize?.height,
+    };
+
+    addItemToCart(productToAdd);
+    setInCart(true);
+    // toast.success('Added to cart!');
+    ToastAndroid.show(
+      'Added to cart!',
+      ToastAndroid.SHORT,
+      ToastAndroid.BOTTOM,
+    );
+  };
+
+  const onRemoveFromCart = () => {
+    removeItemFromCart(image._id, mode);
+    // toast.success('Removed from cart!');
+    ToastAndroid.show(
+      'Removed from cart!',
+      ToastAndroid.SHORT,
+      ToastAndroid.BOTTOM,
+    );
+    setInCart(isItemInCart(image._id, mode));
+  };
+
   useEffect(() => {
     const calculateSubtotal = () => {
       if (selectedSize) {
@@ -131,6 +207,11 @@ const ImageScreen = ({setImageTitle}) => {
     fetchPapers();
     fetchFrames();
   }, []);
+
+  useEffect(() => {
+    setInCart(isItemInCart(image._id, mode));
+    console.log('In cart check');
+  }, [image, isItemInCart, mode]);
 
   useEffect(() => {
     if (papers.length > 0) {
@@ -324,7 +405,12 @@ const ImageScreen = ({setImageTitle}) => {
             </View>
           </ScrollView>
           <View style={{paddingHorizontal: 20, paddingVertical: 20}}>
-            <Button btnText={'Add to cart'} />
+            <Button
+              btnText={inCart ? 'Remove from cart' : 'Add to cart'}
+              onPress={() => {
+                inCart ? onRemoveFromCart(image._id) : onAddToCart();
+              }}
+            />
           </View>
         </View>
       </KeyboardAvoidingView>
