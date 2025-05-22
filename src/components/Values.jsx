@@ -32,6 +32,7 @@ const style = StyleSheet.create({
   },
   headingText: {
     fontSize: 18,
+    lineHeight: 24,
     color: 'white',
     fontFamily: 'Outfit-medium',
   },
@@ -42,6 +43,7 @@ const style = StyleSheet.create({
   },
   valueText: {
     fontSize: 20,
+    lineHeight: 24,
     color: 'white',
     fontFamily: 'Outfit-medium',
   },

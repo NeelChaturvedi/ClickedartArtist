@@ -103,15 +103,30 @@ const TabCatalogues = ({catalogues}) => {
           key={index}
           style={styles.catalogueBorder}>
           <View style={styles.imageDistribution}>
-            {item?.images.map((image, index) => (
-              <Image
-                key={index}
-                style={styles.catalogueImage}
-                source={{uri: image.imageLinks.thumbnail}}
-                resizeMode="cover"
-              />
-            ))}
+            {item?.images
+              ?.slice(0, item?.images?.length <= 4 ? 4 : 3)
+              .map((image, index) => (
+                <Image
+                  key={index}
+                  style={styles.catalogueImage}
+                  source={{uri: image.imageLinks.thumbnail}}
+                  resizeMode="cover"
+                />
+              ))}
+            {item?.images?.length > 4 && (
+              <View style={styles.catalogueImageExtra}>
+                <Text style={styles.catalogueImageText}>
+                  +{item?.images?.length - 3}
+                </Text>
+              </View>
+            )}
           </View>
+          {!item?.images ||
+            (item?.images?.length === 0 && (
+              <View style={styles.noImageContainer}>
+                <Text style={styles.noImageText}>No Images</Text>
+              </View>
+            ))}
           <Text style={styles.catalougeText}>{item.name}</Text>
         </Pressable>
       ))}

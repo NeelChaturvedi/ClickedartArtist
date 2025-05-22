@@ -80,6 +80,7 @@ export const style = StyleSheet.create({
     color: 'white',
     fontFamily: 'Outfit-medium',
     fontSize: 18,
+    lineHeight: 24,
     marginTop: 0,
   },
   accountInfo: {
@@ -128,6 +129,7 @@ export const style = StyleSheet.create({
   },
   tabText: {
     fontSize: 20,
+    lineHeight: 30,
     color: '#999',
     fontFamily: 'Outfit-medium',
   },
