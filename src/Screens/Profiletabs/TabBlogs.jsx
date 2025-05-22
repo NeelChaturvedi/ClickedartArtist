@@ -1,10 +1,17 @@
 /* eslint-disable react-native/no-inline-styles */
-import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  ToastAndroid,
+} from 'react-native';
 import React, {useState} from 'react';
 import {styles} from './styles';
 import {Image} from 'moti';
 import {useNavigation} from '@react-navigation/native';
 import SlideUpModal from '@components/SlideupModal';
+import api from 'src/utils/apiClient';
 
 const TabBlogs = ({blogs, pendingBlogs}) => {
   const navigation = useNavigation();
@@ -29,10 +36,21 @@ const TabBlogs = ({blogs, pendingBlogs}) => {
       label: 'Delete',
       icon: 'delete',
       onPress: () => {
-        // handleCatalogueDelete();
+        handleDelete();
       },
     },
   ];
+
+  const handleDelete = async () => {
+    try {
+      await api.delete(`/blog/delete-blog?blogId=${selectedBlog._id}`);
+      ToastAndroid.show('Blog deleted successfully', ToastAndroid.SHORT);
+    } catch (error) {
+      console.error('Error deleting blog:', error);
+    } finally {
+      setSlideUp(false);
+    }
+  };
 
   return (
     <>
