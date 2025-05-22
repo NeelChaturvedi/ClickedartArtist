@@ -1,82 +1,86 @@
-import {Image, ScrollView, Text, View} from 'react-native';
+import {
+  Image,
+  ScrollView,
+  Text,
+  ToastAndroid,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React from 'react';
 import {styles} from './styles';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '@components/button';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import useCartStore from 'src/store/cart';
 
 const Cart = () => {
-  const onboardingImage = require('../../assets/images/onboarding.png');
-  const cards = [
-    {
-      id: 1,
-      title: 'The Residency',
-      owner: 'Bhanu Sharma',
-      image: onboardingImage,
-      size: '12 X 18 in',
-      frame: 'Wooden',
-      paper: 'Hahnemuhle Museum Etching 350 GSM 100% Acid Free Cotton Paper',
-      price: '₹1058.4',
-      subtotal: '₹1058.4',
-    },
-    {
-      id: 2,
-      title: 'The Residency',
-      owner: 'Bhanu Sharma',
-      image: onboardingImage,
-      size: '12 X 18 in',
-      frame: 'Wooden',
-      paper: 'Hahnemuhle Museum Etching 350 GSM 100% Acid Free Cotton Paper',
-      price: '₹1058.4',
-      subtotal: '₹1058.4',
-    },
-    {
-      id: 3,
-      title: 'The Residency',
-      owner: 'Bhanu Sharma',
-      image: onboardingImage,
-      size: '12 X 18 in',
-      frame: 'Wooden',
-      paper: 'Hahnemuhle Museum Etching 350 GSM 100% Acid Free Cotton Paper',
-      price: '₹1058.4',
-      subtotal: '₹1058.4',
-    },
-  ];
+  const {removeItemFromCart, cartItems} = useCartStore();
+  const onRemoveItem = (id, mode) => {
+    removeItemFromCart(id, mode);
+    ToastAndroid.show(
+      'Removed from cart!',
+      ToastAndroid.SHORT,
+      ToastAndroid.BOTTOM,
+    );
+  };
   return (
     <SafeAreaView style={styles.background}>
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.header}>Order Summary</Text>
         <View>
-          {cards.map(item => (
-            <View style={styles.card} key={item.id}>
+          {cartItems?.map((product, index) => (
+            <View style={styles.card} key={index}>
               <View style={styles.imageInfo}>
-                <Image style={styles.image} source={item.image} />
+                <Image
+                  style={styles.image}
+                  source={{uri: product.imageInfo?.thumbnail}}
+                />
                 <View style={styles.imageDetails}>
                   <View gap={6}>
-                    <Text style={styles.title}>{item.title}</Text>
-                    <Text style={styles.owner}>{item.owner}</Text>
+                    <Text style={styles.title}>{product.imageInfo?.title}</Text>
+                    <Text style={styles.owner}>
+                      {product.imageInfo?.photographer?.firstName
+                        ? product.imageInfo?.photographer?.firstName +
+                          ' ' +
+                          product.imageInfo?.photographer?.lastName
+                        : product.imageInfo?.photographer?.name}
+                    </Text>
                   </View>
-                  <Text style={styles.price}>{item.price}</Text>
+                  <Text style={styles.price}>₹ {product.subTotal}</Text>
                 </View>
-                <View style={styles.removeIcon}>
+                <TouchableOpacity
+                  style={styles.removeIcon}
+                  onPress={() =>
+                    onRemoveItem(product.imageInfo?.image, product.mode)
+                  }>
                   <Icon name="close" size={20} color={'white'} />
-                </View>
+                </TouchableOpacity>
               </View>
               <View style={styles.line} />
               <View gap={20}>
-                <Text style={styles.paper}>{item.paper}</Text>
+                <Text style={styles.paper}>{product.paperInfo?.name}</Text>
                 <View style={styles.otherOptions}>
-                  <Text style={styles.size}>{item.size}</Text>
-                  <Text style={styles.size}>{item.frame}</Text>
+                  <Text style={styles.size}>
+                    {product.paperInfo?.size?.width} x{' '}
+                    {product.paperInfo?.size?.height} in
+                  </Text>
+                  <Text style={styles.size}>{product.frameInfo?.name}</Text>
                 </View>
               </View>
             </View>
           ))}
+          {cartItems?.length === 0 && (
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyText}>Your cart is empty</Text>
+            </View>
+          )}
         </View>
       </ScrollView>
-      <View style={styles.btnContainer}>
-        <Button btnText={'CheckOut'} />
-      </View>
+      {cartItems?.length > 0 && (
+        <View style={styles.btnContainer}>
+          <Button btnText={'CheckOut'} />
+        </View>
+      )}
     </SafeAreaView>
   );
 };
