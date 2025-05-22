@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
   },
   form: {
     justifyContent: 'flex-start',
-    paddingBottom: 10,
+    paddingBottom: 25,
     gap: 30,
   },
   row: {
@@ -54,23 +54,67 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 30,
   },
-  totalAmount:{
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  amountDistribution:{
     borderTopWidth: 1,
-    borderTopColor: 'white',
+    borderBottomWidth: 1,
+    borderColor: 'white',
     paddingHorizontal: 20,
     paddingVertical: 16,
+    gap: 30,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems:'center',
   },
-  orderContainer:{
+  totalAmount:{
+  },
+  orderCard:{
+    width: '100%',
     padding: 16,
+    gap:20,
     backgroundColor: '#1E1E1E',
     borderRadius: 10,
     borderWidth: 0.5,
     borderColor: 'white',
   },
   orderImage:{
-    width: 80,
-    height: 80,
+    width: '34%',
+    height: 110,
   },
+  orderDetails:{
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    gap: 16,
+  },
+  orderInfo:{
+    gap: 10,
+    flexDirection: 'column',
+    width: '60%',
+  },
+  orderTitle:{
+    fontFamily: 'Outfit-medium',
+    color: 'white',
+    fontSize: 16,
+  },
+  orderPaper:{
+    fontFamily: 'Outfit-medium',
+    color: 'white',
+    fontSize: 14,
+  },
+  line:{
+    width: '100%',
+    height: 2,
+    backgroundColor: 'white',
+  },
+  modalOverlay: {
+  flex: 1,
+  justifyContent: 'flex-end',
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+},
+modalContent: {
+  backgroundColor: '#1E1E1E',
+  gap:30,
+  padding: 20,
+  borderTopLeftRadius: 20,
+  borderTopRightRadius: 20,
+},
 });

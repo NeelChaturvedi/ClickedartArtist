@@ -8,13 +8,26 @@ import {
   KeyboardAvoidingView,
   Platform,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import {styles} from './styles';
 import AutoGrowTextInput from '@components/AutoGrowTextInput';
 import Button from '@components/button';
+import SlideUpDetails from '@components/SlideupDetails';
 
 const CheckOut = () => {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const priceDetails = [
+    {label: 'Subtotal', value: '₹1448.94/-'},
+    {label: 'Savings', value: '₹1448.94/-'},
+    {label: 'Delivery Charges', value: '₹1448.94/-'},
+    {label: 'Platform Gateway', value: '₹1448.94/-'},
+    {label: 'CGST (9%)', value: '₹144.89/-'},
+    {label: 'SGST (9%)', value: '₹144.89/-'},
+    {label: 'Total', value: '₹10648.94/-'},
+  ];
 
   return (
     <SafeAreaView style={styles.background}>
@@ -117,33 +130,66 @@ const CheckOut = () => {
                   </View>
                 </View>
               </ScrollView>
-              <View style={styles.totalAmount}>
-                <Text style={styles.header}>TotalAmount</Text>
-                <Text style={styles.header}>₹1448.94/-</Text>
-              </View>
 
               <View style={{padding: 20}}>
-                <Button btnText="Continue to payment" />
+                <Button btnText="Proceed to Pay" />
               </View>
             </>
           ) : (
-            <ScrollView
-              style={styles.containerWrapper}
-              contentContainerStyle={styles.form}>
-              <Text style={styles.header}>Total Amount</Text>
-              <View style={styles.orderContainer}>
-                <View style={styles.row}>
-                  <Image
-                    style={styles.orderImage}
-                    source={require('../../assets/images/onboarding.png')}
-                  />
+            <>
+              <ScrollView
+                style={styles.containerWrapper}
+                contentContainerStyle={styles.form}>
+                <Text style={styles.header}>Total Amount</Text>
+                <View style={styles.orderCard}>
                   <View style={styles.orderDetails}>
-                    <Text style={styles.orderTitle}>Order Title</Text>
-                    <Text style={styles.orderPrice}>$ 100.00</Text>
+                    <Image
+                      style={styles.orderImage}
+                      source={require('../../assets/images/onboarding.png')}
+                    />
+                    <View style={styles.orderInfo}>
+                      <Text style={styles.orderTitle}>Order Title</Text>
+                      <Text style={styles.orderPaper}>
+                        Hahnemuhle Museum Etching 350 GSM 100% Acid Free Cotton
+                        Paper
+                      </Text>
+                      <View style={styles.row}>
+                        <Text style={styles.orderTitle}>12 X 18 in</Text>
+                        <Text style={styles.orderPaper}>Red Wood</Text>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={styles.line} />
+                  <View gap={10}>
+                    <View style={styles.row}>
+                      <Text style={styles.orderTitle}>Delivery</Text>
+                      <Text style={styles.orderPaper}>₹1448.94/-</Text>
+                    </View>
+                    <View style={styles.row}>
+                      <Text style={styles.orderTitle}>Total Amount</Text>
+                      <Text style={styles.orderPaper}>₹10648.94/-</Text>
+                    </View>
                   </View>
                 </View>
+              </ScrollView>
+              <TouchableOpacity
+                style={styles.amountDistribution}
+                onPress={() => setModalVisible(true)}>
+                <Text style={styles.orderTitle}>Payment:</Text>
+                <Text style={styles.header}>₹1448.94/-</Text>
+              </TouchableOpacity>
+
+              <SlideUpDetails
+                visible={modalVisible}
+                onClose={() => setModalVisible(false)}
+                data={priceDetails}
+                title="Price Breakdown"
+              />
+
+              <View style={{padding: 20}}>
+                <Button btnText="Place Order" />
               </View>
-            </ScrollView>
+            </>
           )}
         </View>
       </KeyboardAvoidingView>
