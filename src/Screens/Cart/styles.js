@@ -10,10 +10,12 @@ export const styles = StyleSheet.create({
     fontFamily: 'Outfit-bold',
     fontSize: 24,
     color: 'white',
+    textAlign: 'center',
   },
   container: {
-    padding: 20,
-    gap: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    gap: 30,
   },
   card: {
     width: '100%',
@@ -30,8 +32,9 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
-    justifyContent: 'space-between',
+    gap: 20,
     height: 100,
+    position: 'relative',
   },
   image: {
     width: 100,
@@ -83,5 +86,16 @@ export const styles = StyleSheet.create({
   btnContainer: {
     paddingHorizontal: 20,
     paddingVertical: 14,
+  },
+  removeIcon:{
+    position: 'absolute',
+    top: -24,
+    right: -24,
+    width: 36,
+    height: 36,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+    backgroundColor: '#ED3147',
   },
 });

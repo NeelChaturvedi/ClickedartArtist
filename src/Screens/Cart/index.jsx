@@ -3,6 +3,7 @@ import React from 'react';
 import {styles} from './styles';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '@components/button';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Cart = () => {
   const onboardingImage = require('../../assets/images/onboarding.png');
@@ -56,6 +57,9 @@ const Cart = () => {
                     <Text style={styles.owner}>{item.owner}</Text>
                   </View>
                   <Text style={styles.price}>{item.price}</Text>
+                </View>
+                <View style={styles.removeIcon}>
+                  <Icon name="close" size={20} color={'white'} />
                 </View>
               </View>
               <View style={styles.line} />

@@ -15,6 +15,8 @@ const TabCatalogues = ({catalogues}) => {
   const [slideUp, setSlideUp] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
+  const [selectedCatalogue, setSelectedCatalogue] = useState(null);
+
   const imageOptions = [
     {
       label: 'Open',
@@ -22,13 +24,18 @@ const TabCatalogues = ({catalogues}) => {
       onPress: () => {
         navigation.navigate('CatalogueNavigator', {
           screen: 'Catalogue Screen',
+          params: {
+            id: selectedCatalogue._id,
+          },
         });
       },
     },
     {
       label: 'Edit',
       icon: 'edit',
-      onPress: () => {setShowModal(true);},
+      onPress: () => {
+        setShowModal(true);
+      },
     },
     {
       label: 'Delete',
@@ -43,8 +50,10 @@ const TabCatalogues = ({catalogues}) => {
         <Pressable
           onPress={() => {
             setSlideUp(true);
+            setSelectedCatalogue(item);
           }}
-          key={index} style={styles.catalogueBorder}>
+          key={index}
+          style={styles.catalogueBorder}>
           <View style={styles.imageDistribution}>
             {item?.images.map((image, index) => (
               <Image
@@ -89,7 +98,6 @@ const TabCatalogues = ({catalogues}) => {
         </Pressable>
       </Modal>
     </View>
-
   );
 };
 

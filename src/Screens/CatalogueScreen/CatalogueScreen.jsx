@@ -6,12 +6,15 @@ import {
   View,
   Image,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {use, useEffect, useState} from 'react';
 import {styles} from './styles';
 import SlideUpModal from '@components/SlideupModal';
+import api from 'src/utils/apiClient';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
 const CatalogueScreen = () => {
   const [slideUp, setSlideUp] = useState(false);
+  const [catalogue, setCatalogue] = useState(false);
   const images = [
     {
       id: 1,
@@ -65,49 +68,86 @@ const CatalogueScreen = () => {
     },
   ];
 
+  const navigation = useNavigation();
+  const [selectedImage, setSelectedImage] = useState(null);
+
   const imageOptions = [
     {
       label: 'Open',
       icon: 'open-in-new',
-      // onPress: () => {
-      //   navigation.navigate('ImageNavigator', {
-      //     screen: 'ImageScreen',
-      //     params: {
-      //       imageData: JSON.stringify(selectedImage),
-      //     },
-      //   });
-      // },
+      onPress: () => {
+        navigation.navigate('ImageNavigator', {
+          screen: 'ImageScreen',
+          params: {
+            imageData: JSON.stringify(selectedImage),
+          },
+        });
+      },
     },
     {
       label: 'Remove',
       icon: 'close',
-      // onPress: () => {},
+      onPress: () => {
+        removeImage(catalogue._id, catalogue.images[0]._id);
+      },
     },
   ];
+
+  const {id} = useRoute().params;
+
+  const removeImage = async (catalogueId, imageIdToRemove) => {
+    try {
+      const response = await api.post(
+        `/catalogue/remove-images-from-catalogue`,
+        {
+          catalogueId: catalogueId,
+          imagesToRemove: [imageIdToRemove],
+        },
+      );
+      fetchCatalogue();
+    } catch (err) {
+      console.log('err', err.response?.data?.message);
+    }
+  };
+
+  const fetchCatalogue = async () => {
+    try {
+      const res = await api.get(
+        `/catalogue/get-catalogue-by-id?catalogueId=${id}`,
+      );
+      console.log('res', res.data.catalogue);
+      setCatalogue(res.data.catalogue);
+    } catch (err) {
+      console.log(err);
+    } finally {
+    }
+  };
+  useEffect(() => {
+    fetchCatalogue();
+  }, [id]);
 
   return (
     <SafeAreaView style={styles.background}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.headerContainer}>
-          <Text style={styles.Heading}>Catalogue Title</Text>
-          <Text style={styles.Description}>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cupiditate
-            quidem harum mollitia fuga. Facilis, et veniam? Molestias ipsa saepe
-            iusto hic sint! Quisquam sed deleniti iusto consequuntur sit
-            consequatur velit vitae aspernatur quasi earum, a ut animi eligendi
-            ducimus omnis porro totam perspiciatis tenetur, in ullam. Vitae
-            nihil voluptatem fuga?
-          </Text>
+          <Text style={styles.Heading}>{catalogue.name}</Text>
+          <Text style={styles.Description}>{catalogue.description}</Text>
         </View>
         <View style={styles.container}>
-          {images.map((item, index) => (
+          {catalogue.images?.map((item, index) => (
             <Pressable
               key={index}
               style={styles.imageBorder}
-              onPress={() => setSlideUp(true)}>
-              <Image style={styles.image} source={item.source} />
+              onPress={() => {
+                setSlideUp(true);
+                setSelectedImage(item);
+              }}>
+              <Image
+                style={styles.image}
+                source={{uri: item.imageLinks.thumbnail}}
+              />
               <View style={styles.imageDetails}>
-                <Text style={styles.imageText}>{item.name}</Text>
+                <Text style={styles.imageText}>{item.title}</Text>
               </View>
             </Pressable>
           ))}
