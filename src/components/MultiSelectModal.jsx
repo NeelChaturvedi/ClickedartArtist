@@ -13,6 +13,7 @@ import {
 const MultiSelectModal = ({options, value = [], onChange, placeholder}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedIds, setSelectedIds] = useState(value);
+  console.log('selectedIds', selectedIds);
 
   useEffect(() => {
     onChange?.(selectedIds);
@@ -25,11 +26,10 @@ const MultiSelectModal = ({options, value = [], onChange, placeholder}) => {
   };
 
   const renderSelectedText = () => {
-    if (selectedIds.length === 0) {
+    if (selectedIds?.length === 0) {
       return `${placeholder || 'Select options'}`;
     }
-    const selectedNames = options
-      .filter(opt => selectedIds.includes(opt.id))
+    const selectedNames = options?.filter(opt => selectedIds?.includes(opt.id))
       .map(opt => opt.name)
       .join(', ');
     return selectedNames;
@@ -55,7 +55,7 @@ const MultiSelectModal = ({options, value = [], onChange, placeholder}) => {
                   data={options}
                   keyExtractor={item => item.id.toString()}
                   renderItem={({item}) => {
-                    const selected = selectedIds.includes(item.id);
+                    const selected = selectedIds?.includes(item.id);
                     return (
                       <Pressable onPress={() => toggleSelect(item.id)}>
                         <Text

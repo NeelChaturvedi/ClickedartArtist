@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import {
@@ -28,46 +29,13 @@ const EditImage = () => {
   console.log('id', id);
   const navigation = useNavigation();
 
-  const [selectedTab, setSelectedTab] = useState('text');
-  const [step, setStep] = useState(0);
   const [imageUri, setImageUri] = useState(null);
-  const [uploading, setUploading] = useState(false);
-  const [watermarkUploading, setWatermarkUploading] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [categories, setCategories] = useState([]);
   const [errors, setErrors] = useState({});
   const [activePlan, setActivePlan] = useState('basic');
-  const [customText, setCustomText] = useState('ClickedArt');
-  const [watermark, setWatermark] = useState(null);
   const [limit, setLimit] = useState(10);
-  const [photosLength, setPhotosLength] = useState(0);
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [photo, setPhoto] = useState({
-    category: '',
-    photographer: '',
-    imageLinks: {},
-    resolutions: {},
-    description: '',
-    story: '',
-    keywords: [],
-    location: '',
-    photoPrivacy: 'Public',
-    watermark: false,
-    cameraDetails: {
-      camera: '',
-      lens: '',
-      settings: {
-        focalLength: '',
-        aperture: '',
-        shutterSpeed: '',
-        iso: '',
-      },
-    },
-    notForSale: false,
-    price: 0,
-    title: '',
-    isActive: false,
-  });
+  const [photo, setPhoto] = useState(null);
   const [updatedPhoto, setUpdatedPhoto] = useState(null);
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => {
@@ -80,7 +48,9 @@ const EditImage = () => {
     name: category.name,
   }));
 
-  const [keywordInput, setKeywordInput] = useState(photo.keywords.join(', '));
+  const [keywordInput, setKeywordInput] = useState(
+    updatedPhoto?.keywords?.join(', '),
+  );
 
   const validate = () => {
     let error = {};
@@ -115,11 +85,7 @@ const EditImage = () => {
     }
     setErrors({});
     try {
-      const response = await api.post(
-        `/images/update-image-in-vault`,
-        updatedPhoto,
-      );
-      // toast.success("Image updated successfully");
+      await api.post('/images/update-image-in-vault', updatedPhoto);
       ToastAndroid.show('Image updated successfully', ToastAndroid.SHORT);
       navigation.goBack();
     } catch (error) {
@@ -130,7 +96,7 @@ const EditImage = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await api.get(`/category/get`);
+        const res = await api.get('/category/get');
         setCategories(res.data.categories);
       } catch (error) {
         console.log(error);
@@ -185,7 +151,8 @@ const EditImage = () => {
         id: photo._id,
         title: photo.title,
         price: photo.notForSale ? 0 : photo.price?.original || 0,
-        category: photo.category,
+        //return the category ids in the array
+        category: photo.category.map(category => category._id),
         description: photo.description,
         keywords: photo.keywords,
         story: photo.story,
@@ -198,7 +165,7 @@ const EditImage = () => {
     }
   }, [photo]);
 
-  console.log('photo', photo);
+  console.log('photo', updatedPhoto);
 
   return (
     <SafeAreaView style={styles.background}>
@@ -274,12 +241,14 @@ const EditImage = () => {
                     onChangeText={text => {
                       setUpdatedPhoto({...updatedPhoto, price: text});
                     }}
-                    value={updatedPhoto?.price}
+                    value={String(updatedPhoto?.price || 0)}
                     keyboardType="numeric"
                   />
                 </View>
               )}
-              <View gap={16} style={{width: photo.notForSale ? '100%' : '48%'}}>
+              <View
+                gap={16}
+                style={{width: updatedPhoto?.notForSale ? '100%' : '48%'}}>
                 <Text style={styles.headingText}>Category</Text>
                 <MultiSelectModal
                   options={categoriesList}
@@ -311,7 +280,7 @@ const EditImage = () => {
               <Text style={styles.headingText}>Keywords</Text>
               <AutoGrowTextInput
                 placeholder="Enter Keywords"
-                value={keywordInput || photo.keywords.join(', ')}
+                value={keywordInput || updatedPhoto?.keywords?.join(', ')}
                 onChangeText={text => {
                   setKeywordInput(text);
                   setUpdatedPhoto({
@@ -342,12 +311,12 @@ const EditImage = () => {
                   setUpdatedPhoto({
                     ...updatedPhoto,
                     cameraDetails: {
-                      ...updatedPhoto.cameraDetails,
+                      ...updatedPhoto?.cameraDetails,
                       camera: text,
                     },
                   });
                 }}
-                value={updatedPhoto?.cameraDetails.camera}
+                value={updatedPhoto?.cameraDetails?.camera}
               />
             </View>
             <View gap={16}>
@@ -357,10 +326,10 @@ const EditImage = () => {
                 onChangeText={text => {
                   setUpdatedPhoto({
                     ...updatedPhoto,
-                    cameraDetails: {...updatedPhoto.cameraDetails, lens: text},
+                    cameraDetails: {...updatedPhoto?.cameraDetails, lens: text},
                   });
                 }}
-                value={updatedPhoto?.cameraDetails.lens}
+                value={updatedPhoto?.cameraDetails?.lens}
               />
             </View>
             <View style={styles.twoFields}>
@@ -372,15 +341,15 @@ const EditImage = () => {
                     setUpdatedPhoto({
                       ...updatedPhoto,
                       cameraDetails: {
-                        ...updatedPhoto.cameraDetails,
+                        ...updatedPhoto?.cameraDetails,
                         settings: {
-                          ...updatedPhoto.cameraDetails.settings,
+                          ...updatedPhoto?.cameraDetails?.settings,
                           focalLength: text,
                         },
                       },
                     });
                   }}
-                  value={updatedPhoto?.cameraDetails.settings.focalLength}
+                  value={updatedPhoto?.cameraDetails?.settings?.focalLength}
                 />
               </View>
               <View gap={16} style={{width: '48%'}}>
@@ -391,15 +360,15 @@ const EditImage = () => {
                     setUpdatedPhoto({
                       ...updatedPhoto,
                       cameraDetails: {
-                        ...updatedPhoto.cameraDetails,
+                        ...updatedPhoto?.cameraDetails,
                         settings: {
-                          ...updatedPhoto.cameraDetails.settings,
+                          ...updatedPhoto?.cameraDetails?.settings,
                           aperture: text,
                         },
                       },
                     });
                   }}
-                  value={updatedPhoto?.cameraDetails.settings.aperture}
+                  value={updatedPhoto?.cameraDetails?.settings?.aperture}
                 />
               </View>
             </View>
@@ -414,13 +383,13 @@ const EditImage = () => {
                       cameraDetails: {
                         ...updatedPhoto?.cameraDetails,
                         settings: {
-                          ...updatedPhoto?.cameraDetails.settings,
+                          ...updatedPhoto?.cameraDetails?.settings,
                           shutterSpeed: text,
                         },
                       },
                     });
                   }}
-                  value={updatedPhoto?.cameraDetails.settings.shutterSpeed}
+                  value={updatedPhoto?.cameraDetails?.settings?.shutterSpeed}
                 />
               </View>
               <View gap={16} style={{width: '48%'}}>
@@ -434,13 +403,15 @@ const EditImage = () => {
                       cameraDetails: {
                         ...updatedPhoto?.cameraDetails,
                         settings: {
-                          ...updatedPhoto?.cameraDetails.settings,
+                          ...updatedPhoto?.cameraDetails?.settings,
                           iso: text,
                         },
                       },
                     });
                   }}
-                  value={String(updatedPhoto?.cameraDetails.settings.iso || '')}
+                  value={String(
+                    updatedPhoto?.cameraDetails?.settings?.iso || '',
+                  )}
                 />
               </View>
             </View>

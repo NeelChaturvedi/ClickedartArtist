@@ -11,7 +11,7 @@ import CartIcon from '../assets/svgs/CartIcon.svg';
 import ProfileIcon from '../assets/svgs/ProfileIcon.svg';
 import PostsIcon from '../assets/svgs/PostsIcon.svg';
 import SlideUpModal from '@components/SlideupModal';
-import {use, useEffect, useState} from 'react';
+import {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {Modal, Pressable, StyleSheet, Text, ToastAndroid} from 'react-native';
 import Button from '@components/button';
@@ -19,6 +19,7 @@ import AutoGrowTextInput from '@components/AutoGrowTextInput';
 import Cart from 'src/Screens/Cart';
 import api from 'src/utils/apiClient';
 import {useUserStore} from 'src/store/auth';
+import useCartStore from 'src/store/cart';
 
 export const Tabs = () => {
   const Tab = createBottomTabNavigator();
@@ -32,6 +33,7 @@ export const Tabs = () => {
   });
 
   const {user} = useUserStore();
+  const {cartItems} = useCartStore();
 
   const navigation = useNavigation();
 
@@ -59,12 +61,12 @@ export const Tabs = () => {
       return;
     }
     try {
-      await api.post(`/catalogue/create-catalogue`, {
+      await api.post('/catalogue/create-catalogue', {
         ...catalogue,
         photographer: user._id,
       });
       ToastAndroid.show('Catalogue created successfully.', ToastAndroid.SHORT);
-      // fetchCatalogues();
+      useUserStore.getState().fetchUserFromToken();
       setShowModal(false);
       setCatalogue(null);
     } catch (err) {
@@ -72,7 +74,6 @@ export const Tabs = () => {
     } finally {
     }
   };
-
 
   const postsOptions = [
     {
@@ -138,11 +139,35 @@ export const Tabs = () => {
           component={Cart}
           options={{
             tabBarIcon: ({focused}) => (
-              <CartIcon
-                width={24}
-                height={24}
-                color={focused ? '#ED3147' : 'white'}
-              />
+              <View style={{position: 'relative'}}>
+                <CartIcon
+                  width={24}
+                  height={24}
+                  color={focused ? '#ED3147' : 'white'}
+                />
+                <View
+                  style={{
+                    position: 'absolute',
+                    top: -10,
+                    right: -10,
+                    backgroundColor: focused ? 'white' : '#ED3147',
+                    borderRadius: 50,
+                    width: 20,
+                    height: 20,
+
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      fontFamily: 'Outfit-bold',
+                      color: focused ? '#ED3147' : 'white',
+                    }}>
+                    {cartItems?.length || 0}
+                  </Text>
+                </View>
+              </View>
             ),
           }}
         />
