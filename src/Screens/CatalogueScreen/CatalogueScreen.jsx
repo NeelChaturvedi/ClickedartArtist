@@ -98,7 +98,7 @@ const CatalogueScreen = () => {
   const removeImage = async (catalogueId, imageIdToRemove) => {
     try {
       const response = await api.post(
-        `/catalogue/remove-images-from-catalogue`,
+        '/catalogue/remove-images-from-catalogue',
         {
           catalogueId: catalogueId,
           imagesToRemove: [imageIdToRemove],
