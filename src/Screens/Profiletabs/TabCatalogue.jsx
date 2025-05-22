@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow */
 
-import {View, Text, Pressable, Modal} from 'react-native';
+import {View, Text, Pressable, Modal, ToastAndroid} from 'react-native';
 import {styles} from './styles';
 import React, {useState} from 'react';
 import {Image} from 'moti';
@@ -44,7 +44,9 @@ const TabCatalogues = ({catalogues}) => {
     {
       label: 'Delete',
       icon: 'delete',
-      onPress: () => {},
+      onPress: () => {
+        handleCatalogueDelete();
+      },
     },
   ];
 
@@ -59,6 +61,19 @@ const TabCatalogues = ({catalogues}) => {
       setShowModal(false);
     } catch (err) {
       console.log('err', err.response.data.message);
+    } finally {
+    }
+  };
+
+  const handleCatalogueDelete = async () => {
+    try {
+      await api.delete(
+        `/catalogue/delete-catalogue?catalogueId=${selectedCatalogue._id}`,
+      );
+      ToastAndroid.show('Catalogue deleted successfully.', ToastAndroid.SHORT);
+      // fetchCatalogues();
+    } catch (err) {
+      console.log('err', err);
     } finally {
     }
   };
