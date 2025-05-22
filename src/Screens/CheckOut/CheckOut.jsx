@@ -14,7 +14,7 @@ import AutoGrowTextInput from '@components/AutoGrowTextInput';
 import Button from '@components/button';
 
 const CheckOut = () => {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(1);
 
   return (
     <SafeAreaView style={styles.background}>
@@ -117,8 +117,12 @@ const CheckOut = () => {
                   </View>
                 </View>
               </ScrollView>
+              <View style={styles.totalAmount}>
+                <Text style={styles.header}>TotalAmount</Text>
+                <Text style={styles.header}>₹1448.94/-</Text>
+              </View>
 
-              <View style={styles.btnWrapper}>
+              <View style={{padding: 20}}>
                 <Button btnText="Continue to payment" />
               </View>
             </>

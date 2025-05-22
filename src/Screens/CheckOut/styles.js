@@ -8,7 +8,6 @@ export const styles = StyleSheet.create({
   },
   containerWrapper: {
     paddingHorizontal: 20,
-    paddingBottom: 20,
   },
   header: {
     fontFamily: 'Outfit-bold',
@@ -17,6 +16,7 @@ export const styles = StyleSheet.create({
   },
   form: {
     justifyContent: 'flex-start',
+    paddingBottom: 10,
     gap: 30,
   },
   row: {
@@ -54,8 +54,13 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 30,
   },
-  btnWrapper:{
-    padding: 20,
+  totalAmount:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderTopWidth: 1,
+    borderTopColor: 'white',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
   },
   orderContainer:{
     padding: 16,
