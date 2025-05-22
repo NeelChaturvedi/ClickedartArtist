@@ -274,7 +274,7 @@ const Profile = () => {
             <View style={style.headerIcons}>
               <Pressable
                 onPress={() => {
-                  navigation.navigate('Settings');
+                  navigation.navigate('SettingsNavigator');
                 }}
                 style={style.iconContainer}>
                 <Icon name="gear" size={20} />

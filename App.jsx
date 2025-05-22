@@ -71,7 +71,7 @@ export default function App() {
         ) : (
           <>
             <Stack.Screen name="BottomTab" component={Tabs} />
-            <Stack.Screen name="Settings" component={SettingsNavigator} />
+            <Stack.Screen name="SettingsNavigator" component={SettingsNavigator} />
             <Stack.Screen name="BlogNavigator" component={BlogNavigator} />
             <Stack.Screen
               name="ProfileEdit"
