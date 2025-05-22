@@ -6,6 +6,7 @@ import {
   PermissionsAndroid,
   Platform,
   ToastAndroid,
+  Share,
 } from 'react-native';
 import React, {useState} from 'react';
 import {styles} from './styles';
@@ -86,6 +87,12 @@ const TabPhotos = ({photos}) => {
     }
   };
 
+  const onShare = async () => {
+    await Share.share({
+      message: `Check out this image: https://clickedart.com/images/${selectedImage?.slug}`,
+    });
+  };
+
   const imageOptions = [
     {
       label: 'Open',
@@ -114,6 +121,13 @@ const TabPhotos = ({photos}) => {
         }
         console.log('Attempting download for image:', selectedImage);
         downloadImage(selectedImage._id, 'original', selectedImage.title);
+      },
+    },
+    {
+      label: 'Share',
+      icon: 'share',
+      onPress: () => {
+        onShare();
       },
     },
   ];

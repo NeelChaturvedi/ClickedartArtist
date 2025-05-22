@@ -8,9 +8,13 @@ import {useNavigation} from '@react-navigation/native';
 import SlideUpModal from '@components/SlideupModal';
 import AutoGrowTextInput from '@components/AutoGrowTextInput';
 import Button from '@components/button';
+import api from 'src/utils/apiClient';
+import {useUserStore} from 'src/store/auth';
 
 const TabCatalogues = ({catalogues}) => {
   const navigation = useNavigation();
+
+  const {user} = useUserStore();
 
   const [slideUp, setSlideUp] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -43,6 +47,21 @@ const TabCatalogues = ({catalogues}) => {
       onPress: () => {},
     },
   ];
+
+  const handleCatalogueUpdate = async () => {
+    try {
+      await api.post(`/catalogue/update-catalogue`, {
+        catalogueId: selectedCatalogue._id,
+        photographer: user._id,
+        name: selectedCatalogue?.name,
+        description: selectedCatalogue?.description,
+      });
+      setShowModal(false);
+    } catch (err) {
+      console.log('err', err.response.data.message);
+    } finally {
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -87,13 +106,31 @@ const TabCatalogues = ({catalogues}) => {
             <Text style={styles.title}>Edit Catalogue</Text>
             <View style={styles.inputSection}>
               <Text style={styles.sectionTitle}>Catalogue Name</Text>
-              <AutoGrowTextInput placeholder={'Enter Title'} />
+              <AutoGrowTextInput
+                placeholder={'Enter Title'}
+                value={selectedCatalogue?.name}
+                onChangeText={text =>
+                  setSelectedCatalogue({
+                    ...selectedCatalogue,
+                    name: text,
+                  })
+                }
+              />
             </View>
             <View style={styles.inputSection}>
               <Text style={styles.sectionTitle}>Description</Text>
-              <AutoGrowTextInput placeholder={'Enter Description'} />
+              <AutoGrowTextInput
+                placeholder={'Enter Description'}
+                value={selectedCatalogue?.description}
+                onChangeText={text =>
+                  setSelectedCatalogue({
+                    ...selectedCatalogue,
+                    description: text,
+                  })
+                }
+              />
             </View>
-            <Button btnText="Save Changes" />
+            <Button btnText="Save Changes" onPress={handleCatalogueUpdate} />
           </Pressable>
         </Pressable>
       </Modal>

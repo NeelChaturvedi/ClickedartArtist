@@ -11,20 +11,67 @@ import CartIcon from '../assets/svgs/CartIcon.svg';
 import ProfileIcon from '../assets/svgs/ProfileIcon.svg';
 import PostsIcon from '../assets/svgs/PostsIcon.svg';
 import SlideUpModal from '@components/SlideupModal';
-import {useState} from 'react';
+import {use, useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {Modal, Pressable, StyleSheet, Text} from 'react-native';
+import {Modal, Pressable, StyleSheet, Text, ToastAndroid} from 'react-native';
 import Button from '@components/button';
 import AutoGrowTextInput from '@components/AutoGrowTextInput';
 import Cart from 'src/Screens/Cart';
+import api from 'src/utils/apiClient';
+import {useUserStore} from 'src/store/auth';
 
 export const Tabs = () => {
   const Tab = createBottomTabNavigator();
 
   const [slideUp, setSlideUp] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [catalogue, setCatalogue] = useState({
+    name: '',
+    description: '',
+    images: [],
+  });
+
+  const {user} = useUserStore();
 
   const navigation = useNavigation();
+
+  const catalogueValidation = () => {
+    if (!catalogue.name) {
+      ToastAndroid.show(
+        'Please enter the name of the catalogue.',
+        ToastAndroid.SHORT,
+      );
+      return false;
+    }
+    if (!catalogue.description) {
+      ToastAndroid.show(
+        'Please enter the description of the catalogue.',
+        ToastAndroid.SHORT,
+      );
+      return false;
+    }
+    return true;
+  };
+
+  const handleCreateCatalogue = async () => {
+    if (!catalogueValidation()) {
+      console.log('Catalogue validation failed');
+      return;
+    }
+    try {
+      await api.post(`/catalogue/create-catalogue`, {
+        ...catalogue,
+        photographer: user._id,
+      });
+      ToastAndroid.show('Catalogue created successfully.', ToastAndroid.SHORT);
+      // fetchCatalogues();
+      setShowModal(false);
+      setCatalogue(null);
+    } catch (err) {
+      console.log('err', err.response);
+    } finally {
+    }
+  };
 
   const postsOptions = [
     {
@@ -178,13 +225,31 @@ export const Tabs = () => {
             <Text style={styles.title}>Create Catalogue</Text>
             <View style={styles.inputSection}>
               <Text style={styles.sectionTitle}>Catalogue Name</Text>
-              <AutoGrowTextInput placeholder={'Enter Title'} />
+              <AutoGrowTextInput
+                placeholder={'Enter Title'}
+                value={catalogue?.name}
+                onChangeText={text => {
+                  setCatalogue({
+                    ...catalogue,
+                    name: text,
+                  });
+                }}
+              />
             </View>
             <View style={styles.inputSection}>
               <Text style={styles.sectionTitle}>Description</Text>
-              <AutoGrowTextInput placeholder={'Enter Description'} />
+              <AutoGrowTextInput
+                placeholder={'Enter Description'}
+                value={catalogue?.description}
+                onChangeText={text => {
+                  setCatalogue({
+                    ...catalogue,
+                    description: text,
+                  });
+                }}
+              />
             </View>
-            <Button btnText="Create" />
+            <Button btnText="Create" onPress={handleCreateCatalogue} />
           </Pressable>
         </Pressable>
       </Modal>
