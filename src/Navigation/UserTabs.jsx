@@ -73,6 +73,7 @@ export const Tabs = () => {
     }
   };
 
+
   const postsOptions = [
     {
       label: 'Upload an Image',

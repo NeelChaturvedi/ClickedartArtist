@@ -109,7 +109,14 @@ const TabPhotos = ({photos}) => {
     {
       label: 'Edit',
       icon: 'edit',
-      onPress: () => {},
+      onPress: () => {
+        navigation.navigate('ImageNavigator', {
+          screen: 'EditImage',
+          params: {
+            imageId: selectedImage._id,
+          },
+        });
+      },
     },
     {
       label: 'Download',
