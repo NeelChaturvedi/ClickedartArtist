@@ -54,25 +54,25 @@ const EditImage = () => {
 
   const validate = () => {
     let error = {};
-    if (!photo.title) {
+    if (!updatedPhoto.title) {
       error.title = 'Title is required';
     }
-    if (!photo.category) {
+    if (!updatedPhoto.category) {
       error.category = 'Category is required';
     }
-    if (!photo.notForSale && !photo.price) {
+    if (!updatedPhoto.notForSale && !updatedPhoto.price) {
       error.price = 'Price is required';
     }
-    if (photo.keywords.length < 5) {
+    if (updatedPhoto.keywords.length < 5) {
       error.keywords = 'At least 5 keywords are required';
     }
-    if (photo.price && isNaN(photo.price)) {
+    if (updatedPhoto.price && isNaN(updatedPhoto.price)) {
       error.price = 'Price must be a number';
     }
-    if (photo.price && photo.price < 200) {
+    if (updatedPhoto.price && updatedPhoto.price < 200) {
       error.price = 'Price must be greater than 200';
     }
-    if (photo.price && photo.price > 100000) {
+    if (updatedPhoto.price && updatedPhoto.price > 100000) {
       error.price = 'Price must be less than 100000';
     }
     setErrors(error);
@@ -150,8 +150,7 @@ const EditImage = () => {
         ...prev,
         id: photo._id,
         title: photo.title,
-        price: photo.notForSale ? 0 : photo.price?.original || 0,
-        //return the category ids in the array
+        price: photo.notForSale ? 0 : Number(photo.price?.original) || 0,
         category: photo.category.map(category => category._id),
         description: photo.description,
         keywords: photo.keywords,
@@ -162,10 +161,11 @@ const EditImage = () => {
         imageLinks: photo.imageLinks,
         photographer: photo.photographer._id,
       }));
+      if (photo?.notForSale) {
+        setIsEnabled(true);
+      }
     }
   }, [photo]);
-
-  console.log('photo', updatedPhoto);
 
   return (
     <SafeAreaView style={styles.background}>
@@ -239,7 +239,7 @@ const EditImage = () => {
                   <AutoGrowTextInput
                     placeholder={'Enter Image Price'}
                     onChangeText={text => {
-                      setUpdatedPhoto({...updatedPhoto, price: text});
+                      setUpdatedPhoto({...updatedPhoto, price: Number(text)});
                     }}
                     value={String(updatedPhoto?.price || 0)}
                     keyboardType="numeric"
@@ -404,7 +404,7 @@ const EditImage = () => {
                         ...updatedPhoto?.cameraDetails,
                         settings: {
                           ...updatedPhoto?.cameraDetails?.settings,
-                          iso: text,
+                          iso: Number(text),
                         },
                       },
                     });

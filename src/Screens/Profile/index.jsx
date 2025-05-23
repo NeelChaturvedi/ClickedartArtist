@@ -37,6 +37,7 @@ const Profile = () => {
   const [activeTab, setActiveTab] = useState('photos');
   const [stats, setStats] = useState({});
   const [photos, setPhotos] = useState([]);
+  const [pendingPhotos, setPendingPhotos] = useState([]);
   const [catalogues, setCatalogues] = useState([]);
   const [blogs, setBlogs] = useState([]);
   const [pendingBlogs, setPendingBlogs] = useState([]);
@@ -177,7 +178,7 @@ const Profile = () => {
     try {
       setLoading(true);
 
-      const [statsRes, photosRes, cataloguesRes, blogsRes, pendingBlogsRes] =
+      const [statsRes, photosRes, pendingPhotosRes, cataloguesRes, blogsRes, pendingBlogsRes] =
         await Promise.allSettled([
           api.get(
             `/photographeranalytics/get-photographer-analytics?photographer=${user._id}`,
@@ -185,6 +186,7 @@ const Profile = () => {
           api.get(
             `/images/get-images-by-photographer?photographer=${user._id}`,
           ),
+          api.get(`/photographer/get-pending-images-by-photographer?photographer=${user._id}`),
           api.get(
             `/catalogue/get-catalogues-by-photographer?photographer=${user._id}`,
           ),
@@ -199,6 +201,11 @@ const Profile = () => {
       }
       if (photosRes.status === 'fulfilled') {
         setPhotos(photosRes.value.data.photos);
+      } else {
+        setPhotos([]);
+      }
+      if (photosRes.status === 'fulfilled') {
+        setPendingPhotos(pendingPhotosRes.value.data.pendingImages);
       } else {
         setPhotos([]);
       }
@@ -218,7 +225,7 @@ const Profile = () => {
         setPendingBlogs([]);
       }
     } catch (error) {
-      console.error('Unexpected error fetching dashboard data:', error);
+      console.error('Unexpected error fetching Profile data:', error);
     } finally {
       setLoading(false);
     }
@@ -359,7 +366,7 @@ const Profile = () => {
         <View style={style.tabsContainer}>
           <View>
             {activeTab === 'photos' ? (
-              <TabPhotos photos={photos} />
+              <TabPhotos photos={photos} pendingPhotos={pendingPhotos} />
             ) : activeTab === 'catalogues' ? (
               <TabCatalogues catalogues={catalogues} />
             ) : (

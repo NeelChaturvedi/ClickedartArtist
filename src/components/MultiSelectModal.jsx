@@ -13,7 +13,6 @@ import {
 const MultiSelectModal = ({options, value = [], onChange, placeholder}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedIds, setSelectedIds] = useState(value);
-  console.log('selectedIds', selectedIds);
 
   useEffect(() => {
     onChange?.(selectedIds);
@@ -29,11 +28,16 @@ const MultiSelectModal = ({options, value = [], onChange, placeholder}) => {
     if (selectedIds?.length === 0) {
       return `${placeholder || 'Select options'}`;
     }
-    const selectedNames = options?.filter(opt => selectedIds?.includes(opt.id))
+    const selectedNames = options
+      ?.filter(opt => selectedIds?.includes(opt.id))
       .map(opt => opt.name)
       .join(', ');
     return selectedNames;
   };
+
+  useEffect(() => {
+    setSelectedIds(value);
+  }, [value]);
 
   return (
     <View style={styles.selectionContainer}>

@@ -14,8 +14,9 @@ import SlideUpModal from '@components/SlideupModal';
 import {useNavigation} from '@react-navigation/native';
 import RNFS from 'react-native-fs';
 import api from 'src/utils/apiClient';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-const TabPhotos = ({photos}) => {
+const TabPhotos = ({photos, pendingPhotos}) => {
   const [slideUp, setSlideUp] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
@@ -141,6 +142,32 @@ const TabPhotos = ({photos}) => {
 
   return (
     <View style={styles.container}>
+      {pendingPhotos?.map((item, index) => (
+        <Pressable
+          key={index}
+          style={styles.imageBorder}
+          onPress={() => {
+            setSelectedImage(item);
+            setSlideUp(true);
+          }}>
+          <Image
+            style={styles.image}
+            source={{uri: item.imageLinks.thumbnail}}
+          />
+          <View style={styles.imageDetails}>
+            <Text style={styles.imageText}>{item.title}</Text>
+          </View>
+          <View style={styles.status}>
+            <View style={styles.overlay} />
+            <Icon
+              style={styles.pending}
+              name="clock-o"
+              size={50}
+              color="white"
+            />
+          </View>
+        </Pressable>
+      ))}
       {photos?.map((item, index) => (
         <Pressable
           key={index}
