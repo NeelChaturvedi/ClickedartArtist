@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   Pressable,
   Modal,
+  ToastAndroid,
 } from 'react-native';
 import {styles} from './styles';
 import {useUserStore} from '../../store/auth';
@@ -29,6 +30,88 @@ const Orders = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [supportModal, setSupportModal] = useState(false);
   const [trackModal, setTrackModal] = useState(false);
+  const [orderSupport, setOrderSupport] = useState({
+    userInfo: {
+      user: '',
+      userType: '',
+    },
+    order: '',
+    issueType: '',
+    issueDescription: '',
+    preferredContactMethod: '',
+  });
+
+  const issueTypes = [
+    {id: 'Order not received', name: 'Order Not Received'},
+    {id: 'Wrong item received', name: 'Wrong Item Received'},
+    {id: 'Damaged Item', name: 'Damaged Item'},
+    {id: 'Payment issue', name: 'Payment Issue'},
+    {
+      id: 'Request for cancellation or refund',
+      name: 'Request for Cancellation or Refund',
+    },
+    {id: 'Digital Download Issue', name: 'Digital Download Issue'},
+    {id: 'Other', name: 'Other'},
+  ];
+
+  const contactMethods = [
+    {id: 'Email', name: 'Email'},
+    {id: 'Phone', name: 'Phone'},
+    {id: 'Chat', name: 'Chat'},
+  ];
+
+  const validateOrderSupport = () => {
+    if (
+      orderSupport.issueType === '' ||
+      orderSupport.issueDescription === '' ||
+      orderSupport.preferredContactMethod === ''
+    ) {
+      ToastAndroid.show('Please fill all the fields', ToastAndroid.SHORT);
+      return false;
+    }
+    return true;
+  };
+  const handleOrderSupport = async () => {
+    const updatedOrderSupport = {
+      ...orderSupport,
+      order: selectedOrder?._id,
+    };
+    if (!validateOrderSupport()) {
+      return;
+    }
+    try {
+      await api.post(
+        '/ordersupport/create-order-support-request',
+        updatedOrderSupport,
+      );
+      console.log('Order Support:', updatedOrderSupport);
+      ToastAndroid.show(
+        'Order support request submitted successfully',
+        ToastAndroid.SHORT,
+      );
+    } catch (error) {
+      if (
+        error.response.data.message === 'Support already exist on this order',
+        ToastAndroid.show(
+          'Support already exist on this order',
+          ToastAndroid.SHORT,
+        )
+      ) {
+      } else {
+        console.log(error.response);
+      }
+    }
+    finally{
+      setSupportModal(false);
+      setOrderSupport({
+        ...orderSupport,
+        order: '',
+        issueType: '',
+        issueDescription: '',
+        preferredContactMethod: '',
+      });
+    }
+  };
 
   const fetchOrders = useCallback(async () => {
     if (!user?._id) {
@@ -90,6 +173,22 @@ const Orders = () => {
     },
   ];
 
+  useEffect(() => {
+    if (!user) return;
+    if (
+      orderSupport.userInfo.user === '' ||
+      orderSupport.userInfo.userType === ''
+    ) {
+      setOrderSupport(prev => ({
+        ...prev,
+        userInfo: {
+          user: user?._id,
+          userType: 'Photographer',
+        },
+      }));
+    }
+  }, [user]);
+
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -147,8 +246,7 @@ const Orders = () => {
                     ? '#FFB800'
                     : item.printStatus === 'cancelled' ||
                       item.printStatus === 'returned'
-                    ? //light blue
-                      '#FF3D00'
+                    ? '#FF3D00'
                     : '#00BFFF',
                 paddingHorizontal: 12,
                 paddingVertical: 4,
@@ -237,18 +335,46 @@ const Orders = () => {
               nestedScrollEnabled={true}>
               <View style={styles.inputSection}>
                 <Text style={styles.sectionTitle}>Issue Type</Text>
-                <DropdownModal />
-                <AutoGrowTextInput placeholder={'Enter description'} />
+                <DropdownModal
+                  options={issueTypes}
+                  onSelect={item => {
+                    setOrderSupport({
+                      ...orderSupport,
+                      issueType: item.name,
+                    });
+                  }}
+                />
+                <AutoGrowTextInput
+                  placeholder={'Enter description'}
+                  onChangeText={text => {
+                    setOrderSupport({
+                      ...orderSupport,
+                      issueDescription: text,
+                    });
+                  }}
+                  value={orderSupport.issueDescription}
+                  maxLength={200}
+                  multiline={true}
+                  style={styles.textInput}
+                />
                 <Text style={styles.wordCount}> 0/200 words</Text>
               </View>
               <View style={styles.inputSection}>
                 <Text style={styles.sectionTitle}>
                   Preferred Contact Method
                 </Text>
-                <DropdownModal />
+                <DropdownModal
+                  options={contactMethods}
+                  onSelect={item => {
+                    setOrderSupport({
+                      ...orderSupport,
+                      preferredContactMethod: item.name,
+                    });
+                  }}
+                />
               </View>
             </ScrollView>
-            <Button btnText="Submit" />
+            <Button btnText="Submit" onPress={() => handleOrderSupport()} />
           </Pressable>
         </Pressable>
       </Modal>
