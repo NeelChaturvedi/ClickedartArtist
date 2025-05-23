@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -9,7 +9,9 @@ import {
   Platform,
   Image,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native';
+import RazorpayCheckout from 'react-native-razorpay';
 import {styles} from './styles';
 import AutoGrowTextInput from '@components/AutoGrowTextInput';
 import Button from '@components/button';
@@ -17,10 +19,11 @@ import SlideUpDetails from '@components/SlideupDetails';
 import {useUserStore} from 'src/store/auth';
 import useCartStore from 'src/store/cart';
 import api from 'src/utils/apiClient';
+import {useNavigation} from '@react-navigation/native';
 
 const CheckOut = () => {
   const {user} = useUserStore();
-  const {cartItems} = useCartStore();
+  const {cartItems, clearCart} = useCartStore();
   console.log('cartItems', cartItems);
   const [step, setStep] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
@@ -29,12 +32,14 @@ const CheckOut = () => {
   const [code, setCode] = useState('');
   const [coupon, setCoupon] = useState([]);
   const [discount, setDiscount] = useState(0);
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [isAvailable, setIsAvailable] = useState(false);
   const [pincodeChecking, setPincodeChecking] = useState(false);
   const [deliveryCharges, setDeliveryCharges] = useState(0);
   const [platformCharges, setPlatformCharges] = useState(0);
+  const [razorpay_payment_id, setrazorpay_payment_id] = useState(null);
+  const [paymentStatus, setPaymentStatus] = useState(false);
+  const [paymentProcessing, setPaymentProcessing] = useState(false);
   const [orderData, setOrderData] = useState({
     userId: null,
     orderItems: [],
@@ -58,61 +63,148 @@ const CheckOut = () => {
     },
   });
 
-  console.log('orderData', orderData);
-  console.log('price', price);
-  console.log('items', items);
+  const navigation = useNavigation();
 
-  const priceDetails = [
-    {label: 'Subtotal', value: '₹1448.94/-'},
-    {label: 'Savings', value: '₹1448.94/-'},
-    {label: 'Delivery Charges', value: '₹1448.94/-'},
-    {label: 'Platform Gateway', value: '₹1448.94/-'},
-    {label: 'CGST (9%)', value: '₹144.89/-'},
-    {label: 'SGST (9%)', value: '₹144.89/-'},
-    {label: 'Total', value: '₹10648.94/-'},
-  ];
+  const handlePayment = useCallback(
+    // eslint-disable-next-line no-shadow
+    async orderData => {
+      const validateOrder = orderDetails => {
+        if (!user) {
+          console.log('Please login to place an order');
+          return false;
+        }
 
-  const validateOrder = orderData => {
-    if (!user) {
-      // toast.error('Validation: Please login to continue');
-      return false;
+        const address = orderDetails?.shippingAddress?.address?.trim();
+        const city = orderDetails?.shippingAddress?.city?.trim();
+        const state = orderDetails?.shippingAddress?.state?.trim();
+        const mobile = orderDetails?.shippingAddress?.mobile;
+
+        if (!address) {
+          ToastAndroid.show('Please enter your address', ToastAndroid.SHORT);
+          return false;
+        }
+
+        if (!city) {
+          ToastAndroid.show('Please enter your city', ToastAndroid.SHORT);
+          return false;
+        }
+
+        if (!state) {
+          ToastAndroid.show('Please enter your state', ToastAndroid.SHORT);
+          return false;
+        }
+
+        if (!mobile) {
+          ToastAndroid.show('Please enter mobile number', ToastAndroid.SHORT);
+          return false;
+        }
+
+        if (!mobile || mobile.toString().length !== 10) {
+          ToastAndroid.show(
+            'Please enter a valid mobile number',
+            ToastAndroid.SHORT,
+          );
+          return false;
+        }
+
+        return true;
+      };
+
+      if (!user) {
+        ToastAndroid.show('Please login to continue', ToastAndroid.SHORT);
+        return;
+      }
+
+      if (!validateOrder(orderData)) {
+        return;
+      }
+
+      try {
+        setPaymentProcessing(true);
+        const result = await api.post('/download/payment', {
+          total: orderData.finalAmount,
+          userId: user?._id,
+        });
+
+        const options = {
+          key: result.data.result.notes.key,
+          amount: result.data.result.amount,
+          currency: 'INR',
+          name: 'ClickedArt',
+          description: 'Total Payment',
+          image: 'https://clickedart.com/_next/image?url=%2Fassets%2FLogo.png',
+          order_id: result.data.id,
+          prefill: {
+            email: user?.email,
+            contact: user?.mobile,
+            name: `${user?.firstName} ${user?.lastName}`,
+          },
+          theme: {
+            color: '#3399cc',
+          },
+        };
+
+        RazorpayCheckout.open(options)
+          .then(res => {
+            const paymentId = res.razorpay_payment_id;
+            if (paymentId) {
+              setrazorpay_payment_id(paymentId);
+              setPaymentStatus(true);
+              setOrderData(prev => ({
+                ...prev,
+                invoiceId: paymentId,
+              }));
+            }
+          })
+          .catch(errr => {
+            console.log('Payment error:', errr);
+            ToastAndroid.show('Payment failed', ToastAndroid.SHORT);
+          });
+      } catch (err) {
+        ToastAndroid.show('Payment initialization failed', ToastAndroid.SHORT);
+      } finally {
+        setPaymentProcessing(false);
+      }
+    },
+    [user],
+  );
+
+  const createOrder = useCallback(
+    async orderDetails => {
+      try {
+        setLoading(true);
+        await api.post('/download/create-order', orderDetails);
+        clearCart();
+        ToastAndroid.show('Order placed successfully', ToastAndroid.SHORT);
+        navigation.goBack();
+        setLoading(false);
+      } catch (err) {
+        console.error('Error placing order:', err.response);
+        ToastAndroid.show(
+          'Error placing order. Please try again.',
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM,
+        );
+        setLoading(false);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [clearCart],
+  );
+
+  useEffect(() => {
+    if (paymentStatus === true) {
+      const NewOrderData = {
+        ...orderData,
+        invoiceId: razorpay_payment_id,
+        isPaid: true,
+        paymentMethod: 'razorpay',
+        orderStatus: 'completed',
+      };
+
+      createOrder(NewOrderData);
     }
-
-    const address = orderData?.shippingAddress?.address?.trim();
-    const city = orderData?.shippingAddress?.city?.trim();
-    const state = orderData?.shippingAddress?.state?.trim();
-    const mobile = orderData?.shippingAddress?.mobile;
-
-    if (!address) {
-      // toast.error(
-      //   'Please enter your address',
-      //   orderData.shippingAddress?.address?.trim(),
-      // );
-      return false;
-    }
-
-    if (!city) {
-      // toast.error('Please enter your city');
-      return false;
-    }
-
-    if (!state) {
-      // toast.error('Please enter your state');
-      return false;
-    }
-
-    if (!mobile) {
-      // toast.error('Please enter your mobile number');
-      return false;
-    }
-
-    if (!mobile || mobile.toString().length !== 10) {
-      // toast.error('Please enter a valid 10-digit mobile number');
-      return false;
-    }
-
-    return true;
-  };
+  }, [paymentStatus, createOrder, orderData, razorpay_payment_id]);
 
   const checkPincode = async pincode => {
     if (!pincode || pincode.length < 6 || pincode.length > 6) {
@@ -147,7 +239,7 @@ const CheckOut = () => {
       });
       setPrice(res.data);
     } catch (err) {
-      console.error('Error calculating price:', err);
+      console.error('Error calculating price:', err.response);
     }
   };
 
@@ -161,7 +253,7 @@ const CheckOut = () => {
 
     // Calculate delivery charges (₹1 per square inch of paper size)
     const calculateDeliveryCharges = () => {
-      return cartItems.reduce((total, item) => {
+      return cartItems?.reduce((total, item) => {
         if (item.paperInfo && item.paperInfo.size) {
           const area = item.paperInfo.size.width * item.paperInfo.size.height;
           setDeliveryCharges(area);
@@ -258,8 +350,8 @@ const CheckOut = () => {
         mobile: user?.mobile,
         pincode: user?.shippingAddress?.pincode,
       },
-      finalAmount: finalAmount.toFixed(2),
-      discount: discountAmount.toFixed(2),
+      finalAmount: Number(finalAmount.toFixed(2)),
+      discount: Number(discountAmount.toFixed(2)),
       isPaid: false,
       gst: '',
     }));
@@ -518,7 +610,11 @@ const CheckOut = () => {
               </TouchableOpacity>
 
               <View style={{padding: 20}}>
-                <Button btnText="Proceed to Pay" onPress={() => setStep(1)} />
+                <Button
+                  btnText="Proceed to Pay"
+                  disabled={pincodeChecking || !isAvailable || loading}
+                  onPress={() => setStep(1)}
+                />
               </View>
             </>
           ) : (
@@ -577,7 +673,8 @@ const CheckOut = () => {
                 style={styles.amountDistribution}
                 onPress={() => setModalVisible(true)}>
                 <Text style={styles.orderTitle}>Payment:</Text>
-                <Text style={styles.header}>{`₹${orderData.finalAmount}/-`}</Text>
+                <Text
+                  style={styles.header}>{`₹${orderData.finalAmount}/-`}</Text>
               </TouchableOpacity>
 
               <View
@@ -590,7 +687,23 @@ const CheckOut = () => {
                   <Button btnText="Back" onPress={() => setStep(0)} />
                 </View>
                 <View style={{width: '48%'}}>
-                  <Button btnText="Place Order" />
+                  <Button
+                    btnText={
+                      paymentStatus || paymentProcessing
+                        ? 'Processing...'
+                        : 'Place Order'
+                    }
+                    disabled={
+                      pincodeChecking ||
+                      !isAvailable ||
+                      loading ||
+                      paymentStatus === true ||
+                      paymentProcessing
+                    }
+                    onPress={() => {
+                      handlePayment(orderData);
+                    }}
+                  />
                 </View>
               </View>
             </>
@@ -605,7 +718,11 @@ const CheckOut = () => {
               label: 'Savings',
               value: discount ? `- ₹${orderData?.discount}` : '₹0',
             },
-            {label: 'Delivery Charges', value: `₹${deliveryCharges}`, isFree: true},
+            {
+              label: 'Delivery Charges',
+              value: `₹${deliveryCharges}`,
+              isFree: true,
+            },
             {
               label: 'Platform Gateway',
               value: `₹${platformCharges.toFixed(2)}`,
