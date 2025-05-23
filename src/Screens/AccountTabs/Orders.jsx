@@ -91,17 +91,16 @@ const Orders = () => {
       );
     } catch (error) {
       if (
-        error.response.data.message === 'Support already exist on this order',
+        error.response.data.message === 'Support already exist on this order'
+      ) {
         ToastAndroid.show(
           'Support already exist on this order',
           ToastAndroid.SHORT,
-        )
-      ) {
+        );
       } else {
         console.log(error.response);
       }
-    }
-    finally{
+    } finally {
       setSupportModal(false);
       setOrderSupport({
         ...orderSupport,
@@ -174,7 +173,9 @@ const Orders = () => {
   ];
 
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      return;
+    }
     if (
       orderSupport.userInfo.user === '' ||
       orderSupport.userInfo.userType === ''
@@ -187,7 +188,7 @@ const Orders = () => {
         },
       }));
     }
-  }, [user]);
+  }, [user, orderSupport]);
 
   if (loading) {
     return (
