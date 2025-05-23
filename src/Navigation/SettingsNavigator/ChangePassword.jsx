@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {
   StyleSheet,
   SafeAreaView,
@@ -8,7 +9,6 @@ import {
   ToastAndroid,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import AutoGrowTextInput from '@components/AutoGrowTextInput';
 import Button from '@components/button';
 import api from 'src/utils/apiClient';
 import {useUserStore} from 'src/store/auth';
@@ -19,7 +19,6 @@ const ChangePassword = () => {
   const {user} = useUserStore();
   const [newPassword, setNewPassword] = useState('');
   const [verifyPassword, setVerifyPassword] = useState('');
-  const [userType, setUserType] = useState('');
   const [error, setError] = useState({});
   const [loading, setLoading] = useState(false);
   const [secure, setSecure] = useState(true);
@@ -60,7 +59,7 @@ const ChangePassword = () => {
 
     try {
       setLoading(true);
-      await api.post(`/photographer/change-password`, {
+      await api.post('/photographer/change-password', {
         userId: user._id,
         newPassword: newPassword,
       });
