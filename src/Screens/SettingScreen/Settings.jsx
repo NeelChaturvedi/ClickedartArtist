@@ -20,7 +20,7 @@ const Settings = () => {
           <SettingsOptions icon={'edit-document'} label={'Terms of Use'} screen={'Terms of Use'}/>
           <SettingsOptions icon={'help'} label={'FAQS'} screen={'Faqs'}/>
           <SettingsOptions icon={'star'} label={'Membership'} screen={'Membership'}/>
-          <SettingsOptions icon={'currency-rupee'} label={'Monetize Account'}/>
+          <SettingsOptions icon={'currency-rupee'} label={'Monetize Account'} screen={'Monetize Account'}/>
           <SettingsOptions icon={'info'} label={'Help Center'} screen={'Help Center'}/>
         </ScrollView>
         <Button btnText={'LogOut'} onPress={clearUser} />

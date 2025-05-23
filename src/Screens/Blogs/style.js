@@ -9,28 +9,12 @@ export const styles = StyleSheet.create({
   },
   container: {
     paddingHorizontal: 20,
-    paddingTop: 5,
     width: '100%',
   },
   headingText: {
     fontFamily: 'Outfit-bold',
     fontSize: 28,
     color: 'white',
-  },
-  header: {
-    flexDirection: 'row',
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingLeft: 20,
-    paddingRight: 10,
-    paddingTop: 10,
-  },
-  options: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 20,
-    padding: 20,
   },
   aboutBlog: {
     gap: 24,

@@ -69,7 +69,7 @@ export const styles = StyleSheet.create({
     aspectRatio: 1,
   },
   imageDistribution: {
-    justifyContent: 'start',
+    justifyContent: 'space-between',
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: '5%',
