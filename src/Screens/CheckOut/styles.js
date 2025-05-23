@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
   },
   form: {
     justifyContent: 'flex-start',
-    paddingBottom: 25,
+    paddingBottom: 10,
     gap: 30,
   },
   row: {
