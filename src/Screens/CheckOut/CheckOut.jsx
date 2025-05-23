@@ -138,13 +138,6 @@ const CheckOut = () => {
                 <Text style={styles.header}>₹1448.94/-</Text>
               </TouchableOpacity>
 
-              <SlideUpDetails
-                visible={modalVisible}
-                onClose={() => setModalVisible(false)}
-                data={priceDetails}
-                title="Price Breakdown"
-              />
-
               <View style={{padding: 20}}>
                 <Button btnText="Proceed to Pay" onPress={() => setStep(1)} />
               </View>
@@ -187,6 +180,13 @@ const CheckOut = () => {
                 </View>
               </ScrollView>
 
+              <TouchableOpacity
+                style={styles.amountDistribution}
+                onPress={() => setModalVisible(true)}>
+                <Text style={styles.orderTitle}>Payment:</Text>
+                <Text style={styles.header}>₹1448.94/-</Text>
+              </TouchableOpacity>
+
               <View
                 style={{
                   flexDirection: 'row',
@@ -203,6 +203,12 @@ const CheckOut = () => {
             </>
           )}
         </View>
+        <SlideUpDetails
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+          data={priceDetails}
+          title="Price Breakdown"
+        />
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
