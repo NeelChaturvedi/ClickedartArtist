@@ -21,12 +21,6 @@ const TabCatalogues = ({catalogues}) => {
 
   const [selectedCatalogue, setSelectedCatalogue] = useState(null);
 
-  const onShare = async () => {
-    await Share.share({
-      message: `Check out my catalogue: https://clickedart.com/catalogue/${selectedCatalogue?._id}`,
-    });
-  };
-
   const imageOptions = [
     {
       label: 'Open',

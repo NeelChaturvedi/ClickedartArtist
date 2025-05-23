@@ -6,67 +6,15 @@ import {
   View,
   Image,
 } from 'react-native';
-import React, {use, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {styles} from './styles';
 import SlideUpModal from '@components/SlideupModal';
 import api from 'src/utils/apiClient';
 import {useNavigation, useRoute} from '@react-navigation/native';
 
-const CatalogueScreen = () => {
+const CatalogueScreen = ({setCatalogueId}) => {
   const [slideUp, setSlideUp] = useState(false);
   const [catalogue, setCatalogue] = useState(false);
-  const images = [
-    {
-      id: 1,
-      source: require('../../assets/images/onboarding.png'),
-      name: 'Image1',
-    },
-    {
-      id: 2,
-      source: require('../../assets/images/onboarding.png'),
-      name: 'Image2',
-    },
-    {
-      id: 3,
-      source: require('../../assets/images/onboarding.png'),
-      name: 'Image3',
-    },
-    {
-      id: 4,
-      source: require('../../assets/images/onboarding.png'),
-      name: 'Image4',
-    },
-    {
-      id: 5,
-      source: require('../../assets/images/onboarding.png'),
-      name: 'Image5',
-    },
-    {
-      id: 6,
-      source: require('../../assets/images/onboarding.png'),
-      name: 'Image6',
-    },
-    {
-      id: 7,
-      source: require('../../assets/images/onboarding.png'),
-      name: 'Image7',
-    },
-    {
-      id: 8,
-      source: require('../../assets/images/onboarding.png'),
-      name: 'Image8',
-    },
-    {
-      id: 9,
-      source: require('../../assets/images/onboarding.png'),
-      name: 'Image9',
-    },
-    {
-      id: 10,
-      source: require('../../assets/images/onboarding.png'),
-      name: 'Image10',
-    },
-  ];
 
   const navigation = useNavigation();
   const [selectedImage, setSelectedImage] = useState(null);
@@ -97,20 +45,17 @@ const CatalogueScreen = () => {
 
   const removeImage = async (catalogueId, imageIdToRemove) => {
     try {
-      const response = await api.post(
-        '/catalogue/remove-images-from-catalogue',
-        {
-          catalogueId: catalogueId,
-          imagesToRemove: [imageIdToRemove],
-        },
-      );
+      await api.post('/catalogue/remove-images-from-catalogue', {
+        catalogueId: catalogueId,
+        imagesToRemove: [imageIdToRemove],
+      });
       fetchCatalogue();
     } catch (err) {
       console.log('err', err.response?.data?.message);
     }
   };
 
-  const fetchCatalogue = async () => {
+  const fetchCatalogue = React.useCallback(async () => {
     try {
       const res = await api.get(
         `/catalogue/get-catalogue-by-id?catalogueId=${id}`,
@@ -121,10 +66,17 @@ const CatalogueScreen = () => {
       console.log(err);
     } finally {
     }
-  };
+  }, [id]);
+
   useEffect(() => {
     fetchCatalogue();
-  }, [id]);
+  }, [fetchCatalogue]);
+
+  useEffect(() => {
+    if (catalogue) {
+      setCatalogueId(catalogue._id);
+    }
+  }, [catalogue, setCatalogueId]);
 
   return (
     <SafeAreaView style={styles.background}>

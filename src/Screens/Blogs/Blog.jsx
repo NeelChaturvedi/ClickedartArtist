@@ -1,38 +1,28 @@
 /* eslint-disable react-native/no-inline-styles */
 import {
   Image,
-  Pressable,
   ScrollView,
   Text,
   View,
-  Dimensions,
-  Share,
-  SafeAreaView,
-  Alert,
+  Dimensions,  SafeAreaView,
   RefreshControl,
 } from 'react-native';
 import React, {useEffect} from 'react';
 import {styles} from './style';
 import api from '../../utils/apiClient';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useRoute} from '@react-navigation/native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
 
-const Blog = () => {
+const Blog = ({setBlogSlug, setBlogName, setBlogId, setVal, val}) => {
   const {blogId} = useRoute().params;
   const [blog, setBlog] = React.useState({});
   const [loading, setLoading] = React.useState(true);
-  const [val, setVal] = React.useState(false);
 
   const onRefresh = () => {
     setLoading(true);
     fetchBlog();
   };
 
-  const callBack = value => {
-    setVal(value);
-  };
-
-  const navigation = useNavigation();
 
   const fetchBlog = React.useCallback(async () => {
     try {
@@ -45,38 +35,23 @@ const Blog = () => {
       setLoading(false);
       setVal(false);
     }
-  }, [blogId]);
+  }, [blogId, setVal]);
 
   useEffect(() => {
     fetchBlog();
   }, [fetchBlog, val]);
 
-  const onShare = async () => {
-    try {
-      await Share.share({
-        message: `${blog.content.title}: https://clickedart.com/blog/${blog.slug}`,
-      });
-    } catch (error) {
-      Alert.alert(error.message);
+  useEffect(() => {
+    if (!blog) {
+      return;
     }
-  };
+    setBlogSlug(blog?.slug);
+    setBlogName(blog?.content?.title);
+    setBlogId(blog?._id);
+  }, [blog, setBlogSlug, setBlogName, setBlogId]);
 
   return (
     <SafeAreaView style={styles.background}>
-      {/* <View style={styles.header}>
-        <View style={styles.backButtonContainer}>
-          <BackButton />
-        </View>
-        <View style={styles.options}>
-          <Pressable
-            onPress={() => navigation.navigate('BlogEdit', {blogId, callBack})}>
-            <Icon name="edit" size={24} color={'white'} />
-          </Pressable>
-          <Pressable onPress={onShare}>
-            <Icon name="share" size={24} color={'white'} />
-          </Pressable>
-        </View>
-      </View> */}
       <View style={styles.container}>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -112,7 +87,7 @@ const Blog = () => {
             )}
             <AutoHeightWebView
               style={{
-                width: Dimensions.get('window') ,
+                width: Dimensions.get('window'),
                 marginTop: 35,
                 marginBottom: 100,
                 backgroundColor: 'black',
