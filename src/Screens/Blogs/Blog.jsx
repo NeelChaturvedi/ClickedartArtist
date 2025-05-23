@@ -7,14 +7,12 @@ import {
   View,
   Dimensions,
   Share,
+  SafeAreaView,
   Alert,
   RefreshControl,
 } from 'react-native';
 import React, {useEffect} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
-import BackButton from '../../components/Backbutton';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import api from '../../utils/apiClient';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
@@ -65,7 +63,7 @@ const Blog = () => {
 
   return (
     <SafeAreaView style={styles.background}>
-      <View style={styles.header}>
+      {/* <View style={styles.header}>
         <View style={styles.backButtonContainer}>
           <BackButton />
         </View>
@@ -78,7 +76,7 @@ const Blog = () => {
             <Icon name="share" size={24} color={'white'} />
           </Pressable>
         </View>
-      </View>
+      </View> */}
       <View style={styles.container}>
         <ScrollView
           showsVerticalScrollIndicator={false}
