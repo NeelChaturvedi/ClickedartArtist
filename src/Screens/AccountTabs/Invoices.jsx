@@ -8,6 +8,7 @@ import {
   ScrollView,
   ActivityIndicator,
   Pressable,
+  Linking,
 } from 'react-native';
 import {styles} from './styles';
 import SearchBar from '../../components/SearchBar';
@@ -34,11 +35,16 @@ const Invoices = () => {
     {
       label: 'Open',
       icon: 'open-in-new',
+      onPress: () => {
+        Linking.openURL(
+          `https://clickedart.com/invoice/${selectedInvoice?._id}`,
+        );
+      },
     },
-    {
-      label: 'Download',
-      icon: 'download',
-    },
+    // {
+    //   label: 'Download',
+    //   icon: 'download',
+    // },
     {
       label: 'Share',
       icon: 'share',
