@@ -49,7 +49,7 @@ const Cart = () => {
                         : product.imageInfo?.photographer?.name}
                     </Text>
                   </View>
-                  <Text style={styles.price}>₹ {product.subTotal}</Text>
+                  <Text style={styles.price}>₹ {product.subTotal?.toFixed(2)}</Text>
                 </View>
                 <TouchableOpacity
                   style={styles.removeIcon}
