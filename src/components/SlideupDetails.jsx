@@ -26,7 +26,14 @@ const SlideUpDetails = ({visible, title, onClose, data = []}) => {
                 renderItem={({item}) => (
                   <View style={styles.row}>
                     <Text style={styles.label}>{item.label}:</Text>
-                    <Text style={styles.value}>{item.value}</Text>
+                    {item.isFree ? (
+                      <View style={styles.freeValueContainer}>
+                        <Text style={styles.crossedValue}>{item.value}</Text>
+                        <Text style={styles.freeValue}>0</Text>
+                      </View>
+                    ) : (
+                      <Text style={styles.value}>{item.value}</Text>
+                    )}
                   </View>
                 )}
               />
@@ -70,6 +77,22 @@ const styles = StyleSheet.create({
   value: {
     fontSize: 16,
     color: 'white',
+  },
+  freeValueContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  crossedValue: {
+    fontSize: 16,
+    color: 'white',
+    textDecorationLine: 'line-through',
+    textDecorationStyle: 'solid',
+  },
+  freeValue: {
+    fontSize: 16,
+    //light green
+    color: 'rgba(48, 255, 71, 1)',
   },
 });
 
