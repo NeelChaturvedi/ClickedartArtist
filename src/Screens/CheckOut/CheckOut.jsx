@@ -146,7 +146,7 @@ const CheckOut = () => {
               />
 
               <View style={{padding: 20}}>
-                <Button btnText="Proceed to Pay" />
+                <Button btnText="Proceed to Pay" onPress={() => setStep(1)} />
               </View>
             </>
           ) : (
@@ -187,9 +187,18 @@ const CheckOut = () => {
                 </View>
               </ScrollView>
 
-
-              <View style={{padding: 20}}>
-                <Button btnText="Place Order" />
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  padding: 20,
+                }}>
+                <View style={{width: '48%'}}>
+                  <Button btnText="Back" onPress={() => setStep(0)} />
+                </View>
+                <View style={{width: '48%'}}>
+                  <Button btnText="Place Order" />
+                </View>
               </View>
             </>
           )}
