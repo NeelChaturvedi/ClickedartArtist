@@ -54,13 +54,6 @@ const TabCatalogues = ({catalogues}) => {
         handleCatalogueDelete();
       },
     },
-    {
-      label: 'Share',
-      icon: 'share',
-      onPress: () => {
-        onShare();
-      },
-    },
   ];
 
   const handleCatalogueUpdate = async () => {

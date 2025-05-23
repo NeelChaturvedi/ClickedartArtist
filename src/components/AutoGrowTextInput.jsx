@@ -6,13 +6,15 @@ const AutoGrowTextInput = ({value, onChangeText, placeholder, keyboardType, edit
 
   return (
     <TextInput
-      style={[styles.input, {height: Math.max(45, height)}]}
+      style={[styles.input,
+        // {height: Math.max(45, height)}
+      ]}
       multiline
       placeholder={placeholder}
       placeholderTextColor={'#888'}
-      onContentSizeChange={event => {
-        setHeight(event.nativeEvent.contentSize.height);
-      }}
+      // onContentSizeChange={event => {
+      //   setHeight(event.nativeEvent.contentSize.height);
+      // }}
       value={value}
       editable={editable}
       onChangeText={onChangeText}
