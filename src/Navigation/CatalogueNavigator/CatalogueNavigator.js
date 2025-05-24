@@ -13,7 +13,8 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import Button from '@components/button';
 
 enableScreens();
@@ -28,12 +29,12 @@ function CatalogueHeaderRight({catalogueId, onOpenModal}) {
   };
 
   return (
-    <View style={{flexDirection: 'row', alignItems: 'center', gap: 16}}>
+    <View style={{flexDirection: 'row', alignItems: 'center', gap: 14 , paddingRight: 20}}>
       <Pressable onPress={onOpenModal}>
-        <Icon name="add-photo-alternate" size={24} color="white" />
+        <MaterialIcon name="add-photo-alternate" size={26} color="white" />
       </Pressable>
       <Pressable onPress={onShare}>
-        <Icon name="share" size={24} color="white" />
+        <MaterialIcon name="share" size={26} color="white" />
       </Pressable>
     </View>
   );
@@ -112,7 +113,7 @@ export default function CatalogueNavigator() {
                       />
                       {isSelected && (
                         <View style={styles.checkIconContainer}>
-                          <Icon name="check" size={14} color="white" />
+                          <FontAwesome name="check" size={14} color="white" />
                         </View>
                       )}
                       <View style={styles.imageDetails}>
