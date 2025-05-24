@@ -148,7 +148,6 @@ const TabPhotos = ({photos, pendingPhotos}) => {
           style={styles.imageBorder}
           onPress={() => {
             setSelectedImage(item);
-            setSlideUp(true);
           }}>
           <Image
             style={styles.image}
