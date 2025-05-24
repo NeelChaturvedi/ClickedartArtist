@@ -410,15 +410,19 @@ const ImageScreen = ({setImageTitle}) => {
               <View style={{flexDirection: 'row', gap: 10}}>
                 {selectedPaper?.photographerDiscount && (
                   <View>
-                    <Text style={styles.discountedText}>₹ {price || 0}</Text>
+                    <Text style={styles.discountedText}>
+                      ₹ {price?.toFixed(2) || 0}
+                    </Text>
                   </View>
                 )}
                 <View style={{flexDirection: 'row', gap: 10}}>
                   <Text style={styles.priceText}>
                     ₹{' '}
                     {selectedPaper?.photographerDiscount
-                      ? price -
-                        price * (selectedPaper?.photographerDiscount / 100)
+                      ? (
+                          price -
+                          price * (selectedPaper?.photographerDiscount / 100)
+                        )?.toFixed(2)
                       : price || 0}
                   </Text>
                   <Text style={styles.discountPercentage}>
