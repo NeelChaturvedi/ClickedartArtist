@@ -4,7 +4,7 @@ export const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    paddingHorizontal: 10,
+    padding: 10,
     gap: 20,
   },
   imageBorder: {
