@@ -27,14 +27,13 @@ const Monetization = () => {
 
   const {user} = useUserStore();
 
+  console.log('user', user);
+
   const priceDetails = [
-    {label: 'Subtotal', value: '₹1448.94/-'},
-    {label: 'Savings', value: '₹1448.94/-'},
-    {label: 'Delivery Charges', value: '₹1448.94/-'},
-    {label: 'Platform Gateway', value: '₹1448.94/-'},
-    {label: 'CGST (9%)', value: '₹144.89/-'},
-    {label: 'SGST (9%)', value: '₹144.89/-'},
-    {label: 'Total', value: '₹10648.94/-'},
+    {label: 'Full Name', value:`${user?.firstName} ${user?.lastName}`},
+    {label:'Date of Birth', value:`${user?.dob.split('T')[0]}`},
+    {label: 'Contact', value: ` ${user?.mobile}`},
+    {label: 'Email', value: `${user?.email}`},
   ];
 
   const [formData, setFormData] = useState({
@@ -153,7 +152,7 @@ const Monetization = () => {
     const {name} = e.target;
     const file = e.target.files[0];
 
-    if (!file) return;
+    if (!file) {return;}
 
     // Reset uploaded URL in formData
     if (name.startsWith('businessAccount.')) {
@@ -177,7 +176,7 @@ const Monetization = () => {
     uploadFormData.append('image', file);
 
     try {
-      const res = await api.post(`/upload/uploadSingleImage`, uploadFormData);
+      const res = await api.post('/upload/uploadSingleImage', uploadFormData);
 
       const data = res.data;
 
@@ -218,7 +217,7 @@ const Monetization = () => {
     }
 
     try {
-      await api.post(`/monetization/create-monetization`, formData);
+      await api.post('/monetization/create-monetization', formData);
       ToastAndroid.show(
         'Monetization details submitted successfully',
         ToastAndroid.SHORT,
@@ -239,7 +238,7 @@ const Monetization = () => {
     }
 
     try {
-      await api.post(`/monetization/update-monetization`, formData);
+      await api.post('/monetization/update-monetization', formData);
       ToastAndroid.show(
         'Monetization details updated successfully',
         ToastAndroid.SHORT,
@@ -277,7 +276,7 @@ const Monetization = () => {
       ...formData,
       photographerId: user?._id,
     });
-    if (user) getMonetizationData();
+    if (user) {getMonetizationData();}
   }, [user]);
 
   return (
@@ -745,7 +744,7 @@ const Monetization = () => {
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         data={priceDetails}
-        title="Price Breakdown"
+        title="Personal Details"
       />
     </SafeAreaView>
   );
