@@ -13,8 +13,8 @@ export const styles = StyleSheet.create({
     paddingVertical: 20,
     gap: 20,
   },
-  headerContainer:{
-    alignItems:'center',
+  headerContainer: {
+    alignItems: 'center',
     paddingHorizontal: 14,
     paddingVertical: 10,
     gap: 14,
@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
     fontFamily: 'Outfit-bold',
     textAlign: 'center',
   },
-  Description:{
+  Description: {
     color: 'white',
     fontSize: 14,
     fontFamily: 'Outfit-regular',
@@ -58,5 +58,55 @@ export const styles = StyleSheet.create({
     width: '80%',
     fontFamily: 'Outfit-bold',
     color: 'white',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+  },
+  modalContent: {
+    backgroundColor: '#1E1E1E',
+    width: '90%',
+    maxHeight: '90%',
+    gap: 20,
+    paddingVertical: 20,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+  },
+  scrollView: {
+    maxHeight: 360,
+  },
+  title: {
+    fontSize: 24,
+    fontFamily: 'Outfit-bold',
+    color: 'white',
+    textAlign: 'center',
+  },
+  imageStore: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+  },
+  noImageContainer: {
+    width: '100%',
+    height: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#1A1A1A',
+    borderRadius: 10,
+  },
+  noImageText: {
+    color: 'white',
+    fontSize: 16,
+    fontFamily: 'Outfit-regular',
+  },
+  checkIconContainer: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    backgroundColor: '#ED3147',
+    borderBottomLeftRadius: 20,
+    padding: 8,
   },
 });

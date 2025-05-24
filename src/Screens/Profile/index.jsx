@@ -368,7 +368,7 @@ const Profile = () => {
             {activeTab === 'photos' ? (
               <TabPhotos photos={photos} pendingPhotos={pendingPhotos} />
             ) : activeTab === 'catalogues' ? (
-              <TabCatalogues catalogues={catalogues} />
+              <TabCatalogues photos={photos} catalogues={catalogues} />
             ) : (
               <TabBlogs blogs={blogs} pendingBlogs={pendingBlogs} />
             )}
