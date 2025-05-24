@@ -13,7 +13,7 @@ import {
   Pressable,
   ToastAndroid,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {styles} from './styles';
 import DropdownModal from '@components/DropdownModal';
 import Button from '@components/button';
@@ -269,8 +269,7 @@ const ImageScreen = ({setImageTitle}) => {
               useAngle={true}
               angle={90}
               style={styles.imageContainer}>
-              <Image
-                source={{uri: image?.imageLinks.thumbnail}}
+              <View
                 style={{
                   width: width,
                   height: height,
@@ -278,10 +277,77 @@ const ImageScreen = ({setImageTitle}) => {
                   top: 12,
                   left: '50%',
                   transform: [{translateX: -(imgWidth / 2)}],
-                }}
-                resizeMode="contain"
-              />
-
+                }}>
+                <View
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    position: 'relative',
+                  }}>
+                  <Image
+                    source={{uri: image?.imageLinks.thumbnail}}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                    }}
+                    resizeMode="cover"
+                  />
+                  {/* Left Frame Border */}
+                  <Image
+                    source={{uri: selectedFrame?.image[0]}}
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '2%',
+                      inset: 0,
+                      height: '102%',
+                    }}
+                    resizeMode="cover"
+                  />
+                  {/* Right Frame Border */}
+                  <Image
+                    source={{uri: selectedFrame?.image[0]}}
+                    style={{
+                      position: 'absolute',
+                      transform: [{rotateY: '180deg'}],
+                      top: 0,
+                      left: '100%',
+                      width: '2%',
+                      inset: 0,
+                      height: '102%',
+                    }}
+                    resizeMode="cover"
+                  />
+                  {/* Top Frame Border */}
+                  <Image
+                    source={{uri: selectedFrame?.image[1]}}
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '102%',
+                      inset: 0,
+                      height: '2%',
+                    }}
+                    resizeMode="cover"
+                  />
+                  {/* Bottom Frame Border */}
+                  <Image
+                    source={{uri: selectedFrame?.image[1]}}
+                    style={{
+                      position: 'absolute',
+                      transform: [{rotateY: '180deg'}],
+                      top: '100%',
+                      left: 0,
+                      width: '102%',
+                      inset: 0,
+                      height: '2%',
+                    }}
+                    resizeMode="cover"
+                  />
+                </View>
+              </View>
               <Image
                 source={mockupUri}
                 style={{
@@ -344,15 +410,19 @@ const ImageScreen = ({setImageTitle}) => {
               <View style={{flexDirection: 'row', gap: 10}}>
                 {selectedPaper?.photographerDiscount && (
                   <View>
-                    <Text style={styles.discountedText}>₹ {price || 0}</Text>
+                    <Text style={styles.discountedText}>
+                      ₹ {price?.toFixed(2) || 0}
+                    </Text>
                   </View>
                 )}
                 <View style={{flexDirection: 'row', gap: 10}}>
                   <Text style={styles.priceText}>
                     ₹{' '}
                     {selectedPaper?.photographerDiscount
-                      ? price -
-                        price * (selectedPaper?.photographerDiscount / 100)
+                      ? (
+                          price -
+                          price * (selectedPaper?.photographerDiscount / 100)
+                        )?.toFixed(2)
                       : price || 0}
                   </Text>
                   <Text style={styles.discountPercentage}>
