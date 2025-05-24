@@ -27,11 +27,9 @@ const Monetization = () => {
 
   const {user} = useUserStore();
 
-  console.log('user', user);
-
   const priceDetails = [
-    {label: 'Full Name', value:`${user?.firstName} ${user?.lastName}`},
-    {label:'Date of Birth', value:`${user?.dob.split('T')[0]}`},
+    {label: 'Full Name', value: `${user?.firstName} ${user?.lastName}`},
+    {label: 'Date of Birth', value: `${user?.dob.split('T')[0]}`},
     {label: 'Contact', value: ` ${user?.mobile}`},
     {label: 'Email', value: `${user?.email}`},
   ];
@@ -152,7 +150,9 @@ const Monetization = () => {
     const {name} = e.target;
     const file = e.target.files[0];
 
-    if (!file) {return;}
+    if (!file) {
+      return;
+    }
 
     // Reset uploaded URL in formData
     if (name.startsWith('businessAccount.')) {
@@ -276,7 +276,9 @@ const Monetization = () => {
       ...formData,
       photographerId: user?._id,
     });
-    if (user) {getMonetizationData();}
+    if (user) {
+      getMonetizationData();
+    }
   }, [user]);
 
   return (
