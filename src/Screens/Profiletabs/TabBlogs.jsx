@@ -60,7 +60,6 @@ const TabBlogs = ({blogs, pendingBlogs}) => {
             <View style={styles.pendingContainer} key={item._id}>
               <TouchableOpacity
                 onPress={() => {
-                  setSlideUp(true);
                   setSelectedBlog(item);
                 }}
                 key={item._id}
