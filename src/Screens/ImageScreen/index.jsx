@@ -25,6 +25,7 @@ import {useRoute} from '@react-navigation/native';
 import api from 'src/utils/apiClient';
 import Icon from 'react-native-vector-icons/Ionicons';
 import useCartStore from 'src/store/cart';
+import {MotiView} from 'moti';
 
 const ImageScreen = ({setImageTitle}) => {
   const {imageData} = useRoute().params;
@@ -269,14 +270,21 @@ const ImageScreen = ({setImageTitle}) => {
               useAngle={true}
               angle={90}
               style={styles.imageContainer}>
-              <View
-                style={{
+              <MotiView
+                animate={{
                   width: width,
                   height: height,
+                  translateX: -imgWidth / 2,
+                }}
+                transition={{
+                  type: 'timing',
+                  duration: 500,
+                  delay: 100,
+                }}
+                style={{
                   position: 'absolute',
                   top: 12,
                   left: '50%',
-                  transform: [{translateX: -(imgWidth / 2)}],
                 }}>
                 <View
                   style={{
@@ -347,7 +355,7 @@ const ImageScreen = ({setImageTitle}) => {
                     resizeMode="cover"
                   />
                 </View>
-              </View>
+              </MotiView>
               <Image
                 source={mockupUri}
                 style={{
