@@ -151,7 +151,6 @@ const Membership = () => {
   const fetchPlans = async () => {
     try {
       const response = await api.get('/plans/get-all-plans');
-      console.log('Plans:', response.data);
       const sortedPlans = response.data.plans.sort((a, b) => {
         return a.name.localeCompare(b.name);
       });

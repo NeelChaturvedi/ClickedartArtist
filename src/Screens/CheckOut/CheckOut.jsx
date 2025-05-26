@@ -24,7 +24,6 @@ import {useNavigation} from '@react-navigation/native';
 const CheckOut = () => {
   const {user} = useUserStore();
   const {cartItems, clearCart} = useCartStore();
-  console.log('cartItems', cartItems);
   const [step, setStep] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
   const [items, setItems] = useState([]);

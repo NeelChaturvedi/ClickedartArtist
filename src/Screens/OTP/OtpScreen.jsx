@@ -20,7 +20,6 @@ const OtpScreen = () => {
         email: formData.email,
         otp: otp,
       });
-      console.log('OTP verified successfully');
       ToastAndroid.show('OTP verified successfully', ToastAndroid.SHORT);
       navigation.navigate('Login');
       setOtpValid(true);

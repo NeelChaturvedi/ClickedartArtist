@@ -301,7 +301,6 @@ const Monetization = () => {
       const response = await api.get(
         `/monetization/getMonetizationByPhotographerId?photographerId=${user?._id}`,
       );
-      console.log('response', response.data);
       if (response.data.monetization) {
         setIsMonetized(true);
         const data = response.data.monetization;

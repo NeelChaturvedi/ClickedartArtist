@@ -147,7 +147,6 @@ const UploadImage = () => {
         photographer: user?._id,
         watermarkImage: watermarkUrl,
       });
-      console.log('Watermark added:', response.data);
       setWatermark(response.data.watermark);
       setPhoto({...photo, imageLinks: {image: imageUri}});
     } catch (error) {
@@ -201,7 +200,6 @@ const UploadImage = () => {
         },
       );
       const data = response.data;
-      console.log('Resolutions:', data);
       setPhoto(prevPhoto => ({
         ...prevPhoto,
         imageLinks: data.urls,
@@ -222,7 +220,6 @@ const UploadImage = () => {
     // setLoading(true);
     try {
       const response = await api.post('/images/add-image-in-vault', photo);
-      console.log('Image uploaded successfully:', response.data);
       Alert.alert('Success', 'Image uploaded and is under review');
       setImageUri(null);
       navigation.goBack();
@@ -324,7 +321,6 @@ const UploadImage = () => {
         MultipartUpload: {Parts: parts},
       };
       const data = await s3.completeMultipartUpload(completeParams).promise();
-      console.log('Image URL:', data.Location);
       const fileUrl = data.Location;
       setImageUri(fileUrl);
       setPhoto({...photo, imageLinks: {image: fileUrl}});
@@ -400,7 +396,6 @@ const UploadImage = () => {
       try {
         const response = await api.get('/category/get?pageSize=1000');
         const data = response.data;
-        console.log('Categories:', data.categories);
         setCategories(data.categories);
       } catch (error) {
         console.error('Error fetching categories:', error);
@@ -451,7 +446,6 @@ const UploadImage = () => {
         const res = await api.get(
           `/images/get-images-by-photographer?photographer=${user._id}&pageSize=1000`,
         );
-        console.log('Photos:', res.data);
         setPhotosLength(res.data.photos?.length);
       } catch (error) {
         console.log(error.response ? error.response.data : error.message);

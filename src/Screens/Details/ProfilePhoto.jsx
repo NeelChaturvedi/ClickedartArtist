@@ -46,7 +46,6 @@ const ProfilePhoto = () => {
   const {setField, formData} = useRegistrationStore();
   const navigation = useNavigation();
 
-  console.log('Form Data:', formData);
   const handleCameraLaunch = async () => {
     const hasPermission = await requestCameraPermission();
     if (!hasPermission) {
@@ -105,13 +104,11 @@ const ProfilePhoto = () => {
     setUploading(true);
 
     const imgData = new FormData();
-    console.log('Image URI:', imageUri);
     imgData.append('image', {
       uri: imageUri,
       name: 'photo.jpg',
       type: 'image/jpeg',
     });
-    console.log('Image Data:', imgData);
 
     try {
       const res = await axios.post(
@@ -121,7 +118,6 @@ const ProfilePhoto = () => {
           headers: {'Content-Type': 'multipart/form-data'},
         },
       );
-      console.log('Upload response:', res);
       const imageUrl = res.data;
       await setField('profileImage', imageUrl);
       ToastAndroid.show('Image uploaded successfully!', ToastAndroid.SHORT);
@@ -141,7 +137,6 @@ const ProfilePhoto = () => {
           'Content-Type': 'application/json',
         },
       });
-      console.log('Registration response:', res);
       ToastAndroid.show('Registration successful!', ToastAndroid.SHORT);
       navigation.navigate('OTP');
     } catch (error) {

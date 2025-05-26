@@ -67,8 +67,6 @@ const ProfileEditScreen = () => {
 
   const handleProfileUpdate = async () => {
     if (!validateForm()) {
-      console.log(formData);
-      console.log(errors);
       return;
     }
     setErrors({});
@@ -80,8 +78,6 @@ const ProfileEditScreen = () => {
       console.error('Error updating profile:', error.response);
     }
   };
-
-  console.log('Form Data:', formData);
 
   const handleDataHydration = useCallback(() => {
     if (!user) {

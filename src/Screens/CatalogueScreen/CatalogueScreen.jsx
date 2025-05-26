@@ -26,7 +26,6 @@ const CatalogueScreen = ({setCatalogueId, modalVisible, setModalVisible}) => {
   const [slideUp, setSlideUp] = useState(false);
   const [catalogue, setCatalogue] = useState(false);
   const [selectedImages, setSelectedImages] = React.useState([]);
-  console.log('photosList', selectedImages);
 
   const closeModal = () => setModalVisible(false);
 
@@ -93,7 +92,6 @@ const CatalogueScreen = ({setCatalogueId, modalVisible, setModalVisible}) => {
           },
         },
       );
-      console.log('response', response.data);
       ToastAndroid.show(
         'Images added to catalogue successfully.',
         ToastAndroid.SHORT,
@@ -126,7 +124,6 @@ const CatalogueScreen = ({setCatalogueId, modalVisible, setModalVisible}) => {
       const res = await api.get(
         `/catalogue/get-catalogue-by-id?catalogueId=${id}`,
       );
-      console.log('res', res.data.catalogue);
       setCatalogue(res.data.catalogue);
     } catch (err) {
       console.log(err);

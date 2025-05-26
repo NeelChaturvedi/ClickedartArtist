@@ -26,7 +26,6 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 const EditImage = () => {
   const {user} = useUserStore();
   const {id} = useRoute().params;
-  console.log('id', id);
   const navigation = useNavigation();
 
   const [imageUri, setImageUri] = useState(null);

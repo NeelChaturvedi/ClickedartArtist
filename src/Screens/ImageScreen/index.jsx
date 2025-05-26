@@ -69,7 +69,6 @@ const ImageScreen = ({setImageTitle}) => {
 
   const handlePaperSelect = item => {
     const paper = papers.find(p => p._id === item.id);
-    console.log('Selected Paper: ', paper);
     setSelectedPaper(paper);
     setSelectedSize(paper.customDimensions[0]);
     setSelectedFrame(null);
@@ -209,7 +208,6 @@ const ImageScreen = ({setImageTitle}) => {
 
   useEffect(() => {
     setInCart(isItemInCart(image._id, mode));
-    console.log('In cart check');
   }, [image, isItemInCart, mode]);
 
   useEffect(() => {

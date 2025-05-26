@@ -13,7 +13,6 @@ import {
 const MultiImageSelector = ({options, value = [], onChange, placeholder}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedIds, setSelectedIds] = useState(value);
-  console.log('selectedIds', selectedIds);
 
   useEffect(() => {
     onChange?.(selectedIds);

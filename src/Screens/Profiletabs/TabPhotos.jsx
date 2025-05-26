@@ -87,7 +87,6 @@ const TabPhotos = ({photos, pendingPhotos}) => {
       await promise;
 
       showToast(`Download at ${downloadDest}`);
-      console.log('File saved to:', downloadDest);
     } catch (error) {
       console.error('Download failed:', error.response);
       showToast('Download failed');
@@ -144,7 +143,6 @@ const TabPhotos = ({photos, pendingPhotos}) => {
           showToast('No image selected');
           return;
         }
-        console.log('Attempting download for image:', selectedImage);
         downloadImage(selectedImage._id, 'original', selectedImage.title);
       },
     },

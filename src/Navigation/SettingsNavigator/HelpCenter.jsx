@@ -42,7 +42,6 @@ const HelpCenter = () => {
   const getSupportVideos = async () => {
     try {
       const res = await api.get('/layout/get-layout-content');
-      console.log('res', res.data?.support);
       if (res.data?.support) {
         setSupportVideos(res.data?.support);
       }

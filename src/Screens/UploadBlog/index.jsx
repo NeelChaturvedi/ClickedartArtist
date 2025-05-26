@@ -81,10 +81,9 @@ const UploadBlog = () => {
     try {
       const response = await api.post('/blog/add-blog', blog);
       navigation.goBack();
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-      setError(error.response.data.message);
+    } catch (err) {
+      console.error(err);
+      setError(err.response.data.message);
     }
   };
 

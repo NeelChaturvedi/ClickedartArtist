@@ -56,14 +56,12 @@ const Dashboard = () => {
       const res = await api.get(
         `/photographeranalytics/get-photographer-analytics?photographer=${user._id}`,
       );
-      console.log(res.data);
       setStats(res.data);
       setIsCustomDate(false);
       setDateRange({
         startDate: '',
         endDate: '',
       });
-      console.log(res.data);
     } catch (error) {
       console.log(error);
     } finally {
@@ -82,7 +80,6 @@ const Dashboard = () => {
       );
       setStats(res.data);
       setIsCustomDate(true);
-      console.log(res.data);
     } catch (error) {
       console.log(error.response);
     } finally {

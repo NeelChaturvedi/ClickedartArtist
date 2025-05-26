@@ -88,7 +88,6 @@ const Orders = () => {
         '/ordersupport/create-order-support-request',
         updatedOrderSupport,
       );
-      console.log('Order Support:', updatedOrderSupport);
       ToastAndroid.show(
         'Order support request submitted successfully',
         ToastAndroid.SHORT,
@@ -125,7 +124,6 @@ const Orders = () => {
       const res = await api.get(
         `/download/get-my-orders?userId=${user?._id}&pageSize=10`,
       );
-      console.log('Orders:', res.data);
       setOrders(res.data.orders);
     } catch (error) {
       console.log('Error fetching orders:', error.response);
