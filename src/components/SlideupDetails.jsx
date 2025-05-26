@@ -7,8 +7,13 @@ import {
   Text,
   FlatList,
 } from 'react-native';
+import { useTheme } from 'src/themes/useTheme';
 
 const SlideUpDetails = ({visible, title, onClose, data = []}) => {
+
+  const theme = useTheme();
+  const styles = getStyles(theme);
+
   return (
     <Modal
       animationType="slide"
@@ -45,14 +50,14 @@ const SlideUpDetails = ({visible, title, onClose, data = []}) => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   overlay: {
     flex: 1,
     justifyContent: 'flex-end',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
-    backgroundColor: '#1E1E1E',
+    backgroundColor: theme.card,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
@@ -60,7 +65,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    color: 'white',
+    color: theme.text,
     marginBottom: 10,
     fontWeight: '600',
     textAlign: 'center',
@@ -72,11 +77,11 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
-    color: 'white',
+    color: theme.text,
   },
   value: {
     fontSize: 16,
-    color: 'white',
+    color: theme.text,
   },
   freeValueContainer: {
     flexDirection: 'row',
@@ -85,7 +90,7 @@ const styles = StyleSheet.create({
   },
   crossedValue: {
     fontSize: 16,
-    color: 'white',
+    color: theme.text,
     textDecorationLine: 'line-through',
     textDecorationStyle: 'solid',
   },
