@@ -12,7 +12,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
-import {style} from './styles';
 import {Image} from 'moti';
 import {useUserStore} from '../../store/auth';
 import TabPhotos from '../Profiletabs/TabPhotos';
@@ -26,9 +25,15 @@ import SlideUpModal from '../../components/SlideupModal';
 import ImagePicker from 'react-native-image-crop-picker';
 import axios from 'axios';
 import {API_URL} from '@env';
+import { useTheme } from 'src/themes/useTheme';
+import {useMemo} from 'react';
+import {createProfileStyles} from './styles';
 
 const Profile = () => {
   const {user, fetchUserFromToken} = useUserStore();
+
+  const theme = useTheme();
+  const style = useMemo(() => createProfileStyles(theme), [theme]);
 
   const navigation = useNavigation();
 
@@ -284,13 +289,13 @@ const Profile = () => {
                   navigation.navigate('SettingsNavigator');
                 }}
                 style={style.iconContainer}>
-                <Icon name="gear" size={20} />
+                <Icon name="gear" size={20} color={theme.text} />
               </Pressable>
               <Pressable
                 onPress={onShare}
                 title="Share"
                 style={style.iconContainer}>
-                <Icon name="share" size={20} />
+                <Icon name="share" size={20} color={theme.text} />
               </Pressable>
             </View>
           </View>
@@ -305,7 +310,7 @@ const Profile = () => {
             />
             <Pressable style={style.edit} onPress={() => setSlideUp(true)}>
               <Image
-                style={{height: 12, width: 12, tintColor: '#000'}}
+                style={{height: 12, width: 12, tintColor: theme.background}}
                 source={require('../../assets/tabIcons/edit.png')}
               />
             </Pressable>
@@ -355,7 +360,7 @@ const Profile = () => {
                 <Text
                   style={[
                     style.tabText,
-                    activeTab === tab.key && {color: 'white'},
+                    activeTab === tab.key && {color: theme.text},
                   ]}>
                   {tab.label}
                 </Text>

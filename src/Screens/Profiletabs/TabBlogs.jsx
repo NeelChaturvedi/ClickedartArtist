@@ -6,15 +6,18 @@ import {
   TouchableOpacity,
   ToastAndroid,
 } from 'react-native';
-import React, {useState} from 'react';
-import {styles} from './styles';
+import React, {useMemo, useState} from 'react';
+import {createTabStyles} from './styles';
 import {Image} from 'moti';
 import {useNavigation} from '@react-navigation/native';
 import SlideUpModal from '@components/SlideupModal';
 import api from 'src/utils/apiClient';
+import {useTheme} from 'src/themes/useTheme';
 
 const TabBlogs = ({blogs, pendingBlogs}) => {
   const navigation = useNavigation();
+  const theme = useTheme();
+  const styles = useMemo(() => createTabStyles(theme), [theme]);
 
   const [slideUp, setSlideUp] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState(null);

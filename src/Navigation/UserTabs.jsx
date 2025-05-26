@@ -20,6 +20,7 @@ import Cart from 'src/Screens/Cart';
 import api from 'src/utils/apiClient';
 import {useUserStore} from 'src/store/auth';
 import useCartStore from 'src/store/cart';
+import { useTheme } from 'src/themes/useTheme';
 
 export const Tabs = () => {
   const Tab = createBottomTabNavigator();
@@ -36,6 +37,8 @@ export const Tabs = () => {
   const {cartItems} = useCartStore();
 
   const navigation = useNavigation();
+
+  const theme = useTheme();
 
   const catalogueValidation = () => {
     if (!catalogue.name) {
@@ -107,11 +110,11 @@ export const Tabs = () => {
           tabBarLabelStyle: {
             fontFamily: 'Outfit-bold',
           },
-          tabBarInactiveTintColor: 'white',
+          tabBarInactiveTintColor: theme.text,
           tabBarActiveTintColor: '#ED3147',
           tabBarStyle: {
             height: 90,
-            backgroundColor: '#000',
+            backgroundColor: theme.background,
             paddingTop: 20,
             paddingHorizontal: 10,
             flexDirection: 'row',
@@ -129,7 +132,7 @@ export const Tabs = () => {
               <DashboardIcon
                 width={24}
                 height={24}
-                color={focused ? '#ED3147' : 'white'}
+                color={focused ? '#ED3147' : theme.text}
               />
             ),
           }}
@@ -143,14 +146,14 @@ export const Tabs = () => {
                 <CartIcon
                   width={24}
                   height={24}
-                  color={focused ? '#ED3147' : 'white'}
+                  color={focused ? '#ED3147' : theme.text}
                 />
                 <View
                   style={{
                     position: 'absolute',
                     top: -10,
                     right: -10,
-                    backgroundColor: focused ? 'white' : '#ED3147',
+                    backgroundColor: focused ? theme.text : '#ED3147',
                     borderRadius: 50,
                     width: 20,
                     height: 20,
@@ -211,7 +214,7 @@ export const Tabs = () => {
               <AccountsIcon
                 width={24}
                 height={24}
-                color={focused ? '#ED3147' : 'white'}
+                color={focused ? '#ED3147' : theme.text}
               />
             ),
           }}
@@ -224,7 +227,7 @@ export const Tabs = () => {
               <ProfileIcon
                 width={24}
                 height={24}
-                color={focused ? '#ED3147' : 'white'}
+                color={focused ? '#ED3147' : theme.text}
               />
             ),
           }}
