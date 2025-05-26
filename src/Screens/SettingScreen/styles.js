@@ -18,6 +18,11 @@ export const createSettingStyles = (theme) =>
       paddingHorizontal: 16,
       paddingBottom: 30,
     },
+    loadingContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
     headingText: {
       fontFamily: 'Outfit-bold',
       fontSize: 32,
@@ -42,6 +47,7 @@ export const createSettingStyles = (theme) =>
       fontFamily: 'Outfit-regular',
       fontSize: 16,
       color: theme.text,
+      lineHeight: 24,
     },
     iconContainer: {
       height: 30,
