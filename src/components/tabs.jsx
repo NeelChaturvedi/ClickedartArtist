@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {
   Pressable,
   Text,
@@ -8,11 +9,15 @@ import {
 } from 'react-native';
 import React, {useState, useRef} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useTheme} from 'src/themes/useTheme';
 
 const Tabs = ({tabs, contentComponents}) => {
   const [activeTab, setActiveTab] = useState(tabs[0].key);
   const slideAnim = useRef(new Animated.Value(0)).current;
   const [containerWidth, setContainerWidth] = useState(0);
+
+  const theme = useTheme();
+  const style = getStyles(theme);
 
   const handleTabPress = (tabKey, index) => {
     setActiveTab(tabKey);
@@ -21,8 +26,7 @@ const Tabs = ({tabs, contentComponents}) => {
       duration: 500,
       easing: Easing.out(Easing.exp),
       useNativeDriver: false,
-    }).start(() => {
-    });
+    }).start(() => {});
   };
 
   return (
@@ -36,7 +40,13 @@ const Tabs = ({tabs, contentComponents}) => {
             key={tab.key}
             onPress={() => handleTabPress(tab.key, index)}
             style={style.tabs}>
-            <Text style={style.tabText}>{tab.label}</Text>
+            <Text
+              style={[
+                style.tabText,
+                {color: tab.key === activeTab ? 'white' : theme.text},
+              ]}>
+              {tab.label}
+            </Text>
           </Pressable>
         ))}
       </View>
@@ -45,62 +55,63 @@ const Tabs = ({tabs, contentComponents}) => {
   );
 };
 
-const style = StyleSheet.create({
-  background: {
-    backgroundColor: '#000',
-    flex: 1,
-    gap: 20,
-    height: '100%',
-    width: '100%',
-    alignItems: 'center',
-    paddingBottom: 80,
-  },
-  tabContainer: {
-    marginTop: 40,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '70%',
-    borderRadius: 100,
-    backgroundColor: '#1E1E1E',
-    borderWidth: 0.5,
-    borderColor: 'white',
-    position: 'relative',
-    overflow: 'hidden',
-  },
-  tabs: {
-    width: '50%',
-    height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  activeTab: {
-    position: 'absolute',
-    width: '50%',
-    borderRadius: 100,
-    height: 60,
-    backgroundColor: '#ED3147',
-  },
-  tabText: {
-    fontFamily: 'Outfit-medium',
-    fontSize: 20,
-    color: 'white',
-  },
-  content: {
-    width: '100%',
-    height: '100%',
-    paddingBottom: 50,
-  },
-  loadingText: {
-    color: 'white',
-    fontSize: 18,
-    textAlign: 'center',
-    marginTop: 20,
-  },
-  loading: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-});
+const getStyles = theme =>
+  StyleSheet.create({
+    background: {
+      backgroundColor: theme.background,
+      flex: 1,
+      gap: 20,
+      height: '100%',
+      width: '100%',
+      alignItems: 'center',
+      paddingBottom: 80,
+    },
+    tabContainer: {
+      marginTop: 40,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      width: '70%',
+      borderRadius: 100,
+      backgroundColor: theme.card,
+      borderWidth: 0.5,
+      borderColor: theme.border,
+      position: 'relative',
+      overflow: 'hidden',
+    },
+    tabs: {
+      width: '50%',
+      height: 60,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    activeTab: {
+      position: 'absolute',
+      width: '50%',
+      borderRadius: 100,
+      height: 60,
+      backgroundColor: '#ED3147',
+    },
+    tabText: {
+      fontFamily: 'Outfit-medium',
+      fontSize: 20,
+      color: theme.text,
+    },
+    content: {
+      width: '100%',
+      height: '100%',
+      paddingBottom: 50,
+    },
+    loadingText: {
+      color: theme.text,
+      fontSize: 18,
+      textAlign: 'center',
+      marginTop: 20,
+    },
+    loading: {
+      flex: 1,
+      justifyContent: 'center',
+    },
+  });
 
 export default Tabs;

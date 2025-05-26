@@ -6,13 +6,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
-import {styles} from './styles';
+import React, { useMemo } from 'react';
+import {createCartStyles} from './styles';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '@components/button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import useCartStore from 'src/store/cart';
 import { useNavigation } from '@react-navigation/native';
+import { useTheme } from 'src/themes/useTheme';
 
 const Cart = () => {
   const {removeItemFromCart, cartItems} = useCartStore();
@@ -25,6 +26,8 @@ const Cart = () => {
     );
   };
 
+  const theme = useTheme();
+  const styles = useMemo(() => createCartStyles(theme), [theme]);
   const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.background}>

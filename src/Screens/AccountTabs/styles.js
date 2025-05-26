@@ -1,13 +1,13 @@
 import {StyleSheet} from 'react-native';
 
-export const styles = StyleSheet.create({
+export const createAccountStyles = (theme) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: theme.background,
     paddingHorizontal: 16,
   },
   invoiceCard: {
-    backgroundColor: '#1E1E1E',
+    backgroundColor: theme.card,
     borderRadius: 10,
     paddingHorizontal: 16,
     paddingVertical: 20,
@@ -19,17 +19,17 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   invoiceText: {
-    color: 'white',
+    color: theme.text,
     fontSize: 16,
     fontWeight: '600',
   },
   amount: {
-    color: 'white',
+    color: theme.text,
     fontSize: 16,
     fontWeight: '700',
   },
   date: {
-    color: '#aaa',
+    color: '#888',
     fontSize: 14,
     marginTop: 6,
   },
@@ -55,7 +55,7 @@ export const styles = StyleSheet.create({
 
   //Orders
   orderCard: {
-    backgroundColor: '#1E1E1E',
+    backgroundColor: theme.card,
     borderRadius: 12,
     marginBottom: 16,
     paddingVertical: 10,
@@ -74,12 +74,12 @@ export const styles = StyleSheet.create({
     paddingRight: 10,
   },
   title: {
-    color: 'white',
+    color: theme.text,
     fontSize: 16,
     fontFamily: 'Outfit-bold',
   },
   orderType: {
-    color: '#A1A1A1',
+    color: '#888',
     fontSize: 14,
     marginVertical: 4,
   },
@@ -109,13 +109,13 @@ export const styles = StyleSheet.create({
     width: '50%',
   },
   metaLabel: {
-    color: 'white',
+    color: theme.text,
     fontFamily: 'Outfit-bold',
     fontSize: 14,
     marginBottom: 4,
   },
   metaText: {
-    color: '#A1A1A1',
+    color: '#888',
     fontSize: 12,
   },
   loadingContainer: {
@@ -124,7 +124,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   // loading: {
-  //   color: 'white',
+  //   color: theme.text,
   //   fontSize: 18,
   //   textAlign: 'center',
   // },
@@ -134,13 +134,13 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   notFoundTitle: {
-    color: 'white',
+    color: theme.text,
     fontSize: 16,
     fontFamily: 'Outfit-medium',
     textAlign: 'center',
   },
   notFoundDesc: {
-    color: '#A1A1A1',
+    color: '#888',
     fontSize: 14,
     textAlign: 'center',
     marginTop: 8,
@@ -165,7 +165,7 @@ export const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 24,
     fontFamily: 'Outfit-bold',
-    color: 'white',
+    color: theme.text,
     textAlign: 'center',
   },
   modalDescription:{
@@ -182,7 +182,7 @@ export const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontFamily: 'Outfit-medium',
-    color: 'white',
+    color: theme.text,
   },
   wordCount:{
     color:'white',
@@ -198,14 +198,14 @@ export const styles = StyleSheet.create({
     fontFamily: 'Outfit-bold',
     width: '40%',
     fontSize: 16,
-    color: 'white',
+    color: theme.text,
     textAlign: 'left',
   },
   trackingStatus:{
     fontFamily: 'Outfit-medium',
     fontSize: 16,
     width: '60%',
-    color: 'white',
+    color: theme.text,
     textAlign: 'right',
   },
   closeModalBtn:{

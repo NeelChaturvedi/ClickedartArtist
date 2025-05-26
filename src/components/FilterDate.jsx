@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import dayjs from 'dayjs';
+import { useTheme } from 'src/themes/useTheme';
 
 const FilterDate = ({dateRange, setDateRange, fetchCustomStats}) => {
   const [openPicker, setOpenPicker] = useState(false);
@@ -35,6 +36,9 @@ const FilterDate = ({dateRange, setDateRange, fetchCustomStats}) => {
       fetchCustomStats();
     }
   }, [dateRange.startDate, dateRange.endDate, fetchCustomStats]);
+
+    const theme = useTheme();
+  const style = getStyles(theme);
 
   return (
     <View style={style.background}>
@@ -82,8 +86,7 @@ const FilterDate = ({dateRange, setDateRange, fetchCustomStats}) => {
   );
 };
 
-const style = StyleSheet.create({
-  background: {},
+const getStyles = (theme) => StyleSheet.create({
   datePickerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -94,13 +97,13 @@ const style = StyleSheet.create({
   dateButton: {
     flex: 1,
     height: 60,
-    backgroundColor: '#1e1e1e',
+    backgroundColor: theme.card,
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
   dateText: {
-    color: 'white',
+    color: theme.text,
     fontFamily: 'Outfit-medium',
     fontSize: 18,
   },

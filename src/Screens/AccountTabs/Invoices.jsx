@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   View,
   Text,
@@ -10,12 +10,13 @@ import {
   Pressable,
   Linking,
 } from 'react-native';
-import {styles} from './styles';
+import {createAccountStyles} from './styles';
 import SearchBar from '../../components/SearchBar';
 import {useUserStore} from '../../store/auth';
 import api from '../../utils/apiClient';
 import SlideUpModal from '@components/SlideupModal';
 import {Share} from 'react-native';
+import { useTheme } from 'src/themes/useTheme';
 
 const Invoices = () => {
   const {user} = useUserStore();
@@ -24,6 +25,9 @@ const Invoices = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [slideUp, setSlideUp] = useState(false);
   const [selectedInvoice, setSelectedInvoice] = useState(null);
+
+  const theme = useTheme();
+  const styles = useMemo(() => createAccountStyles(theme), [theme]);
 
   const onShare = async () => {
     await Share.share({

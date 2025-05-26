@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   Text,
   View,
@@ -12,7 +12,7 @@ import {
   Modal,
   ToastAndroid,
 } from 'react-native';
-import {styles} from './styles';
+import {createAccountStyles} from './styles';
 import {useUserStore} from '../../store/auth';
 import api from '../../utils/apiClient';
 import SlideUpModal from '@components/SlideupModal';
@@ -20,6 +20,7 @@ import AutoGrowTextInput from '@components/AutoGrowTextInput';
 import Button from '@components/button';
 import DropdownModal from '@components/DropdownModal';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {useTheme} from 'src/themes/useTheme';
 
 const Orders = () => {
   const {user} = useUserStore();
@@ -40,6 +41,9 @@ const Orders = () => {
     issueDescription: '',
     preferredContactMethod: '',
   });
+
+  const theme = useTheme();
+  const styles = useMemo(() => createAccountStyles(theme), [theme]);
 
   const issueTypes = [
     {id: 'Order not received', name: 'Order Not Received'},

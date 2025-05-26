@@ -1,8 +1,8 @@
 import {StyleSheet} from 'react-native';
 
-export const style = StyleSheet.create({
+export const createDashboardStyles = (theme) => StyleSheet.create({
   background: {
-    backgroundColor: '#000',
+    backgroundColor: theme.background,
     height: '100%',
     paddingHorizontal: 20,
     width: '100%',
@@ -15,15 +15,15 @@ export const style = StyleSheet.create({
     flexGrow: 1,
     padding: 20,
     borderRadius: 10,
-    backgroundColor: '#1E1E1E',
+    backgroundColor: theme.card,
     borderWidth: 0.5,
     overflow: 'hidden',
-    borderColor: 'white',
+    borderColor: theme.border,
   },
   title: {
     fontFamily: 'Outfit-bold',
     fontSize: 20,
-    color: 'white',
+    color: theme.text,
   },
   typeContainer: {
     flexDirection: 'row',
@@ -37,7 +37,7 @@ export const style = StyleSheet.create({
     gap: 10,
   },
   growthText: {
-    color: 'white',
+    color: theme.text,
     fontFamily: 'Outfit-medium',
     fontSize: 16,
   },
@@ -49,6 +49,6 @@ export const style = StyleSheet.create({
   smallText: {
     fontFamily: 'Outfit-regular',
     fontSize: 18,
-    color: '#A0A0A0',
+    color: '#888',
   },
 });

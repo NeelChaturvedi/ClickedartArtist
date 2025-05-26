@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {style} from './styles';
+import {createDashboardStyles} from './styles';
 import FilterDate from '../../components/FilterDate';
 import {ScrollView} from 'moti';
 import {Dimensions, Text, View} from 'react-native';
@@ -10,6 +10,7 @@ import api from '../../utils/apiClient';
 import {useUserStore} from '../../store/auth';
 import {LineChart} from 'react-native-chart-kit';
 import Button from '@components/button';
+import { useTheme } from 'src/themes/useTheme';
 
 const Dashboard = () => {
   const {user} = useUserStore();
@@ -42,6 +43,9 @@ const Dashboard = () => {
   const months = monthlyData.map(
     data => `${monthNames[data.month ? data.month - 1 : 0]}`,
   );
+
+  const theme = useTheme();
+  const style = useMemo(() => createDashboardStyles(theme), [theme]);
 
   const fetchStats = useCallback(async () => {
     if (!user._id) {
