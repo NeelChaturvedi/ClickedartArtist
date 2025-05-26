@@ -11,11 +11,15 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import YoutubePlayer from 'react-native-youtube-iframe';
+import { useTheme } from 'src/themes/useTheme';
 import api from 'src/utils/apiClient';
 
 const HelpCenter = () => {
   const [playing, setPlaying] = useState(false);
   const [supportVideos, setSupportVideos] = useState([]);
+
+    const theme = useTheme();
+  const styles = getStyles(theme);
 
   const getVideoId = url => {
     const regex =
@@ -78,10 +82,10 @@ const HelpCenter = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   container: {
     paddingHorizontal: 20,
-    backgroundColor: 'black',
+    backgroundColor: theme.background,
     position: 'relative',
     width: '100%',
     height: '100%',
@@ -90,7 +94,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontFamily: 'Outfit-bold',
     marginBottom: 10,
-    color: 'white',
+    color: theme.text,
     paddingVertical: 10,
   },
   lastUpdated: {
@@ -107,14 +111,14 @@ const styles = StyleSheet.create({
   section: {
     gap: 4,
     paddingVertical: 16,
-    borderBottomColor: 'white',
+    borderBottomcolor: theme.text,
     borderBottomWidth: 1,
   },
   sectionTitle: {
     fontSize: 16,
     fontFamily: 'Outfit-medium',
     marginBottom: 10,
-    color: 'white',
+    color: theme.text,
   },
   bullet: {
     fontSize: 16,
@@ -122,7 +126,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginBottom: 6,
     fontFamily: 'Outfit-medium',
-    color: 'white',
+    color: theme.text,
   },
   contactUs: {
     position: 'absolute',
@@ -136,7 +140,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     fontFamily: 'Outfit-medium',
-    color: 'white',
+    color: theme.text,
   },
 });
 

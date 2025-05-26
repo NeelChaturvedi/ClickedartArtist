@@ -19,6 +19,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import api from 'src/utils/apiClient';
 import RazorpayCheckout from 'react-native-razorpay';
 import {useUserStore} from 'src/store/auth';
+import { useTheme } from 'src/themes/useTheme';
 
 const desc = [
   'Perfect for newcomers! Create your first catalogue, test out essential tools, and start selling with zero cost.Great for trying before upgrading.',
@@ -33,6 +34,9 @@ const Membership = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [activePlan, setActivePlan] = useState(false);
   const [plans, setPlans] = useState([]);
+
+    const theme = useTheme();
+  const styles = getStyles(theme);
 
   const toggleAccordion = id => {
     setIsExpanded(prevId => (prevId === id ? null : id));
@@ -347,12 +351,12 @@ const Membership = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   background: {
     width: '100%',
     flex: 1,
     gap: 20,
-    backgroundColor: 'black',
+    backgroundColor: theme.background,
     alignItems: 'center',
     paddingBottom: 20,
   },

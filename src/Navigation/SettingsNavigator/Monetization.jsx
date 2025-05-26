@@ -23,6 +23,7 @@ import {useUserStore} from 'src/store/auth';
 import ImagePicker from 'react-native-image-crop-picker';
 import ImageViewModal from '@components/ImageViewModal';
 import {useNavigation} from '@react-navigation/native';
+import { useTheme } from 'src/themes/useTheme';
 
 const Monetization = () => {
   const navigation = useNavigation();
@@ -34,6 +35,9 @@ const Monetization = () => {
   const [imageModalVisible, setImageModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [errors, setErrors] = useState({});
+
+    const theme = useTheme();
+  const styles = getStyles(theme);
 
   const {user} = useUserStore();
 
@@ -734,7 +738,6 @@ const Monetization = () => {
                       <Text style={styles.inputTitle}>GST NUMBER</Text>
                       <AutoGrowTextInput
                         placeholder="Enter your gst number"
-                        style={styles.inputbox}
                         value={formData.businessAccount.gstNumber}
                         onChangeText={text =>
                           setFormData(prev => ({
@@ -756,7 +759,6 @@ const Monetization = () => {
                       <Text style={styles.inputTitle}>GST STATE</Text>
                       <AutoGrowTextInput
                         placeholder="Enter the gst state"
-                        style={styles.inputbox}
                         value={formData.businessAccount.gstState}
                         onChangeText={text =>
                           setFormData(prev => ({
@@ -778,7 +780,6 @@ const Monetization = () => {
                       <Text style={styles.inputTitle}>GST TYPE</Text>
                       <AutoGrowTextInput
                         placeholder="Enter your gst type"
-                        style={styles.inputbox}
                         value={formData.businessAccount.gstType}
                         onChangeText={text =>
                           setFormData(prev => ({
@@ -1060,14 +1061,14 @@ const Monetization = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   background: {
     height: '100%',
-    backgroundColor: 'black',
+    backgroundColor: theme.background,
     width: '100%',
   },
   containerWrapper: {
-    paddingHorizontal: 20,
+    padding: 20,
   },
   loadingContainer: {
     flex: 1,
@@ -1077,14 +1078,14 @@ const styles = StyleSheet.create({
   personalDetails: {
     padding: 24,
     borderRadius: 10,
-    backgroundColor: '#1E1E1E',
+    backgroundColor: theme.card,
     alignItems: 'center',
     justifyContent: 'center',
   },
   sectionTitle: {
     fontFamily: 'Outfit-bold',
     fontSize: 20,
-    color: 'white',
+    color: theme.text,
   },
   form: {
     justifyContent: 'flex-start',
@@ -1108,18 +1109,18 @@ const styles = StyleSheet.create({
   inputTitle: {
     fontSize: 16,
     fontFamily: 'Outfit-medium',
-    color: 'white',
+    color: theme.text,
   },
   inputbox: {
     height: 54,
-    color: 'white',
+    color: theme.text,
     justifyContent: 'center',
-    backgroundColor: '#1E1E1E',
+    backgroundColor: theme.card,
     fontFamily: 'Outfit-regular',
     paddingHorizontal: 16,
     borderRadius: 10,
     borderWidth: 0.5,
-    borderColor: 'white',
+    borderColor: theme.text,
   },
   twoField: {
     flex: 1,
@@ -1128,11 +1129,11 @@ const styles = StyleSheet.create({
   uploadContainer: {
     height: 54,
     justifyContent: 'center',
-    backgroundColor: '#1E1E1E',
+    backgroundColor: theme.card,
     paddingHorizontal: 16,
     borderRadius: 10,
     borderWidth: 0.5,
-    borderColor: 'white',
+    borderColor: theme.border,
     width: '100%',
   },
   imageContainer: {
@@ -1140,17 +1141,6 @@ const styles = StyleSheet.create({
     width: '100%',
     borderRadius: 10,
     overflow: 'hidden',
-  },
-  viewButton: {
-    height: 54,
-    justifyContent: 'center',
-    backgroundColor: '#1E1E1E',
-    paddingHorizontal: 16,
-    borderRadius: 10,
-    borderWidth: 0.5,
-    borderColor: 'white',
-    width: '30%',
-    alignItems: 'center',
   },
   deleteButton: {
     height: 20,
