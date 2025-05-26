@@ -3,6 +3,7 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 
 const SearchBar = () => {
+  
   return (
     <View style={style.searchRow}>
       <Icon name="search" size={20} color="#aaa" />
