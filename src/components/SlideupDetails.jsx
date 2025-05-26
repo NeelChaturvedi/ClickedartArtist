@@ -77,6 +77,7 @@ const getStyles = (theme) => StyleSheet.create({
   },
   label: {
     fontSize: 16,
+    lineHeight: 20,
     color: theme.text,
   },
   value: {
