@@ -13,8 +13,8 @@ import {
   Image,
   ToastAndroid,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {styles} from './style';
+import React, {useEffect, useMemo, useState} from 'react';
+import {editProfileStyles} from './style';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Button from '@components/button';
 import AutoGrowTextInput from '@components/AutoGrowTextInput';
@@ -22,6 +22,7 @@ import api from 'src/utils/apiClient';
 import {useUserStore} from 'src/store/auth';
 import MultiSelectModal from '@components/MultiSelectModal';
 import {useNavigation, useRoute} from '@react-navigation/native';
+import { useTheme } from 'src/themes/useTheme';
 
 const EditImage = () => {
   const {user} = useUserStore();
@@ -37,6 +38,10 @@ const EditImage = () => {
   const [photo, setPhoto] = useState(null);
   const [updatedPhoto, setUpdatedPhoto] = useState(null);
   const [isEnabled, setIsEnabled] = useState(false);
+
+  const theme = useTheme();
+  const styles = useMemo(() => editProfileStyles(theme), [theme]);
+
   const toggleSwitch = () => {
     setIsEnabled(previousState => !previousState);
     setPhoto({...photo, notForSale: !isEnabled, price: 0});
