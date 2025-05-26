@@ -6,14 +6,15 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import {styles} from './styles';
-import React, {useState} from 'react';
+import {registerStyles} from './styles';
+import React, {useMemo, useState} from 'react';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {AdvancedCheckbox} from 'react-native-advanced-checkbox';
 import Button from '../../components/button';
 import {useNavigation} from '@react-navigation/native';
 import {useRegistrationStore} from '../../store/registration';
 import api from '../../utils/apiClient';
+import { useTheme } from 'src/themes/useTheme';
 
 const Register = () => {
   const {formData, setField} = useRegistrationStore();
@@ -21,6 +22,9 @@ const Register = () => {
   const [checked, setChecked] = useState(false);
   const navigation = useNavigation();
   const [errors, setErrors] = useState({});
+
+  const theme = useTheme();
+  const styles = useMemo(() => registerStyles(theme), [theme]);
 
   const validateForm = () => {
     const newErrors = {};
@@ -157,7 +161,7 @@ const Register = () => {
               <FontAwesome5
                 name={secure ? 'eye-slash' : 'eye'}
                 size={20}
-                color="white"
+                color={theme.text}
               />
             </TouchableOpacity>
           </View>
@@ -176,7 +180,7 @@ const Register = () => {
             />
             <Text
               style={{
-                color: 'white',
+                color: theme.text,
                 marginLeft: 10,
                 fontFamily: 'Outfit-regular',
               }}>
@@ -210,7 +214,7 @@ const Register = () => {
         <View style={styles.LoginPage}>
           <Text
             style={{
-              color: 'white',
+              color: theme.text,
               textAlign: 'center',
               fontFamily: 'Outfit-regular',
             }}>

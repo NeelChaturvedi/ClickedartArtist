@@ -1,8 +1,8 @@
 import {StyleSheet} from 'react-native';
 
-export const styles = StyleSheet.create({
+export const registerStyles = (theme) => StyleSheet.create({
   background: {
-    backgroundColor: 'black',
+    backgroundColor: theme.background,
     flex: 1,
     paddingTop: 120,
     paddingBottom: 60,
@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 32,
-    color: 'white',
+    color: theme.text,
     textAlign: 'center',
     fontFamily: 'Outfit-bold',
   },
@@ -35,31 +35,31 @@ export const styles = StyleSheet.create({
   },
   inputTitle: {
     fontSize: 16,
-    color: 'white',
+    color: theme.text,
     fontFamily: 'Outfit-medium',
     marginBottom: 6,
   },
   inputbox: {
     width: '100%',
     height: 54,
-    color: 'white',
-    backgroundColor: '#1A1A1A',
+    color: theme.text,
+    backgroundColor: theme.card,
     fontFamily: 'Outfit-regular',
     paddingHorizontal: 10,
     borderRadius: 10,
     borderWidth: 0.5,
-    borderColor: '#8C8C8C',
+    borderColor: theme.border,
   },
   passwordInput: {
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
     height: 54,
-    backgroundColor: '#1A1A1A',
+    backgroundColor: theme.card,
     paddingHorizontal: 10,
     borderRadius: 10,
     borderWidth: 0.5,
-    borderColor: '#8C8C8C',
+    borderColor: theme.border,
   },
   LoginPage: {
     flexDirection: 'row',
