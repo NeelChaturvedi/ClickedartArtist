@@ -7,6 +7,7 @@ import {
   Platform,
   ToastAndroid,
   Share,
+  Alert,
 } from 'react-native';
 import React, {useMemo, useState} from 'react';
 import {createTabStyles} from './styles';
@@ -15,7 +16,9 @@ import {useNavigation} from '@react-navigation/native';
 import RNFS from 'react-native-fs';
 import api from 'src/utils/apiClient';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useTheme } from 'src/themes/useTheme';
+import {useTheme} from 'src/themes/useTheme';
+import axios from 'axios';
+import { useUserStore } from 'src/store/auth';
 
 const TabPhotos = ({photos, pendingPhotos}) => {
   const [slideUp, setSlideUp] = useState(false);
@@ -24,7 +27,7 @@ const TabPhotos = ({photos, pendingPhotos}) => {
   const navigation = useNavigation();
 
   const theme = useTheme();
-    const styles = useMemo(() => createTabStyles(theme), [theme]);
+  const styles = useMemo(() => createTabStyles(theme), [theme]);
 
   const requestStoragePermission = async () => {
     if (Platform.OS === 'android' && Platform.Version < 30) {
@@ -92,6 +95,17 @@ const TabPhotos = ({photos, pendingPhotos}) => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      await api.delete(`/images/delete-image?id=${selectedImage._id}`);
+      showToast('Image deleted successfully');
+      useUserStore.getState().fetchUserFromToken();
+    } catch (error) {
+      console.log(error);
+      showToast('Failed to delete image');
+    }
+  };
+
   const onShare = async () => {
     await Share.share({
       message: `Check out this image: https://clickedart.com/images/${selectedImage?.slug}`,
@@ -140,6 +154,25 @@ const TabPhotos = ({photos, pendingPhotos}) => {
       icon: 'share',
       onPress: () => {
         onShare();
+      },
+    },
+    {
+      label: 'Delete',
+      icon: 'delete',
+      onPress: () => {
+        Alert.alert(
+          'Delete Image',
+          'Are you sure you want to delete this image?',
+          [
+            {text: 'Cancel', style: 'cancel'},
+            {
+              text: 'Delete',
+              style: 'destructive',
+              onPress: () => handleDelete(),
+            },
+          ],
+          {cancelable: true},
+        );
       },
     },
   ];

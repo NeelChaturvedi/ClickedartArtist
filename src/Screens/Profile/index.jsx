@@ -200,32 +200,32 @@ const Profile = () => {
         ]);
 
       if (statsRes.status === 'fulfilled') {
-        setStats(statsRes.value.data);
+        setStats(statsRes.value?.data);
       } else {
         setStats({});
       }
       if (photosRes.status === 'fulfilled') {
-        setPhotos(photosRes.value.data.photos);
+        setPhotos(photosRes.value?.data?.photos);
       } else {
         setPhotos([]);
       }
-      if (photosRes.status === 'fulfilled') {
-        setPendingPhotos(pendingPhotosRes.value.data.pendingImages);
+      if (pendingPhotosRes.status === 'fulfilled') {
+        setPendingPhotos(pendingPhotosRes.value?.data?.pendingImages);
       } else {
-        setPhotos([]);
+        setPendingPhotos([]);
       }
       if (cataloguesRes.status === 'fulfilled') {
-        setCatalogues(cataloguesRes.value.data.catalogues);
+        setCatalogues(cataloguesRes.value?.data?.catalogues);
       } else {
         setCatalogues([]);
       }
       if (blogsRes.status === 'fulfilled') {
-        setBlogs(blogsRes.value.data.blogs);
+        setBlogs(blogsRes.value?.data?.blogs);
       } else {
         setBlogs([]);
       }
       if (pendingBlogsRes.status === 'fulfilled') {
-        setPendingBlogs(pendingBlogsRes.value.data.blogs);
+        setPendingBlogs(pendingBlogsRes.value?.data?.blogs);
       } else {
         setPendingBlogs([]);
       }

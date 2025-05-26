@@ -1,6 +1,14 @@
 /* eslint-disable no-shadow */
 
-import {View, Text, Pressable, Modal, ToastAndroid, Share} from 'react-native';
+import {
+  View,
+  Text,
+  Pressable,
+  Modal,
+  ToastAndroid,
+  Share,
+  Alert,
+} from 'react-native';
 import {createTabStyles} from './styles';
 import React, {useMemo, useState} from 'react';
 import {Image} from 'moti';
@@ -10,7 +18,7 @@ import AutoGrowTextInput from '@components/AutoGrowTextInput';
 import Button from '@components/button';
 import api from 'src/utils/apiClient';
 import {useUserStore} from 'src/store/auth';
-import { useTheme } from 'src/themes/useTheme';
+import {useTheme} from 'src/themes/useTheme';
 
 const TabCatalogues = ({catalogues, photos}) => {
   const navigation = useNavigation();
@@ -50,7 +58,19 @@ const TabCatalogues = ({catalogues, photos}) => {
       label: 'Delete',
       icon: 'delete',
       onPress: () => {
-        handleCatalogueDelete();
+        Alert.alert(
+          'Delete Catalogue',
+          'Are you sure you want to delete this catalogue?',
+          [
+            {text: 'Cancel', style: 'cancel'},
+            {
+              text: 'Delete',
+              style: 'destructive',
+              onPress: () => handleCatalogueDelete(),
+            },
+          ],
+          {cancelable: true},
+        );
       },
     },
   ];
