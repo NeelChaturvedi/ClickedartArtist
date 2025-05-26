@@ -1,8 +1,12 @@
 import React, {useState} from 'react';
 import {TextInput, StyleSheet} from 'react-native';
+import { useTheme } from 'src/themes/useTheme';
 
 const AutoGrowTextInput = ({value, onChangeText, placeholder, keyboardType, editable}) => {
   const [height, setHeight] = useState(50);
+
+    const theme = useTheme();
+  const styles = getStyles(theme);
 
   return (
     <TextInput
@@ -23,19 +27,19 @@ const AutoGrowTextInput = ({value, onChangeText, placeholder, keyboardType, edit
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   input: {
     width: '100%',
     borderWidth: 0.5,
-    borderColor: 'white',
-    backgroundColor: '#1E1E1E',
+    borderColor: theme.border,
+    backgroundColor: theme.card,
     borderRadius: 8,
     paddingHorizontal: 10,
     paddingVertical: 16,
     fontSize: 16,
     textAlignVertical: 'top',
     fontFamily: 'Outfit-regular',
-    color: 'white',
+    color: theme.text,
   },
 });
 
