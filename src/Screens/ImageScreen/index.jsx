@@ -13,7 +13,7 @@ import {
   Pressable,
   ToastAndroid,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {styles} from './styles';
 import DropdownModal from '@components/DropdownModal';
 import Button from '@components/button';
@@ -23,7 +23,7 @@ import ColorPicker, {Panel1, HueSlider} from 'reanimated-color-picker';
 import {runOnJS} from 'react-native-reanimated';
 import {useRoute} from '@react-navigation/native';
 import api from 'src/utils/apiClient';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import useCartStore from 'src/store/cart';
 import {MotiView} from 'moti';
 
@@ -35,15 +35,15 @@ const ImageScreen = ({setImageTitle}) => {
   );
   const mode = 'print';
   const screenWidth = Dimensions.get('window').width;
-  const {addItemToCart, removeItemFromCart, isItemInCart, cartItems} =
+  const {addItemToCart, removeItemFromCart, isItemInCart} =
     useCartStore();
-  console.log(cartItems);
   const [showModal, setShowModal] = useState(false);
   const mockupUri = require('../../assets/images/mockup.webp');
   const [color, setColor] = useState('#5F91AB');
 
   const startColor = chroma(color).brighten(1).hex();
   const endColor = chroma(color).darken(1).hex();
+  console.log('image', image);
 
   const [papers, setPapers] = useState([]);
   const [frames, setFrames] = useState([]);
@@ -438,12 +438,6 @@ const ImageScreen = ({setImageTitle}) => {
                   </Text>
                 </View>
               </View>
-              {/* <View style={styles.infoContainer}>
-                <Text style={styles.nameText}>
-                  {image?.photographer?.firstName}{' '}
-                  {image?.photographer?.lastName}
-                </Text>
-              </View> */}
               <View style={styles.section}>
                 <Text style={styles.nameText}>Media Type</Text>
                 <DropdownModal
@@ -479,6 +473,51 @@ const ImageScreen = ({setImageTitle}) => {
                 <Text style={styles.aboutText}>
                   {image?.description || '...'}
                 </Text>
+                <View>
+                  <Text style={styles.nameText}>Camera Details</Text>
+                  <View style={{flexDirection: 'row', gap: 10, flexWrap: 'wrap', marginTop: 10}}>
+                    {image?.cameraDetails?.camera && (
+                      <View style={{flexDirection: 'row', gap: 10}}>
+                        <Icon name="camera-outline" size={16} color="white" />
+                        <Text style={styles.aboutText}>
+                          {image?.cameraDetails?.camera || 'N/A'}
+                        </Text>
+                      </View>
+                    )}
+                    {image?.cameraDetails?.lens && (
+                      <View style={{flexDirection: 'row', gap: 10}}>
+                        <Icon name="camera-iris" size={16} color="white" />
+                        <Text style={styles.aboutText}>
+                          {image?.cameraDetails?.lens || 'N/A'}
+                        </Text>
+                      </View>
+                    )}
+                    {image?.cameraDetails?.settings?.shutterSpeed && (
+                      <View style={{flexDirection: 'row', gap: 10}}>
+                        <Icon name="camera-iris" size={16} color="white" />
+                        <Text style={styles.aboutText}>
+                          {image?.cameraDetails?.settings?.shutterSpeed || 'N/A'}
+                        </Text>
+                      </View>
+                    )}
+                    {image?.cameraDetails?.settings?.aperture && (
+                      <View style={{flexDirection: 'row', gap: 10}}>
+                        <Icon name="camera-iris" size={16} color="white" />
+                        <Text style={styles.aboutText}>
+                          {image?.cameraDetails?.settings?.aperture || 'N/A'}
+                        </Text>
+                      </View>
+                    )}
+                    {image?.cameraDetails?.settings?.iso && (
+                      <View style={{flexDirection: 'row', gap: 10}}>
+                        <Icon name="alpha-i-circle-outline" size={16} color="white" />
+                        <Text style={styles.aboutText}>
+                          {image?.cameraDetails?.settings?.iso || 'N/A'}
+                        </Text>
+                      </View>
+                    )}
+                  </View>
+                </View>
               </View>
             </View>
           </ScrollView>
