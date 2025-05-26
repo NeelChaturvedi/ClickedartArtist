@@ -13,8 +13,8 @@ import {
   Pressable,
   ToastAndroid,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {styles} from './styles';
+import React, {useEffect, useMemo, useState} from 'react';
+import {imageScreenStyles} from './styles';
 import DropdownModal from '@components/DropdownModal';
 import Button from '@components/button';
 import LinearGradient from 'react-native-linear-gradient';
@@ -26,6 +26,7 @@ import api from 'src/utils/apiClient';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useCartStore from 'src/store/cart';
 import {MotiView} from 'moti';
+import { useTheme } from 'src/themes/useTheme';
 
 const ImageScreen = ({setImageTitle}) => {
   const {imageData} = useRoute().params;
@@ -50,6 +51,9 @@ const ImageScreen = ({setImageTitle}) => {
   const [selectedSize, setSelectedSize] = useState(null);
   const [price, setPrice] = useState(0);
   const [inCart, setInCart] = useState(false);
+
+  const theme = useTheme();
+  const styles = useMemo(() => imageScreenStyles(theme), [theme]);
 
   const paperOptions = papers.map(paper => ({
     id: paper._id,
@@ -370,7 +374,7 @@ const ImageScreen = ({setImageTitle}) => {
                       justifyContent: 'center',
                     }}>
                     <Icon
-                      name="color-palette-outline"
+                      name="palette"
                       size={20}
                       color="white"
                     />

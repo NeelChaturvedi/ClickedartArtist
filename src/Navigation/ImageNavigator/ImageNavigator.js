@@ -3,6 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {enableScreens} from 'react-native-screens';
 import ImageScreen from 'src/Screens/ImageScreen';
 import EditImage from 'src/Screens/EditImage';
+import {useTheme} from 'src/themes/useTheme';
 
 enableScreens();
 
@@ -10,17 +11,19 @@ const Stack = createNativeStackNavigator();
 
 export default function ImageNavigator() {
   const [imageTitle, setImageTitle] = React.useState('');
+
+  const theme = useTheme();
   return (
     <Stack.Navigator
       initialRouteName="ImageScreen"
       screenOptions={{
         headerShown: true,
         headerStyle: {
-          backgroundColor: 'black',
+          backgroundColor: theme.background,
         },
         headerTitleAlign: 'center',
         headerTitle: imageTitle,
-        headerTintColor: 'white',
+        headerTintColor: theme.text,
       }}>
       <Stack.Screen
         name="ImageScreen"

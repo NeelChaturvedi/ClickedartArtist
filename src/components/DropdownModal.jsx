@@ -8,10 +8,14 @@ import {
   Pressable,
   FlatList,
 } from 'react-native';
+import { useTheme } from 'src/themes/useTheme';
 
 const DropdownModal = ({ options, onSelect, value }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
+
+    const theme = useTheme();
+  const styles = getStyles(theme);
 
   const handleSelect = (item) => {
     setSelectedOption(item);
@@ -56,7 +60,7 @@ const DropdownModal = ({ options, onSelect, value }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   overlay: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.4)',
@@ -64,7 +68,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalContainer: {
-    backgroundColor: '#1E1E1E',
+    backgroundColor: theme.card,
     padding: 20,
     width: '80%',
     borderRadius: 10,
@@ -74,27 +78,27 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 12,
     fontFamily: 'Outfit-bold',
-    color: 'white',
+    color: theme.text,
   },
   option: {
     paddingVertical: 12,
     fontSize: 16,
-    color: 'white',
+    color: theme.text,
     fontFamily: 'Outfit-medium',
   },
   selectionContainer: {
     width: '100%',
     height: 60,
     padding: 16,
-    backgroundColor: '#1E1E1E',
+    backgroundColor: theme.card,
     justifyContent: 'center',
-    borderColor: 'white',
+    borderColor: theme.border,
     borderWidth: 0.5,
     borderRadius: 10,
   },
 
   selectionText: {
-    color: 'white',
+    color: theme.text,
     fontSize: 16,
     lineHeight: 24,
   },

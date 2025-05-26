@@ -1,10 +1,10 @@
 import {StyleSheet} from 'react-native';
 
-export const styles = StyleSheet.create({
+export const imageScreenStyles = (theme) => StyleSheet.create({
   background: {
     height: '100%',
     width: '100%',
-    backgroundColor: 'black',
+    backgroundColor: theme.background,
   },
   container: {
     flex: 1,
@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     height: 247,
     overflow: 'hidden',
-    backgroundColor: '#1E1E1E',
+    backgroundColor: theme.card,
     position: 'relative',
   },
   formContainer: {
@@ -35,16 +35,16 @@ export const styles = StyleSheet.create({
   headingTitle: {
     fontFamily: 'Outfit-bold',
     fontSize: 20,
-    color: 'white',
+    color: theme.text,
   },
   nameText: {
     fontFamily: 'Outfit-medium',
-    color: 'white',
+    color: theme.text,
     fontSize: 18,
   },
   discountedText: {
     fontFamily: 'Outfit-medium',
-    color: 'white',
+    color: theme.text,
     fontSize: 18,
     opacity: 0.7,
     textDecorationLine: 'line-through',
@@ -52,7 +52,7 @@ export const styles = StyleSheet.create({
   },
   priceText: {
     fontFamily: 'Outfit-bold',
-    color: 'white',
+    color: theme.text,
     fontSize: 18,
   },
   discountPercentage: {
@@ -69,14 +69,14 @@ export const styles = StyleSheet.create({
   detailsContainer: {
     width: '100%',
     padding: 16,
-    backgroundColor: '#1E1E1E',
-    borderColor: 'white',
+    backgroundColor: theme.card,
+    borderColor: theme.border,
     borderWidth: 0.5,
     gap: 14,
   },
   aboutText: {
     fontFamily: 'Outfit-regular',
-    color: 'white',
+    color: theme.text,
     fontSize: 14,
   },
   modalContainer: {
@@ -86,7 +86,7 @@ export const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
   modalContent: {
-    backgroundColor: '#1E1E1E',
+    backgroundColor: theme.card,
     width: '80%',
     gap: 10,
     padding: 20,
@@ -101,6 +101,6 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     width: '100%',
     paddingVertical: 10,
-    color: 'white',
+    color: theme.text,
   },
 });
