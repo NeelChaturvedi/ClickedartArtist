@@ -39,6 +39,7 @@ export const Tabs = () => {
   const navigation = useNavigation();
 
   const theme = useTheme();
+  const styles = getStyles(theme);
 
   const catalogueValidation = () => {
     if (!catalogue.name) {
@@ -286,7 +287,7 @@ export const Tabs = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -294,7 +295,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
   modalContent: {
-    backgroundColor: '#1E1E1E',
+    backgroundColor: theme.card,
     width: '85%',
     gap: 30,
     padding: 20,
@@ -303,7 +304,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontFamily: 'Outfit-bold',
-    color: 'white',
+    color: theme.text,
     textAlign: 'center',
   },
   inputSection: {
@@ -315,6 +316,6 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontFamily: 'Outfit-medium',
-    color: 'white',
+    color: theme.text,
   },
 });
