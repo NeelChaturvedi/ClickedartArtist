@@ -9,6 +9,8 @@ import {
   View,
   Pressable,
   ToastAndroid,
+  Image,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {ScrollView} from 'moti';
@@ -18,11 +20,17 @@ import {AdvancedCheckbox} from 'react-native-advanced-checkbox';
 import Button from '@components/button';
 import api from 'src/utils/apiClient';
 import {useUserStore} from 'src/store/auth';
+import ImagePicker from 'react-native-image-crop-picker';
+import ImageViewModal from '@components/ImageViewModal';
 
 const Monetization = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isMonetized, setIsMonetized] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [uploading, setUploading] = useState(false);
+  const [imageModalVisible, setImageModalVisible] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
   const [errors, setErrors] = useState({});
 
   const {user} = useUserStore();
@@ -146,17 +154,45 @@ const Monetization = () => {
     ToastAndroid.show('File deleted successfully', ToastAndroid.SHORT);
   };
 
-  const handleFileSelection = async e => {
-    const {name} = e.target;
-    const file = e.target.files[0];
+  const handleDocUpload = async field => {
+    try {
+      setUploading(true);
+      const image = await ImagePicker.openPicker({
+        mediaType: 'photo',
+        cropping: false,
+      });
+      let croppedImage = await ImagePicker.openCropper({
+        cropperToolbarTitle: 'Crop Image',
+        path: image.path,
+      });
+      await handleFileSelection(field, croppedImage.path);
+    } catch (error) {
+      console.log('Picker error:', error);
+      if (error.code === 'E_PICKER_CANCELLED') {
+        ToastAndroid.show('Image selection cancelled', ToastAndroid.SHORT);
+      } else {
+        ToastAndroid.show('Error selecting image', ToastAndroid.SHORT);
+      }
+    } finally {
+      setUploading(false);
+    }
+  };
 
-    if (!file) {
+  const handleFileSelection = async (field, imageUri) => {
+    if (!imageUri) {
+      ToastAndroid.show('No image selected', ToastAndroid.SHORT);
       return;
     }
+    const imgData = new FormData();
+    imgData.append('image', {
+      uri: imageUri,
+      name: 'photo.jpg',
+      type: 'image/jpeg',
+    });
 
     // Reset uploaded URL in formData
-    if (name.startsWith('businessAccount.')) {
-      const businessField = name.split('.')[1];
+    if (field.startsWith('businessAccount.')) {
+      const businessField = field.split('.')[1];
       setFormData(prev => ({
         ...prev,
         businessAccount: {
@@ -167,22 +203,22 @@ const Monetization = () => {
     } else {
       setFormData(prev => ({
         ...prev,
-        [name]: '',
+        [field]: '',
       }));
     }
 
-    // Start Upload
-    const uploadFormData = new FormData();
-    uploadFormData.append('image', file);
-
     try {
-      const res = await api.post('/upload/uploadSingleImage', uploadFormData);
+      const res = await api.post('/upload/uploadSingleImage', imgData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
       const data = res.data;
 
       // Update formData with the uploaded file URL
-      if (name.startsWith('businessAccount.')) {
-        const businessField = name.split('.')[1];
+      if (field.startsWith('businessAccount.')) {
+        const businessField = field.split('.')[1];
         setFormData(prev => ({
           ...prev,
           businessAccount: {
@@ -193,26 +229,30 @@ const Monetization = () => {
       } else {
         setFormData(prev => ({
           ...prev,
-          [name]: data,
+          [field]: data,
         }));
       }
 
       ToastAndroid.show('File uploaded successfully', ToastAndroid.SHORT);
     } catch (error) {
-      console.error('Error uploading file:', error);
+      console.error('Error uploading file:', {
+        message: error.message,
+        status: error.response?.status,
+        data: error.response?.data,
+      });
       ToastAndroid.show(
-        'Error uploading file. Please try again.',
+        'Error uploading file: ' +
+          (error.response?.data?.message || 'Unknown error'),
         ToastAndroid.SHORT,
       );
     }
   };
 
-  const handleSubmit = async e => {
-    e.preventDefault();
-
-    const errors = validateForm();
-    if (Object.keys(errors).length > 0) {
-      console.log('errors', errors);
+  const handleSubmit = async () => {
+    const err = validateForm();
+    if (Object.keys(err).length > 0) {
+      console.log('errors', err);
+      setErrors(err);
       return;
     }
 
@@ -227,13 +267,11 @@ const Monetization = () => {
     }
   };
 
-  const handleUpdate = async e => {
-    e.preventDefault();
-
-    const errors = validateForm();
-    if (Object.keys(errors).length > 0) {
-      console.log('errors', errors);
-      setErrors(errors);
+  const handleUpdate = async () => {
+    const err = validateForm();
+    if (Object.keys(err).length > 0) {
+      console.log('errors', err);
+      setErrors(err);
       return;
     }
 
@@ -248,7 +286,7 @@ const Monetization = () => {
     }
   };
 
-  const getMonetizationData = async () => {
+  const getMonetizationData = React.useCallback(async () => {
     try {
       setIsLoading(true);
       const response = await api.get(
@@ -269,17 +307,31 @@ const Monetization = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [user?._id]);
 
   useEffect(() => {
-    setFormData({
-      ...formData,
+    setFormData(prevFormData => ({
+      ...prevFormData,
       photographerId: user?._id,
-    });
+    }));
     if (user) {
       getMonetizationData();
     }
-  }, [user]);
+  }, [user, getMonetizationData]);
+
+  if (isLoading) {
+    return (
+      <SafeAreaView style={styles.background}>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator
+            size="large"
+            color="#ed3147"
+            style={{marginTop: 20}}
+          />
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.background}>
@@ -478,17 +530,97 @@ const Monetization = () => {
 
             <View style={styles.formField}>
               <Text style={styles.inputTitle}>COPY OF PAN CARD</Text>
-              <Pressable style={styles.uploadContainer}>
-                <Text style={styles.inputTitle}>Choose a file</Text>
-              </Pressable>
+              <View style={styles.formFieldUpload}>
+                {formData.panPhoto ? (
+                  <>
+                    <Pressable
+                      style={styles.imageContainer}
+                      onPress={() => {
+                        if (formData.passbookOrCancelledCheque) {
+                          setSelectedImage(formData.panPhoto);
+                          setImageModalVisible(true);
+                        } else {
+                          ToastAndroid.show(
+                            'No image to view',
+                            ToastAndroid.SHORT,
+                          );
+                        }
+                      }}>
+                      <Image
+                        source={{uri: formData.panPhoto}}
+                        style={{height: 100, borderRadius: 10}}
+                        resizeMode="contain"
+                      />
+                    </Pressable>
+                    <Pressable
+                      style={styles.deleteButton}
+                      onPress={() => handleDeleteFile('panPhoto')}>
+                      <Text style={styles.deleteTitle}>Delete</Text>
+                    </Pressable>
+                  </>
+                ) : (
+                  <Pressable
+                    style={styles.uploadContainer}
+                    onPress={() => handleDocUpload('panPhoto')}>
+                    <Text style={styles.inputTitle}>Upload PAN Photo</Text>
+                  </Pressable>
+                )}
+              </View>
+              {errors.panPhoto && (
+                <Text style={{color: 'red'}}>{errors.panPhoto}</Text>
+              )}
             </View>
             <View style={styles.formField}>
               <Text style={styles.inputTitle}>
                 PASSBOOK OR CANCELLED CHEQUE{' '}
               </Text>
-              <Pressable style={styles.uploadContainer}>
-                <Text style={styles.inputTitle}>Choose a file</Text>
-              </Pressable>
+              <View style={styles.formFieldUpload}>
+                {formData.passbookOrCancelledCheque ? (
+                  <>
+                    <Pressable
+                      style={styles.imageContainer}
+                      onPress={() => {
+                        if (formData.passbookOrCancelledCheque) {
+                          setSelectedImage(formData.passbookOrCancelledCheque);
+                          setImageModalVisible(true);
+                        } else {
+                          ToastAndroid.show(
+                            'No image to view',
+                            ToastAndroid.SHORT,
+                          );
+                        }
+                      }}>
+                      <Image
+                        source={{uri: formData.passbookOrCancelledCheque}}
+                        style={{height: 100, borderRadius: 10}}
+                        resizeMode="contain"
+                      />
+                    </Pressable>
+                    <Pressable
+                      style={styles.deleteButton}
+                      onPress={() =>
+                        handleDeleteFile('passbookOrCancelledCheque')
+                      }>
+                      <Text style={styles.deleteTitle}>Delete</Text>
+                    </Pressable>
+                  </>
+                ) : (
+                  <Pressable
+                    style={styles.uploadContainer}
+                    onPress={() =>
+                      handleDocUpload('passbookOrCancelledCheque')
+                    }>
+                    <Text style={styles.inputTitle}>
+                      Upload Passbook or Cancelled Cheque
+                    </Text>
+                  </Pressable>
+                )}
+              </View>
+              {errors.passbookOrCancelledCheque && (
+                <Text style={{color: 'red'}}>
+                  {errors.passbookOrCancelledCheque}
+                </Text>
+              )}
             </View>
             <View style={{marginTop: -5, gap: 10}}>
               <View style={styles.checkContainer}>
@@ -664,82 +796,248 @@ const Monetization = () => {
                     <Text style={styles.sectionTitle}>Documents</Text>
                     <View style={styles.formField}>
                       <Text style={styles.inputTitle}>GST COPY</Text>
-                      <Pressable
-                        style={styles.uploadContainer}
-                        onPress={() =>
-                          handleFileSelection({
-                            target: {
-                              name: 'businessAccount.gstCopy',
-                              files: [{name: 'gst_copy.jpg'}],
-                            },
-                          })
-                        }>
-                        <Text style={styles.inputTitle}>Choose a file</Text>
-                      </Pressable>
+                      <View style={styles.formFieldUpload}>
+                        {formData.businessAccount.gstCopy ? (
+                          <>
+                            <Pressable
+                              style={styles.imageContainer}
+                              onPress={() => {
+                                if (formData.businessAccount.gstCopy) {
+                                  setSelectedImage(
+                                    formData.businessAccount.gstCopy,
+                                  );
+                                  setImageModalVisible(true);
+                                } else {
+                                  ToastAndroid.show(
+                                    'No image to view',
+                                    ToastAndroid.SHORT,
+                                  );
+                                }
+                              }}>
+                              <Image
+                                source={{
+                                  uri: formData.businessAccount.gstCopy,
+                                }}
+                                style={{height: 100, borderRadius: 10}}
+                                resizeMode="contain"
+                              />
+                            </Pressable>
+                            <Pressable
+                              style={styles.deleteButton}
+                              onPress={() =>
+                                handleDeleteFile('businessAccount.gstCopy')
+                              }>
+                              <Text style={styles.deleteTitle}>Delete</Text>
+                            </Pressable>
+                          </>
+                        ) : (
+                          <Pressable
+                            style={styles.uploadContainer}
+                            onPress={() =>
+                              handleDocUpload('businessAccount.gstCopy')
+                            }>
+                            <Text style={styles.inputTitle}>
+                              Upload GST Copy
+                            </Text>
+                          </Pressable>
+                        )}
+                      </View>
                     </View>
                     <View style={styles.formField}>
                       <Text style={styles.inputTitle}>FIRM PAN</Text>
-                      <Pressable
-                        style={styles.uploadContainer}
-                        onPress={() =>
-                          handleFileSelection({
-                            target: {
-                              name: 'businessAccount.firmPan',
-                              files: [{name: 'firm_pan.jpg'}],
-                            },
-                          })
-                        }>
-                        <Text style={styles.inputTitle}>Choose a file</Text>
-                      </Pressable>
+                      <View style={styles.formFieldUpload}>
+                        {formData.businessAccount.firmPan ? (
+                          <>
+                            <Pressable
+                              style={styles.imageContainer}
+                              onPress={() => {
+                                if (formData.businessAccount.firmPan) {
+                                  setSelectedImage(
+                                    formData.businessAccount.firmPan,
+                                  );
+                                  setImageModalVisible(true);
+                                } else {
+                                  ToastAndroid.show(
+                                    'No image to view',
+                                    ToastAndroid.SHORT,
+                                  );
+                                }
+                              }}>
+                              <Image
+                                source={{
+                                  uri: formData.businessAccount.firmPan,
+                                }}
+                                style={{height: 100, borderRadius: 10}}
+                                resizeMode="contain"
+                              />
+                            </Pressable>
+                            <Pressable
+                              style={styles.deleteButton}
+                              onPress={() =>
+                                handleDeleteFile('businessAccount.firmPan')
+                              }>
+                              <Text style={styles.deleteTitle}>Delete</Text>
+                            </Pressable>
+                          </>
+                        ) : (
+                          <Pressable
+                            style={styles.uploadContainer}
+                            onPress={() =>
+                              handleDocUpload('businessAccount.firmPan')
+                            }>
+                            <Text style={styles.inputTitle}>
+                              Upload Firm PAN
+                            </Text>
+                          </Pressable>
+                        )}
+                      </View>
+                      {errors.firmPan && (
+                        <Text style={{color: 'red'}}>{errors.firmPan}</Text>
+                      )}
                     </View>
                     <View style={styles.formField}>
                       <Text style={styles.inputTitle}>GST CERTIFICATE</Text>
-                      <Pressable
-                        style={styles.uploadContainer}
-                        onPress={() =>
-                          handleFileSelection({
-                            target: {
-                              name: 'businessAccount.firmGstCertificate',
-                              files: [{name: 'gst_certificate.jpg'}],
-                            },
-                          })
-                        }>
-                        <Text style={styles.inputTitle}>Choose a file</Text>
-                      </Pressable>
+                      <View style={styles.formFieldUpload}>
+                        {formData.businessAccount.firmGstCertificate ? (
+                          <>
+                            <Pressable
+                              style={styles.imageContainer}
+                              onPress={() => {
+                                if (
+                                  formData.businessAccount.firmGstCertificate
+                                ) {
+                                  setSelectedImage(
+                                    formData.businessAccount.firmGstCertificate,
+                                  );
+                                  setImageModalVisible(true);
+                                } else {
+                                  ToastAndroid.show(
+                                    'No image to view',
+                                    ToastAndroid.SHORT,
+                                  );
+                                }
+                              }}>
+                              <Image
+                                source={{
+                                  uri: formData.businessAccount
+                                    .firmGstCertificate,
+                                }}
+                                style={{height: 100, borderRadius: 10}}
+                                resizeMode="contain"
+                              />
+                            </Pressable>
+                            <Pressable
+                              style={styles.deleteButton}
+                              onPress={() =>
+                                handleDeleteFile(
+                                  'businessAccount.firmGstCertificate',
+                                )
+                              }>
+                              <Text style={styles.deleteTitle}>Delete</Text>
+                            </Pressable>
+                          </>
+                        ) : (
+                          <Pressable
+                            style={styles.uploadContainer}
+                            onPress={() =>
+                              handleDocUpload(
+                                'businessAccount.firmGstCertificate',
+                              )
+                            }>
+                            <Text style={styles.inputTitle}>
+                              Upload GST Certificate
+                            </Text>
+                          </Pressable>
+                        )}
+                      </View>
                     </View>
                     <View style={styles.formField}>
                       <Text style={styles.inputTitle}>
                         BUSINESS ADDRESS PROOF
                       </Text>
-                      <Pressable
-                        style={styles.uploadContainer}
-                        onPress={() =>
-                          handleFileSelection({
-                            target: {
-                              name: 'businessAccount.businessAddressProof',
-                              files: [{name: 'address_proof.jpg'}],
-                            },
-                          })
-                        }>
-                        <Text style={styles.inputTitle}>Choose a file</Text>
-                      </Pressable>
+                      <View style={styles.formFieldUpload}>
+                        {formData.businessAccount.businessAddressProof ? (
+                          <>
+                            <Pressable
+                              style={styles.imageContainer}
+                              onPress={() => {
+                                if (
+                                  formData.businessAccount.businessAddressProof
+                                ) {
+                                  setSelectedImage(
+                                    formData.businessAccount
+                                      .businessAddressProof,
+                                  );
+                                  setImageModalVisible(true);
+                                } else {
+                                  ToastAndroid.show(
+                                    'No image to view',
+                                    ToastAndroid.SHORT,
+                                  );
+                                }
+                              }}>
+                              <Image
+                                source={{
+                                  uri: formData.businessAccount
+                                    .businessAddressProof,
+                                }}
+                                style={{height: 100, borderRadius: 10}}
+                                resizeMode="contain"
+                              />
+                            </Pressable>
+                            <Pressable
+                              style={styles.deleteButton}
+                              onPress={() =>
+                                handleDeleteFile(
+                                  'businessAccount.businessAddressProof',
+                                )
+                              }>
+                              <Text style={styles.deleteTitle}>Delete</Text>
+                            </Pressable>
+                          </>
+                        ) : (
+                          <Pressable
+                            style={styles.uploadContainer}
+                            onPress={() =>
+                              handleDocUpload(
+                                'businessAccount.businessAddressProof',
+                              )
+                            }>
+                            <Text style={styles.inputTitle}>
+                              Upload Business Address Proof
+                            </Text>
+                          </Pressable>
+                        )}
+                      </View>
                     </View>
                   </View>
                 </View>
               )}
               <View style={styles.formField}>
                 <View style={styles.checkContainer}>
-                  <AdvancedCheckbox />
+                  <AdvancedCheckbox
+                    value={formData.t_c}
+                    onValueChange={value =>
+                      setFormData(prev => ({
+                        ...prev,
+                        t_c: value,
+                      }))
+                    }
+                  />
                   <Text style={styles.inputTitle}>
                     I agree to the terms and conditions
                   </Text>
                 </View>
               </View>
+              {errors.t_c && <Text style={{color: 'red'}}>{errors.t_c}</Text>}
             </View>
           </View>
         </ScrollView>
         <View style={{padding: 20}}>
-          <Button btnText={'Update'} />
+          <Button
+            btnText={isMonetized ? 'Update' : 'Submit'}
+            onPress={isMonetized ? handleUpdate : handleSubmit}
+          />
         </View>
       </KeyboardAvoidingView>
       <SlideUpDetails
@@ -747,6 +1045,11 @@ const Monetization = () => {
         onClose={() => setModalVisible(false)}
         data={priceDetails}
         title="Personal Details"
+      />
+      <ImageViewModal
+        visible={imageModalVisible}
+        imageUri={selectedImage}
+        onClose={() => setImageModalVisible(false)}
       />
     </SafeAreaView>
   );
@@ -760,6 +1063,11 @@ const styles = StyleSheet.create({
   },
   containerWrapper: {
     paddingHorizontal: 20,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   personalDetails: {
     padding: 24,
@@ -780,6 +1088,12 @@ const styles = StyleSheet.create({
   },
   formField: {
     gap: 10,
+  },
+  formFieldUpload: {
+    gap: 10,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   row: {
     flexDirection: 'row',
@@ -814,6 +1128,35 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 0.5,
     borderColor: 'white',
+    width: '100%',
+  },
+  imageContainer: {
+    height: 100,
+    width: '100%',
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  viewButton: {
+    height: 54,
+    justifyContent: 'center',
+    backgroundColor: '#1E1E1E',
+    paddingHorizontal: 16,
+    borderRadius: 10,
+    borderWidth: 0.5,
+    borderColor: 'white',
+    width: '30%',
+    alignItems: 'center',
+  },
+  deleteButton: {
+    height: 20,
+    justifyContent: 'center',
+    paddingHorizontal: 10,
+    width: '30%',
+    alignItems: 'center',
+  },
+  deleteTitle: {
+    fontFamily: 'Outfit-medium',
+    color: 'red',
   },
   checkContainer: {
     flexDirection: 'row',
