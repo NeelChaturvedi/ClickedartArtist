@@ -10,23 +10,27 @@ import PrivacyPolicy from './PrivacyPolicy';
 import HelpCenter from './HelpCenter';
 import ChangePassword from './ChangePassword';
 import Monetization from './Monetization';
+import { useTheme } from 'src/themes/useTheme';
 enableScreens();
 
 const Stack = createNativeStackNavigator();
 
 export default function SettingsNavigator() {
+
+  const theme = useTheme();
+
   return (
     <Stack.Navigator
       initialRouteName="Settings"
       screenOptions={{
         headerStyle: {
-          backgroundColor: 'black',
+          backgroundColor: theme.background,
         },
         headerTitleStyle:{
-          color: 'white',
+          color: theme.text,
         },
         headerTitleAlign: 'center',
-        headerTintColor:'white',
+        headerTintColor:theme.text,
       }}>
       <Stack.Screen name="Settings" component={Settings}/>
       <Stack.Screen name="Faqs" component={Faqs}/>
