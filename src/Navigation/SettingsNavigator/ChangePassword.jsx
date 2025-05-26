@@ -15,6 +15,7 @@ import api from 'src/utils/apiClient';
 import {useUserStore} from 'src/store/auth';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import {useNavigation} from '@react-navigation/native';
+import { useTheme } from 'src/themes/useTheme';
 
 const ChangePassword = () => {
   const {user} = useUserStore();
@@ -26,6 +27,9 @@ const ChangePassword = () => {
   const [secureVerify, setSecureVerify] = useState(true);
 
   const navigation = useNavigation();
+
+  const theme = useTheme();
+  const styles = getStyles(theme);
 
   const validatePassword = () => {
     const newErrors = {};
@@ -96,7 +100,7 @@ const ChangePassword = () => {
                 <FontAwesome5Icon
                   name={secure ? 'eye-slash' : 'eye'}
                   size={20}
-                  color="white"
+                  color={theme.text}
                 />
               </TouchableOpacity>
             </View>
@@ -110,8 +114,8 @@ const ChangePassword = () => {
             <Text style={styles.title}>Verify Password</Text>
             <View style={styles.passwordInput}>
               <TextInput
-                style={{color: 'white', flex: 1}}
-                placeholder="Enter Password"
+                style={{color: theme.text, flex: 1}}
+                placeholder="Re-enter Password"
                 placeholderTextColor="#888888"
                 secureTextEntry={secureVerify}
                 value={verifyPassword}
@@ -123,7 +127,7 @@ const ChangePassword = () => {
                 <FontAwesome5Icon
                   name={secureVerify ? 'eye-slash' : 'eye'}
                   size={20}
-                  color="white"
+                  color={theme.text}
                 />
               </TouchableOpacity>
             </View>
@@ -143,11 +147,11 @@ const ChangePassword = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   background: {
     flex: 1,
     width: '100%',
-    backgroundColor: 'black',
+    backgroundColor: theme.background,
   },
   container: {
     flex: 1,
@@ -164,11 +168,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: 54,
-    backgroundColor: '#1A1A1A',
+    backgroundColor: theme.card,
     paddingHorizontal: 10,
     borderRadius: 10,
     borderWidth: 0.5,
-    borderColor: '#8C8C8C',
+    borderColor: theme.border,
   },
 });
 

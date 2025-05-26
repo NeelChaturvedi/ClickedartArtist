@@ -1,9 +1,13 @@
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
+import { useTheme } from 'src/themes/useTheme';
 
 const Accordion = ({title, content}) => {
   const [isExpanded, setIsExpanded] = useState(false);
+
+  const theme = useTheme();
+  const styles = getStyles(theme);
 
   const toggleAccordion = () => {
     setIsExpanded(!isExpanded);
@@ -17,7 +21,7 @@ const Accordion = ({title, content}) => {
           <Feather
             name={isExpanded ? 'chevron-up' : 'chevron-down'}
             size={24}
-            color="white"
+            color={theme.text}
           />
         </View>
       </TouchableOpacity>
@@ -39,9 +43,9 @@ const Accordion = ({title, content}) => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   container: {
-    backgroundColor: '#1E1E1E',
+    backgroundColor: theme.card,
     paddingVertical: 10,
     paddingHorizontal: 5,
     marginVertical: 5,
@@ -54,10 +58,10 @@ const styles = StyleSheet.create({
   },
   header: {
     padding: 10,
-    backgroundColor: '#1E1E1E',
+    backgroundColor: theme.card,
   },
   title: {
-    color: 'white',
+    color: theme.text,
     fontSize: 16,
     fontFamily: 'Outfit-bold',
     width: '90%',
@@ -66,7 +70,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   contentText: {
-    color: 'white',
+    color: theme.text,
     fontSize: 16,
     fontFamily: 'Outfit-regular',
     flexShrink: 1,
@@ -77,7 +81,7 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   bullet: {
-    color: 'white',
+    color: theme.text,
     fontSize: 16,
     marginRight: 6,
   },

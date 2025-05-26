@@ -2,6 +2,7 @@
 import {View, StyleSheet, SafeAreaView, ScrollView} from 'react-native';
 import React from 'react';
 import Accordion from '../../components/Accordian';
+import { useTheme } from 'src/themes/useTheme';
 
 const Faqs = () => {
   const faqs = [
@@ -121,6 +122,9 @@ const Faqs = () => {
     },
   ];
 
+    const theme = useTheme();
+    const style = getStyles(theme);
+
   return (
     <SafeAreaView style={style.background}>
       <View style={style.container}>
@@ -134,11 +138,11 @@ const Faqs = () => {
   );
 };
 
-const style = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   background: {
     width: '100%',
     height: '100%',
-    backgroundColor: 'black',
+    backgroundColor: theme.background,
   },
 container: {
     paddingHorizontal: 10,
@@ -147,7 +151,7 @@ container: {
     alignItems: 'center',
   },
   text: {
-    color: 'white',
+    color: theme.text,
     fontSize: 36,
     fontFamily: 'Outfit-bold',
     marginTop: 10,
