@@ -483,7 +483,7 @@ const ImageScreen = ({setImageTitle}) => {
                     }}>
                     {image?.location && (
                       <View style={{flexDirection: 'row', gap: 10}}>
-                        <Icon name="location-pin" size={16} color="white" />
+                        <Icon name="location-pin" size={16} color={theme.text} />
                         <Text style={styles.aboutText}>
                           {image?.location || 'N/A'}
                         </Text>
@@ -491,7 +491,7 @@ const ImageScreen = ({setImageTitle}) => {
                     )}
                     {image?.cameraDetails?.camera && (
                       <View style={{flexDirection: 'row', gap: 10}}>
-                        <Icon name="photo-camera" size={16} color="white" />
+                        <Icon name="photo-camera" size={16} color={theme.text} />
                         <Text style={styles.aboutText}>
                           {image?.cameraDetails?.camera || 'N/A'}
                         </Text>
@@ -502,7 +502,7 @@ const ImageScreen = ({setImageTitle}) => {
                         <Icon
                           name="panorama-fish-eye"
                           size={16}
-                          color="white"
+                          color={theme.text}
                         />
                         <Text style={styles.aboutText}>
                           {image?.cameraDetails?.lens || 'N/A'}
@@ -511,7 +511,7 @@ const ImageScreen = ({setImageTitle}) => {
                     )}
                     {image?.cameraDetails?.settings?.shutterSpeed && (
                       <View style={{flexDirection: 'row', gap: 10}}>
-                        <Icon name="shutter-speed" size={16} color="white" />
+                        <Icon name="shutter-speed" size={16} color={theme.text} />
                         <Text style={styles.aboutText}>
                           {image?.cameraDetails?.settings?.shutterSpeed ||
                             'N/A'}
@@ -520,7 +520,7 @@ const ImageScreen = ({setImageTitle}) => {
                     )}
                     {image?.cameraDetails?.settings?.aperture && (
                       <View style={{flexDirection: 'row', gap: 10}}>
-                        <Icon name="camera" size={16} color="white" />
+                        <Icon name="camera" size={16} color={theme.text} />
                         <Text style={styles.aboutText}>
                           {image?.cameraDetails?.settings?.aperture || 'N/A'}
                         </Text>
@@ -528,7 +528,7 @@ const ImageScreen = ({setImageTitle}) => {
                     )}
                     {image?.cameraDetails?.settings?.iso && (
                       <View style={{flexDirection: 'row', gap: 10}}>
-                        <Icon name="iso" size={16} color="white" />
+                        <Icon name="iso" size={16} color={theme.text} />
                         <Text style={styles.aboutText}>
                           {image?.cameraDetails?.settings?.iso || 'N/A'}
                         </Text>
