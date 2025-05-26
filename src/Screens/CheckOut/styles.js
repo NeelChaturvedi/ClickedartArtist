@@ -72,7 +72,7 @@ export const placeOrderStyles = (theme) => StyleSheet.create({
     width: '100%',
     padding: 16,
     gap:20,
-    backgroundColor: '#1E1E1E',
+    backgroundColor: theme.card,
     borderRadius: 10,
     borderWidth: 0.5,
     borderColor: theme.border,
