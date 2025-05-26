@@ -23,7 +23,7 @@ import ColorPicker, {Panel1, HueSlider} from 'reanimated-color-picker';
 import {runOnJS} from 'react-native-reanimated';
 import {useRoute} from '@react-navigation/native';
 import api from 'src/utils/apiClient';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import useCartStore from 'src/store/cart';
 import {MotiView} from 'moti';
 
@@ -42,7 +42,6 @@ const ImageScreen = ({setImageTitle}) => {
 
   const startColor = chroma(color).brighten(1).hex();
   const endColor = chroma(color).darken(1).hex();
-  console.log('image', image);
 
   const [papers, setPapers] = useState([]);
   const [frames, setFrames] = useState([]);
@@ -482,7 +481,7 @@ const ImageScreen = ({setImageTitle}) => {
                     }}>
                     {image?.location && (
                       <View style={{flexDirection: 'row', gap: 10}}>
-                        <Icon name="map" size={16} color="white" />
+                        <Icon name="location-pin" size={16} color="white" />
                         <Text style={styles.aboutText}>
                           {image?.location || 'N/A'}
                         </Text>
@@ -490,7 +489,7 @@ const ImageScreen = ({setImageTitle}) => {
                     )}
                     {image?.cameraDetails?.camera && (
                       <View style={{flexDirection: 'row', gap: 10}}>
-                        <Icon name="camera-outline" size={16} color="white" />
+                        <Icon name="photo-camera" size={16} color="white" />
                         <Text style={styles.aboutText}>
                           {image?.cameraDetails?.camera || 'N/A'}
                         </Text>
@@ -498,7 +497,11 @@ const ImageScreen = ({setImageTitle}) => {
                     )}
                     {image?.cameraDetails?.lens && (
                       <View style={{flexDirection: 'row', gap: 10}}>
-                        <Icon name="camera-iris" size={16} color="white" />
+                        <Icon
+                          name="panorama-fish-eye"
+                          size={16}
+                          color="white"
+                        />
                         <Text style={styles.aboutText}>
                           {image?.cameraDetails?.lens || 'N/A'}
                         </Text>
@@ -506,7 +509,7 @@ const ImageScreen = ({setImageTitle}) => {
                     )}
                     {image?.cameraDetails?.settings?.shutterSpeed && (
                       <View style={{flexDirection: 'row', gap: 10}}>
-                        <Icon name="camera-iris" size={16} color="white" />
+                        <Icon name="shutter-speed" size={16} color="white" />
                         <Text style={styles.aboutText}>
                           {image?.cameraDetails?.settings?.shutterSpeed ||
                             'N/A'}
@@ -515,7 +518,7 @@ const ImageScreen = ({setImageTitle}) => {
                     )}
                     {image?.cameraDetails?.settings?.aperture && (
                       <View style={{flexDirection: 'row', gap: 10}}>
-                        <Icon name="camera-iris" size={16} color="white" />
+                        <Icon name="camera" size={16} color="white" />
                         <Text style={styles.aboutText}>
                           {image?.cameraDetails?.settings?.aperture || 'N/A'}
                         </Text>
@@ -523,11 +526,7 @@ const ImageScreen = ({setImageTitle}) => {
                     )}
                     {image?.cameraDetails?.settings?.iso && (
                       <View style={{flexDirection: 'row', gap: 10}}>
-                        <Icon
-                          name="alpha-i-circle-outline"
-                          size={16}
-                          color="white"
-                        />
+                        <Icon name="iso" size={16} color="white" />
                         <Text style={styles.aboutText}>
                           {image?.cameraDetails?.settings?.iso || 'N/A'}
                         </Text>
