@@ -8,19 +8,23 @@ import {
   ToastAndroid,
   Share,
 } from 'react-native';
-import React, {useState} from 'react';
-import {styles} from './styles';
+import React, {useMemo, useState} from 'react';
+import {createTabStyles} from './styles';
 import SlideUpModal from '@components/SlideupModal';
 import {useNavigation} from '@react-navigation/native';
 import RNFS from 'react-native-fs';
 import api from 'src/utils/apiClient';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useTheme } from 'src/themes/useTheme';
 
 const TabPhotos = ({photos, pendingPhotos}) => {
   const [slideUp, setSlideUp] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
   const navigation = useNavigation();
+
+  const theme = useTheme();
+    const styles = useMemo(() => createTabStyles(theme), [theme]);
 
   const requestStoragePermission = async () => {
     if (Platform.OS === 'android' && Platform.Version < 30) {

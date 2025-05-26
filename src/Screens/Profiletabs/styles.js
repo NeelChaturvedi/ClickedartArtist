@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 
-export const styles = StyleSheet.create({
+export const createTabStyles = (theme) => StyleSheet.create({
   container: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -14,10 +14,11 @@ export const styles = StyleSheet.create({
     width: '47%',
     height: 190,
     justifyContent: 'space-between',
-    backgroundColor: '#1A1A1A',
+    backgroundColor: theme.card,
     borderWidth: 0.5,
-    borderColor: 'white',
+    borderColor: theme.border,
     borderRadius: 10,
+    overflow: 'hidden',
   },
   image: {
     resizeMode: 'cover',
@@ -33,7 +34,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     width: '80%',
     fontFamily: 'Outfit-bold',
-    color: 'white',
+    color: theme.text,
   },
   status: {
     position: 'absolute',
@@ -61,9 +62,9 @@ export const styles = StyleSheet.create({
     width: '100%',
     flexGrow: 1,
     justifyContent: 'space-between',
-    backgroundColor: '#1A1A1A',
+    backgroundColor: theme.card,
     borderWidth: 0.5,
-    borderColor: 'white',
+    borderColor: theme.border,
     borderRadius: 20,
     marginRight: 10,
     aspectRatio: 1,
@@ -87,19 +88,19 @@ export const styles = StyleSheet.create({
     aspectRatio: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#3A3A3A',
+    backgroundColor: theme.background,
   },
   catalogueImageText: {
     fontSize: 32,
     fontFamily: 'Outfit-bold',
-    color: 'white',
+    color: theme.text,
     textAlign: 'center',
     paddingBottom: 5,
   },
   catalougeText: {
     fontFamily: 'Outfit-Bold',
     fontSize: 24,
-    color: 'white',
+    color: theme.text,
   },
   noImageContainer: {
     justifyContent: 'center',
@@ -118,7 +119,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 10,
     borderBottomWidth: 1,
-    borderBottomColor: 'white',
+    borderBottomColor: theme.text,
     width: '100%',
   },
   blogDetails: {
@@ -126,7 +127,7 @@ export const styles = StyleSheet.create({
     gap: 8,
   },
   blogDate: {
-    color: '#A9A9A9',
+    color: '#888',
     fontFamily: 'Outfit-bold',
     fontSize: 12,
   },

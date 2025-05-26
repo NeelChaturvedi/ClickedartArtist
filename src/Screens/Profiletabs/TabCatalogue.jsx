@@ -1,8 +1,8 @@
 /* eslint-disable no-shadow */
 
 import {View, Text, Pressable, Modal, ToastAndroid, Share} from 'react-native';
-import {styles} from './styles';
-import React, {useState} from 'react';
+import {createTabStyles} from './styles';
+import React, {useMemo, useState} from 'react';
 import {Image} from 'moti';
 import {useNavigation} from '@react-navigation/native';
 import SlideUpModal from '@components/SlideupModal';
@@ -10,11 +10,15 @@ import AutoGrowTextInput from '@components/AutoGrowTextInput';
 import Button from '@components/button';
 import api from 'src/utils/apiClient';
 import {useUserStore} from 'src/store/auth';
+import { useTheme } from 'src/themes/useTheme';
 
 const TabCatalogues = ({catalogues, photos}) => {
   const navigation = useNavigation();
 
   const {user} = useUserStore();
+
+  const theme = useTheme();
+  const styles = useMemo(() => createTabStyles(theme), [theme]);
 
   const [slideUp, setSlideUp] = useState(false);
   const [showModal, setShowModal] = useState(false);
