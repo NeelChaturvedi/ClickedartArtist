@@ -35,8 +35,7 @@ const ImageScreen = ({setImageTitle}) => {
   );
   const mode = 'print';
   const screenWidth = Dimensions.get('window').width;
-  const {addItemToCart, removeItemFromCart, isItemInCart} =
-    useCartStore();
+  const {addItemToCart, removeItemFromCart, isItemInCart} = useCartStore();
   const [showModal, setShowModal] = useState(false);
   const mockupUri = require('../../assets/images/mockup.webp');
   const [color, setColor] = useState('#5F91AB');
@@ -474,8 +473,21 @@ const ImageScreen = ({setImageTitle}) => {
                   {image?.description || '...'}
                 </Text>
                 <View>
-                  <Text style={styles.nameText}>Camera Details</Text>
-                  <View style={{flexDirection: 'row', gap: 10, flexWrap: 'wrap', marginTop: 10}}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      gap: 10,
+                      flexWrap: 'wrap',
+                      marginTop: 10,
+                    }}>
+                    {image?.location && (
+                      <View style={{flexDirection: 'row', gap: 10}}>
+                        <Icon name="map" size={16} color="white" />
+                        <Text style={styles.aboutText}>
+                          {image?.location || 'N/A'}
+                        </Text>
+                      </View>
+                    )}
                     {image?.cameraDetails?.camera && (
                       <View style={{flexDirection: 'row', gap: 10}}>
                         <Icon name="camera-outline" size={16} color="white" />
@@ -496,7 +508,8 @@ const ImageScreen = ({setImageTitle}) => {
                       <View style={{flexDirection: 'row', gap: 10}}>
                         <Icon name="camera-iris" size={16} color="white" />
                         <Text style={styles.aboutText}>
-                          {image?.cameraDetails?.settings?.shutterSpeed || 'N/A'}
+                          {image?.cameraDetails?.settings?.shutterSpeed ||
+                            'N/A'}
                         </Text>
                       </View>
                     )}
@@ -510,7 +523,11 @@ const ImageScreen = ({setImageTitle}) => {
                     )}
                     {image?.cameraDetails?.settings?.iso && (
                       <View style={{flexDirection: 'row', gap: 10}}>
-                        <Icon name="alpha-i-circle-outline" size={16} color="white" />
+                        <Icon
+                          name="alpha-i-circle-outline"
+                          size={16}
+                          color="white"
+                        />
                         <Text style={styles.aboutText}>
                           {image?.cameraDetails?.settings?.iso || 'N/A'}
                         </Text>
