@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -12,7 +12,7 @@ import {
   ToastAndroid,
 } from 'react-native';
 import RazorpayCheckout from 'react-native-razorpay';
-import {styles} from './styles';
+import {placeOrderStyles} from './styles';
 import AutoGrowTextInput from '@components/AutoGrowTextInput';
 import Button from '@components/button';
 import SlideUpDetails from '@components/SlideupDetails';
@@ -20,6 +20,7 @@ import {useUserStore} from 'src/store/auth';
 import useCartStore from 'src/store/cart';
 import api from 'src/utils/apiClient';
 import {useNavigation} from '@react-navigation/native';
+import { useTheme } from 'src/themes/useTheme';
 
 const CheckOut = () => {
   const {user} = useUserStore();
@@ -63,6 +64,9 @@ const CheckOut = () => {
   });
 
   const navigation = useNavigation();
+
+  const theme = useTheme();
+  const styles = useMemo(() => placeOrderStyles(theme), [theme]);
 
   const handlePayment = useCallback(
     // eslint-disable-next-line no-shadow

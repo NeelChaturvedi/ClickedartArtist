@@ -1,18 +1,19 @@
 import {StyleSheet} from 'react-native';
 
-export const styles = StyleSheet.create({
+export const placeOrderStyles = (theme) => StyleSheet.create({
   background: {
     height: '100%',
     width: '100%',
-    backgroundColor: 'black',
+    backgroundColor: theme.background,
   },
   containerWrapper: {
     paddingHorizontal: 20,
+    marginTop:30,
   },
   header: {
     fontFamily: 'Outfit-bold',
     fontSize: 20,
-    color: 'white',
+    color: theme.text,
   },
   form: {
     justifyContent: 'flex-start',
@@ -34,21 +35,21 @@ export const styles = StyleSheet.create({
   inputTitle: {
     fontSize: 16,
     fontFamily: 'Outfit-medium',
-    color: 'white',
+    color: theme.text,
   },
   inputbox: {
     height: 54,
-    color: 'white',
+    color: theme.text,
     justifyContent: 'center',
     backgroundColor: '#1E1E1E',
     fontFamily: 'Outfit-regular',
     paddingHorizontal: 16,
     borderRadius: 10,
     borderWidth: 0.5,
-    borderColor: 'white',
+    borderColor: theme.border,
   },
   submitButton: {
-    backgroundColor: 'white',
+    backgroundcolor: theme.text,
     borderRadius: 10,
     padding: 16,
     alignItems: 'center',
@@ -57,7 +58,7 @@ export const styles = StyleSheet.create({
   amountDistribution:{
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    borderColor: 'white',
+    borderColor: theme.border,
     paddingHorizontal: 20,
     paddingVertical: 16,
     gap: 30,
@@ -74,7 +75,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#1E1E1E',
     borderRadius: 10,
     borderWidth: 0.5,
-    borderColor: 'white',
+    borderColor: theme.border,
   },
   orderImage:{
     width: '34%',
@@ -92,18 +93,18 @@ export const styles = StyleSheet.create({
   },
   orderTitle:{
     fontFamily: 'Outfit-medium',
-    color: 'white',
+    color: theme.text,
     fontSize: 16,
   },
   orderPaper:{
     fontFamily: 'Outfit-medium',
-    color: 'white',
+    color: theme.text,
     fontSize: 14,
   },
   line:{
     width: '100%',
     height: 2,
-    backgroundColor: 'white',
+    backgroundcolor: theme.text,
   },
   modalOverlay: {
   flex: 1,
