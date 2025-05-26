@@ -141,6 +141,7 @@ const getStyles = theme =>
     optionText: {
       color: theme.text,
       fontSize: 16,
+      lineHeight: 20,
       fontFamily: 'Outfit-medium',
     },
     cancel: {
