@@ -17,7 +17,6 @@ import RNFS from 'react-native-fs';
 import api from 'src/utils/apiClient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useTheme} from 'src/themes/useTheme';
-import axios from 'axios';
 import { useUserStore } from 'src/store/auth';
 
 const TabPhotos = ({photos, pendingPhotos}) => {
