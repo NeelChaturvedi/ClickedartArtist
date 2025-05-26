@@ -1,11 +1,11 @@
 import {StyleSheet} from 'react-native';
 
-export const styles = StyleSheet.create({
+export const loginStyles = (theme) => StyleSheet.create({
   background: {
     flex: 1,
     paddingVertical: '80%',
     justifyContent: 'space-between',
-    backgroundColor: 'black',
+    backgroundColor: theme.background,
     height: '100%',
     gap: 90,
   },
@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 32,
-    color: 'white',
+    color: theme.text,
     textAlign: 'center',
     fontFamily: 'Outfit-bold',
   },
@@ -36,17 +36,17 @@ export const styles = StyleSheet.create({
   inputTitle: {
     fontSize: 16,
     fontFamily:'Outfit-medium',
-    color: 'white',
+    color: theme.text,
   },
   inputbox: {
     width: '100%',
     height: 54,
-    color: 'white',
-    backgroundColor: '#1A1A1A',
+    color: theme.text,
+    backgroundColor: theme.card,
     padding: 10,
     borderRadius: 10,
     borderWidth: 0.5,
-    borderColor: '#8C8C8C',
+    borderColor: theme.border,
   },
   passwordInput: {
     flexDirection: 'row',
@@ -54,21 +54,21 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     height: 54,
-    backgroundColor: '#1A1A1A',
+    backgroundColor: theme.card,
     paddingVertical: 4,
     paddingHorizontal: 10,
     borderRadius: 10,
     borderWidth: 0.5,
-    borderColor: '#8C8C8C',
+    borderColor: theme.border,
   },
   passwordTextInput: {
-    color: 'white',
+    color: theme.text,
     fontFamily: 'Outfit-regular',
     flex: 1,
     marginRight: 10,
   },
   forgotPassword: {
-    color: 'white',
+    color: theme.text,
     textAlign: 'right',
     textDecorationLine: 'underline',
     fontFamily:'Outfit-regular',
@@ -79,7 +79,7 @@ export const styles = StyleSheet.create({
     marginTop: 4,
   },
   createAccountText: {
-    color: 'white',
+    color: theme.text,
     textAlign: 'center',
     fontFamily:'Outfit-regular',
   },

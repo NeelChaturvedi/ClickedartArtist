@@ -6,14 +6,15 @@ import {
   ToastAndroid,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import React, {useRef, useState} from 'react';
-import {styles} from './styles';
+import React, {useMemo, useRef, useState} from 'react';
+import {loginStyles} from './styles';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Button from '../../components/button';
 import {useNavigation} from '@react-navigation/native';
 import {useUserStore} from '../../store/auth';
 import {useRegistrationStore} from '../../store/registration';
 import publicApi from '../../utils/publicApiClient';
+import { useTheme } from 'src/themes/useTheme';
 
 const Login = () => {
   const {reset} = useRegistrationStore();
@@ -25,6 +26,9 @@ const Login = () => {
   const {setUser, setToken} = useUserStore();
   const passwordRef = useRef(null);
   const navigation = useNavigation();
+
+  const theme = useTheme();
+  const styles = useMemo(() => loginStyles(theme), [theme]);
 
   const handleLogin = async () => {
     if (!formData.email || !formData.password) {
@@ -58,7 +62,7 @@ const Login = () => {
             value={formData.email}
             style={styles.inputbox}
             placeholder="Enter Email"
-            placeholderTextColor="white"
+            placeholderTextColor= "#888"
             textContentType="emailAddress"
             enterKeyHint={formData.password.length === 0 ? 'next' : 'done'}
             autoCapitalize="none"
@@ -81,7 +85,7 @@ const Login = () => {
               value={formData.password}
               style={styles.passwordTextInput}
               placeholder="Enter Password"
-              placeholderTextColor="white"
+              placeholderTextColor= "#888"
               secureTextEntry={secure}
               autoCapitalize="none"
               autoComplete="password"
