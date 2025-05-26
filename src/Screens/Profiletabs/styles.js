@@ -153,7 +153,7 @@ export const createTabStyles = (theme) => StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
   modalContent: {
-    backgroundColor: '#1E1E1E',
+    backgroundColor: theme.card,
     width: '85%',
     gap: 30,
     padding: 20,
@@ -162,7 +162,7 @@ export const createTabStyles = (theme) => StyleSheet.create({
   title: {
     fontSize: 24,
     fontFamily: 'Outfit-bold',
-    color: 'white',
+    color: theme.text,
     textAlign: 'center',
   },
   inputSection: {
@@ -174,6 +174,6 @@ export const createTabStyles = (theme) => StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontFamily: 'Outfit-medium',
-    color: 'white',
+    color: theme.text,
   },
 });
