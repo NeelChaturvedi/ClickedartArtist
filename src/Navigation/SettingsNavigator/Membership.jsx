@@ -34,8 +34,6 @@ const Membership = () => {
   const [activePlan, setActivePlan] = useState(false);
   const [plans, setPlans] = useState([]);
 
-  console.log('activePlan:', activePlan);
-
   const toggleAccordion = id => {
     setIsExpanded(prevId => (prevId === id ? null : id));
   };

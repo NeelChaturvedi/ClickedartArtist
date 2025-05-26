@@ -22,8 +22,10 @@ import api from 'src/utils/apiClient';
 import {useUserStore} from 'src/store/auth';
 import ImagePicker from 'react-native-image-crop-picker';
 import ImageViewModal from '@components/ImageViewModal';
+import {useNavigation} from '@react-navigation/native';
 
 const Monetization = () => {
+  const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isMonetized, setIsMonetized] = useState(false);
@@ -262,6 +264,8 @@ const Monetization = () => {
         'Monetization details submitted successfully',
         ToastAndroid.SHORT,
       );
+      setIsMonetized(true);
+      navigation.goBack();
     } catch (error) {
       console.error('Error submitting enquiry:', error);
     }
@@ -281,6 +285,7 @@ const Monetization = () => {
         'Monetization details updated successfully',
         ToastAndroid.SHORT,
       );
+      navigation.goBack();
     } catch (error) {
       console.error('Error submitting enquiry:', error);
     }
