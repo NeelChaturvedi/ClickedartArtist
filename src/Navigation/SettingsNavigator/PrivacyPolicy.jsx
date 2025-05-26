@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {ScrollView, Text, StyleSheet, View, SafeAreaView} from 'react-native';
+import { useTheme } from 'src/themes/useTheme';
 
 const PrivacyPolicy = () => {
   const policySections = [
@@ -79,6 +80,9 @@ const PrivacyPolicy = () => {
     },
   ];
 
+  const theme = useTheme();
+  const styles = getStyles(theme);
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -107,11 +111,11 @@ const PrivacyPolicy = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) =>  StyleSheet.create({
   container: {
     paddingHorizontal: 20,
     paddingBottom: 20,
-    backgroundColor: 'black',
+    backgroundColor: theme.background,
     position: 'relative',
     alignItems: 'flex-start',
   },
@@ -119,7 +123,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontFamily: 'Outfit-bold',
     marginBottom: 10,
-    color: 'white',
+    color: theme.text,
     paddingVertical: 10,
   },
   lastUpdated: {
@@ -130,20 +134,20 @@ const styles = StyleSheet.create({
   introText: {
     fontSize: 15,
     marginBottom: 20,
-    color: 'white',
+    color: theme.text,
     lineHeight: 22,
   },
   section: {
     gap: 4,
     paddingVertical: 16,
-    borderBottomColor: 'white',
+    borderBottomcolor: theme.text,
     borderBottomWidth: 1,
   },
   sectionTitle: {
     fontSize: 18,
     fontFamily: 'Outfit-bold',
     marginBottom: 10,
-    color: 'white',
+    color: theme.text,
   },
   bullet: {
     fontSize: 16,
@@ -151,7 +155,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginBottom: 6,
     fontFamily: 'Outfit-medium',
-    color: 'white',
+    color: theme.text,
   },
 });
 

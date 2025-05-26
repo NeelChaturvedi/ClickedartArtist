@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {ScrollView, Text, StyleSheet, View, SafeAreaView} from 'react-native';
+import {useTheme} from 'src/themes/useTheme';
 
 const TermsAndConditions = () => {
   const termsSections = [
@@ -114,9 +115,15 @@ const TermsAndConditions = () => {
       ],
     },
   ];
+
+  const theme = useTheme();
+  const styles = getStyles(theme);
+
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{marginTop: 20}}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{marginTop: 20}}>
         <Text style={styles.lastUpdated}>Last Updated: 26 January 2025</Text>
         <Text style={styles.introText}>
           Welcome to ClickedArt.com! These Terms of Use ("Terms") govern your
@@ -142,52 +149,53 @@ const TermsAndConditions = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 20,
-    paddingBottom: 20,
-    backgroundColor: 'black',
-    position: 'relative',
-    alignItems: 'flex-start',
-  },
-  title: {
-    fontSize: 32,
-    fontFamily: 'Outfit-bold',
-    marginBottom: 10,
-    color: 'white',
-    paddingVertical: 10,
-  },
-  lastUpdated: {
-    fontSize: 16,
-    color: '#888',
-    marginBottom: 20,
-  },
-  introText: {
-    fontSize: 15,
-    marginBottom: 20,
-    color: 'white',
-    lineHeight: 22,
-  },
-  section: {
-    gap: 4,
-    paddingVertical: 16,
-    borderBottomColor: 'white',
-    borderBottomWidth: 1,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontFamily: 'Outfit-bold',
-    marginBottom: 10,
-    color: 'white',
-  },
-  bullet: {
-    fontSize: 16,
-    lineHeight: 24,
-    marginLeft: 10,
-    marginBottom: 6,
-    fontFamily: 'Outfit-medium',
-    color: 'white',
-  },
-});
+const getStyles = theme =>
+  StyleSheet.create({
+    container: {
+      paddingHorizontal: 20,
+      paddingBottom: 20,
+      backgroundColor: theme.background,
+      position: 'relative',
+      alignItems: 'flex-start',
+    },
+    title: {
+      fontSize: 32,
+      fontFamily: 'Outfit-bold',
+      marginBottom: 10,
+      color: theme.text,
+      paddingVertical: 10,
+    },
+    lastUpdated: {
+      fontSize: 16,
+      color: '#888',
+      marginBottom: 20,
+    },
+    introText: {
+      fontSize: 15,
+      marginBottom: 20,
+      color: theme.text,
+      lineHeight: 22,
+    },
+    section: {
+      gap: 4,
+      paddingVertical: 16,
+      borderBottomcolor: theme.text,
+      borderBottomWidth: 1,
+    },
+    sectionTitle: {
+      fontSize: 18,
+      fontFamily: 'Outfit-bold',
+      marginBottom: 10,
+      color: theme.text,
+    },
+    bullet: {
+      fontSize: 16,
+      lineHeight: 24,
+      marginLeft: 10,
+      marginBottom: 6,
+      fontFamily: 'Outfit-medium',
+      color: theme.text,
+    },
+  });
 
 export default TermsAndConditions;
