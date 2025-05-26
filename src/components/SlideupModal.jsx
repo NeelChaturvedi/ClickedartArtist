@@ -11,12 +11,16 @@ import {
   PanResponder,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {useTheme} from 'src/themes/useTheme';
 
 const {height} = Dimensions.get('window');
 
 const SlideUpModal = ({visible, onClose, options = []}) => {
   const slideAnim = useRef(new Animated.Value(height)).current;
   const dragY = useRef(new Animated.Value(0)).current;
+
+  const theme = useTheme();
+  const styles = getStyles(theme);
 
   const panResponder = useRef(
     PanResponder.create({
@@ -82,13 +86,13 @@ const SlideUpModal = ({visible, onClose, options = []}) => {
                 }}>
                 <View style={styles.optionContainer}>
                   <View style={styles.iconWrapper}>
-                    <Icon name={option.icon} size={24} color="white" />
+                    <Icon name={option.icon} size={24} color={theme.text} />
                   </View>
                   <View style={styles.labelWrapper}>
                     <Text style={styles.optionText}>{option.label}</Text>
                   </View>
                 </View>
-                <Icon name="chevron-right" size={24} color="white" />
+                <Icon name="chevron-right" size={24} color={theme.text} />
               </TouchableOpacity>
             ))}
 
@@ -102,52 +106,53 @@ const SlideUpModal = ({visible, onClose, options = []}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  backdrop: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.6)',
-    justifyContent: 'flex-end',
-  },
-  modalContainer: {
-    backgroundColor: '#1E1E1E',
-    padding: 20,
-    width: '100%',
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
-  },
-  option: {
-    paddingVertical: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  optionContainer: {
-    flexDirection: 'row',
-    gap: 10,
-    alignItems: 'center',
-  },
-  iconWrapper: {
-    width: 40,
-    alignItems: 'center',
-  },
-  labelWrapper: {
-    justifyContent: 'center',
-  },
-  optionText: {
-    color: 'white',
-    fontSize: 16,
-    fontFamily: 'Outfit-medium',
-  },
-  cancel: {
-    marginTop: 10,
-    paddingVertical: 12,
-  },
-  cancelText: {
-    color: 'red',
-    fontSize: 16,
-    textAlign: 'center',
-    fontFamily: 'Outfit-bold',
-  },
-});
+const getStyles = theme =>
+  StyleSheet.create({
+    backdrop: {
+      flex: 1,
+      backgroundColor: 'rgba(0,0,0,0.6)',
+      justifyContent: 'flex-end',
+    },
+    modalContainer: {
+      backgroundColor: theme.card,
+      padding: 20,
+      width: '100%',
+      borderTopLeftRadius: 40,
+      borderTopRightRadius: 40,
+    },
+    option: {
+      paddingVertical: 16,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    optionContainer: {
+      flexDirection: 'row',
+      gap: 10,
+      alignItems: 'center',
+    },
+    iconWrapper: {
+      width: 40,
+      alignItems: 'center',
+    },
+    labelWrapper: {
+      justifyContent: 'center',
+    },
+    optionText: {
+      color: theme.text,
+      fontSize: 16,
+      fontFamily: 'Outfit-medium',
+    },
+    cancel: {
+      marginTop: 10,
+      paddingVertical: 12,
+    },
+    cancelText: {
+      color: 'red',
+      fontSize: 16,
+      textAlign: 'center',
+      fontFamily: 'Outfit-bold',
+    },
+  });
 
 export default SlideUpModal;
