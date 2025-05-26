@@ -5,12 +5,16 @@ import {enableScreens} from 'react-native-screens';
 import CatalogueScreen from 'src/Screens/CatalogueScreen/CatalogueScreen';
 import {Pressable, Share, View} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import { useTheme } from 'src/themes/useTheme';
 
 enableScreens();
 
 const Stack = createNativeStackNavigator();
 
 function CatalogueHeaderRight({catalogueId, setModalVisible}) {
+
+  const theme = useTheme();
+
   const onShare = async () => {
     await Share.share({
       message: `Check out my catalogue: https://clickedart.com/catalogue/${catalogueId}`,
@@ -26,10 +30,10 @@ function CatalogueHeaderRight({catalogueId, setModalVisible}) {
         paddingRight: 20,
       }}>
       <Pressable onPress={() => setModalVisible(true)}>
-        <MaterialIcon name="add-photo-alternate" size={26} color="white" />
+        <MaterialIcon name="add-photo-alternate" size={26} color={theme.text} />
       </Pressable>
       <Pressable onPress={onShare}>
-        <MaterialIcon name="share" size={26} color="white" />
+        <MaterialIcon name="share" size={26} color={theme.text} />
       </Pressable>
     </View>
   );
@@ -38,6 +42,8 @@ function CatalogueHeaderRight({catalogueId, setModalVisible}) {
 export default function CatalogueNavigator() {
   const [catalogueId, setCatalogueId] = React.useState({});
   const [modalVisible, setModalVisible] = React.useState(false);
+
+    const theme = useTheme();
 
   const renderHeaderRight = React.useCallback(
     () => (
@@ -56,11 +62,11 @@ export default function CatalogueNavigator() {
         screenOptions={{
           headerShown: true,
           headerStyle: {
-            backgroundColor: 'black',
+            backgroundColor: theme.background,
             alignItems: 'center',
           },
           headerTitle: '',
-          headerTintColor: 'white',
+          headerTintColor: theme.text,
         }}>
         <Stack.Screen
           options={{

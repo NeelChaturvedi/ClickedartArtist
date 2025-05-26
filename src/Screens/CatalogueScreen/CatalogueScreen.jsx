@@ -8,14 +8,15 @@ import {
   Modal,
   ToastAndroid,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {styles} from './styles';
+import React, {useEffect, useMemo, useState} from 'react';
+import {catalogueScreenStyles} from './styles';
 import SlideUpModal from '@components/SlideupModal';
 import api from 'src/utils/apiClient';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Button from '@components/button';
 import {useUserStore} from 'src/store/auth';
+import { useTheme } from 'src/themes/useTheme';
 
 const CatalogueScreen = ({setCatalogueId, modalVisible, setModalVisible}) => {
   const {user} = useUserStore();
@@ -26,6 +27,9 @@ const CatalogueScreen = ({setCatalogueId, modalVisible, setModalVisible}) => {
   const [slideUp, setSlideUp] = useState(false);
   const [catalogue, setCatalogue] = useState(false);
   const [selectedImages, setSelectedImages] = React.useState([]);
+
+  const theme = useTheme();
+  const styles = useMemo(() => catalogueScreenStyles(theme), [theme]);
 
   const closeModal = () => setModalVisible(false);
 

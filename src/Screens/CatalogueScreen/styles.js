@@ -1,10 +1,10 @@
 import {StyleSheet} from 'react-native';
 
-export const styles = StyleSheet.create({
+export const catalogueScreenStyles = (theme) => StyleSheet.create({
   background: {
     width: '100%',
     flex: 1,
-    backgroundColor: 'black',
+    backgroundColor: theme.background,
   },
   container: {
     flexDirection: 'row',
@@ -20,13 +20,13 @@ export const styles = StyleSheet.create({
     gap: 14,
   },
   Heading: {
-    color: 'white',
+    color: theme.text,
     fontSize: 24,
     fontFamily: 'Outfit-bold',
     textAlign: 'center',
   },
   Description: {
-    color: 'white',
+    color: theme.text,
     fontSize: 14,
     fontFamily: 'Outfit-regular',
     alignItems: 'center',
@@ -38,9 +38,9 @@ export const styles = StyleSheet.create({
     width: '46%',
     aspectRatio: 1,
     justifyContent: 'space-between',
-    backgroundColor: '#1A1A1A',
+    backgroundColor: theme.card,
     borderWidth: 0.5,
-    borderColor: 'white',
+    borderColor: theme.border,
     borderRadius: 10,
   },
   image: {
@@ -57,7 +57,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     width: '80%',
     fontFamily: 'Outfit-bold',
-    color: 'white',
+    color: theme.text,
   },
   modalContainer: {
     flex: 1,
@@ -66,7 +66,7 @@ export const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
   modalContent: {
-    backgroundColor: '#1E1E1E',
+    backgroundColor: theme.card,
     width: '90%',
     maxHeight: '90%',
     gap: 20,
@@ -80,7 +80,7 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontFamily: 'Outfit-bold',
-    color: 'white',
+    color: theme.text,
     textAlign: 'center',
   },
   imageStore: {
@@ -97,7 +97,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
   },
   noImageText: {
-    color: 'white',
+    color: theme.text,
     fontSize: 16,
     fontFamily: 'Outfit-regular',
   },
