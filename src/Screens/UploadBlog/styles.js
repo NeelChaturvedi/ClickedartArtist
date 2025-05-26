@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
 
-export const style = StyleSheet.create({
+export const uploadBlogStyles = (theme) => StyleSheet.create({
   background: {
     height: '100%',
     width: '100%',
-    backgroundColor: 'black',
+    backgroundColor: theme.background,
   },
   container: {
     paddingHorizontal: 20,
@@ -21,16 +21,16 @@ export const style = StyleSheet.create({
   headingText: {
     fontFamily: 'Outfit-bold',
     fontSize: 24,
-    color: 'white',
+    color:theme.text,
   },
   uploadContainer: {
-    backgroundColor: '#1E1E1E',
+    backgroundColor: theme.card,
     width: '100%',
     borderRadius: 5,
     padding: 10,
     borderWidth: 0.5,
     gap: 20,
-    borderColor: 'white',
+    borderColor: theme.border,
     flexDirection: 'column',
     alignItems: 'center',
   },
@@ -52,9 +52,9 @@ export const style = StyleSheet.create({
     minHeight: 200,
     maxHeight: 400,
     borderWidth: 0.5,
-    backgroundColor: 'white',
+    backgroundcolor:theme.text,
     width: '100%',
-    borderColor: 'white',
+    borderColor: theme.border,
     overflow: 'hidden',
     paddingBottom: 50,
   },
@@ -63,7 +63,7 @@ export const style = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 5,
     borderWidth: 0.5,
-    borderColor: 'white',
+    borderColor: theme.border,
     padding: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',

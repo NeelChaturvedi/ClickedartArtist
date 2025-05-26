@@ -11,8 +11,8 @@ import {
   ActivityIndicator,
   Image,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {style} from './styles';
+import React, {useEffect, useMemo, useState} from 'react';
+import {uploadBlogStyles} from './styles';
 import AutoGrowTextInput from '@components/AutoGrowTextInput';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {RichText, Toolbar, useEditorBridge} from '@10play/tentap-editor';
@@ -21,6 +21,7 @@ import {useUserStore} from 'src/store/auth';
 import api from 'src/utils/apiClient';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import {useNavigation} from '@react-navigation/native';
+import { useTheme } from 'src/themes/useTheme';
 
 const UploadBlog = () => {
   const editor = useEditorBridge({
@@ -39,6 +40,9 @@ const UploadBlog = () => {
   const navigation = useNavigation();
 
   const {user} = useUserStore();
+
+  const theme = useTheme();
+  const style = useMemo(() => uploadBlogStyles(theme), [theme]);
 
   const [error, setError] = useState(null);
   const [uploading, setUploading] = useState(false);
@@ -178,6 +182,7 @@ const UploadBlog = () => {
                       content: {...prev.content, title: text},
                     }))
                   }
+                  placeholder={'Enter your blog title...'}
                 />
               </View>
 
@@ -190,6 +195,7 @@ const UploadBlog = () => {
                       content: {...prev.content, summary: text},
                     }))
                   }
+                  placeholder={'Write a short summary of your blog...'}
                 />
               </View>
 
@@ -221,7 +227,7 @@ const UploadBlog = () => {
                 />
               </View>
             </ScrollView>
-            <Button onPress={handleSubmit} btnText={'Save Changes'} />
+            <Button onPress={handleSubmit} btnText={'Upload'} />
           </View>
         </View>
       </KeyboardAvoidingView>
