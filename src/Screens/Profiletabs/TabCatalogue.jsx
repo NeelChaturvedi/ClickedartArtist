@@ -6,7 +6,6 @@ import {
   Pressable,
   Modal,
   ToastAndroid,
-  Share,
   Alert,
 } from 'react-native';
 import {createTabStyles} from './styles';
