@@ -1,10 +1,10 @@
 import {StyleSheet} from 'react-native';
 
-export const styles = StyleSheet.create({
+export const uploadImageStyles = (theme) => StyleSheet.create({
   background: {
     height: '100%',
     width: '100%',
-    backgroundColor: 'black',
+    backgroundColor: theme.background,
   },
   container: {
     flexGrow: 1,
@@ -19,9 +19,9 @@ export const styles = StyleSheet.create({
     gap: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: 'white',
+    borderColor: theme.border,
     width: '100%',
-    backgroundColor: '#1E1E1E',
+    backgroundColor: theme.card,
   },
   image: {
     height: '100%',
@@ -30,7 +30,7 @@ export const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   uploadText: {
-    color: 'white',
+    color: theme.text,
     fontSize: 20,
     fontFamily: 'Outfit-medium',
   },
@@ -41,23 +41,23 @@ export const styles = StyleSheet.create({
     gap: 20,
   },
   tabText: {
-    color: '#999',
+    color: '#888',
     fontFamily: 'Outfit-medium',
     fontSize: 16,
   },
   addContainer: {
-    backgroundColor: '#1E1E1E',
+    backgroundColor: theme.card,
     height: 55,
-    color: 'white',
+    color: theme.text,
     fontFamily: 'Outfit-medium',
     fontSize: 16,
     borderWidth: 0.5,
-    borderColor: 'white',
+    borderColor: theme.border,
     borderRadius: 10,
     padding: 16,
   },
   watermarkImage: {
-    backgroundColor: '#1E1E1E',
+    backgroundColor: theme.card,
     borderRadius: 10,
     padding: 10,
     flexDirection: 'row',
@@ -89,7 +89,7 @@ export const styles = StyleSheet.create({
   proceedBtn: {
     fontSize: 20,
     fontFamily: 'Outfit-bold',
-    color: 'white',
+    color: theme.text,
   },
 
   //Step 2
@@ -100,7 +100,7 @@ export const styles = StyleSheet.create({
   },
   switchText: {
     fontSize: 20,
-    color: 'white',
+    color: theme.text,
     fontFamily: 'Outfit-medium',
   },
   section: {
@@ -110,7 +110,7 @@ export const styles = StyleSheet.create({
   headingText: {
     fontSize: 20,
     fontFamily: 'Outfit-bold',
-    color: 'white',
+    color: theme.text,
   },
   twoFields: {
     flexDirection: 'row',
@@ -118,14 +118,14 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   descriptionContainer: {
-    backgroundColor: '#1E1E1E',
+    backgroundColor: theme.card,
     height: 120,
     borderRadius: 10,
     padding: 16,
     textAlignVertical: 'top',
   },
   watermarkRemove: {
-    color: 'white',
+    color: theme.text,
     fontSize: 18,
     backgroundColor: 'red',
     textAlign: 'center',

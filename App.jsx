@@ -11,7 +11,7 @@ import Details from './src/Navigation/AuthStack';
 import SettingsNavigator from './src/Navigation/SettingsNavigator/SettingsNavigator';
 import OtpScreen from './src/Screens/OTP/OtpScreen';
 import BlogNavigator from './src/Navigation/BlogNavigator/BlogNavigator';
-import {ActivityIndicator} from 'react-native';
+import {ActivityIndicator, StyleSheet} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {View} from 'moti';
 import ProfileEditScreen from 'src/Screens/ProfileEdit/ProfileEditScreen';
@@ -21,6 +21,8 @@ import UploadBlog from 'src/Screens/UploadBlog';
 import ImageNavigator from 'src/Navigation/ImageNavigator/ImageNavigator';
 import CatalogueNavigator from 'src/Navigation/CatalogueNavigator/CatalogueNavigator';
 import CheckOut from 'src/Screens/CheckOut/CheckOut';
+import {useTheme} from 'src/themes/useTheme';
+import {style} from 'src/Screens/UploadBlog/styles';
 enableScreens();
 
 const Stack = createNativeStackNavigator();
@@ -29,6 +31,9 @@ export default function App() {
   const {loadToken, user} = useUserStore();
   const [isLoading, setIsLoading] = React.useState(true);
   const {isOnboardingCompleted, loadOnboardingStatus} = useOnboardingStore();
+
+  const theme = useTheme();
+  const styles = getStyles(theme);
 
   React.useEffect(() => {
     const checkStatus = async () => {
@@ -71,17 +76,20 @@ export default function App() {
         ) : (
           <>
             <Stack.Screen name="BottomTab" component={Tabs} />
-            <Stack.Screen name="SettingsNavigator" component={SettingsNavigator} />
+            <Stack.Screen
+              name="SettingsNavigator"
+              component={SettingsNavigator}
+            />
             <Stack.Screen name="BlogNavigator" component={BlogNavigator} />
             <Stack.Screen
               name="ProfileEdit"
               options={{
                 headerShown: true,
                 headerStyle: {
-                  backgroundColor: 'black',
+                  backgroundColor: theme.background,
                 },
                 headerTitle: 'Edit Profile',
-                headerTintColor: 'white',
+                headerTintColor: theme.text,
               }}
               component={ProfileEditScreen}
             />
@@ -90,28 +98,31 @@ export default function App() {
               options={{
                 headerShown: true,
                 headerStyle: {
-                  backgroundColor: 'black',
+                  backgroundColor: theme.background,
                 },
                 headerTitle: {
-                  color: 'white',
+                  color: theme.text,
                 },
-                headerTintColor: 'white',
+                headerTintColor: theme.text,
               }}
               component={UploadImage}
             />
             <Stack.Screen name="ImageNavigator" component={ImageNavigator} />
-            <Stack.Screen name="CatalogueNavigator" component={CatalogueNavigator} />
+            <Stack.Screen
+              name="CatalogueNavigator"
+              component={CatalogueNavigator}
+            />
             <Stack.Screen
               name="Write a blog"
               options={{
                 headerShown: true,
                 headerStyle: {
-                  backgroundColor: 'black',
+                  backgroundColor: theme.background,
                 },
                 headerTitle: {
-                  color: 'white',
+                  color: theme.text,
                 },
-                headerTintColor: 'white',
+                headerTintColor: theme.text,
               }}
               component={UploadBlog}
             />
@@ -120,12 +131,12 @@ export default function App() {
               options={{
                 headerShown: true,
                 headerStyle: {
-                  backgroundColor: 'black',
+                  backgroundColor: theme.background,
                 },
                 headerTitle: {
-                  color: 'white',
+                  color: theme.text,
                 },
-                headerTintColor: 'white',
+                headerTintColor: theme.text,
               }}
               component={CheckOut}
             />
@@ -136,16 +147,17 @@ export default function App() {
   );
 }
 
-const styles = {
-  loadingContainer: {
-    flex: 1,
-    backgroundColor: 'black',
-    height: '100%',
-    width: '100%',
-  },
-  loader: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-};
+const getStyles = theme =>
+  StyleSheet.create({
+    loadingContainer: {
+      flex: 1,
+      backgroundColor: theme.background,
+      height: '100%',
+      width: '100%',
+    },
+    loader: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+  });

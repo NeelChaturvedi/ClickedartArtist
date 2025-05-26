@@ -14,8 +14,8 @@ import {
   ActivityIndicator,
   Image,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {styles} from './style';
+import React, {useEffect, useMemo, useState} from 'react';
+import {uploadImageStyles} from './style';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Accordion from '@components/Accordian';
 import Button from '@components/button';
@@ -34,6 +34,7 @@ import {useUserStore} from 'src/store/auth';
 import axios from 'axios';
 import MultiSelectModal from '@components/MultiSelectModal';
 import {useNavigation} from '@react-navigation/native';
+import { useTheme } from 'src/themes/useTheme';
 
 const s3 = new AWS.S3({
   accessKeyId: AWS_ACCESS_KEY_ID,
@@ -87,6 +88,10 @@ const UploadImage = () => {
     isActive: false,
   });
   const [isEnabled, setIsEnabled] = useState(false);
+
+  const theme = useTheme();
+  const styles = useMemo(() => uploadImageStyles(theme), [theme]);
+
   const toggleSwitch = () => {
     setIsEnabled(previousState => !previousState);
     setPhoto({...photo, notForSale: !isEnabled, price: 0});
@@ -479,7 +484,7 @@ const UploadImage = () => {
                     </View>
                   ) : (
                     <>
-                      <Icon name="upload" size={24} color="white" />
+                      <Icon name="upload" size={24} color={theme.text} />
                       <Text style={styles.uploadText}>
                         Upload your image here
                       </Text>
@@ -515,7 +520,7 @@ const UploadImage = () => {
                     <Text
                       style={[
                         styles.tabText,
-                        selectedTab === 'text' && {color: 'white'},
+                        selectedTab === 'text' && {color: theme.text},
                       ]}>
                       Text Watermark
                     </Text>
@@ -528,7 +533,7 @@ const UploadImage = () => {
                     <Text
                       style={[
                         styles.tabText,
-                        selectedTab === 'image' && {color: 'white'},
+                        selectedTab === 'image' && {color: theme.text},
                       ]}>
                       Image Watermark
                     </Text>
@@ -565,7 +570,7 @@ const UploadImage = () => {
                       <>
                         <TextInput
                           editable={false}
-                          style={{width: '80%', color: 'white'}}
+                          style={{width: '80%', color: theme.text}}
                           value={
                             watermarkUploading
                               ? 'Uploading...'
@@ -632,7 +637,7 @@ const UploadImage = () => {
                     </>
                   ) : (
                     <>
-                      <Icon name="warning" size={24} color="white" />
+                      <Icon name="warning" size={24} color={theme.text} />
                       <Text style={styles.uploadText}>No Image Found</Text>
                     </>
                   )}
@@ -641,7 +646,7 @@ const UploadImage = () => {
                   <Text style={styles.switchText}>Not For Sale</Text>
                   <Switch
                     trackColor={{false: '#767577', true: '#ED3174'}}
-                    thumbColor="white"
+                    thumbcolor={theme.text}
                     ios_backgroundColor="#3e3e3e"
                     onValueChange={toggleSwitch}
                     value={isEnabled}
