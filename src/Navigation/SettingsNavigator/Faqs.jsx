@@ -2,7 +2,7 @@
 import {View, StyleSheet, SafeAreaView, ScrollView} from 'react-native';
 import React from 'react';
 import Accordion from '../../components/Accordian';
-import { useTheme } from 'src/themes/useTheme';
+import {useTheme} from 'src/themes/useTheme';
 
 const Faqs = () => {
   const faqs = [
@@ -122,13 +122,15 @@ const Faqs = () => {
     },
   ];
 
-    const theme = useTheme();
-    const style = getStyles(theme);
+  const theme = useTheme();
+  const style = getStyles(theme);
 
   return (
     <SafeAreaView style={style.background}>
       <View style={style.container}>
-        <ScrollView contentContainerStyle={{paddingBottom: 40}} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          contentContainerStyle={{paddingBottom: 40}}
+          showsVerticalScrollIndicator={false}>
           {faqs.map((faq, index) => (
             <Accordion key={index} title={faq.question} content={faq.answer} />
           ))}
@@ -138,24 +140,25 @@ const Faqs = () => {
   );
 };
 
-const getStyles = (theme) => StyleSheet.create({
-  background: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: theme.background,
-  },
-container: {
-    paddingHorizontal: 10,
-    gap: 20,
-    position: 'relative',
-    alignItems: 'center',
-  },
-  text: {
-    color: theme.text,
-    fontSize: 36,
-    fontFamily: 'Outfit-bold',
-    marginTop: 10,
-  },
-});
+const getStyles = theme =>
+  StyleSheet.create({
+    background: {
+      width: '100%',
+      height: '100%',
+      backgroundColor: theme.background,
+    },
+    container: {
+      paddingHorizontal: 10,
+      gap: 20,
+      position: 'relative',
+      alignItems: 'center',
+    },
+    text: {
+      color: theme.text,
+      fontSize: 36,
+      fontFamily: 'Outfit-bold',
+      marginTop: 10,
+    },
+  });
 
 export default Faqs;

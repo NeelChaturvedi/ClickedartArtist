@@ -159,7 +159,7 @@ const getStyles = (theme) => StyleSheet.create({
     justifyContent: 'space-between',
   },
   title: {
-    color: 'white',
+    color: theme.text,
     fontSize: 18,
     fontFamily: 'Outfit-medium',
   },
