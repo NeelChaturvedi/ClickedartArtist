@@ -6,12 +6,15 @@ import BlogEdit from './BlogEdit';
 import {Pressable, Share, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
+import { useTheme } from 'src/themes/useTheme';
 
 enableScreens();
 
 const Stack = createNativeStackNavigator();
 
 function BlogHeaderRight({blogName, blogSlug, blogId, callBack}) {
+
+    const theme = useTheme();
   const navigation = useNavigation();
   const onShare = async () => {
     await Share.share({
@@ -23,10 +26,10 @@ function BlogHeaderRight({blogName, blogSlug, blogId, callBack}) {
       <Pressable
         // style={{marginRight: 12}}
         onPress={() => navigation.navigate('BlogEdit', {blogId, callBack})}>
-        <Icon name="edit" size={24} color={'white'} />
+        <Icon name="edit" size={24} color={theme.text} />
       </Pressable>
       <Pressable onPress={() => onShare()}>
-        <Icon name="share" size={24} color={'white'} />
+        <Icon name="share" size={24} color={theme.text} />
       </Pressable>
     </View>
   );
@@ -40,6 +43,9 @@ export default function BlogNavigator() {
   const callBack = value => {
     setVal(value);
   };
+
+  const theme = useTheme();
+
 
   const renderHeaderRight = React.useCallback(
     () => (
@@ -60,10 +66,10 @@ export default function BlogNavigator() {
         headerShown: true,
         headerTitleAlign: 'center',
         headerStyle: {
-          backgroundColor: 'black',
+          backgroundColor: theme.background,
         },
 
-        headerTintColor: 'white',
+        headerTintColor: theme.text,
       }}>
       <Stack.Screen
         name="Blogs"

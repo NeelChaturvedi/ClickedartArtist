@@ -7,16 +7,20 @@ import {
   Dimensions,  SafeAreaView,
   RefreshControl,
 } from 'react-native';
-import React, {useEffect} from 'react';
-import {styles} from './style';
+import React, {useEffect, useMemo} from 'react';
+import {blogPageStyles} from './style';
 import api from '../../utils/apiClient';
 import {useRoute} from '@react-navigation/native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
+import { useTheme } from 'src/themes/useTheme';
 
 const Blog = ({setBlogSlug, setBlogName, setBlogId, setVal, val}) => {
   const {blogId} = useRoute().params;
   const [blog, setBlog] = React.useState({});
   const [loading, setLoading] = React.useState(true);
+
+  const theme = useTheme();
+  const styles = useMemo(() => blogPageStyles(theme), [theme]);
 
   const onRefresh = () => {
     setLoading(true);
@@ -90,11 +94,11 @@ const Blog = ({setBlogSlug, setBlogName, setBlogId, setVal, val}) => {
                 width: Dimensions.get('window'),
                 marginTop: 35,
                 marginBottom: 100,
-                backgroundColor: 'black',
+                backgroundColor: theme.background,
               }}
               customStyle={`
                 body {
-                  background-color: #000 !important;
+                  background-color: ${theme.background} !important;
                   font-family: 'Outfit', sans-serif;
                   line-height: 1.3;
                 }

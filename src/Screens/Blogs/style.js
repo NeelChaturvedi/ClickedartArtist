@@ -1,20 +1,21 @@
 import {StyleSheet} from 'react-native';
 
-export const styles = StyleSheet.create({
+export const blogPageStyles = (theme) => StyleSheet.create({
   background: {
     height: '100%',
     width: '100%',
-    backgroundColor: 'black',
+    backgroundColor: theme.background,
     alignItems: 'center',
   },
   container: {
     paddingHorizontal: 20,
+    marginTop: 20,
     width: '100%',
   },
   headingText: {
     fontFamily: 'Outfit-bold',
     fontSize: 28,
-    color: 'white',
+    color: theme.text,
   },
   aboutBlog: {
     gap: 24,
@@ -27,7 +28,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
   },
   summary: {
-    color: 'white',
+    color: theme.text,
     fontSize: 20,
     lineHeight: 24,
   },
@@ -37,7 +38,7 @@ export const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   description: {
-    color: 'white',
+    color: theme.text,
     fontFamily: 'Outfit-regular',
     fontSize: 16,
   },
@@ -58,7 +59,7 @@ export const styles = StyleSheet.create({
     gap: 5,
   },
   nameText: {
-    color: 'white',
+    color: theme.text,
     fontFamily: 'Outfit-Medium',
     fontSize: 20,
   },

@@ -20,12 +20,17 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import api from '../../utils/apiClient';
 import ImagePicker from 'react-native-image-crop-picker';
 import {RichText, Toolbar, useEditorBridge} from '@10play/tentap-editor';
+import { useTheme } from 'src/themes/useTheme';
 
 const BlogEdit = () => {
   const {blogId, callBack} = useRoute().params;
   const navigation = useNavigation();
   const [blog, setBlog] = useState(null); // Start with null
   const [uploading, setUploading] = useState(false);
+
+    const theme = useTheme();
+  const style = getStyles(theme);
+
   const editor = useEditorBridge({
     autofocus: true,
     avoidIosKeyboard: true,
@@ -195,11 +200,11 @@ const BlogEdit = () => {
   );
 };
 
-const style = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   background: {
     height: '100%',
     width: '100%',
-    backgroundColor: 'black',
+    backgroundColor: theme.background,
   },
   container: {
     paddingHorizontal: 20,
@@ -216,16 +221,16 @@ const style = StyleSheet.create({
   headingText: {
     fontFamily: 'Outfit-bold',
     fontSize: 24,
-    color: 'white',
+    color: theme.text,
   },
   uploadContainer: {
-    backgroundColor: '#1E1E1E',
+    backgroundColor: theme.card,
     width: '100%',
     borderRadius: 5,
     padding: 10,
     borderWidth: 0.5,
     gap: 20,
-    borderColor: 'white',
+    borderColor: theme.border,
     flexDirection: 'column',
     alignItems: 'center',
   },
@@ -249,16 +254,16 @@ const style = StyleSheet.create({
     borderWidth: 0.5,
     backgroundColor: 'white',
     width: '100%',
-    borderColor: 'white',
+    borderColor: theme.border,
     overflow: 'hidden',
     paddingBottom: 50,
   },
   keyboardAvoidingView: {
     width: '100%',
-    backgroundColor: '#fff',
+    backgroundColor: theme.card,
     borderRadius: 5,
     borderWidth: 0.5,
-    borderColor: 'white',
+    borderColor: theme.border,
     padding: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
