@@ -154,7 +154,7 @@ export const createAccountStyles = (theme) => StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
   modalContent: {
-    backgroundColor: '#1E1E1E',
+    backgroundColor: theme.card,
     width: '90%',
     maxHeight: '85%',
     gap: 30,
@@ -185,7 +185,7 @@ export const createAccountStyles = (theme) => StyleSheet.create({
     color: theme.text,
   },
   wordCount:{
-    color:'white',
+    color:theme.text,
     fontSize: 12,
     fontFamily: 'Outfit-regular',
     marginTop: -6,

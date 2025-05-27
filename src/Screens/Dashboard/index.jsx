@@ -249,21 +249,21 @@ const Dashboard = () => {
                     },
                   ],
                 }}
-                width={Dimensions.get('window').width - 41}
+                width={300}
                 height={220}
                 yAxisLabel="₹"
                 yAxisInterval={1}
                 chartConfig={{
-                  backgroundGradientFrom: '#1E1E1E',
-                  backgroundGradientTo: '#1E1E1E',
+                  backgroundGradientFrom: theme.card,
+                  backgroundGradientTo: theme.card,
                   decimalPlaces: 2,
-                  color: () => 'rgba(255, 255, 255, 0.3)',
-                  labelColor: () => 'rgba(255, 255, 255, 0.7)',
+                  color: () => '#AAAAAA',
+                  labelColor: () => '#888888',
                   style: {borderRadius: 16},
                   propsForDots: {
                     r: '6',
                     strokeWidth: '2',
-                    stroke: '#ffffff',
+                    stroke: theme.text,
                   },
                 }}
                 bezier

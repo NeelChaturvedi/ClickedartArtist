@@ -420,7 +420,13 @@ const Orders = () => {
               <View style={styles.trackingList}>
                 <Text style={styles.trackingTitle}>Pickup Date</Text>
                 <Text style={styles.trackingStatus}>
-                  {shipment?.PickUpDate || 'N/A'}
+                  {(shipment?.PickUpDate &&
+                    new Date(shipment?.PickUpDate).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })) ||
+                    'N/A'}
                 </Text>
               </View>
               <View style={styles.trackingList}>
