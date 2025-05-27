@@ -15,6 +15,7 @@ export const loginStyles = (theme) => StyleSheet.create({
   },
   heading: {
     fontSize: 32,
+    lineHeight: 40,
     color: theme.text,
     textAlign: 'center',
     fontFamily: 'Outfit-bold',
