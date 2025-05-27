@@ -337,20 +337,26 @@ const Profile = () => {
             {user?.shippingAddress.city}, {user?.shippingAddress.country}
           </Text>
           <Text style={style.userBio}>
-            {fullBio || user?.bio.split(' ').length <= 20
+            {fullBio
+              ? fullBio
+              : user?.bio?.split(' ').length <= 20
               ? user?.bio
-              : user?.bio.split(' ').slice(0, 20).join(' ') + '...'}
+              : user?.bio?.split(' ').slice(0, 20).join(' ') + '...'}
           </Text>
           <Pressable
             style={{backgroundColor: 'red', width: '90%', paddingVertical: 16}}
             onPress={() => {
-              if (user?.bio.split(' ').length <= 20) {
-                setFullBio(user?.bio);
-              } else {
+              if (fullBio) {
                 setFullBio(null);
+              } else {
+                setFullBio(user?.bio);
               }
             }}>
-            <Icon name="chevron-down" size={20} color={theme.text} />
+            <Icon
+              name={fullBio ? 'chevron-up' : 'chevron-down'}
+              size={20}
+              color={theme.text}
+            />
           </Pressable>
         </View>
         <View style={style.accountInfo}>
