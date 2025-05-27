@@ -1,23 +1,36 @@
 import {create} from 'zustand';
 import {Appearance} from 'react-native';
 
-const getInitialTheme = () => Appearance.getColorScheme() || 'light';
+const getSystemTheme = () => Appearance.getColorScheme() || 'light';
 
-export const useThemeStore = create(set => {
-  Appearance.addChangeListener(({colorScheme}) => {
-    if (colorScheme) {
-      set({theme: colorScheme});
+export const useThemeStore = create((set, get) => {
+  const applySystemTheme = () => {
+    const current = get();
+    if (current.userPreference === 'system') {
+      set({theme: getSystemTheme()});
     }
-  });
+  };
+
+  Appearance.addChangeListener(applySystemTheme);
 
   return {
-    theme: getInitialTheme(),
+    theme: getSystemTheme(),
+    userPreference: 'system',
 
-    toggleTheme: () =>
-      set(state => ({
-        theme: state.theme === 'light' ? 'dark' : 'light',
-      })),
+    setTheme: (preference) => {
+      set({
+        userPreference: preference,
+        theme: preference === 'system' ? getSystemTheme() : preference,
+      });
+    },
 
-    setTheme: theme => set({theme}),
+    toggleTheme: () => {
+      const {userPreference} = get();
+      const newPref = userPreference === 'light' ? 'dark' : 'light';
+      set({
+        userPreference: newPref,
+        theme: newPref,
+      });
+    },
   };
 });

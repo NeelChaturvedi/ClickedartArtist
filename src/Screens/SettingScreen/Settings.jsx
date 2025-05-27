@@ -23,7 +23,7 @@ const Settings = () => {
   const [isMonetized, setIsMonetized] = useState(false);
   const [monetizationStatus, setMonetizationStatus] = useState('pending');
   const [isLoading, setIsLoading] = useState(false);
-  const {theme} = useThemeStore();
+  const {theme, userPreference} = useThemeStore();
 
   const navigation = useNavigation();
   const settingsData = [
@@ -46,9 +46,9 @@ const Settings = () => {
     {id: '7', icon: 'info', label: 'Help Center', screen: 'Help Center'},
     {
       id: '8',
-      icon: theme === 'dark' ?'dark-mode' : 'light-mode',
+      icon: theme === 'dark' ? 'dark-mode' : 'light-mode',
       label: 'Theme',
-      screen: 'Theme',
+      screen: 'Manage Theme',
       isTheme: true,
     },
   ];
@@ -80,7 +80,7 @@ const Settings = () => {
       </View>
       {item.isTheme ? (
         <Text style={style.itemText}>
-          {theme === 'dark' ? 'Dark' : 'Light'}
+          {userPreference === 'dark' ? 'Dark' : userPreference === 'system' ? 'System' : 'Light'}
         </Text>
       ) : (
         <Feather name="chevron-right" size={24} color={themeColors.text} />

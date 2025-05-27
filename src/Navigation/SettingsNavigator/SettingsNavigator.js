@@ -41,7 +41,7 @@ export default function SettingsNavigator() {
       <Stack.Screen name="Help Center" component={HelpCenter}/>
       <Stack.Screen name="Change Password" component={ChangePassword}/>
       <Stack.Screen name="Monetize Account" component={Monetization}/>
-      <Stack.Screen name="Manage Themes" component={Theme}/>
+      <Stack.Screen name="Manage Theme" component={Theme}/>
     </Stack.Navigator>
   );
 }
