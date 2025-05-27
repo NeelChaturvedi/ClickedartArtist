@@ -25,7 +25,7 @@ import SlideUpModal from '../../components/SlideupModal';
 import ImagePicker from 'react-native-image-crop-picker';
 import axios from 'axios';
 import {API_URL} from '@env';
-import { useTheme } from 'src/themes/useTheme';
+import {useTheme} from 'src/themes/useTheme';
 import {useMemo} from 'react';
 import {createProfileStyles} from './styles';
 
@@ -49,6 +49,9 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [profileUploading, setProfileUploading] = useState(false);
+  const [fullBio, setFullBio] = useState(null);
+
+  console.log('fullbio:', fullBio);
 
   const onShare = async () => {
     try {
@@ -168,7 +171,6 @@ const Profile = () => {
     },
   ];
 
-
   const tabs = [
     {label: 'Photos', key: 'photos'},
     {label: 'Catalogues', key: 'catalogues'},
@@ -183,21 +185,27 @@ const Profile = () => {
     try {
       setLoading(true);
 
-      const [statsRes, photosRes, pendingPhotosRes, cataloguesRes, blogsRes, pendingBlogsRes] =
-        await Promise.allSettled([
-          api.get(
-            `/photographeranalytics/get-photographer-analytics?photographer=${user._id}`,
-          ),
-          api.get(
-            `/images/get-images-by-photographer?photographer=${user._id}`,
-          ),
-          api.get(`/photographer/get-pending-images-by-photographer?photographer=${user._id}`),
-          api.get(
-            `/catalogue/get-catalogues-by-photographer?photographer=${user._id}`,
-          ),
-          api.get(`/blog/get-my-blogs?author=${user._id}`),
-          api.get(`/blog/get-my-pending-blogs?author=${user._id}`),
-        ]);
+      const [
+        statsRes,
+        photosRes,
+        pendingPhotosRes,
+        cataloguesRes,
+        blogsRes,
+        pendingBlogsRes,
+      ] = await Promise.allSettled([
+        api.get(
+          `/photographeranalytics/get-photographer-analytics?photographer=${user._id}`,
+        ),
+        api.get(`/images/get-images-by-photographer?photographer=${user._id}`),
+        api.get(
+          `/photographer/get-pending-images-by-photographer?photographer=${user._id}`,
+        ),
+        api.get(
+          `/catalogue/get-catalogues-by-photographer?photographer=${user._id}`,
+        ),
+        api.get(`/blog/get-my-blogs?author=${user._id}`),
+        api.get(`/blog/get-my-pending-blogs?author=${user._id}`),
+      ]);
 
       if (statsRes.status === 'fulfilled') {
         setStats(statsRes.value?.data);
@@ -328,7 +336,22 @@ const Profile = () => {
           <Text style={style.userAddress}>
             {user?.shippingAddress.city}, {user?.shippingAddress.country}
           </Text>
-          <Text style={style.userBio}>{user?.bio}</Text>
+          <Text style={style.userBio}>
+            {fullBio || user?.bio.split(' ').length <= 20
+              ? user?.bio
+              : user?.bio.split(' ').slice(0, 20).join(' ') + '...'}
+          </Text>
+          <Pressable
+            style={{backgroundColor: 'red', width: '90%', paddingVertical: 16}}
+            onPress={() => {
+              if (user?.bio.split(' ').length <= 20) {
+                setFullBio(user?.bio);
+              } else {
+                setFullBio(null);
+              }
+            }}>
+            <Icon name="chevron-down" size={20} color={theme.text} />
+          </Pressable>
         </View>
         <View style={style.accountInfo}>
           <View style={style.summary}>
