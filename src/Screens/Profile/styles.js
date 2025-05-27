@@ -78,8 +78,10 @@ export const createProfileStyles = (theme) =>
     userBio: {
       color: theme.text,
       fontFamily: 'Outfit-medium',
-      fontSize: 18,
-      lineHeight: 24,
+      fontSize: 16,
+      padding: 20,
+      textAlign: 'justify',
+      lineHeight: 20,
     },
     accountInfo: {
       flexDirection: 'row',
