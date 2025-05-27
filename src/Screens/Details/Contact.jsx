@@ -10,16 +10,20 @@ import {
   ScrollView,
   SafeAreaView,
 } from 'react-native';
-import {styles} from './styles';
+import {userCreationStyles} from './styles';
 import {useRegistrationStore} from '../../store/registration';
 import Button from '../../components/button';
 import {useNavigation} from '@react-navigation/native';
-import {useState} from 'react';
+import {useMemo, useState} from 'react';
+import { useTheme } from 'src/themes/useTheme';
 
 const Contact = () => {
   const {formData, setField, setNestedField} = useRegistrationStore();
   const navigation = useNavigation();
   const [errors, setErrors] = useState({});
+
+  const theme = useTheme();
+  const styles = useMemo(() => userCreationStyles(theme), [theme]);
 
   const validateForm = () => {
     const newErrors = {};
@@ -72,7 +76,7 @@ const Contact = () => {
                   <TextInput
                     style={styles.inputbox}
                     placeholder="Required"
-                    placeholderTextColor={'#D9D9D9'}
+                    placeholderTextColor={'#888888'}
                     keyboardType="phone-pad"
                     value={formData.mobile}
                     onChangeText={text => setField('mobile', text)}
@@ -87,7 +91,7 @@ const Contact = () => {
                   <TextInput
                     style={styles.inputbox}
                     placeholder="Optional"
-                    placeholderTextColor={'#D9D9D9'}
+                    placeholderTextColor={'#888888'}
                     value={formData.shippingAddress.address}
                     onChangeText={text =>
                       setNestedField('shippingAddress', 'address', text)
@@ -100,7 +104,7 @@ const Contact = () => {
                   <TextInput
                     style={styles.inputbox}
                     placeholder="Required"
-                    placeholderTextColor={'#D9D9D9'}
+                    placeholderTextColor={'#888888'}
                     value={formData.shippingAddress.city}
                     onChangeText={text =>
                       setNestedField('shippingAddress', 'city', text)
@@ -116,7 +120,7 @@ const Contact = () => {
                   <TextInput
                     style={styles.inputbox}
                     placeholder="Required"
-                    placeholderTextColor={'#D9D9D9'}
+                    placeholderTextColor={'#888888'}
                     value={formData.shippingAddress.country}
                     onChangeText={text =>
                       setNestedField('shippingAddress', 'country', text)
@@ -134,7 +138,7 @@ const Contact = () => {
                       <TextInput
                         style={styles.inputbox}
                         placeholder="Required"
-                        placeholderTextColor={'#D9D9D9'}
+                        placeholderTextColor={'#888888'}
                         value={formData.shippingAddress.state}
                         onChangeText={text =>
                           setNestedField('shippingAddress', 'state', text)
@@ -150,7 +154,7 @@ const Contact = () => {
                       <TextInput
                         style={styles.inputbox}
                         placeholder="Optional"
-                        placeholderTextColor={'#D9D9D9'}
+                        placeholderTextColor={'#888888'}
                         keyboardType="phone-pad"
                         maxLength={6}
                         value={formData.shippingAddress.pincode}

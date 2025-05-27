@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {
   Pressable,
   Text,
@@ -10,7 +10,7 @@ import {
   PermissionsAndroid,
   SafeAreaView,
 } from 'react-native';
-import {styles} from './styles';
+import {userCreationStyles} from './styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -18,6 +18,7 @@ import api from '../../utils/apiClient';
 import {useRegistrationStore} from '../../store/registration';
 import axios from 'axios';
 import {API_URL} from '@env';
+import { useTheme } from 'src/themes/useTheme';
 
 const requestCameraPermission = async () => {
   if (Platform.OS === 'android') {
@@ -45,6 +46,9 @@ const ProfilePhoto = () => {
   const [uploading, setUploading] = useState(false);
   const {setField, formData} = useRegistrationStore();
   const navigation = useNavigation();
+
+  const theme = useTheme();
+  const styles = useMemo(() => userCreationStyles(theme), [theme]);
 
   const handleCameraLaunch = async () => {
     const hasPermission = await requestCameraPermission();
@@ -161,7 +165,7 @@ const ProfilePhoto = () => {
               {uploading ? (
                 <ActivityIndicator size={50} />
               ) : (
-                <Icon name={'camera'} size={50} color="#ccc" />
+                <Icon name={'camera'} size={50} color="#888888" />
               )}
               <Text style={styles.placeholderText}>
                 {uploading ? 'Uploading' : 'No Image Selected'}
@@ -174,10 +178,10 @@ const ProfilePhoto = () => {
         <Pressable
           style={styles.optionButton}
           onPress={handleImageLibraryLaunch}>
-          <Icon name="image" size={28} />
+          <Icon name="image" size={28} color={theme.text} />
         </Pressable>
         <Pressable style={styles.centerButton} onPress={handleCameraLaunch}>
-          <Icon name="camera" size={36} />
+          <Icon name="camera" size={36} color={theme.text} />
         </Pressable>
         <Pressable
           style={[
@@ -186,7 +190,7 @@ const ProfilePhoto = () => {
           ]}
           disabled={!formData.profileImage}
           onPress={handleRegistration}>
-          <Icon name="arrow-right" size={28} />
+          <Icon name="arrow-right" size={28} color="#ED3147" />
         </Pressable>
       </View>
     </SafeAreaView>

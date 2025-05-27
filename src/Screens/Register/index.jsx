@@ -148,7 +148,7 @@ const Register = () => {
           <Text style={styles.inputTitle}>PASSWORD</Text>
           <View style={styles.passwordInput}>
             <TextInput
-              style={{color: 'white', flex: 1}}
+              style={{color: theme.text, flex: 1}}
               placeholder="Enter Password"
               placeholderTextColor="#888888"
               secureTextEntry={secure}

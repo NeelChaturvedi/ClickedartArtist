@@ -13,14 +13,15 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
-import {styles} from './styles';
+import {userCreationStyles} from './styles';
 import Button from '../../components/button';
 import {useNavigation} from '@react-navigation/native';
-import {useState} from 'react';
+import {useMemo, useState} from 'react';
 import {useRegistrationStore} from '../../store/registration';
 
 import DatePicker from 'react-native-date-picker';
 import dayjs from 'dayjs';
+import { useTheme } from 'src/themes/useTheme';
 
 const Personal = () => {
   const navigation = useNavigation();
@@ -30,6 +31,9 @@ const Personal = () => {
     useRegistrationStore();
   const options = ['Facebook', 'Instagram', 'LinkedIn', 'Twitter'];
   const [errors, setErrors] = useState({});
+
+  const theme = useTheme();
+  const styles = useMemo(() => userCreationStyles(theme), [theme]);
 
   const validateForm = () => {
     const newErrors = {};
@@ -98,7 +102,7 @@ const Personal = () => {
                     <TextInput
                       style={styles.inputbox}
                       placeholder="Required"
-                      placeholderTextColor={'#D9D9D9'}
+                      placeholderTextColor={'#888888'}
                       value={formData.firstName}
                       onChangeText={text => setField('firstName', text)}
                     />
@@ -111,7 +115,7 @@ const Personal = () => {
                     <TextInput
                       style={styles.inputbox}
                       placeholder="Optional"
-                      placeholderTextColor={'#D9D9D9'}
+                      placeholderTextColor={'#888888'}
                       value={formData.lastName}
                       onChangeText={text => setField('lastName', text)}
                     />
@@ -126,7 +130,7 @@ const Personal = () => {
                       {height: 120, textAlignVertical: 'top'},
                     ]}
                     placeholder="Optional"
-                    placeholderTextColor={'#D9D9D9'}
+                    placeholderTextColor={'#888888'}
                     multiline={true}
                     numberOfLines={4}
                     value={formData.bio}
@@ -219,7 +223,7 @@ const Personal = () => {
                       <TextInput
                         style={styles.inputbox}
                         placeholder="Required"
-                        placeholderTextColor={'#D9D9D9'}
+                        placeholderTextColor={'#888888'}
                         value={formData.connectedAccounts[0].accountLink}
                         onChangeText={text =>
                           setConnectedAccount(0, 'accountLink', text)

@@ -5,24 +5,26 @@ import {enableScreens} from 'react-native-screens';
 import Personal from '../Screens/Details/Personal';
 import Contact from '../Screens/Details/Contact';
 import ProfilePhoto from '../Screens/Details/ProfilePhoto';
+import {useTheme} from 'src/themes/useTheme';
 
 enableScreens();
 
 const Stack = createNativeStackNavigator();
 
 export default function Details() {
+  const theme = useTheme();
   return (
     <Stack.Navigator
       initialRouteName="Personal Details"
       screenOptions={{
         headerStyle: {
-          backgroundColor: 'black',
+          backgroundColor: theme.background,
         },
         headerTitleStyle: {
-          color: 'white',
+          color: theme.text,
         },
         headerTitleAlign: 'center',
-        headerTintColor: 'white',
+        headerTintColor: theme.text,
       }}>
       <Stack.Screen name="Personal Details" component={Personal} />
       <Stack.Screen name="Contact Details" component={Contact} />
