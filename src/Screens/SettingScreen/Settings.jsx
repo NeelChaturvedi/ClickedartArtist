@@ -53,6 +53,12 @@ const Settings = () => {
     },
   ];
 
+  const [search, setSearch] = useState('');
+
+  const filteredData = settingsData.filter(item =>
+    item.label.toLowerCase().includes(search?.trim().toLowerCase()),
+  );
+
   const themeColors = useTheme();
   const style = useMemo(() => createSettingStyles(themeColors), [themeColors]);
 
@@ -80,7 +86,11 @@ const Settings = () => {
       </View>
       {item.isTheme ? (
         <Text style={style.itemText}>
-          {userPreference === 'dark' ? 'Dark' : userPreference === 'system' ? 'System' : 'Light'}
+          {userPreference === 'dark'
+            ? 'Dark'
+            : userPreference === 'system'
+            ? 'System'
+            : 'Light'}
         </Text>
       ) : (
         <Feather name="chevron-right" size={24} color={themeColors.text} />
@@ -123,9 +133,9 @@ const Settings = () => {
   return (
     <SafeAreaView style={style.background}>
       <View style={style.container}>
-        <SearchBar />
+        <SearchBar search={search} setSearch={setSearch} />
         <FlatList
-          data={settingsData}
+          data={filteredData}
           keyExtractor={item => item.id}
           renderItem={renderItem}
           showsVerticalScrollIndicator={false}

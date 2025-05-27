@@ -16,11 +16,12 @@ import {useUserStore} from '../../store/auth';
 import api from '../../utils/apiClient';
 import SlideUpModal from '@components/SlideupModal';
 import {Share} from 'react-native';
-import { useTheme } from 'src/themes/useTheme';
+import {useTheme} from 'src/themes/useTheme';
 
 const Invoices = () => {
   const {user} = useUserStore();
   const [invoices, setInvoices] = useState([]);
+  const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [slideUp, setSlideUp] = useState(false);
@@ -28,6 +29,11 @@ const Invoices = () => {
 
   const theme = useTheme();
   const styles = useMemo(() => createAccountStyles(theme), [theme]);
+
+  const filteredData = invoices?.filter(item =>
+    item.invoiceId?.toLowerCase().includes(search?.trim().toLowerCase()) ||
+    item.paymentStatus?.toLowerCase().includes(search?.trim().toLowerCase()),
+  );
 
   const onShare = async () => {
     await Share.share({
@@ -149,10 +155,10 @@ const Invoices = () => {
     <View style={styles.container}>
       {!loading && invoices?.length > 0 && (
         <>
-          <SearchBar />
+          <SearchBar search={search} setSearch={setSearch} />
 
           <FlatList
-            data={invoices}
+            data={filteredData}
             keyExtractor={item => item._id}
             renderItem={renderItem}
             contentContainerStyle={{paddingBottom: 16}}

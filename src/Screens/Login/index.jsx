@@ -6,6 +6,7 @@ import {
   ToastAndroid,
   Modal,
   Pressable,
+  Alert,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import React, {useMemo, useRef, useState} from 'react';
@@ -23,6 +24,9 @@ const Login = () => {
   const [showModal, setShowModal] = useState(false);
   const {reset} = useRegistrationStore();
   const [secure, setSecure] = useState(true);
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [sending, setSending] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -48,6 +52,41 @@ const Login = () => {
     } catch (error) {
       console.log('Error', error);
       ToastAndroid.show('Invalid email or password', ToastAndroid.SHORT);
+    }
+  };
+
+  const handlePassReset = async () => {
+    if (!email) {
+      setEmailError('Please enter your email');
+      return ToastAndroid.show('Please enter your email', ToastAndroid.SHORT);
+    }
+
+    try {
+      setSending(true);
+      await publicApi.post('/photographer/reset-password', {
+        email: email,
+      });
+      Alert.alert(
+        'Password Reset',
+        'A temporary password  has been sent to your email. Please change it after logging in.',
+        [
+          {
+            text: 'OK',
+          },
+        ],
+      );
+      setShowModal(false);
+      setEmail('');
+      setEmailError('');
+    } catch (error) {
+      console.log(error);
+      setEmailError('Failed to send password reset link');
+      ToastAndroid.show(
+        'Failed to send password reset link',
+        ToastAndroid.SHORT,
+      );
+    } finally {
+      setSending(false);
     }
   };
 
@@ -119,14 +158,35 @@ const Login = () => {
           }}>
           <Pressable
             style={styles.modalContainer}
-            onPress={() => setShowModal(false)}>
+            disabled={sending}
+            onPress={() => {
+              setShowModal(false);
+              setEmail('');
+              setEmailError('');
+            }}>
             <Pressable style={styles.modalContent} onPress={() => {}}>
               <Text style={styles.modalTitle}>Forgot Password</Text>
               <View style={styles.inputSection}>
                 <Text style={styles.sectionTitle}>Existing Email</Text>
-                <AutoGrowTextInput placeholder={'Enter email'} />
+                <AutoGrowTextInput
+                  placeholder={'Enter email'}
+                  value={email}
+                  onChangeText={text => setEmail(text)}
+                  placeholderTextColor="#888"
+                  autoCapitalize="none"
+                  autoComplete="email"
+                  keyboardType="email-address"
+                  textContentType="emailAddress"
+                />
+                {emailError ? (
+                  <Text style={styles.errorText}>{emailError}</Text>
+                ) : null}
               </View>
-              <Button btnText="Reset Password" />
+              <Button
+                btnText={sending ? 'Sending...' : 'Reset Password'}
+                disabled={sending}
+                onPress={handlePassReset}
+              />
             </Pressable>
           </Pressable>
         </Modal>

@@ -5,7 +5,7 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import {useTheme} from 'src/themes/useTheme';
 
-const SearchBar = () => {
+const SearchBar = ({search, setSearch}) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
@@ -16,12 +16,14 @@ const SearchBar = () => {
         placeholder="Search"
         placeholderTextColor={'#888'}
         style={styles.input}
+        value={search}
+        onChangeText={text => setSearch(text)}
       />
     </View>
   );
 };
 
-const getStyles = (theme) =>
+const getStyles = theme =>
   StyleSheet.create({
     searchRow: {
       flexDirection: 'row',

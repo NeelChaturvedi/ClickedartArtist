@@ -121,4 +121,9 @@ export const loginStyles = theme =>
       fontFamily: 'Outfit-medium',
       color: theme.text,
     },
+    errorText: {
+      color: '#ED3147',
+      fontSize: 14,
+      fontFamily: 'Outfit-regular',
+    },
   });
