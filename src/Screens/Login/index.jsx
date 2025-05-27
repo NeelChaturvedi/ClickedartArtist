@@ -101,7 +101,7 @@ const Login = () => {
         <View style={styles.formField}>
           <Text style={styles.inputTitle}>EMAIL</Text>
           <TextInput
-            onChangeText={text => setFormData({...formData, email: text})}
+            onChangeText={text => setFormData(prev => ({...prev, email: text}))}
             value={formData.email}
             style={styles.inputbox}
             placeholder="Enter Email"
@@ -124,7 +124,9 @@ const Login = () => {
           <View style={styles.passwordInput}>
             <TextInput
               ref={passwordRef}
-              onChangeText={text => setFormData({...formData, password: text})}
+              onChangeText={text =>
+                setFormData(prev => ({...prev, password: text}))
+              }
               value={formData.password}
               style={styles.passwordTextInput}
               placeholder="Enter Password"
