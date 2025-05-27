@@ -11,6 +11,7 @@ import HelpCenter from './HelpCenter';
 import ChangePassword from './ChangePassword';
 import Monetization from './Monetization';
 import { useTheme } from 'src/themes/useTheme';
+import Theme from './Theme';
 enableScreens();
 
 const Stack = createNativeStackNavigator();
@@ -40,6 +41,7 @@ export default function SettingsNavigator() {
       <Stack.Screen name="Help Center" component={HelpCenter}/>
       <Stack.Screen name="Change Password" component={ChangePassword}/>
       <Stack.Screen name="Monetize Account" component={Monetization}/>
+      <Stack.Screen name="Manage Themes" component={Theme}/>
     </Stack.Navigator>
   );
 }
