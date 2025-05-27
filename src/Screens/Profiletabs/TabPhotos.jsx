@@ -112,7 +112,7 @@ const TabPhotos = ({photos, pendingPhotos}) => {
 
   const imageOptions = [
     {
-      label: 'Open',
+      label: 'Order Archival Print',
       icon: 'open-in-new',
       onPress: () => {
         navigation.navigate('ImageNavigator', {
@@ -124,7 +124,7 @@ const TabPhotos = ({photos, pendingPhotos}) => {
       },
     },
     {
-      label: 'Edit',
+      label: 'View and Edit',
       icon: 'edit',
       onPress: () => {
         navigation.navigate('ImageNavigator', {
