@@ -16,12 +16,14 @@ import Feather from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
 import {useTheme} from 'src/themes/useTheme';
 import api from 'src/utils/apiClient';
+import {useThemeStore} from 'src/store/useThemeStore';
 
 const Settings = () => {
   const {user, clearUser} = useUserStore();
   const [isMonetized, setIsMonetized] = useState(false);
   const [monetizationStatus, setMonetizationStatus] = useState('pending');
   const [isLoading, setIsLoading] = useState(false);
+  const {theme} = useThemeStore();
 
   const navigation = useNavigation();
   const settingsData = [
@@ -42,10 +44,17 @@ const Settings = () => {
       screen: 'Monetize Account',
     },
     {id: '7', icon: 'info', label: 'Help Center', screen: 'Help Center'},
+    {
+      id: '8',
+      icon: theme === 'dark' ?'dark-mode' : 'light-mode',
+      label: 'Theme',
+      screen: 'Theme',
+      isTheme: true,
+    },
   ];
 
-  const theme = useTheme();
-  const style = useMemo(() => createSettingStyles(theme), [theme]);
+  const themeColors = useTheme();
+  const style = useMemo(() => createSettingStyles(themeColors), [themeColors]);
 
   const renderItem = ({item}) => (
     <TouchableOpacity
@@ -63,13 +72,19 @@ const Settings = () => {
                   : monetizationStatus === 'pending'
                   ? 'orange'
                   : 'red'
-                : theme.text
+                : themeColors.text
             }
           />
         </View>
         <Text style={style.itemText}>{item.label}</Text>
       </View>
-      <Feather name="chevron-right" size={24} color={theme.text} />
+      {item.isTheme ? (
+        <Text style={style.itemText}>
+          {theme === 'dark' ? 'Dark' : 'Light'}
+        </Text>
+      ) : (
+        <Feather name="chevron-right" size={24} color={themeColors.text} />
+      )}
     </TouchableOpacity>
   );
 
