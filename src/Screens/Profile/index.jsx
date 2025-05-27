@@ -336,28 +336,30 @@ const Profile = () => {
           <Text style={style.userAddress}>
             {user?.shippingAddress.city}, {user?.shippingAddress.country}
           </Text>
-          <Text style={style.userBio}>
-            {fullBio
-              ? fullBio
-              : user?.bio?.split(' ').length <= 20
-              ? user?.bio
-              : user?.bio?.split(' ').slice(0, 20).join(' ') + '...'}
-          </Text>
-          <Pressable
-            style={{backgroundColor: 'red', width: '90%', paddingVertical: 16}}
-            onPress={() => {
-              if (fullBio) {
-                setFullBio(null);
-              } else {
-                setFullBio(user?.bio);
-              }
-            }}>
-            <Icon
-              name={fullBio ? 'chevron-up' : 'chevron-down'}
-              size={20}
-              color={theme.text}
-            />
-          </Pressable>
+          <View style={{alignItems: 'center'}}>
+            <Text style={style.userBio}>
+              {fullBio
+                ? fullBio
+                : user?.bio?.split(' ').length <= 20
+                ? user?.bio
+                : user?.bio?.split(' ').slice(0, 20).join(' ') + '...'}
+            </Text>
+            <Pressable
+              style={{alignItems: 'center', width: '90%', paddingVertical: 16, marginTop: -20}}
+              onPress={() => {
+                if (fullBio) {
+                  setFullBio(null);
+                } else {
+                  setFullBio(user?.bio);
+                }
+              }}>
+              <Icon
+                name={fullBio ? 'chevron-up' : 'chevron-down'}
+                size={20}
+                color={theme.text}
+              />
+            </Pressable>
+          </View>
         </View>
         <View style={style.accountInfo}>
           <View style={style.summary}>
