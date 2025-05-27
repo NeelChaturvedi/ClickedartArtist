@@ -4,6 +4,8 @@ import {
   TextInput,
   TouchableOpacity,
   ToastAndroid,
+  Modal,
+  Pressable,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import React, {useMemo, useRef, useState} from 'react';
@@ -14,9 +16,11 @@ import {useNavigation} from '@react-navigation/native';
 import {useUserStore} from '../../store/auth';
 import {useRegistrationStore} from '../../store/registration';
 import publicApi from '../../utils/publicApiClient';
-import { useTheme } from 'src/themes/useTheme';
+import {useTheme} from 'src/themes/useTheme';
+import AutoGrowTextInput from '@components/AutoGrowTextInput';
 
 const Login = () => {
+  const [showModal, setShowModal] = useState(false);
   const {reset} = useRegistrationStore();
   const [secure, setSecure] = useState(true);
   const [formData, setFormData] = useState({
@@ -62,7 +66,7 @@ const Login = () => {
             value={formData.email}
             style={styles.inputbox}
             placeholder="Enter Email"
-            placeholderTextColor= "#888"
+            placeholderTextColor="#888"
             textContentType="emailAddress"
             enterKeyHint={formData.password.length === 0 ? 'next' : 'done'}
             autoCapitalize="none"
@@ -85,7 +89,7 @@ const Login = () => {
               value={formData.password}
               style={styles.passwordTextInput}
               placeholder="Enter Password"
-              placeholderTextColor= "#888"
+              placeholderTextColor="#888"
               secureTextEntry={secure}
               autoCapitalize="none"
               autoComplete="password"
@@ -102,8 +106,30 @@ const Login = () => {
               />
             </TouchableOpacity>
           </View>
-          <Text style={styles.forgotPassword}>Forgot Password?</Text>
+          <TouchableOpacity onPress={() => setShowModal(true)}>
+            <Text style={styles.forgotPassword}>Forgot Password?</Text>
+          </TouchableOpacity>
         </View>
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={showModal}
+          onRequestClose={() => {
+            setShowModal(false);
+          }}>
+          <Pressable
+            style={styles.modalContainer}
+            onPress={() => setShowModal(false)}>
+            <Pressable style={styles.modalContent} onPress={() => {}}>
+              <Text style={styles.modalTitle}>Forgot Password</Text>
+              <View style={styles.inputSection}>
+                <Text style={styles.sectionTitle}>Existing Email</Text>
+                <AutoGrowTextInput placeholder={'Enter email'} />
+              </View>
+              <Button btnText="Reset Password" />
+            </Pressable>
+          </Pressable>
+        </Modal>
       </View>
 
       <View style={styles.formField}>
