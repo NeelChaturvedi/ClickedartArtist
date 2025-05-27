@@ -93,7 +93,7 @@ export const catalogueScreenStyles = (theme) => StyleSheet.create({
     height: 150,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#1A1A1A',
+    backgroundColor: theme.card,
     borderRadius: 10,
   },
   noImageText: {

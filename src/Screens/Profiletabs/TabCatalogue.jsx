@@ -18,8 +18,13 @@ import Button from '@components/button';
 import api from 'src/utils/apiClient';
 import {useUserStore} from 'src/store/auth';
 import {useTheme} from 'src/themes/useTheme';
+import { useCataloguesStore } from 'src/store/catalogues';
 
-const TabCatalogues = ({catalogues, photos}) => {
+const TabCatalogues = () => {
+  const {
+      catalogues,
+      // loading: cataloguesLoading,
+    } = useCataloguesStore();
   const navigation = useNavigation();
 
   const {user} = useUserStore();
@@ -41,7 +46,6 @@ const TabCatalogues = ({catalogues, photos}) => {
           screen: 'Catalogue Screen',
           params: {
             id: selectedCatalogue._id,
-            photos: JSON.stringify(photos),
           },
         });
       },

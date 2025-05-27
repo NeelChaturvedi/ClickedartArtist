@@ -16,13 +16,14 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Button from '@components/button';
 import {useUserStore} from 'src/store/auth';
-import { useTheme } from 'src/themes/useTheme';
+import {useTheme} from 'src/themes/useTheme';
+import {usePhotosStore} from 'src/store/photos';
 
 const CatalogueScreen = ({setCatalogueId, modalVisible, setModalVisible}) => {
   const {user} = useUserStore();
   const {id} = useRoute().params;
-  const {photos} = useRoute().params;
-  const photosList = photos ? JSON.parse(photos) : [];
+  const {photos, loading: photosLoading} = usePhotosStore();
+  const photosList = photos || [];
 
   const [slideUp, setSlideUp] = useState(false);
   const [catalogue, setCatalogue] = useState(false);
@@ -83,7 +84,7 @@ const CatalogueScreen = ({setCatalogueId, modalVisible, setModalVisible}) => {
     }
 
     try {
-      const response = await api.post(
+      await api.post(
         '/catalogue/update-catalogue',
         {
           catalogueId: id,
@@ -209,9 +210,6 @@ const CatalogueScreen = ({setCatalogueId, modalVisible, setModalVisible}) => {
                             <FontAwesome name="check" size={14} color="white" />
                           </View>
                         )}
-                        <View style={styles.imageDetails}>
-                          <Text style={styles.imageText}>{photo.title}</Text>
-                        </View>
                       </Pressable>
                     );
                   })}

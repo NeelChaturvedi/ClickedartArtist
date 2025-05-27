@@ -28,9 +28,32 @@ import {API_URL} from '@env';
 import {useTheme} from 'src/themes/useTheme';
 import {useMemo} from 'react';
 import {createProfileStyles} from './styles';
+import {usePhotosStore} from 'src/store/photos';
+import {useAnalyticsStore} from 'src/store/photographerAnalytics';
+import {useCataloguesStore} from 'src/store/catalogues';
+import {useBlogsStore} from 'src/store/blogs';
+import {usePendingPhotosStore} from 'src/store/pendingPhotos';
+import {usePendingBlogsStore} from 'src/store/pendingBlogs';
 
 const Profile = () => {
   const {user, fetchUserFromToken} = useUserStore();
+  const {photos, loading: photosLoading, fetchPhotos} = usePhotosStore();
+  const {stats, loading: statsLoading, fetchStats} = useAnalyticsStore();
+  const {
+    loading: cataloguesLoading,
+    fetchCatalogues,
+  } = useCataloguesStore();
+  const {blogs, loading: blogsLoading, fetchBlogs} = useBlogsStore();
+  const {
+    pendingPhotos,
+    loading: pendingPhotosLoading,
+    fetchPendingPhotos,
+  } = usePendingPhotosStore();
+  const {
+    pendingBlogs,
+    loading: pendingBlogsLoading,
+    fetchPendingBlogs,
+  } = usePendingBlogsStore();
 
   const theme = useTheme();
   const style = useMemo(() => createProfileStyles(theme), [theme]);
@@ -40,18 +63,9 @@ const Profile = () => {
   const [slideUp, setSlideUp] = useState(false);
 
   const [activeTab, setActiveTab] = useState('photos');
-  const [stats, setStats] = useState({});
-  const [photos, setPhotos] = useState([]);
-  const [pendingPhotos, setPendingPhotos] = useState([]);
-  const [catalogues, setCatalogues] = useState([]);
-  const [blogs, setBlogs] = useState([]);
-  const [pendingBlogs, setPendingBlogs] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [profileUploading, setProfileUploading] = useState(false);
   const [fullBio, setFullBio] = useState(null);
-
-  console.log('fullbio:', fullBio);
 
   const onShare = async () => {
     try {
@@ -181,68 +195,23 @@ const Profile = () => {
     setActiveTab(tab);
   };
 
-  const fetchAllData = useCallback(async () => {
-    try {
-      setLoading(true);
-
-      const [
-        statsRes,
-        photosRes,
-        pendingPhotosRes,
-        cataloguesRes,
-        blogsRes,
-        pendingBlogsRes,
-      ] = await Promise.allSettled([
-        api.get(
-          `/photographeranalytics/get-photographer-analytics?photographer=${user._id}`,
-        ),
-        api.get(`/images/get-images-by-photographer?photographer=${user._id}`),
-        api.get(
-          `/photographer/get-pending-images-by-photographer?photographer=${user._id}`,
-        ),
-        api.get(
-          `/catalogue/get-catalogues-by-photographer?photographer=${user._id}`,
-        ),
-        api.get(`/blog/get-my-blogs?author=${user._id}`),
-        api.get(`/blog/get-my-pending-blogs?author=${user._id}`),
-      ]);
-
-      if (statsRes.status === 'fulfilled') {
-        setStats(statsRes.value?.data);
-      } else {
-        setStats({});
-      }
-      if (photosRes.status === 'fulfilled') {
-        setPhotos(photosRes.value?.data?.photos);
-      } else {
-        setPhotos([]);
-      }
-      if (pendingPhotosRes.status === 'fulfilled') {
-        setPendingPhotos(pendingPhotosRes.value?.data?.pendingImages);
-      } else {
-        setPendingPhotos([]);
-      }
-      if (cataloguesRes.status === 'fulfilled') {
-        setCatalogues(cataloguesRes.value?.data?.catalogues);
-      } else {
-        setCatalogues([]);
-      }
-      if (blogsRes.status === 'fulfilled') {
-        setBlogs(blogsRes.value?.data?.blogs);
-      } else {
-        setBlogs([]);
-      }
-      if (pendingBlogsRes.status === 'fulfilled') {
-        setPendingBlogs(pendingBlogsRes.value?.data?.blogs);
-      } else {
-        setPendingBlogs([]);
-      }
-    } catch (error) {
-      console.error('Unexpected error fetching Profile data:', error);
-    } finally {
-      setLoading(false);
-    }
-  }, [user._id]);
+  const fetchAllData = useCallback(() => {
+    console.log('Fetching all data for user:', user._id);
+    fetchPhotos(user._id);
+    fetchStats(user._id);
+    fetchCatalogues(user._id);
+    fetchBlogs(user._id);
+    fetchPendingPhotos(user._id);
+    fetchPendingBlogs(user._id);
+  }, [
+    fetchBlogs,
+    fetchCatalogues,
+    fetchPendingBlogs,
+    fetchPendingPhotos,
+    fetchPhotos,
+    fetchStats,
+    user._id,
+  ]);
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
@@ -255,9 +224,16 @@ const Profile = () => {
       return;
     }
     fetchAllData();
-  }, [user, fetchAllData]);
+  }, [fetchAllData, user]);
 
-  if (loading) {
+  if (
+    photosLoading ||
+    statsLoading ||
+    cataloguesLoading ||
+    blogsLoading ||
+    pendingPhotosLoading ||
+    pendingBlogsLoading
+  ) {
     return (
       <SafeAreaView style={[style.background, {flex: 1}]}>
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -345,7 +321,12 @@ const Profile = () => {
                 : user?.bio?.split(' ').slice(0, 20).join(' ') + '...'}
             </Text>
             <Pressable
-              style={{alignItems: 'center', width: '90%', paddingVertical: 16, marginTop: -20}}
+              style={{
+                alignItems: 'center',
+                width: '90%',
+                paddingVertical: 16,
+                marginTop: -20,
+              }}
               onPress={() => {
                 if (fullBio) {
                   setFullBio(null);
@@ -404,7 +385,7 @@ const Profile = () => {
             {activeTab === 'photos' ? (
               <TabPhotos photos={photos} pendingPhotos={pendingPhotos} />
             ) : activeTab === 'catalogues' ? (
-              <TabCatalogues photos={photos} catalogues={catalogues} />
+              <TabCatalogues />
             ) : (
               <TabBlogs blogs={blogs} pendingBlogs={pendingBlogs} />
             )}

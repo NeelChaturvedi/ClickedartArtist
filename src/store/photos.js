@@ -6,11 +6,11 @@ export const usePhotosStore = create(set => ({
   loading: false,
   error: null,
 
-  fetchPhotos: async photographerId => {
+  fetchPhotos: async (photographerId, pageSize = 20) => {
     set({loading: true, error: null});
     try {
       const res = await api.get(
-        `/images/get-images-by-photographer?photographer=${photographerId}&pageSize=1000`,
+        `/images/get-images-by-photographer?photographer=${photographerId}&pageSize=${pageSize}`,
       );
       set({photos: res.data?.photos, loading: false});
     } catch (error) {
