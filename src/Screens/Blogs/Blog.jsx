@@ -32,6 +32,7 @@ const Blog = ({setBlogSlug, setBlogName, setBlogId, setVal, val}) => {
     try {
       const response = await api.get(`/blog/get-blog-by-id?id=${blogId}`);
       const data = response.data;
+      console.log('Blog data:', data.blog.content.body);
       setBlog(data.blog);
     } catch (error) {
       console.error('Error fetching blog:', error);
@@ -104,7 +105,7 @@ const Blog = ({setBlogSlug, setBlogName, setBlogId, setVal, val}) => {
                 }
 
                 p, span, div, li, h1, h2, h3, h4, h5, h6 {
-                  color: #fff;
+                  color: ${theme.text};
                 }
 
                 *[style*="color: #000"],
@@ -116,16 +117,19 @@ const Blog = ({setBlogSlug, setBlogName, setBlogId, setVal, val}) => {
                 *[style*="color: rgb(1,1,1)"],
                 *[style*="color: black"],
                 *[style*="color: rgba(1,1,1,1)"] {
-                  color: #ffffff !important;
+                  ${theme.text} !important;
                 }
 
                 *[style*="color: rgb(10, 10, 10); background-color: rgb(255, 255, 255);"] {
                   color: rgb(255, 255, 255) !important; 
-                  background-color: rgb(0, 0, 0) !important;
+                  background-color: ${theme.background} !important;
                 }
                 *[style*="background-color: rgb(255, 255, 255); color: rgb(10, 10, 10);"] {
-                  background-color: rgb(0, 0, 0) !important;
-                  color: rgb(255, 255, 255) !important; 
+                  background-color: ${theme.background} !important;
+                  color: ${theme.text} !important; 
+                }
+                *[style*="color: rgb(10, 10, 10)"] {
+                  color: ${theme.text} !important; 
                 }
 
                 a {
