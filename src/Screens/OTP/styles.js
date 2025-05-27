@@ -1,20 +1,15 @@
 import {StyleSheet} from 'react-native';
 
-export const styles = StyleSheet.create({
+export const otpScreenStyles = (theme) => StyleSheet.create({
   background: {
     height: '100%',
     width: '100%',
-    backgroundColor: 'black',
+    backgroundColor: theme.background,
     justifyContent:'center',
     alignItems:'center',
     padding: 20,
     gap: 40,
     position:'relative',
-  },
-  backButtonContainer:{
-    position:'absolute',
-    top: '10%',
-    left:20,
   },
   container: {
     flexDirection:'column',
@@ -26,7 +21,7 @@ export const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 32,
-    color: 'white',
+    color: theme.text,
     fontFamily: 'Outfit-bold',
   },
   subHeadingContainer: {
@@ -35,7 +30,7 @@ export const styles = StyleSheet.create({
   },
   subHeading: {
     fontSize: 18,
-    color: 'white',
+    color: theme.text,
     fontFamily: 'Outfit-medium',
   },
   emailText: {

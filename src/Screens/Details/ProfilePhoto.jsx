@@ -18,7 +18,7 @@ import api from '../../utils/apiClient';
 import {useRegistrationStore} from '../../store/registration';
 import axios from 'axios';
 import {API_URL} from '@env';
-import { useTheme } from 'src/themes/useTheme';
+import {useTheme} from 'src/themes/useTheme';
 
 const requestCameraPermission = async () => {
   if (Platform.OS === 'android') {
@@ -135,18 +135,14 @@ const ProfilePhoto = () => {
 
   const handleRegistration = async () => {
     try {
-      setUploading(true);
-      const res = await api.post('/photographer/register', formData, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      // setUploading(true);
+      const res = await api.post('/photographer/register', formData);
       ToastAndroid.show('Registration successful!', ToastAndroid.SHORT);
       navigation.navigate('OTP');
     } catch (error) {
-      console.error('Upload error:', error.response?.data);
+      console.error('Upload error:', error.response);
     } finally {
-      setUploading(false);
+      // setUploading(false);
     }
   };
 

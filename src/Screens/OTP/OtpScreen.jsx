@@ -1,18 +1,21 @@
-import {View, Text, TouchableOpacity, ToastAndroid} from 'react-native';
-import React from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {styles} from './styles';
-import BackButton from '../../components/Backbutton';
+import {View, Text, TouchableOpacity, ToastAndroid, SafeAreaView} from 'react-native';
+import React, { useMemo } from 'react';
+import {otpScreenStyles} from './styles';
 import OtpInput from '../../components/OtpInput';
 import {useRegistrationStore} from '../../store/registration';
 import api from '../../utils/apiClient';
 import {useNavigation} from '@react-navigation/native';
+import { useTheme } from 'src/themes/useTheme';
 
 const OtpScreen = () => {
   const navigation = useNavigation();
   const {formData} = useRegistrationStore();
   const [otpChecked, setOtpChecked] = React.useState(false);
   const [otpValid, setOtpValid] = React.useState(false);
+
+  const theme = useTheme();
+  const styles = useMemo(() => otpScreenStyles(theme), [theme]);
+
   const handleOtpComplete = async otp => {
     try {
       setOtpChecked(false);
@@ -32,9 +35,6 @@ const OtpScreen = () => {
   };
   return (
     <SafeAreaView style={styles.background}>
-      <View style={styles.backButtonContainer}>
-        <BackButton />
-      </View>
       <View style={styles.container}>
         <View style={styles.headingContainer}>
           <Text style={styles.heading}>OTP Verification</Text>

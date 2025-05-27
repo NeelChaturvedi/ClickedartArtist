@@ -6,10 +6,14 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
+import { useTheme } from 'src/themes/useTheme';
 
 const OtpInput = ({length, onComplete, otpChecked, otpValid}) => {
   const [otp, setOtp] = useState(Array(length).fill(''));
   const inputRefs = useRef([]);
+
+    const theme = useTheme();
+  const styles = getStyles(theme);
 
   useEffect(() => {
     inputRefs.current[0]?.focus();
@@ -56,21 +60,21 @@ const OtpInput = ({length, onComplete, otpChecked, otpValid}) => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'center',
   },
   input: {
     borderWidth: 1,
-    backgroundColor: '#1E1E1E',
-    borderColor: 'gray',
+    backgroundColor: theme.card,
+    borderColor: theme.border,
     width: 50,
     height: 50,
     margin: 5,
     textAlign: 'center',
     fontSize: 20,
-    color: 'white',
+    color: theme.text,
   },
   error: {
     borderColor: 'red',

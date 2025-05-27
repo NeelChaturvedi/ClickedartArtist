@@ -22,7 +22,6 @@ import ImageNavigator from 'src/Navigation/ImageNavigator/ImageNavigator';
 import CatalogueNavigator from 'src/Navigation/CatalogueNavigator/CatalogueNavigator';
 import CheckOut from 'src/Screens/CheckOut/CheckOut';
 import {useTheme} from 'src/themes/useTheme';
-import {style} from 'src/Screens/UploadBlog/styles';
 enableScreens();
 
 const Stack = createNativeStackNavigator();
@@ -71,7 +70,18 @@ export default function App() {
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Register" component={Register} />
             <Stack.Screen name="Details" component={Details} />
-            <Stack.Screen name="OTP" component={OtpScreen} />
+            <Stack.Screen
+              name="OTP"
+              options={{
+                headerShown: true,
+                headerStyle: {
+                  backgroundColor: theme.background,
+                },
+                headerTitle: ' ',
+                headerTintColor: theme.text,
+              }}
+              component={OtpScreen}
+            />
           </>
         ) : (
           <>
