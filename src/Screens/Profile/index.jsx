@@ -39,10 +39,7 @@ const Profile = () => {
   const {user, fetchUserFromToken} = useUserStore();
   const {photos, loading: photosLoading, fetchPhotos} = usePhotosStore();
   const {stats, loading: statsLoading, fetchStats} = useAnalyticsStore();
-  const {
-    loading: cataloguesLoading,
-    fetchCatalogues,
-  } = useCataloguesStore();
+  const {loading: cataloguesLoading, fetchCatalogues} = useCataloguesStore();
   const {blogs, loading: blogsLoading, fetchBlogs} = useBlogsStore();
   const {
     pendingPhotos,
@@ -356,7 +353,9 @@ const Profile = () => {
           </View>
           <View style={style.summary}>
             <Text style={style.title}>PHOTOS</Text>
-            <Text style={style.count}>{stats?.totalUploadingImgCount || 0}</Text>
+            <Text style={style.count}>
+              {stats?.totalUploadingImgCount || 0}
+            </Text>
           </View>
           <View style={style.summary}>
             <Text style={style.title}>DOWNLOADS</Text>
