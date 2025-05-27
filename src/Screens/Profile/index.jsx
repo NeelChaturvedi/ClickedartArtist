@@ -356,11 +356,11 @@ const Profile = () => {
           </View>
           <View style={style.summary}>
             <Text style={style.title}>PHOTOS</Text>
-            <Text style={style.count}>{stats.totalUploadingImgCount || 0}</Text>
+            <Text style={style.count}>{stats?.totalUploadingImgCount || 0}</Text>
           </View>
           <View style={style.summary}>
             <Text style={style.title}>DOWNLOADS</Text>
-            <Text style={style.count}>{stats.downloads || 0}</Text>
+            <Text style={style.count}>{stats?.downloads || 0}</Text>
           </View>
         </View>
         <View style={style.stickyTabs}>
