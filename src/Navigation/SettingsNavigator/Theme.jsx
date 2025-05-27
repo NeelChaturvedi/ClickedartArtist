@@ -20,34 +20,34 @@ const Theme = () => {
         <TouchableOpacity
           style={styles.radioContainer}
           onPress={() => setTheme('light')}>
+          <Text style={styles.label}>Light</Text>
           <View
             style={[
               styles.radio,
               userPreference === 'light' && styles.selected,
             ]}
           />
-          <Text style={styles.label}>Light</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.radioContainer}
           onPress={() => setTheme('dark')}>
+          <Text style={styles.label}>Dark</Text>
           <View
             style={[styles.radio, userPreference === 'dark' && styles.selected]}
           />
-          <Text style={styles.label}>Dark</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.radioContainer}
           onPress={() => setTheme('system')}>
+          <Text style={styles.label}>System</Text>
           <View
             style={[
               styles.radio,
               userPreference === 'system' && styles.selected,
             ]}
           />
-          <Text style={styles.label}>System</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -65,6 +65,7 @@ const getStyles = theme =>
     },
     container: {
       width: '80%',
+      gap: 5,
     },
     title: {
       fontSize: 20,
@@ -75,6 +76,7 @@ const getStyles = theme =>
     },
     radioContainer: {
       flexDirection: 'row',
+      justifyContent: 'space-between',
       alignItems: 'center',
       marginBottom: 15,
     },
