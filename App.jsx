@@ -11,7 +11,7 @@ import Details from './src/Navigation/AuthStack';
 import SettingsNavigator from './src/Navigation/SettingsNavigator/SettingsNavigator';
 import OtpScreen from './src/Screens/OTP/OtpScreen';
 import BlogNavigator from './src/Navigation/BlogNavigator/BlogNavigator';
-import {ActivityIndicator, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {View} from 'moti';
 import ProfileEditScreen from 'src/Screens/ProfileEdit/ProfileEditScreen';
@@ -22,6 +22,7 @@ import ImageNavigator from 'src/Navigation/ImageNavigator/ImageNavigator';
 import CatalogueNavigator from 'src/Navigation/CatalogueNavigator/CatalogueNavigator';
 import CheckOut from 'src/Screens/CheckOut/CheckOut';
 import {useTheme} from 'src/themes/useTheme';
+import LottieView from 'lottie-react-native';
 enableScreens();
 
 const Stack = createNativeStackNavigator();
@@ -30,6 +31,7 @@ export default function App() {
   const {loadToken, user} = useUserStore();
   const [isLoading, setIsLoading] = React.useState(true);
   const {isOnboardingCompleted, loadOnboardingStatus} = useOnboardingStore();
+  const [timeOut, setTimeOut] = React.useState(false);
 
   const theme = useTheme();
   const styles = getStyles(theme);
@@ -44,15 +46,27 @@ export default function App() {
     checkStatus();
   }, [loadOnboardingStatus, loadToken]);
 
-  if (isLoading) {
-    return (
-      <SafeAreaView style={styles.loadingContainer}>
-        <View style={styles.loader}>
-          <ActivityIndicator size={'large'} color="#ed3147" />
-        </View>
-      </SafeAreaView>
-    );
-  }
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setTimeOut(true);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // if (!isLoading || !timeOut) {
+  //   return (
+  //     <SafeAreaView style={styles.loadingContainer}>
+  //       <View style={styles.loader}>
+  //         <LottieView
+  //           style={styles.animation}
+  //           source={require('./src/assets/animations/Company.json')}
+  //           autoPlay
+  //           loop
+  //         />
+  //       </View>
+  //     </SafeAreaView>
+  //   );
+  // }
 
   return (
     <NavigationContainer>
@@ -169,5 +183,9 @@ const getStyles = theme =>
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
+    },
+    animation: {
+      width: 200,
+      height: 200,
     },
   });
