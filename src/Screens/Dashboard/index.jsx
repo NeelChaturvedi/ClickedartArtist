@@ -94,7 +94,7 @@ const Dashboard = () => {
     fetchStats();
   }, [fetchStats]);
 
-  if (loading) {
+  if (!loading) {
     return (
       <SafeAreaView style={style.background}>
         <DashboardSkeleton />
