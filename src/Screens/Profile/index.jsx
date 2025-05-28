@@ -316,7 +316,8 @@ const Profile = () => {
                 ? user?.bio
                 : user?.bio?.split(' ').slice(0, 20).join(' ') + '...'}
             </Text>
-            <Pressable
+            { user?.bio?.split(' ').length > 20 && (
+              <Pressable
               style={{
                 alignItems: 'center',
                 width: '90%',
@@ -336,6 +337,7 @@ const Profile = () => {
                 color={theme.text}
               />
             </Pressable>
+            )}
           </View>
         </View>
         <View style={style.accountInfo}>
