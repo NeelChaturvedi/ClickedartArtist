@@ -6,6 +6,7 @@ import Button from '../../components/button';
 import {MotiText} from 'moti';
 import {useOnboardingStore} from '../../store/onboarding';
 import Switch from '../../components/switch';
+import CompanyIcon from '../../assets/svgs/ClickedArtLogo.svg';
 
 const Onboarding = () => {
   const {setOnboardingCompleted} = useOnboardingStore();
@@ -61,20 +62,24 @@ const Onboarding = () => {
               </Text>
             </TouchableOpacity>
 
-            <Text style={styles.title}>ClickedArt Artists</Text>
-            <MotiText
-              key={screenText[currentIndex].text}
-              style={styles.subtitle}
-              from={{opacity: 0}}
-              animate={{opacity: 1}}
-              exit={{opacity: 0}}
-              transition={{
-                type: 'spring',
-                duration: 500,
-                easing: 'ease-in-out',
-              }}>
-              {screenText[currentIndex].text}
-            </MotiText>
+            <View style={{alignItems:'center', justifyContent: 'center', gap: 20}}>
+              <View style={styles.logo}>
+                <CompanyIcon width={150} height={150} />
+              </View>
+              <MotiText
+                key={screenText[currentIndex].text}
+                style={styles.subtitle}
+                from={{opacity: 0}}
+                animate={{opacity: 1}}
+                exit={{opacity: 0}}
+                transition={{
+                  type: 'spring',
+                  duration: 500,
+                  easing: 'ease-in-out',
+                }}>
+                {screenText[currentIndex].text}
+              </MotiText>
+            </View>
           </View>
           <View style={styles.buttonContainer}>
             <Switch

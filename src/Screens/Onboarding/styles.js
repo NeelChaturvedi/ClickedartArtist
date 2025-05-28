@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   backgroundImage: {
@@ -40,5 +40,10 @@ export const styles = StyleSheet.create({
   buttonContainer: {
     width: '100%',
     gap: 50,
+  },
+  logo:{
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
