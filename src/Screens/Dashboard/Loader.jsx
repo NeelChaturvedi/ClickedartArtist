@@ -8,12 +8,14 @@ const DashboardSkeleton = () => {
   const theme = useTheme();
   return (
     <SkeletonPlaceholder speed={800} backgroundColor={theme.loaderBackground} highlightColor={theme.loaderColor}>
-      <View style={{gap: 20, marginTop: 20}}>
+      <View style={{gap: 30, marginTop: 20}}>
         {/* Filter & Button */}
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <View style={{width: '48%', height: 60, borderRadius: 8}} />
-          <View style={{width: '48%', height: 60, borderRadius: 8}} />
+          <View style={{width: '48%', height: 58, borderRadius: 8}} />
+          <View style={{width: '48%', height: 58, borderRadius: 8}} />
         </View>
+
+        <View style={{width:110, height: 30}}/>
 
         {/* Sales Metrics Section */}
         <View
@@ -25,9 +27,9 @@ const DashboardSkeleton = () => {
             borderColor: theme.border,
             borderWidth: 2,
           }}>
-          <View style={{width: 120, height: 20, borderRadius: 4}} />
+          <View style={{width: 120, height: 40, borderRadius: 4}} />
           {[...Array(3)].map((_, i) => (
-            <View key={i} style={{width: '80%', height: 20, borderRadius: 6}} />
+            <View key={i} style={{width: '100%', height: 60, borderRadius: 6}} />
           ))}
         </View>
 
@@ -41,9 +43,9 @@ const DashboardSkeleton = () => {
             borderColor: theme.border,
             borderWidth: 2,
           }}>
-          <View style={{width: 160, height: 20, borderRadius: 4}} />
+          <View style={{width: 160, height: 40, borderRadius: 4}} />
           {[...Array(2)].map((_, i) => (
-            <View key={i} style={{width: '94%', height: 20, borderRadius: 6}} />
+            <View key={i} style={{width: '100%', height: 60, borderRadius: 6}} />
           ))}
         </View>
 
@@ -57,9 +59,9 @@ const DashboardSkeleton = () => {
             borderColor: theme.border,
             borderWidth: 2,
           }}>
-          <View style={{width: 100, height: 20, borderRadius: 4}} />
+          <View style={{width: 100, height: 40, borderRadius: 4}} />
           {[...Array(4)].map((_, i) => (
-            <View key={i} style={{width: '76%', height: 20, borderRadius: 6}} />
+            <View key={i} style={{width: '100%', height: 60, borderRadius: 6}} />
           ))}
         </View>
       </View>
