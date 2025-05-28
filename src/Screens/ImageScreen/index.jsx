@@ -12,6 +12,7 @@ import {
   Dimensions,
   Pressable,
   ToastAndroid,
+  RefreshControl,
 } from 'react-native';
 import React, {useEffect, useMemo, useState} from 'react';
 import {imageScreenStyles} from './styles';
@@ -26,7 +27,8 @@ import api from 'src/utils/apiClient';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useCartStore from 'src/store/cart';
 import {MotiView} from 'moti';
-import { useTheme } from 'src/themes/useTheme';
+import {useTheme} from 'src/themes/useTheme';
+import ImageDetailsSkeleton from './Loader';
 
 const ImageScreen = ({setImageTitle}) => {
   const {imageData} = useRoute().params;
@@ -51,6 +53,7 @@ const ImageScreen = ({setImageTitle}) => {
   const [selectedSize, setSelectedSize] = useState(null);
   const [price, setPrice] = useState(0);
   const [inCart, setInCart] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const theme = useTheme();
   const styles = useMemo(() => imageScreenStyles(theme), [theme]);
@@ -256,6 +259,14 @@ const ImageScreen = ({setImageTitle}) => {
   const widthPercent = clampedWidth;
   const imgWidth = (widthPercent / 100) * screenWidth;
 
+  if (loading) {
+    return (
+      <SafeAreaView style={styles.background}>
+        <ImageDetailsSkeleton />
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.background}>
       <KeyboardAvoidingView
@@ -263,6 +274,17 @@ const ImageScreen = ({setImageTitle}) => {
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         <View style={{flex: 1}}>
           <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={loading}
+                onRefresh={() => {
+                  setLoading(true);
+                  setTimeout(() => {
+                    setLoading(false);
+                  }, 1000);
+                }}
+              />
+            }
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{padding: 20, gap: 40}}>
             <LinearGradient
@@ -373,11 +395,7 @@ const ImageScreen = ({setImageTitle}) => {
                       backgroundColor: 'rgba(0, 0, 0, 0.5)',
                       justifyContent: 'center',
                     }}>
-                    <Icon
-                      name="palette"
-                      size={20}
-                      color="white"
-                    />
+                    <Icon name="palette" size={20} color="white" />
                   </View>
                 </Pressable>
                 <Modal
@@ -483,7 +501,11 @@ const ImageScreen = ({setImageTitle}) => {
                     }}>
                     {image?.location && (
                       <View style={{flexDirection: 'row', gap: 10}}>
-                        <Icon name="location-pin" size={16} color={theme.text} />
+                        <Icon
+                          name="location-pin"
+                          size={16}
+                          color={theme.text}
+                        />
                         <Text style={styles.aboutText}>
                           {image?.location || 'N/A'}
                         </Text>
@@ -491,7 +513,11 @@ const ImageScreen = ({setImageTitle}) => {
                     )}
                     {image?.cameraDetails?.camera && (
                       <View style={{flexDirection: 'row', gap: 10}}>
-                        <Icon name="photo-camera" size={16} color={theme.text} />
+                        <Icon
+                          name="photo-camera"
+                          size={16}
+                          color={theme.text}
+                        />
                         <Text style={styles.aboutText}>
                           {image?.cameraDetails?.camera || 'N/A'}
                         </Text>
@@ -511,7 +537,11 @@ const ImageScreen = ({setImageTitle}) => {
                     )}
                     {image?.cameraDetails?.settings?.shutterSpeed && (
                       <View style={{flexDirection: 'row', gap: 10}}>
-                        <Icon name="shutter-speed" size={16} color={theme.text} />
+                        <Icon
+                          name="shutter-speed"
+                          size={16}
+                          color={theme.text}
+                        />
                         <Text style={styles.aboutText}>
                           {image?.cameraDetails?.settings?.shutterSpeed ||
                             'N/A'}

@@ -17,8 +17,8 @@ const OrderCardSkeleton = () => {
           borderRadius={4}>
           <View
             style={{
-              borderWidth: 2,
-              borderColor: theme.border,
+              borderWidth: 0.5,
+              borderColor: theme.loaderBackground,
               borderRadius: 12,
               marginBottom: 16,
               paddingVertical: 10,

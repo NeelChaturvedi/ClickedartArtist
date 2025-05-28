@@ -24,8 +24,8 @@ const DashboardSkeleton = () => {
             borderRadius: 10,
             padding: 16,
             gap: 14,
-            borderColor: theme.border,
-            borderWidth: 2,
+            borderColor: theme.loaderBackground,
+            borderWidth: 0.5,
           }}>
           <View style={{width: 120, height: 40, borderRadius: 4}} />
           {[...Array(3)].map((_, i) => (
@@ -40,8 +40,8 @@ const DashboardSkeleton = () => {
             borderRadius: 10,
             padding: 20,
             gap: 14,
-            borderColor: theme.border,
-            borderWidth: 2,
+            borderColor: theme.loaderBackground,
+            borderWidth: 0.5,
           }}>
           <View style={{width: 160, height: 40, borderRadius: 4}} />
           {[...Array(2)].map((_, i) => (
@@ -56,8 +56,8 @@ const DashboardSkeleton = () => {
             borderRadius: 10,
             padding: 20,
             gap: 14,
-            borderColor: theme.border,
-            borderWidth: 2,
+            borderColor: theme.loaderBackground,
+            borderWidth: 0.5,
           }}>
           <View style={{width: 100, height: 40, borderRadius: 4}} />
           {[...Array(4)].map((_, i) => (
