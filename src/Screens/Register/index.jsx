@@ -75,6 +75,7 @@ const Register = () => {
       });
       navigation.navigate('Details');
     } catch (error) {
+      console.log(error.response)
       if (error.response) {
         if (error.response.status === 409) {
           if (error.response.data.usernameExists) {
