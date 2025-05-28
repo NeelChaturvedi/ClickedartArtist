@@ -4,7 +4,8 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {createDashboardStyles} from './styles';
 import FilterDate from '../../components/FilterDate';
 import {ScrollView} from 'moti';
-import {Dimensions, RefreshControl, Text, View} from 'react-native';
+import dayjs from 'dayjs';
+import {RefreshControl, Text, View} from 'react-native';
 import Values from '../../components/Values';
 import api from '../../utils/apiClient';
 import {useUserStore} from '../../store/auth';
@@ -54,6 +55,7 @@ const Dashboard = () => {
     if (!user._id) {
       return;
     }
+    console.log('Fetching stats for user:', user._id);
     try {
       setLoading(true);
       const res = await api.get(
@@ -70,25 +72,41 @@ const Dashboard = () => {
     } finally {
       setLoading(false);
     }
-  }, [user._id]);
+  }, [user?._id]);
 
   const fetchCustomStats = useCallback(async () => {
-    if (!user._id) {
+    if (!user?._id || !dateRange.startDate || !dateRange.endDate) {
+      console.log('Missing user ID or date range, skipping fetch');
       return;
     }
+    console.log(
+      'Fetching custom stats for user:',
+      user._id,
+      'from',
+      dateRange.startDate,
+      'to',
+      dateRange.endDate,
+    );
     try {
       setLoading(true);
       const res = await api.get(
-        `/photographeranalytics/custom-analytics-by-date?photographer=${user._id}&startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`,
+        `/photographeranalytics/custom-analytics-by-date?photographer=${
+          user._id
+        }&startDate=${dayjs(dateRange.startDate).format(
+          'YYYY-MM-DD',
+        )}&endDate=${dayjs(dateRange.endDate).format('YYYY-MM-DD')}`,
       );
       setStats(res.data);
       setIsCustomDate(true);
     } catch (error) {
-      console.log(error.response);
+      console.error(
+        'Error fetching custom stats:',
+        error.response?.data || error,
+      );
     } finally {
       setLoading(false);
     }
-  }, [dateRange.endDate, dateRange.startDate, user._id]);
+  }, [dateRange.startDate, dateRange.endDate, user?._id]);
 
   useEffect(() => {
     fetchStats();

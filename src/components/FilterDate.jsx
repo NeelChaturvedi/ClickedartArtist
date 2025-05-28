@@ -4,9 +4,10 @@ import DatePicker from 'react-native-date-picker';
 import dayjs from 'dayjs';
 import { useTheme } from 'src/themes/useTheme';
 
-const FilterDate = ({dateRange, setDateRange, fetchCustomStats}) => {
+const FilterDate = ({ dateRange, setDateRange, fetchCustomStats }) => {
   const [openPicker, setOpenPicker] = useState(false);
   const [isStart, setIsStart] = useState(true);
+  const [shouldFetch, setShouldFetch] = useState(false);
 
   const handleDateConfirm = date => {
     if (isStart) {
@@ -16,7 +17,7 @@ const FilterDate = ({dateRange, setDateRange, fetchCustomStats}) => {
           startDate: dateRange.endDate,
         }));
       } else {
-        setDateRange(prev => ({...prev, startDate: date}));
+        setDateRange(prev => ({ ...prev, startDate: date }));
       }
     } else {
       if (!dateRange.startDate || date < dateRange.startDate) {
@@ -25,19 +26,21 @@ const FilterDate = ({dateRange, setDateRange, fetchCustomStats}) => {
           endDate: dateRange.startDate,
         }));
       } else {
-        setDateRange(prev => ({...prev, endDate: date}));
+        setDateRange(prev => ({ ...prev, endDate: date }));
       }
     }
+    setShouldFetch(true); // Set flag to trigger fetch
     setOpenPicker(false);
   };
 
   useEffect(() => {
-    if (dateRange.startDate && dateRange.endDate) {
+    if (shouldFetch && dateRange.startDate && dateRange.endDate) {
       fetchCustomStats();
+      setShouldFetch(false); // Reset flag after fetching
     }
-  }, [dateRange.startDate, dateRange.endDate, fetchCustomStats]);
+  }, [dateRange.startDate, dateRange.endDate, fetchCustomStats, shouldFetch]);
 
-    const theme = useTheme();
+  const theme = useTheme();
   const style = getStyles(theme);
 
   return (

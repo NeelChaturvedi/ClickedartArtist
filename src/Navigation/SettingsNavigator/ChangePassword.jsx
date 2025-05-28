@@ -27,8 +27,10 @@ const ChangePassword = () => {
   const [newPassword, setNewPassword] = useState('');
   const [verifyPassword, setVerifyPassword] = useState('');
   const [error, setError] = useState({});
+  const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [secure, setSecure] = useState(true);
+  const [secureCurrent, setSecureCurrent] = useState(true);
   const [secureVerify, setSecureVerify] = useState(true);
 
   const navigation = useNavigation();
@@ -76,12 +78,17 @@ const ChangePassword = () => {
         newPassword: newPassword,
         oldPassword: currentPassword,
       });
+      setCurrentPassword('');
       setNewPassword('');
       setVerifyPassword('');
+      setErrorMessage('');
+      setSecure(true);
+      setSecureCurrent(true);
+      setSecureVerify(true);
       ToastAndroid.show('Password changed successfully', ToastAndroid.SHORT);
       navigation.goBack();
     } catch (err) {
-      console.error(err);
+      setErrorMessage(err.response?.data?.message || 'An error occurred');
     } finally {
       setLoading(false);
     }
@@ -104,15 +111,15 @@ const ChangePassword = () => {
                     style={{color: 'white', flex: 1}}
                     placeholder="Enter Password"
                     placeholderTextColor="#888888"
-                    secureTextEntry={secure}
+                    secureTextEntry={secureCurrent}
                     value={currentPassword}
                     autoCapitalize="none"
                     autoCorrect={false}
                     onChangeText={text => setCurrentPassword(text)}
                   />
-                  <TouchableOpacity onPress={() => setSecure(!secure)}>
+                  <TouchableOpacity onPress={() => setSecureCurrent(!secureCurrent)}>
                     <FontAwesome5Icon
-                      name={secure ? 'eye-slash' : 'eye'}
+                      name={secureCurrent ? 'eye-slash' : 'eye'}
                       size={20}
                       color={theme.text}
                     />
@@ -170,11 +177,16 @@ const ChangePassword = () => {
                   </TouchableOpacity>
                 </View>
                 {error.verifyPassword && (
-                  <Text style={{color: 'red'}}>
-                    {error.verifyPassword}
-                  </Text>
+                  <Text style={{color: 'red'}}>{error.verifyPassword}</Text>
                 )}
               </View>
+              {errorMessage ? (
+                <Text style={{color: 'red'}}>
+                  {errorMessage === 'Password not matched'
+                    ? 'Current password is incorrect'
+                    : errorMessage}
+                </Text>
+              ) : null}
             </View>
             <View style={{marginTop: 30}}>
               <Button
