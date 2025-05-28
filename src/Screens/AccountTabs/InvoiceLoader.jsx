@@ -3,11 +3,16 @@
 import React from 'react';
 import {View} from 'react-native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import {useTheme} from 'src/themes/useTheme';
 
 const InvoiceSkeleton = () => {
+  const theme = useTheme();
   return (
     <>
-      <SkeletonPlaceholder>
+      <SkeletonPlaceholder
+        speed={800}
+        backgroundColor={theme.loaderBackground}
+        highlightColor={theme.loaderColor}>
         <View
           style={{
             width: '100%',
@@ -19,8 +24,9 @@ const InvoiceSkeleton = () => {
         />
       </SkeletonPlaceholder>
       <SkeletonPlaceholder
-        backgroundColor="#E1E9EE"
-        highlightColor="#F2F8FC"
+        speed={800}
+        backgroundColor={theme.loaderBackground}
+        highlightColor={theme.loaderColor}
         borderRadius={4}>
         <View
           style={{

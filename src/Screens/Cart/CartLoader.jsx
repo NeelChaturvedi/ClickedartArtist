@@ -9,7 +9,10 @@ const CartSkeleton = () => {
   const theme = useTheme();
   return (
     <>
-      <SkeletonPlaceholder>
+      <SkeletonPlaceholder
+        speed={800}
+        backgroundColor={theme.loaderBackground}
+        highlightColor={theme.loaderColor}>
         <View
           style={{
             width: '50%',
@@ -25,8 +28,9 @@ const CartSkeleton = () => {
         {[...Array(4)].map((_, index) => (
           <SkeletonPlaceholder
             key={index}
-            backgroundColor="#E1E9EE"
-            highlightColor="#F2F8FC"
+            speed={800}
+            backgroundColor={theme.loaderBackground}
+            highlightColor={theme.loaderColor}
             borderRadius={4}>
             {/* Card with border only */}
             <View

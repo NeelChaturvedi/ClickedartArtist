@@ -11,8 +11,9 @@ const OrderCardSkeleton = () => {
       {[...Array(3)].map((_, index) => (
         <SkeletonPlaceholder
           key={index}
-          backgroundColor="#E1E9EE"
-          highlightColor="#F2F8FC"
+          speed={800}
+          backgroundColor={theme.loaderBackground}
+          highlightColor={theme.loaderColor}
           borderRadius={4}>
           <View
             style={{

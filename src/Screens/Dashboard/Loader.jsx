@@ -7,7 +7,7 @@ import {useTheme} from 'src/themes/useTheme';
 const DashboardSkeleton = () => {
   const theme = useTheme();
   return (
-    <SkeletonPlaceholder>
+    <SkeletonPlaceholder speed={800} backgroundColor={theme.loaderBackground} highlightColor={theme.loaderColor}>
       <View style={{gap: 20, marginTop: 20}}>
         {/* Filter & Button */}
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
