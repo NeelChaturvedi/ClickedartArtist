@@ -22,7 +22,7 @@ import api from 'src/utils/apiClient';
 import {useUserStore} from 'src/store/auth';
 import MultiSelectModal from '@components/MultiSelectModal';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import { useTheme } from 'src/themes/useTheme';
+import {useTheme} from 'src/themes/useTheme';
 
 const EditImage = () => {
   const {user} = useUserStore();
@@ -171,6 +171,18 @@ const EditImage = () => {
     }
   }, [photo]);
 
+  useEffect(() => {
+    if (updatedPhoto?.imageLinks?.thumbnail) {
+      Image.getSize(updatedPhoto.imageLinks.thumbnail, (width, height) => {
+        const aspectRatio = width / height;
+        setUpdatedPhoto(prev => ({
+          ...prev,
+          aspectRatio,
+        }));
+      });
+    }
+  }, [updatedPhoto?.imageLinks?.thumbnail]);
+
   return (
     <SafeAreaView style={styles.background}>
       <KeyboardAvoidingView
@@ -185,27 +197,28 @@ const EditImage = () => {
               {updatedPhoto?.imageLinks?.thumbnail ? (
                 <Image
                   source={{uri: updatedPhoto?.imageLinks?.thumbnail}}
-                  style={styles.image}
+                  style={[
+                    styles.image,
+                    {aspectRatio: updatedPhoto?.aspectRatio || 1},
+                  ]}
                 />
               ) : processing ? (
-                <>
-                  <View style={[styles.image, {position: 'relative'}]}>
-                    <View
-                      style={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: [{translateX: -25}, {translateY: -25}],
-                        zIndex: 1,
-                      }}>
-                      <ActivityIndicator size={50} color={'#ed3147'} />
-                    </View>
-                    <Image
-                      source={{uri: imageUri}}
-                      style={[styles.image, {opacity: 0.5}]}
-                    />
+                <View style={[styles.image, {position: 'relative'}]}>
+                  <View
+                    style={{
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      transform: [{translateX: -25}, {translateY: -25}],
+                      zIndex: 1,
+                    }}>
+                    <ActivityIndicator size={50} color={'#ed3147'} />
                   </View>
-                </>
+                  <Image
+                    source={{uri: imageUri}}
+                    style={[styles.image, {opacity: 0.5}]}
+                  />
+                </View>
               ) : (
                 <>
                   <Icon name="warning" size={24} color="white" />
