@@ -39,7 +39,7 @@ export const useUserStore = create((set, get) => ({
         const res = await api.get('/user/get-user-profile-by-token');
         set({user: res.data.user});
       } catch (error) {
-        console.error('Failed to fetch user:', error.response);
+        console.log('Failed to fetch user:', error.response);
         await get().clearUser();
       }
     } else {
