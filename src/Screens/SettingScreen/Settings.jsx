@@ -1,10 +1,10 @@
+/* eslint-disable react-native/no-inline-styles */
 import {
   SafeAreaView,
   View,
   FlatList,
   Text,
   TouchableOpacity,
-  ActivityIndicator,
 } from 'react-native';
 import React, {useMemo, useState} from 'react';
 import {createSettingStyles} from './styles';
@@ -17,6 +17,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useTheme} from 'src/themes/useTheme';
 import api from 'src/utils/apiClient';
 import {useThemeStore} from 'src/store/useThemeStore';
+import SettingsLoader from './SettingsLoader';
 
 const Settings = () => {
   const {user, clearUser} = useUserStore();
@@ -123,9 +124,7 @@ const Settings = () => {
   if (isLoading) {
     return (
       <SafeAreaView style={style.background}>
-        <View style={style.loadingContainer}>
-          <ActivityIndicator size="large" color="#ED3147" />
-        </View>
+        <SettingsLoader />
       </SafeAreaView>
     );
   }
@@ -140,7 +139,9 @@ const Settings = () => {
           renderItem={renderItem}
           showsVerticalScrollIndicator={false}
         />
-        <Button btnText={'LogOut'} onPress={clearUser} />
+        <View style={{width: '100%', paddingHorizontal: 16}}>
+          <Button btnText={'LogOut'} onPress={clearUser} />
+        </View>
       </View>
     </SafeAreaView>
   );

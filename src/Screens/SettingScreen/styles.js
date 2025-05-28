@@ -6,7 +6,6 @@ export const createSettingStyles = (theme) =>
       backgroundColor: theme.background,
       flex: 1,
       width: '100%',
-      alignItems: 'center',
     },
     container: {
       flex: 1,
