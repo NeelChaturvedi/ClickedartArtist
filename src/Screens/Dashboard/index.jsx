@@ -55,7 +55,6 @@ const Dashboard = () => {
     if (!user._id) {
       return;
     }
-    console.log('Fetching stats for user:', user._id);
     try {
       setLoading(true);
       const res = await api.get(
@@ -79,14 +78,6 @@ const Dashboard = () => {
       console.log('Missing user ID or date range, skipping fetch');
       return;
     }
-    console.log(
-      'Fetching custom stats for user:',
-      user._id,
-      'from',
-      dateRange.startDate,
-      'to',
-      dateRange.endDate,
-    );
     try {
       setLoading(true);
       const res = await api.get(
