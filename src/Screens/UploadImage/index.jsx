@@ -17,6 +17,7 @@ import {
 import React, {useEffect, useMemo, useState} from 'react';
 import {uploadImageStyles} from './style';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import Accordion from '@components/Accordian';
 import Button from '@components/button';
 import AutoGrowTextInput from '@components/AutoGrowTextInput';
@@ -42,6 +43,20 @@ const s3 = new AWS.S3({
   region: AWS_REGION,
   signatureVersion: 'v4',
 });
+
+// const setHeaderLeft = (navigation, step) => {
+//   navigation.setOptions({
+//     headerLeft: () => (
+//       <Pressable
+//         title="Go Back"
+//         onPress={() => {
+//           console.log('Back pressed');
+//         }}>
+//         <MaterialIcon icons="arrow-back" size={24} color="white" />
+//       </Pressable>
+//     ),
+//   });
+// };
 
 const UploadImage = () => {
   const {user} = useUserStore();
@@ -475,6 +490,10 @@ const UploadImage = () => {
     }
   }, [photo?.imageLinks?.image]);
 
+  // useEffect(() => {
+  //   setHeaderLeft(navigation);
+  // }, [navigation]);
+
   return (
     <SafeAreaView style={styles.background}>
       <KeyboardAvoidingView
@@ -487,7 +506,12 @@ const UploadImage = () => {
               <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.container}>
-                <Pressable style={styles.uploadContainer} onPress={pickImage}>
+                <Pressable
+                  style={[
+                    styles.uploadContainer,
+                    {minHeight: photo?.imageLinks?.image ? 0 : 200},
+                  ]}
+                  onPress={pickImage}>
                   {imageUri && !uploading ? (
                     <Image
                       source={{uri: imageUri}}

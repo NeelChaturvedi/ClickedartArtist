@@ -10,8 +10,6 @@ enableScreens();
 const Stack = createNativeStackNavigator();
 
 export default function ImageNavigator() {
-  const [imageTitle, setImageTitle] = React.useState('');
-
   const theme = useTheme();
   return (
     <Stack.Navigator
@@ -22,20 +20,25 @@ export default function ImageNavigator() {
           backgroundColor: theme.background,
         },
         headerTitleAlign: 'center',
-        headerTitle: imageTitle,
         headerTintColor: theme.text,
       }}>
       <Stack.Screen
         name="ImageScreen"
-        children={props => (
-          <ImageScreen {...props} setImageTitle={setImageTitle} />
-        )}
+        options={({route}) => ({
+          title: route.params?.title
+            ? route.params?.title
+            : 'Image Detail',
+        })}
+        children={props => <ImageScreen {...props} />}
       />
       <Stack.Screen
         name="EditImage"
-        children={props => (
-          <EditImage {...props} setImageTitle={setImageTitle} />
-        )}
+        options={({route}) => ({
+          title: route.params?.title
+            ? route.params?.title
+            : 'Image Detail',
+        })}
+        children={props => <EditImage {...props} />}
       />
     </Stack.Navigator>
   );
