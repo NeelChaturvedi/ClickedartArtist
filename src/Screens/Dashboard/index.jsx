@@ -4,13 +4,14 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {createDashboardStyles} from './styles';
 import FilterDate from '../../components/FilterDate';
 import {ScrollView} from 'moti';
-import {Dimensions, Text, View} from 'react-native';
+import {Dimensions, RefreshControl, Text, View} from 'react-native';
 import Values from '../../components/Values';
 import api from '../../utils/apiClient';
 import {useUserStore} from '../../store/auth';
 import {LineChart} from 'react-native-chart-kit';
 import Button from '@components/button';
-import { useTheme } from 'src/themes/useTheme';
+import {useTheme} from 'src/themes/useTheme';
+import DashboardSkeleton from './Loader';
 
 const Dashboard = () => {
   const {user} = useUserStore();
@@ -25,7 +26,9 @@ const Dashboard = () => {
   const salesData = monthlyData.map(
     data => data.sales + data.printCutAmount * 10,
   );
-  const royaltyData = monthlyData.map(data => data.royaltyAmount + data.printCutAmount);
+  const royaltyData = monthlyData.map(
+    data => data.royaltyAmount + data.printCutAmount,
+  );
   const monthNames = [
     'Jan',
     'Feb',
@@ -90,45 +93,65 @@ const Dashboard = () => {
   useEffect(() => {
     fetchStats();
   }, [fetchStats]);
+
+  if (loading) {
+    return (
+      <SafeAreaView style={style.background}>
+        <DashboardSkeleton />
+      </SafeAreaView>
+    );
+  }
   return (
     <SafeAreaView style={style.background}>
-      <View gap={20}>
-        <FilterDate
-          dateRange={dateRange}
-          setDateRange={setDateRange}
-          fetchCustomStats={fetchCustomStats}
-        />
-        {isCustomDate && (
-          <Button
-            btnText={'Fetch Overall'}
-            onPress={() => {
-              fetchStats();
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={loading}
+            onRefresh={() => {
+              if (isCustomDate) {
+                fetchCustomStats();
+              } else {
+                fetchStats();
+              }
             }}
           />
-        )}
-      </View>
-      <ScrollView
+        }
         contentContainerStyle={{gap: 20}}
         showsVerticalScrollIndicator={false}>
-          {isCustomDate ? (
-            <Text style={style.smallText}>
-              {dateRange.startDate &&
-                new Date(dateRange.startDate).toLocaleDateString('en-IN', {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit',
-                })}{' '}
-              -{' '}
-              {dateRange.endDate &&
-                new Date(dateRange.endDate).toLocaleDateString('en-IN', {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit',
-                })}
-            </Text>
-          ) : (
-            <Text style={style.smallText}>Overall Data</Text>
+        <View gap={20}>
+          <FilterDate
+            dateRange={dateRange}
+            setDateRange={setDateRange}
+            fetchCustomStats={fetchCustomStats}
+          />
+          {isCustomDate && (
+            <Button
+              btnText={'Fetch Overall'}
+              onPress={() => {
+                fetchStats();
+              }}
+            />
           )}
+        </View>
+        {isCustomDate ? (
+          <Text style={style.smallText}>
+            {dateRange.startDate &&
+              new Date(dateRange.startDate).toLocaleDateString('en-IN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+              })}{' '}
+            -{' '}
+            {dateRange.endDate &&
+              new Date(dateRange.endDate).toLocaleDateString('en-IN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+              })}
+          </Text>
+        ) : (
+          <Text style={style.smallText}>Overall Data</Text>
+        )}
         <View style={style.sections}>
           <Text style={style.title}>SALES METRICS</Text>
           <View gap={14}>

@@ -6,9 +6,9 @@ import {
   FlatList,
   RefreshControl,
   ScrollView,
-  ActivityIndicator,
   Pressable,
   Linking,
+  SafeAreaView,
 } from 'react-native';
 import {createAccountStyles} from './styles';
 import SearchBar from '../../components/SearchBar';
@@ -17,6 +17,7 @@ import api from '../../utils/apiClient';
 import SlideUpModal from '@components/SlideupModal';
 import {Share} from 'react-native';
 import {useTheme} from 'src/themes/useTheme';
+import InvoiceSkeleton from './InvoiceLoader';
 
 const Invoices = () => {
   const {user} = useUserStore();
@@ -124,11 +125,9 @@ const Invoices = () => {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
-        <View>
-          <ActivityIndicator size="large" color="#ED3147" />
-        </View>
-      </View>
+      <SafeAreaView style={{padding: 16}}>
+        <InvoiceSkeleton />
+      </SafeAreaView>
     );
   }
 

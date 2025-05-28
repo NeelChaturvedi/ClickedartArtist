@@ -1,66 +1,72 @@
+/* eslint-disable react-native/no-inline-styles */
+// loader.js
 import React from 'react';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import {View} from 'react-native';
 
 const ProfileSkeleton = () => {
   return (
-    <SkeletonPlaceholder borderRadius={4}>
-      <SkeletonPlaceholder.Item>
-        {/* Cover Image */}
-        <SkeletonPlaceholder.Item height={180} width="100%" />
+    <SkeletonPlaceholder>
+      <View style={{height: 200}}>
+        {/* Cover image */}
+        <View style={{height: '70%', width: '100%'}} />
 
-        {/* Profile Image */}
-        <SkeletonPlaceholder.Item
-          width={80}
-          height={80}
-          borderRadius={40}
-          alignSelf="center"
-          marginTop={-40}
-        />
-
-        {/* Name & Address */}
-        <SkeletonPlaceholder.Item alignItems="center" marginTop={10}>
-          <SkeletonPlaceholder.Item width={120} height={20} borderRadius={4} />
-          <SkeletonPlaceholder.Item
-            width={100}
-            height={15}
-            borderRadius={4}
-            marginTop={6}
+        {/* Profile image */}
+        <View
+          style={{
+            position: 'absolute',
+            top: '40%',
+            left: '50%',
+            transform: [{translateX: -55}],
+          }}>
+          <View
+            style={{
+              height: 110,
+              width: 110,
+              borderRadius: 100,
+              borderWidth: 6,
+            }}
           />
-        </SkeletonPlaceholder.Item>
+        </View>
+      </View>
 
-        {/* Bio */}
-        <SkeletonPlaceholder.Item alignItems="center" marginTop={10}>
-          <SkeletonPlaceholder.Item width="90%" height={40} borderRadius={4} />
-        </SkeletonPlaceholder.Item>
+      {/* User name and address */}
+      <View style={{alignItems: 'center', marginTop: 20}}>
+        <View style={{width: 120, height: 20, borderRadius: 4}} />
+        <View
+          style={{
+            width: 100,
+            height: 16,
+            borderRadius: 4,
+            marginTop: 10,
+          }}
+        />
+        <View
+          style={{
+            width: '90%',
+            height: 60,
+            borderRadius: 4,
+            marginTop: 20,
+          }}
+        />
+      </View>
 
-        {/* Stats */}
-        <SkeletonPlaceholder.Item
-          flexDirection="row"
-          justifyContent="space-around"
-          marginTop={20}>
-          {[1, 2, 3].map(index => (
-            <SkeletonPlaceholder.Item key={index} alignItems="center">
-              <SkeletonPlaceholder.Item width={60} height={15} />
-              <SkeletonPlaceholder.Item
-                width={40}
-                height={20}
-                borderRadius={4}
-                marginTop={4}
-              />
-            </SkeletonPlaceholder.Item>
-          ))}
-        </SkeletonPlaceholder.Item>
 
-        {/* Tabs */}
-        <SkeletonPlaceholder.Item
-          flexDirection="row"
-          justifyContent="space-around"
-          marginTop={20}>
-          {[1, 2, 3].map(index => (
-            <SkeletonPlaceholder.Item key={index} width={70} height={20} />
-          ))}
-        </SkeletonPlaceholder.Item>
-      </SkeletonPlaceholder.Item>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+          marginTop: 30,
+        }}>
+        {[...Array(3)].map((_, index) => (
+          <View key={index} style={{alignItems: 'center'}}>
+            <View
+              style={{width: 40, height: 14, borderRadius: 4, marginBottom: 10}}
+            />
+            <View style={{width: 40, height: 28, borderRadius: 4}} />
+          </View>
+        ))}
+      </View>
     </SkeletonPlaceholder>
   );
 };

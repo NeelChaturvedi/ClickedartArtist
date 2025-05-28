@@ -1,19 +1,21 @@
 import {
   Image,
+  RefreshControl,
   ScrollView,
   Text,
   ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useMemo } from 'react';
+import React, {useMemo} from 'react';
 import {createCartStyles} from './styles';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '@components/button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import useCartStore from 'src/store/cart';
-import { useNavigation } from '@react-navigation/native';
-import { useTheme } from 'src/themes/useTheme';
+import {useNavigation} from '@react-navigation/native';
+import {useTheme} from 'src/themes/useTheme';
+import CartSkeleton from './CartLoader';
 
 const Cart = () => {
   const {removeItemFromCart, cartItems} = useCartStore();
@@ -26,12 +28,35 @@ const Cart = () => {
     );
   };
 
+  const [isLoading, setIsLoading] = React.useState(false);
+
   const theme = useTheme();
   const styles = useMemo(() => createCartStyles(theme), [theme]);
   const navigation = useNavigation();
+
+  if (isLoading) {
+    return (
+      <SafeAreaView style={styles.background}>
+        <CartSkeleton />
+      </SafeAreaView>
+    );
+  }
   return (
     <SafeAreaView style={styles.background}>
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={isLoading}
+            onRefresh={() => {
+              setIsLoading(true);
+              setTimeout(() => {
+                setIsLoading(false);
+              }, 2000);
+            }}
+            tintColor="#000"
+          />
+        }
+        contentContainerStyle={styles.container}>
         <Text style={styles.header}>Order Summary</Text>
         <View>
           {cartItems?.map((product, index) => (
@@ -52,7 +77,9 @@ const Cart = () => {
                         : product.imageInfo?.photographer?.name}
                     </Text>
                   </View>
-                  <Text style={styles.price}>₹ {product.subTotal?.toFixed(2)}</Text>
+                  <Text style={styles.price}>
+                    ₹ {product.subTotal?.toFixed(2)}
+                  </Text>
                 </View>
                 <TouchableOpacity
                   style={styles.removeIcon}
@@ -84,7 +111,10 @@ const Cart = () => {
       </ScrollView>
       {cartItems?.length > 0 && (
         <View style={styles.btnContainer}>
-          <Button btnText={'CheckOut'} onPress={() => navigation.navigate('Place Order')} />
+          <Button
+            btnText={'CheckOut'}
+            onPress={() => navigation.navigate('Place Order')}
+          />
         </View>
       )}
     </SafeAreaView>

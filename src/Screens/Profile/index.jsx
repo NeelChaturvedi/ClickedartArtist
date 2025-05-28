@@ -7,7 +7,6 @@ import {
   View,
   Share,
   Alert,
-  ActivityIndicator,
   ToastAndroid,
   TouchableOpacity,
 } from 'react-native';
@@ -34,6 +33,7 @@ import {useCataloguesStore} from 'src/store/catalogues';
 import {useBlogsStore} from 'src/store/blogs';
 import {usePendingPhotosStore} from 'src/store/pendingPhotos';
 import {usePendingBlogsStore} from 'src/store/pendingBlogs';
+import ProfileSkeleton from './Loader';
 
 const Profile = () => {
   const {user, fetchUserFromToken} = useUserStore();
@@ -234,9 +234,7 @@ const Profile = () => {
   ) {
     return (
       <SafeAreaView style={[style.background, {flex: 1}]}>
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <ActivityIndicator size={'large'} color="#ed3147" />
-        </View>
+        <ProfileSkeleton/>
       </SafeAreaView>
     );
   }

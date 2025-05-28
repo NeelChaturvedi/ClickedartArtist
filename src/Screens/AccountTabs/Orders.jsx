@@ -7,10 +7,10 @@ import {
   FlatList,
   RefreshControl,
   ScrollView,
-  ActivityIndicator,
   Pressable,
   Modal,
   ToastAndroid,
+  SafeAreaView,
 } from 'react-native';
 import {createAccountStyles} from './styles';
 import {useUserStore} from '../../store/auth';
@@ -21,6 +21,7 @@ import Button from '@components/button';
 import DropdownModal from '@components/DropdownModal';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useTheme} from 'src/themes/useTheme';
+import OrderSkeleton from './OrderLoader';
 
 const Orders = () => {
   const {user} = useUserStore();
@@ -194,11 +195,9 @@ const Orders = () => {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
-        <View>
-          <ActivityIndicator size="large" color="#ED3147" />
-        </View>
-      </View>
+      <SafeAreaView style={styles.container}>
+        <OrderSkeleton/>
+      </SafeAreaView>
     );
   }
 
