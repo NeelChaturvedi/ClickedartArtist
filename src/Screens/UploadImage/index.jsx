@@ -34,7 +34,7 @@ import {useUserStore} from 'src/store/auth';
 import axios from 'axios';
 import MultiSelectModal from '@components/MultiSelectModal';
 import {useNavigation} from '@react-navigation/native';
-import { useTheme } from 'src/themes/useTheme';
+import {useTheme} from 'src/themes/useTheme';
 
 const s3 = new AWS.S3({
   accessKeyId: AWS_ACCESS_KEY_ID,
@@ -224,7 +224,7 @@ const UploadImage = () => {
     setErrors({});
     // setLoading(true);
     try {
-      const response = await api.post('/images/add-image-in-vault', photo);
+      await api.post('/images/add-image-in-vault', photo);
       Alert.alert('Success', 'Image uploaded and is under review');
       setImageUri(null);
       navigation.goBack();
@@ -463,6 +463,18 @@ const UploadImage = () => {
     fetchPhotos();
   }, [user]);
 
+  useEffect(() => {
+    if (photo?.imageLinks?.image) {
+      Image.getSize(photo.imageLinks.image, (width, height) => {
+        const aspectRatio = width / height;
+        setPhoto(prev => ({
+          ...prev,
+          aspectRatio,
+        }));
+      });
+    }
+  }, [photo?.imageLinks?.image]);
+
   return (
     <SafeAreaView style={styles.background}>
       <KeyboardAvoidingView
@@ -477,7 +489,13 @@ const UploadImage = () => {
                 contentContainerStyle={styles.container}>
                 <Pressable style={styles.uploadContainer} onPress={pickImage}>
                   {imageUri && !uploading ? (
-                    <Image source={{uri: imageUri}} style={styles.image} />
+                    <Image
+                      source={{uri: imageUri}}
+                      style={[
+                        styles.image,
+                        {aspectRatio: photo?.aspectRatio || 1},
+                      ]}
+                    />
                   ) : uploading ? (
                     <View>
                       <ActivityIndicator size={50} />
@@ -614,7 +632,10 @@ const UploadImage = () => {
                   {photo.imageLinks?.thumbnail ? (
                     <Image
                       source={{uri: photo.imageLinks?.thumbnail}}
-                      style={styles.image}
+                      style={[
+                        styles.image,
+                        {aspectRatio: photo?.aspectRatio || 1},
+                      ]}
                     />
                   ) : processing ? (
                     <>
