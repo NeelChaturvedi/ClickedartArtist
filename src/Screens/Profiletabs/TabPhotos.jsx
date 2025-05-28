@@ -119,6 +119,7 @@ const TabPhotos = ({photos, pendingPhotos}) => {
           screen: 'ImageScreen',
           params: {
             imageData: JSON.stringify(selectedImage),
+            title: selectedImage.title,
           },
         });
       },
@@ -131,6 +132,7 @@ const TabPhotos = ({photos, pendingPhotos}) => {
           screen: 'EditImage',
           params: {
             id: selectedImage._id,
+            title: selectedImage.title,
           },
         });
       },

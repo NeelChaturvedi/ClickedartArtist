@@ -30,7 +30,7 @@ import {MotiView} from 'moti';
 import {useTheme} from 'src/themes/useTheme';
 import ImageDetailsSkeleton from './Loader';
 
-const ImageScreen = ({setImageTitle}) => {
+const ImageScreen = () => {
   const {imageData} = useRoute().params;
   const image = React.useMemo(
     () => (imageData ? JSON.parse(imageData) : {}),
@@ -226,11 +226,11 @@ const ImageScreen = ({setImageTitle}) => {
     }
   }, [papers]);
 
-  useEffect(() => {
-    if (image) {
-      setImageTitle(image.title);
-    }
-  }, [image, setImageTitle]);
+  // useEffect(() => {
+  //   if (image) {
+  //     setImageTitle(image.title);
+  //   }
+  // }, [image, setImageTitle]);
 
   const minHSize = 10 * 18;
   const maxHSize = 44 * 72;

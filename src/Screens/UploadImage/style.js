@@ -22,7 +22,7 @@ export const uploadImageStyles = theme =>
       borderColor: theme.border,
       width: '100%',
       backgroundColor: theme.card,
-      overflow: 'hidden', // Ensure no overflow issues
+      overflow: 'hidden',
     },
     image: {
       width: '100%',
@@ -81,7 +81,8 @@ export const uploadImageStyles = theme =>
       backgroundColor: '#ED3147',
     },
     buttonsContainer: {
-      paddingHorizontal: 0,
+      paddingHorizontal: 20,
+      paddingVertical: 30,
       flexDirection: 'row',
       justifyContent: 'space-between',
     },

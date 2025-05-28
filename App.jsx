@@ -124,9 +124,8 @@ export default function App() {
                 headerStyle: {
                   backgroundColor: theme.background,
                 },
-                headerTitle: {
-                  color: theme.text,
-                },
+                title: 'Upload Image',
+                headerTitleAlign: 'center',
                 headerTintColor: theme.text,
               }}
               component={UploadImage}
