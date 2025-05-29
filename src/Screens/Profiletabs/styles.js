@@ -7,8 +7,13 @@ export const createTabStyles = (theme) => StyleSheet.create({
     // gap: 6,
     paddingHorizontal: 10,
   },
+  ImageContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    // gap: 6,
+  },
   imageBorder: {
-    width: '33.33%',
+    width: '50%',
     padding: 2,
     aspectRatio: 1,
   },

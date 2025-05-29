@@ -197,7 +197,7 @@ const TabPhotos = ({pendingPhotos}) => {
   ];
 
   return (
-    <View style={styles.container}>
+    <View style={styles.ImageContainer}>
       {pendingPhotos?.map((item, index) => (
         <Pressable
           key={index}
@@ -227,7 +227,7 @@ const TabPhotos = ({pendingPhotos}) => {
           onPress={() => {
             setSelectedImage(item);
           }}>
-          <Image
+          <FastImage
             style={styles.image}
             source={{uri: item.imageLinks.thumbnail}}
           />
