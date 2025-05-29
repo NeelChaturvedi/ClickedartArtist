@@ -22,6 +22,7 @@ import DropdownModal from '@components/DropdownModal';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useTheme} from 'src/themes/useTheme';
 import OrderSkeleton from './OrderLoader';
+import {MotiView} from 'moti';
 
 const Orders = () => {
   const {user} = useUserStore();
@@ -196,7 +197,7 @@ const Orders = () => {
   if (loading) {
     return (
       <SafeAreaView style={styles.container}>
-        <OrderSkeleton/>
+        <OrderSkeleton />
       </SafeAreaView>
     );
   }
@@ -222,76 +223,86 @@ const Orders = () => {
   }
 
   const renderItem = ({item}) => (
-    <Pressable
-      onPress={() => {
-        setSelectedOrder(item);
-        setSlideUp(true);
-      }}
-      style={styles.orderCard}>
-      {item.orderItems?.map((orderItem, index) => (
-        <View key={index} style={styles.cardContent}>
-          <View style={styles.textSection}>
-            <Text style={styles.title}>{orderItem.imageInfo.image.title}</Text>
-            <Text style={styles.orderType}>
-              Order Type -{' '}
-              {item.printStatus === 'no-print' ? 'Digital' : 'Print'}
-            </Text>
-            <View
-              style={{
-                backgroundColor:
-                  item.printStatus === 'no-print' ||
-                  item.printStatus === 'completed' ||
-                  item.printStatus === 'delivered'
-                    ? '#63D471'
-                    : item.printStatus === 'pending' ||
-                      item.printStatus === 'processing'
-                    ? '#FFB800'
-                    : item.printStatus === 'cancelled' ||
-                      item.printStatus === 'returned'
-                    ? '#FF3D00'
-                    : '#00BFFF',
-                paddingHorizontal: 12,
-                paddingVertical: 4,
-                borderRadius: 12,
-                alignSelf: 'flex-start',
-              }}>
-              <Text style={styles.statusText}>
-                {item.printStatus === 'no-print'
-                  ? item.orderStatus
-                  : item.printStatus}
+    <MotiView
+      from={{opacity: 0}}
+      animate={{opacity: 1}}
+      transition={{type: 'timing', duration: 350}}
+      style={{width: '100%'}}>
+      <Pressable
+        onPress={() => {
+          setSelectedOrder(item);
+          setSlideUp(true);
+        }}
+        style={styles.orderCard}>
+        {item.orderItems?.map((orderItem, index) => (
+          <View key={index} style={styles.cardContent}>
+            <View style={styles.textSection}>
+              <Text style={styles.title}>
+                {orderItem.imageInfo.image.title}
               </Text>
+              <Text style={styles.orderType}>
+                Order Type -{' '}
+                {item.printStatus === 'no-print' ? 'Digital' : 'Print'}
+              </Text>
+              <View
+                style={{
+                  backgroundColor:
+                    item.printStatus === 'no-print' ||
+                    item.printStatus === 'completed' ||
+                    item.printStatus === 'delivered'
+                      ? '#63D471'
+                      : item.printStatus === 'pending' ||
+                        item.printStatus === 'processing'
+                      ? '#FFB800'
+                      : item.printStatus === 'cancelled' ||
+                        item.printStatus === 'returned'
+                      ? '#FF3D00'
+                      : '#00BFFF',
+                  paddingHorizontal: 12,
+                  paddingVertical: 4,
+                  borderRadius: 12,
+                  alignSelf: 'flex-start',
+                }}>
+                <Text style={styles.statusText}>
+                  {item.printStatus === 'no-print'
+                    ? item.orderStatus
+                    : item.printStatus}
+                </Text>
+              </View>
             </View>
+            <Image
+              source={{uri: orderItem.imageInfo.image.imageLinks?.thumbnail}}
+              style={styles.image}
+            />
           </View>
-          <Image
-            source={{uri: orderItem.imageInfo.image.imageLinks?.thumbnail}}
-            style={styles.image}
-          />
-        </View>
-      ))}
+        ))}
 
-      <View style={styles.metaSection}>
-        <View style={styles.shippingSection}>
-          <Text style={styles.metaLabel}>SHIPPING ADDRESS</Text>
-          <Text style={styles.metaText}>{`${
-            item.shippingAddress?.address &&
-            `${item.shippingAddress?.address}, `
-          }${item.shippingAddress?.area && `${item.shippingAddress?.area}, `}${
-            item.shippingAddress?.city
-          }, ${item.shippingAddress?.state}`}</Text>
+        <View style={styles.metaSection}>
+          <View style={styles.shippingSection}>
+            <Text style={styles.metaLabel}>SHIPPING ADDRESS</Text>
+            <Text style={styles.metaText}>{`${
+              item.shippingAddress?.address &&
+              `${item.shippingAddress?.address}, `
+            }${
+              item.shippingAddress?.area && `${item.shippingAddress?.area}, `
+            }${item.shippingAddress?.city}, ${
+              item.shippingAddress?.state
+            }`}</Text>
+          </View>
+          <View style={styles.dateSection}>
+            <Text style={styles.metaLabel}>DATE</Text>
+            <Text style={styles.metaText}>
+              {item.createdAt &&
+                new Date(item.createdAt).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+            </Text>
+          </View>
         </View>
-        <View style={styles.dateSection}>
-          <Text style={styles.metaLabel}>DATE</Text>
-          <Text style={styles.metaText}>
-            {item.createdAt &&
-              new Date(item.createdAt).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-          </Text>
-        </View>
-      </View>
-    </Pressable>
+      </Pressable>
+    </MotiView>
   );
 
   return (

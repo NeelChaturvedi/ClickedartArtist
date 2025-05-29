@@ -2,7 +2,6 @@
 import {
   Pressable,
   RefreshControl,
-  ScrollView,
   Text,
   View,
   Share,
@@ -11,7 +10,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
-import {Image} from 'moti';
+import {Image, ScrollView} from 'moti';
 import {useUserStore} from '../../store/auth';
 import TabPhotos from '../Profiletabs/TabPhotos';
 import TabCatalogues from '../Profiletabs/TabCatalogue';
@@ -234,7 +233,7 @@ const Profile = () => {
   ) {
     return (
       <SafeAreaView style={[style.background, {flex: 1}]}>
-        <ProfileSkeleton/>
+        <ProfileSkeleton />
       </SafeAreaView>
     );
   }
@@ -242,6 +241,9 @@ const Profile = () => {
   return (
     <SafeAreaView style={[style.background, {flex: 1}]}>
       <ScrollView
+        from={{opacity: 0.3}}
+        animate={{opacity: 1}}
+        transition={{type: 'timing', duration: 300}}
         stickyHeaderIndices={[3]}
         stickyHeaderHiddenOnScroll={true}
         showsVerticalScrollIndicator={false}
@@ -316,27 +318,27 @@ const Profile = () => {
                 ? user?.bio
                 : user?.bio?.split(' ').slice(0, 20).join(' ') + '...'}
             </Text>
-            { user?.bio?.split(' ').length > 20 && (
+            {user?.bio?.split(' ').length > 20 && (
               <Pressable
-              style={{
-                alignItems: 'center',
-                width: '90%',
-                paddingVertical: 16,
-                marginTop: -20,
-              }}
-              onPress={() => {
-                if (fullBio) {
-                  setFullBio(null);
-                } else {
-                  setFullBio(user?.bio);
-                }
-              }}>
-              <Icon
-                name={fullBio ? 'chevron-up' : 'chevron-down'}
-                size={20}
-                color={theme.text}
-              />
-            </Pressable>
+                style={{
+                  alignItems: 'center',
+                  width: '90%',
+                  paddingVertical: 16,
+                  marginTop: -20,
+                }}
+                onPress={() => {
+                  if (fullBio) {
+                    setFullBio(null);
+                  } else {
+                    setFullBio(user?.bio);
+                  }
+                }}>
+                <Icon
+                  name={fullBio ? 'chevron-up' : 'chevron-down'}
+                  size={20}
+                  color={theme.text}
+                />
+              </Pressable>
             )}
           </View>
         </View>

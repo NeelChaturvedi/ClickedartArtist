@@ -1,4 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
+import {MotiView} from 'moti';
 import React from 'react';
 import {View} from 'react-native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
@@ -9,88 +10,93 @@ const OrderCardSkeleton = () => {
   return (
     <>
       {[...Array(3)].map((_, index) => (
-        <SkeletonPlaceholder
-          key={index}
-          speed={800}
-          backgroundColor={theme.loaderBackground}
-          highlightColor={theme.loaderColor}
-          borderRadius={4}>
-          <View
-            style={{
-              borderWidth: 0.5,
-              borderColor: theme.loaderBackground,
-              borderRadius: 12,
-              marginBottom: 16,
-              paddingVertical: 10,
-              paddingHorizontal: 14,
-              rowGap: 16,
-            }}>
+        <MotiView
+          from={{opacity: 1}}
+          animate={{opacity: 0}}
+          transition={{type: 'timing', duration: 300}}
+          key={index}>
+          <SkeletonPlaceholder
+            speed={800}
+            backgroundColor={theme.loaderBackground}
+            highlightColor={theme.loaderColor}
+            borderRadius={4}>
             <View
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginBottom: 20,
+                borderWidth: 0.5,
+                borderColor: theme.loaderBackground,
+                borderRadius: 12,
+                marginBottom: 16,
+                paddingVertical: 10,
+                paddingHorizontal: 14,
+                rowGap: 16,
               }}>
               <View
                 style={{
-                  flex: 1,
-                  alignItems: 'flex-start',
-                  gap: 8,
-                  paddingRight: 10,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: 20,
                 }}>
-                <View style={{width: '80%', height: 16, borderRadius: 4}} />
-                <View style={{width: '50%', height: 14, borderRadius: 4}} />
-                <View style={{width: 100, height: 18, borderRadius: 12}} />
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: 'flex-start',
+                    gap: 8,
+                    paddingRight: 10,
+                  }}>
+                  <View style={{width: '80%', height: 16, borderRadius: 4}} />
+                  <View style={{width: '50%', height: 14, borderRadius: 4}} />
+                  <View style={{width: 100, height: 18, borderRadius: 12}} />
+                </View>
+                <View
+                  style={{
+                    width: 60,
+                    height: 60,
+                    borderRadius: 8,
+                  }}
+                />
               </View>
+
               <View
                 style={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: 8,
-                }}
-              />
-            </View>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginTop: 10,
-              }}>
-              <View style={{width: '48%'}}>
-                <View style={{width: '60%', height: 14, borderRadius: 4}} />
-                <View
-                  style={{
-                    width: '100%',
-                    height: 14,
-                    borderRadius: 4,
-                    marginTop: 6,
-                  }}
-                />
-                <View
-                  style={{
-                    width: '80%',
-                    height: 14,
-                    borderRadius: 4,
-                    marginTop: 4,
-                  }}
-                />
-              </View>
-              <View style={{width: '48%', alignItems: 'flex-end'}}>
-                <View style={{width: '50%', height: 14, borderRadius: 4}} />
-                <View
-                  style={{
-                    width: '70%',
-                    height: 14,
-                    borderRadius: 4,
-                    marginTop: 6,
-                  }}
-                />
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginTop: 10,
+                }}>
+                <View style={{width: '48%'}}>
+                  <View style={{width: '60%', height: 14, borderRadius: 4}} />
+                  <View
+                    style={{
+                      width: '100%',
+                      height: 14,
+                      borderRadius: 4,
+                      marginTop: 6,
+                    }}
+                  />
+                  <View
+                    style={{
+                      width: '80%',
+                      height: 14,
+                      borderRadius: 4,
+                      marginTop: 4,
+                    }}
+                  />
+                </View>
+                <View style={{width: '48%', alignItems: 'flex-end'}}>
+                  <View style={{width: '50%', height: 14, borderRadius: 4}} />
+                  <View
+                    style={{
+                      width: '70%',
+                      height: 14,
+                      borderRadius: 4,
+                      marginTop: 6,
+                    }}
+                  />
+                </View>
               </View>
             </View>
-          </View>
-        </SkeletonPlaceholder>
+          </SkeletonPlaceholder>
+        </MotiView>
       ))}
     </>
   );

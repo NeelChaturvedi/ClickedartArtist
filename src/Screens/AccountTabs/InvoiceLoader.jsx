@@ -1,5 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 // InvoiceSkeleton.js
+import {MotiView} from 'moti';
 import React from 'react';
 import {View} from 'react-native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
@@ -8,7 +9,10 @@ import {useTheme} from 'src/themes/useTheme';
 const InvoiceSkeleton = () => {
   const theme = useTheme();
   return (
-    <>
+    <MotiView
+      from={{opacity: 1}}
+      animate={{opacity: 0}}
+      transition={{type: 'timing', duration: 350}}>
       <SkeletonPlaceholder
         speed={800}
         backgroundColor={theme.loaderBackground}
@@ -16,9 +20,8 @@ const InvoiceSkeleton = () => {
         <View
           style={{
             width: '100%',
-            height: 50,
+            height: 40,
             borderRadius: 8,
-            marginTop: 0,
             marginBottom: 16,
           }}
         />
@@ -31,10 +34,10 @@ const InvoiceSkeleton = () => {
         <View
           style={{
             borderWidth: 1,
-            borderColor: '#ccc',
+            borderColor: theme.loaderBackground,
             borderRadius: 10,
             paddingHorizontal: 16,
-            paddingVertical: 20,
+            paddingVertical: 10,
             marginBottom: 12,
           }}>
           {/* Top Row: Invoice ID and Amount */}
@@ -43,9 +46,9 @@ const InvoiceSkeleton = () => {
               flexDirection: 'row',
               justifyContent: 'space-between',
               alignItems: 'center',
-              marginBottom: 12,
+              marginBottom: 10,
             }}>
-            <View style={{width: 120, height: 20, borderRadius: 4}} />
+            <View style={{width: 140, height: 20, borderRadius: 4}} />
             <View style={{width: 80, height: 20, borderRadius: 4}} />
           </View>
 
@@ -56,19 +59,19 @@ const InvoiceSkeleton = () => {
               justifyContent: 'space-between',
               alignItems: 'center',
             }}>
-            <View style={{width: 140, height: 16, borderRadius: 4}} />
+            <View style={{width: 90, height: 12, borderRadius: 4}} />
 
             <View
               style={{
-                width: 60,
-                height: 24,
+                width: 80,
+                height: 20,
                 borderRadius: 12,
               }}
             />
           </View>
         </View>
       </SkeletonPlaceholder>
-    </>
+    </MotiView>
   );
 };
 

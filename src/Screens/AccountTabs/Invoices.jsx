@@ -18,6 +18,7 @@ import SlideUpModal from '@components/SlideupModal';
 import {Share} from 'react-native';
 import {useTheme} from 'src/themes/useTheme';
 import InvoiceSkeleton from './InvoiceLoader';
+import {MotiView} from 'moti';
 
 const Invoices = () => {
   const {user} = useUserStore();
@@ -31,9 +32,10 @@ const Invoices = () => {
   const theme = useTheme();
   const styles = useMemo(() => createAccountStyles(theme), [theme]);
 
-  const filteredData = invoices?.filter(item =>
-    item.invoiceId?.toLowerCase().includes(search?.trim().toLowerCase()) ||
-    item.paymentStatus?.toLowerCase().includes(search?.trim().toLowerCase()),
+  const filteredData = invoices?.filter(
+    item =>
+      item.invoiceId?.toLowerCase().includes(search?.trim().toLowerCase()) ||
+      item.paymentStatus?.toLowerCase().includes(search?.trim().toLowerCase()),
   );
 
   const onShare = async () => {
@@ -93,34 +95,40 @@ const Invoices = () => {
   }, [fetchInvoices]);
 
   const renderItem = ({item}) => (
-    <Pressable
-      onPress={() => {
-        setSlideUp(true);
-        setSelectedInvoice(item);
-      }}
-      style={styles.invoiceCard}>
-      <View style={styles.row}>
-        <Text style={styles.invoiceText}>{item.invoiceId}</Text>
-        <Text style={styles.amount}>&#8377;{item.totalAmountPayable}</Text>
-      </View>
-      <View style={styles.row}>
-        <Text style={styles.date}>
-          {item.createdAt &&
-            new Date(item.createdAt).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: '2-digit',
-            })}
-        </Text>
-        <View
-          style={[
-            styles.statusBadge,
-            item.paymentStatus === 'paid' ? styles.paid : styles.pending,
-          ]}>
-          <Text style={styles.invoiceStatus}>{item.paymentStatus}</Text>
+    <MotiView
+      from={{opacity: 0}}
+      animate={{opacity: 1}}
+      exit={{opacity: 0}}
+      exitTransition={{type: 'timing', duration: 300}}>
+      <Pressable
+        onPress={() => {
+          setSlideUp(true);
+          setSelectedInvoice(item);
+        }}
+        style={styles.invoiceCard}>
+        <View style={styles.row}>
+          <Text style={styles.invoiceText}>{item.invoiceId}</Text>
+          <Text style={styles.amount}>&#8377;{item.totalAmountPayable}</Text>
         </View>
-      </View>
-    </Pressable>
+        <View style={styles.row}>
+          <Text style={styles.date}>
+            {item.createdAt &&
+              new Date(item.createdAt).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: '2-digit',
+              })}
+          </Text>
+          <View
+            style={[
+              styles.statusBadge,
+              item.paymentStatus === 'paid' ? styles.paid : styles.pending,
+            ]}>
+            <Text style={styles.invoiceStatus}>{item.paymentStatus}</Text>
+          </View>
+        </View>
+      </Pressable>
+    </MotiView>
   );
 
   if (loading) {

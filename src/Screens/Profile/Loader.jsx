@@ -3,12 +3,15 @@
 import React from 'react';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import {View} from 'react-native';
-import { useTheme } from 'src/themes/useTheme';
+import {useTheme} from 'src/themes/useTheme';
 
 const ProfileSkeleton = () => {
   const theme = useTheme();
   return (
-    <SkeletonPlaceholder speed={800} backgroundColor={theme.loaderBackground} highlightColor={theme.loaderColor}>
+    <SkeletonPlaceholder
+      speed={800}
+      backgroundColor={theme.loaderBackground}
+      highlightColor={theme.loaderColor}>
       <View style={{height: 200}}>
         {/* Cover image */}
         <View style={{height: '70%', width: '100%'}} />
