@@ -215,9 +215,9 @@ const TabPhotos = ({photos, pendingPhotos}) => {
             style={styles.image}
             source={{uri: item.imageLinks.thumbnail}}
           />
-          <View style={styles.imageDetails}>
+          {/* <View style={styles.imageDetails}>
             <Text style={styles.imageText}>{item.title}</Text>
-          </View>
+          </View> */}
         </Pressable>
       ))}
       <SlideUpModal
