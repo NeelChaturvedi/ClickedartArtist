@@ -19,6 +19,7 @@ import api from 'src/utils/apiClient';
 import {useUserStore} from 'src/store/auth';
 import {useTheme} from 'src/themes/useTheme';
 import { useCataloguesStore } from 'src/store/catalogues';
+import FastImage from 'react-native-fast-image';
 
 const TabCatalogues = () => {
   const {
@@ -121,7 +122,7 @@ const TabCatalogues = () => {
             {item?.images
               ?.slice(0, item?.images?.length <= 4 ? 4 : 3)
               .map((image, index) => (
-                <Image
+                <FastImage
                   key={index}
                   style={styles.catalogueImage}
                   source={{uri: image.imageLinks.thumbnail}}

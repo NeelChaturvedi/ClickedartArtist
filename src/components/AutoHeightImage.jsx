@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import {Image, View, ActivityIndicator} from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 const AutoHeightImage = ({uri}) => {
   const [height, setHeight] = useState(200); // fallback
@@ -9,10 +10,10 @@ const AutoHeightImage = ({uri}) => {
   useEffect(() => {
     Image.getSize(
       uri,
-      (width, height) => {
-        const screenWidth = 180; // set based on your column width
-        const scaleFactor = width / screenWidth;
-        const imageHeight = height / scaleFactor;
+      (w, h) => {
+        const screenWidth = 100; // set based on your column width
+        const scaleFactor = w / screenWidth;
+        const imageHeight = h / scaleFactor;
         setHeight(imageHeight);
         setLoading(false);
       },
@@ -27,7 +28,7 @@ const AutoHeightImage = ({uri}) => {
       <ActivityIndicator />
     </View>
   ) : (
-    <Image
+    <FastImage
       source={{uri}}
       style={{width: '100%', height, borderRadius: 8}}
       resizeMode="cover"

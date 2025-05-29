@@ -9,6 +9,7 @@ import {
   ToastAndroid,
   Share,
   Alert,
+  FlatList,
 } from 'react-native';
 import React, {useMemo, useState} from 'react';
 import {createTabStyles} from './styles';
@@ -21,7 +22,8 @@ import {useTheme} from 'src/themes/useTheme';
 import {useUserStore} from 'src/store/auth';
 import MasonryList from '@react-native-seoul/masonry-list';
 import AutoHeightImage from '@components/AutoHeightImage';
-import { usePhotosStore } from 'src/store/photos';
+import {usePhotosStore} from 'src/store/photos';
+import FastImage from 'react-native-fast-image';
 
 const TabPhotos = ({pendingPhotos}) => {
   const [slideUp, setSlideUp] = useState(false);
@@ -207,9 +209,6 @@ const TabPhotos = ({pendingPhotos}) => {
             style={styles.image}
             source={{uri: item.imageLinks.thumbnail}}
           />
-          <View style={styles.imageDetails}>
-            <Text style={styles.imageText}>{item.title}</Text>
-          </View>
           <View style={styles.status}>
             <View style={styles.overlay} />
             <Icon
@@ -221,23 +220,19 @@ const TabPhotos = ({pendingPhotos}) => {
           </View>
         </Pressable>
       ))}
-      <MasonryList
-        data={photos || []}
-        keyExtractor={item => item._id}
-        numColumns={3}
-        scrollEnabled={false}
-        renderItem={({item}) => (
-          <View style={{margin: 2}}>
-            <Pressable
-              onPress={() => {
-                setSelectedImage(item);
-                setSlideUp(true);
-              }}>
-              <AutoHeightImage uri={item.imageLinks?.thumbnail} />
-            </Pressable>
-          </View>
-        )}
-      />
+      {photos?.map((item, index) => (
+        <Pressable
+          key={index}
+          style={styles.imageBorder}
+          onPress={() => {
+            setSelectedImage(item);
+          }}>
+          <Image
+            style={styles.image}
+            source={{uri: item.imageLinks.thumbnail}}
+          />
+        </Pressable>
+      ))}
 
       <SlideUpModal
         visible={slideUp}

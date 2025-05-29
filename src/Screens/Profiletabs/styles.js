@@ -4,17 +4,18 @@ export const createTabStyles = (theme) => StyleSheet.create({
   container: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 6,
-    flex: 1,
+    // gap: 6,
+    paddingHorizontal: 10,
   },
   imageBorder: {
-    width: 120,
-    height: 120,
+    width: '33.33%',
+    padding: 2,
+    aspectRatio: 1,
   },
   image: {
     resizeMode: 'cover',
     height: '100%',
-    width: '100%',
+    aspectRatio: 1,
   },
   imageDetails: {
     flexDirection: 'row',
