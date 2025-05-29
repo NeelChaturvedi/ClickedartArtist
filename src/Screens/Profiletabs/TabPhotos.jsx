@@ -21,12 +21,22 @@ import {useTheme} from 'src/themes/useTheme';
 import {useUserStore} from 'src/store/auth';
 import MasonryList from '@react-native-seoul/masonry-list';
 import AutoHeightImage from '@components/AutoHeightImage';
+import { usePhotosStore } from 'src/store/photos';
 
-const TabPhotos = ({photos, pendingPhotos}) => {
+const TabPhotos = ({pendingPhotos}) => {
   const [slideUp, setSlideUp] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
-  const data = photos.map(item => ({
+  const {
+    photos,
+    // loading: photosLoading,
+    // fetchPhotos,
+    // pageNumber: photosPageNumber,
+    // pageCount: photosPageCount,
+    // fetchMorePhotos,
+  } = usePhotosStore();
+
+  const data = photos?.map(item => ({
     id: item._id,
     uri: item.imageLinks.thumbnail,
   }));
@@ -212,7 +222,7 @@ const TabPhotos = ({photos, pendingPhotos}) => {
         </Pressable>
       ))}
       <MasonryList
-        data={photos}
+        data={photos || []}
         keyExtractor={item => item._id}
         numColumns={3}
         scrollEnabled={false}

@@ -1,20 +1,23 @@
 /* eslint-disable react-native/no-inline-styles */
 import {
-  Pressable,
-  RefreshControl,
-  Text,
   View,
+  Text,
+  StyleSheet,
+  RefreshControl,
+  Pressable,
   Share,
   Alert,
   ToastAndroid,
   TouchableOpacity,
 } from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
-import {Image, ScrollView} from 'moti';
+import {Tabs} from 'react-native-collapsible-tab-view';
 import {useUserStore} from '../../store/auth';
 import TabPhotos from '../Profiletabs/TabPhotos';
 import TabCatalogues from '../Profiletabs/TabCatalogue';
 import TabBlogs from '../Profiletabs/TabBlogs';
+import {useTheme} from 'src/themes/useTheme';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Image, MotiView, ScrollView} from 'moti';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -23,7 +26,6 @@ import SlideUpModal from '../../components/SlideupModal';
 import ImagePicker from 'react-native-image-crop-picker';
 import axios from 'axios';
 import {API_URL} from '@env';
-import {useTheme} from 'src/themes/useTheme';
 import {useMemo} from 'react';
 import {createProfileStyles} from './styles';
 import {usePhotosStore} from 'src/store/photos';
@@ -37,7 +39,6 @@ import ProfileSkeleton from './Loader';
 const Profile = () => {
   const {user, loading: userLoading, fetchUserFromToken} = useUserStore();
   const {
-    photos,
     loading: photosLoading,
     fetchPhotos,
     pageNumber: photosPageNumber,
@@ -71,11 +72,15 @@ const Profile = () => {
   const [fullBio, setFullBio] = useState(null);
 
   const onScroll = event => {
+    console.log('scrolling');
     const {layoutMeasurement, contentOffset, contentSize} = event.nativeEvent;
-    if (
-      layoutMeasurement.height + contentOffset.y >=
-      contentSize.height - 20 // near bottom threshold
-    ) {
+    console.log(
+      'Scroll Position:',
+      layoutMeasurement.height + contentOffset.y,
+      'Content Size:',
+      contentSize.height,
+    );
+    if (layoutMeasurement.height + contentOffset.y >= contentSize.height - 20) {
       if (!photosLoading && photosPageNumber < photosPageCount) {
         fetchMorePhotos(user._id);
       }
@@ -226,8 +231,6 @@ const Profile = () => {
     setRefreshing(false);
   };
 
-  console.log('Photos Length:', photos.length);
-
   useEffect(() => {
     if (!user?._id) {
       return;
@@ -244,164 +247,168 @@ const Profile = () => {
     );
   }
 
-  return (
-    <SafeAreaView style={[style.background, {flex: 1}]}>
-      <ScrollView
-        from={{opacity: 0.3}}
-        animate={{opacity: 1}}
-        transition={{type: 'timing', duration: 300}}
-        stickyHeaderIndices={[3]}
-        stickyHeaderHiddenOnScroll={true}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingBottom: 30}}
-        onScroll={onScroll}
-        scrollEventThrottle={16}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing || profileUploading}
-            onRefresh={onRefresh}
-            tintColor="#000"
+  const renderHeader = () => (
+    <MotiView
+      pointerEvents="box-none"
+      from={{opacity: 0.3}}
+      animate={{opacity: 1}}
+      transition={{type: 'timing', duration: 300}}
+      style={[{paddingBottom: 30}, style.background]}>
+      <View style={style.profileHeader}>
+        <View style={style.coverImageContainer}>
+          <Image
+            style={style.coverImage}
+            source={
+              user?.coverImage
+                ? {uri: user?.coverImage}
+                : require('../../assets/images/onboarding.png')
+            }
           />
-        }>
-        <View style={style.profileHeader}>
-          <View style={style.coverImageContainer}>
-            <Image
-              style={style.coverImage}
-              source={
-                user?.coverImage
-                  ? {uri: user?.coverImage}
-                  : require('../../assets/images/onboarding.png')
-              }
-            />
-            <View style={style.headerIcons}>
-              <Pressable
-                onPress={() => {
-                  navigation.navigate('SettingsNavigator');
-                }}
-                style={style.iconContainer}>
-                <Icon name="gear" size={20} color={theme.text} />
-              </Pressable>
-              <Pressable
-                onPress={onShare}
-                title="Share"
-                style={style.iconContainer}>
-                <Icon name="share" size={20} color={theme.text} />
-              </Pressable>
-            </View>
+          <View style={style.headerIcons}>
+            <Pressable
+              onPress={() => {
+                navigation.navigate('SettingsNavigator');
+              }}
+              style={style.iconContainer}>
+              <Icon name="gear" size={20} color={theme.text} />
+            </Pressable>
+            <Pressable
+              onPress={onShare}
+              title="Share"
+              style={style.iconContainer}>
+              <Icon name="share" size={20} color={theme.text} />
+            </Pressable>
           </View>
-          <View style={style.profileDiv}>
+        </View>
+        <View style={style.profileDiv}>
+          <Image
+            style={style.profileImage}
+            source={
+              user?.profileImage
+                ? {uri: user?.profileImage}
+                : require('../../assets/images/onboarding.png')
+            }
+          />
+          <Pressable style={style.edit} onPress={() => setSlideUp(true)}>
             <Image
-              style={style.profileImage}
-              source={
-                user?.profileImage
-                  ? {uri: user?.profileImage}
-                  : require('../../assets/images/onboarding.png')
-              }
+              style={{height: 12, width: 12, tintColor: theme.background}}
+              source={require('../../assets/tabIcons/edit.png')}
             />
-            <Pressable style={style.edit} onPress={() => setSlideUp(true)}>
-              <Image
-                style={{height: 12, width: 12, tintColor: theme.background}}
-                source={require('../../assets/tabIcons/edit.png')}
+          </Pressable>
+          <SlideUpModal
+            visible={slideUp}
+            onClose={() => setSlideUp(false)}
+            options={profileOptions}
+          />
+        </View>
+      </View>
+      <View style={style.userDetails}>
+        <Text style={style.userName}>
+          {user.firstName || ''} {user.lastName || ''}
+        </Text>
+        <Text style={style.userAddress}>
+          {user?.shippingAddress.city}, {user?.shippingAddress.country}
+        </Text>
+        <View style={{alignItems: 'center'}}>
+          <Text style={style.userBio}>
+            {fullBio
+              ? fullBio
+              : user?.bio?.split(' ').length <= 20
+              ? user?.bio
+              : user?.bio?.split(' ').slice(0, 20).join(' ') + '...'}
+          </Text>
+          {user?.bio?.split(' ').length > 20 && (
+            <Pressable
+              style={{
+                alignItems: 'center',
+                width: '90%',
+                paddingVertical: 16,
+                marginTop: -20,
+              }}
+              onPress={() => {
+                if (fullBio) {
+                  setFullBio(null);
+                } else {
+                  setFullBio(user?.bio);
+                }
+              }}>
+              <Icon
+                name={fullBio ? 'chevron-up' : 'chevron-down'}
+                size={20}
+                color={theme.text}
               />
             </Pressable>
-            <SlideUpModal
-              visible={slideUp}
-              onClose={() => setSlideUp(false)}
-              options={profileOptions}
-            />
-          </View>
+          )}
         </View>
-        <View style={style.userDetails}>
-          <Text style={style.userName}>
-            {user.firstName || ''} {user.lastName || ''}
-          </Text>
-          <Text style={style.userAddress}>
-            {user?.shippingAddress.city}, {user?.shippingAddress.country}
-          </Text>
-          <View style={{alignItems: 'center'}}>
-            <Text style={style.userBio}>
-              {fullBio
-                ? fullBio
-                : user?.bio?.split(' ').length <= 20
-                ? user?.bio
-                : user?.bio?.split(' ').slice(0, 20).join(' ') + '...'}
-            </Text>
-            {user?.bio?.split(' ').length > 20 && (
-              <Pressable
-                style={{
-                  alignItems: 'center',
-                  width: '90%',
-                  paddingVertical: 16,
-                  marginTop: -20,
-                }}
-                onPress={() => {
-                  if (fullBio) {
-                    setFullBio(null);
-                  } else {
-                    setFullBio(user?.bio);
-                  }
-                }}>
-                <Icon
-                  name={fullBio ? 'chevron-up' : 'chevron-down'}
-                  size={20}
-                  color={theme.text}
-                />
-              </Pressable>
-            )}
-          </View>
+      </View>
+      <View style={style.accountInfo}>
+        <View style={style.summary}>
+          <Text style={style.title}>IMPRESSIONS</Text>
+          <Text style={style.count}>{stats?.totalViews || 0}</Text>
         </View>
-        <View style={style.accountInfo}>
-          <View style={style.summary}>
-            <Text style={style.title}>IMPRESSIONS</Text>
-            <Text style={style.count}>
-              {photos
-                ?.filter(photo => photo.imageAnalytics?.views)
-                .reduce(
-                  (acc, photo) => acc + (photo.imageAnalytics?.views || 0),
-                  0,
-                )}
-            </Text>
-          </View>
-          <View style={style.summary}>
-            <Text style={style.title}>PHOTOS</Text>
-            <Text style={style.count}>
-              {stats?.totalUploadingImgCount || 0}
-            </Text>
-          </View>
-          <View style={style.summary}>
-            <Text style={style.title}>DOWNLOADS</Text>
-            <Text style={style.count}>{stats?.downloads || 0}</Text>
-          </View>
+        <View style={style.summary}>
+          <Text style={style.title}>PHOTOS</Text>
+          <Text style={style.count}>{stats?.totalUploadingImgCount || 0}</Text>
         </View>
-        <View style={style.stickyTabs}>
-          <View style={style.tabs}>
-            {tabs.map(tab => (
-              <TouchableOpacity
-                key={tab.key}
-                onPress={() => handleTabPress(tab.key)}>
-                <Text
-                  style={[
-                    style.tabText,
-                    activeTab === tab.key && {color: theme.text},
-                  ]}>
-                  {tab.label}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
+        <View style={style.summary}>
+          <Text style={style.title}>DOWNLOADS</Text>
+          <Text style={style.count}>{stats?.downloads || 0}</Text>
         </View>
-        <View style={style.tabsContainer}>
-          <View>
-            {activeTab === 'photos' ? (
-              <TabPhotos photos={photos} pendingPhotos={pendingPhotos} />
-            ) : activeTab === 'catalogues' ? (
-              <TabCatalogues />
-            ) : (
-              <TabBlogs blogs={blogs} pendingBlogs={pendingBlogs} />
-            )}
-          </View>
-        </View>
-      </ScrollView>
+      </View>
+    </MotiView>
+  );
+
+  return (
+    <SafeAreaView style={[style.background, {flex: 1}]}>
+      <Tabs.Container
+        renderHeader={renderHeader}
+        headerHeight={300}
+        allowHeaderOverscroll={true}
+        scrollEnabledHeader={true}
+        containerStyle={[style.tabsContainer, style.background]}
+        onTabChange={({tabName}) => setActiveTab(tabName.toLowerCase())}>
+        <Tabs.Tab name="Photos">
+          <Tabs.ScrollView
+            onScroll={onScroll} 
+            scrollEnabled={true}
+            scrollEventThrottle={16}
+            keyboardShouldPersistTaps="handled"
+            nestedScrollEnabled={true}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing || profileUploading}
+                onRefresh={onRefresh}
+                tintColor="#000"
+              />
+            }>
+            <TabPhotos />
+          </Tabs.ScrollView>
+        </Tabs.Tab>
+        <Tabs.Tab name="Catalogues">
+          <Tabs.ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing || profileUploading}
+                onRefresh={onRefresh}
+                tintColor="#000"
+              />
+            }>
+            <TabCatalogues />
+          </Tabs.ScrollView>
+        </Tabs.Tab>
+        <Tabs.Tab name="Blogs">
+          <Tabs.ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing || profileUploading}
+                onRefresh={onRefresh}
+                tintColor="#000"
+              />
+            }>
+            <TabBlogs blogs={blogs} />
+          </Tabs.ScrollView>
+        </Tabs.Tab>
+      </Tabs.Container>
     </SafeAreaView>
   );
 };
