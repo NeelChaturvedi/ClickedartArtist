@@ -4,7 +4,6 @@ export const createDashboardStyles = (theme) => StyleSheet.create({
   background: {
     backgroundColor: theme.background,
     height: '100%',
-    paddingHorizontal: 20,
     width: '100%',
     gap: 24,
   },

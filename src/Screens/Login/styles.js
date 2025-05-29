@@ -3,11 +3,14 @@ import {StyleSheet} from 'react-native';
 export const loginStyles = theme =>
   StyleSheet.create({
     background: {
-      flex: 1,
+      width: '100%',
       paddingVertical: '80%',
-      justifyContent: 'space-between',
       backgroundColor: theme.background,
       height: '100%',
+    },
+    container: {
+      flex: 1,
+      justifyContent: 'space-between',
       gap: 90,
     },
     title: {
