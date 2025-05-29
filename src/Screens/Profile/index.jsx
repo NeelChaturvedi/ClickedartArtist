@@ -36,8 +36,15 @@ import {usePendingBlogsStore} from 'src/store/pendingBlogs';
 import ProfileSkeleton from './Loader';
 
 const Profile = () => {
-  const {user, fetchUserFromToken} = useUserStore();
-  const {photos, loading: photosLoading, fetchPhotos} = usePhotosStore();
+  const {user, loading: userLoading, fetchUserFromToken} = useUserStore();
+  const {
+    photos,
+    loading: photosLoading,
+    fetchPhotos,
+    pageNumber: photosPageNumber,
+    pageCount: photosPageCount,
+    fetchMorePhotos,
+  } = usePhotosStore();
   const {stats, loading: statsLoading, fetchStats} = useAnalyticsStore();
   const {loading: cataloguesLoading, fetchCatalogues} = useCataloguesStore();
   const {blogs, loading: blogsLoading, fetchBlogs} = useBlogsStore();
@@ -63,6 +70,18 @@ const Profile = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [profileUploading, setProfileUploading] = useState(false);
   const [fullBio, setFullBio] = useState(null);
+
+  const onScroll = event => {
+    const {layoutMeasurement, contentOffset, contentSize} = event.nativeEvent;
+    if (
+      layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - 20 // near bottom threshold
+    ) {
+      if (!photosLoading && photosPageNumber < photosPageCount) {
+        fetchMorePhotos(user._id);
+      }
+    }
+  };
 
   const onShare = async () => {
     try {
@@ -192,49 +211,36 @@ const Profile = () => {
     setActiveTab(tab);
   };
 
-  const fetchAllData = useCallback(() => {
+  const fetchAllData = async () => {
     console.log('Fetching all data for user:', user._id);
-    fetchPhotos(user._id);
-    fetchStats(user._id);
-    fetchCatalogues(user._id);
-    fetchBlogs(user._id);
-    fetchPendingPhotos(user._id);
-    fetchPendingBlogs(user._id);
-  }, [
-    fetchBlogs,
-    fetchCatalogues,
-    fetchPendingBlogs,
-    fetchPendingPhotos,
-    fetchPhotos,
-    fetchStats,
-    user._id,
-  ]);
+    await fetchPhotos(user._id);
+    await fetchStats(user._id);
+    await fetchCatalogues(user._id);
+    await fetchBlogs(user._id);
+    await fetchPendingPhotos(user._id);
+    await fetchPendingBlogs(user._id);
+  };
 
-  const onRefresh = React.useCallback(async () => {
+  const onRefresh = async () => {
     setRefreshing(true);
     await useUserStore.getState().fetchUserFromToken();
-    fetchAllData();
     setRefreshing(false);
-  }, [fetchAllData]);
+  };
+
+  console.log('Photos Length:', photos.length);
 
   useEffect(() => {
     if (!user?._id) {
       return;
     }
     fetchAllData();
-  }, [fetchAllData, user]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
-  if (
-    photosLoading ||
-    statsLoading ||
-    cataloguesLoading ||
-    blogsLoading ||
-    pendingPhotosLoading ||
-    pendingBlogsLoading
-  ) {
+  if (userLoading || refreshing) {
     return (
       <SafeAreaView style={[style.background, {flex: 1}]}>
-        <ProfileSkeleton/>
+        <ProfileSkeleton />
       </SafeAreaView>
     );
   }
@@ -242,6 +248,8 @@ const Profile = () => {
   return (
     <SafeAreaView style={[style.background, {flex: 1}]}>
       <ScrollView
+        onScroll={onScroll}
+        scrollEventThrottle={16}
         stickyHeaderIndices={[3]}
         stickyHeaderHiddenOnScroll={true}
         showsVerticalScrollIndicator={false}
@@ -316,27 +324,27 @@ const Profile = () => {
                 ? user?.bio
                 : user?.bio?.split(' ').slice(0, 20).join(' ') + '...'}
             </Text>
-            { user?.bio?.split(' ').length > 20 && (
+            {user?.bio?.split(' ').length > 20 && (
               <Pressable
-              style={{
-                alignItems: 'center',
-                width: '90%',
-                paddingVertical: 16,
-                marginTop: -20,
-              }}
-              onPress={() => {
-                if (fullBio) {
-                  setFullBio(null);
-                } else {
-                  setFullBio(user?.bio);
-                }
-              }}>
-              <Icon
-                name={fullBio ? 'chevron-up' : 'chevron-down'}
-                size={20}
-                color={theme.text}
-              />
-            </Pressable>
+                style={{
+                  alignItems: 'center',
+                  width: '90%',
+                  paddingVertical: 16,
+                  marginTop: -20,
+                }}
+                onPress={() => {
+                  if (fullBio) {
+                    setFullBio(null);
+                  } else {
+                    setFullBio(user?.bio);
+                  }
+                }}>
+                <Icon
+                  name={fullBio ? 'chevron-up' : 'chevron-down'}
+                  size={20}
+                  color={theme.text}
+                />
+              </Pressable>
             )}
           </View>
         </View>

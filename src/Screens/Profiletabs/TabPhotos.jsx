@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {
   View,
   Text,
@@ -17,11 +18,18 @@ import RNFS from 'react-native-fs';
 import api from 'src/utils/apiClient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useTheme} from 'src/themes/useTheme';
-import { useUserStore } from 'src/store/auth';
+import {useUserStore} from 'src/store/auth';
+import MasonryList from '@react-native-seoul/masonry-list';
+import AutoHeightImage from '@components/AutoHeightImage';
 
 const TabPhotos = ({photos, pendingPhotos}) => {
   const [slideUp, setSlideUp] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+
+  const data = photos.map(item => ({
+    id: item._id,
+    uri: item.imageLinks.thumbnail,
+  }));
 
   const navigation = useNavigation();
 
@@ -203,23 +211,24 @@ const TabPhotos = ({photos, pendingPhotos}) => {
           </View>
         </Pressable>
       ))}
-      {photos?.map((item, index) => (
-        <Pressable
-          key={index}
-          style={styles.imageBorder}
-          onPress={() => {
-            setSelectedImage(item);
-            setSlideUp(true);
-          }}>
-          <Image
-            style={styles.image}
-            source={{uri: item.imageLinks.thumbnail}}
-          />
-          {/* <View style={styles.imageDetails}>
-            <Text style={styles.imageText}>{item.title}</Text>
-          </View> */}
-        </Pressable>
-      ))}
+      <MasonryList
+        data={photos}
+        keyExtractor={item => item._id}
+        numColumns={3}
+        scrollEnabled={false}
+        renderItem={({item}) => (
+          <View style={{margin: 2}}>
+            <Pressable
+              onPress={() => {
+                setSelectedImage(item);
+                setSlideUp(true);
+              }}>
+              <AutoHeightImage uri={item.imageLinks?.thumbnail} />
+            </Pressable>
+          </View>
+        )}
+      />
+
       <SlideUpModal
         visible={slideUp}
         onClose={() => setSlideUp(false)}

@@ -10,6 +10,7 @@ export const usePhotosStore = create((set, get) => ({
 
   fetchPhotos: async (photographerId, pageSize = 20) => {
     set({ loading: true, error: null });
+    console.log('Fetching photos for photographer:', photographerId);
     try {
       const res = await api.get(
         `/images/get-images-by-photographer?photographer=${photographerId}&pageSize=${pageSize}&pageNumber=1`
