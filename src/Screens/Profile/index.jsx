@@ -254,6 +254,8 @@ const Profile = () => {
         stickyHeaderHiddenOnScroll={true}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 30}}
+        onScroll={onScroll}
+        scrollEventThrottle={16}
         refreshControl={
           <RefreshControl
             refreshing={refreshing || profileUploading}
