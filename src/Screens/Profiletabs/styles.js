@@ -6,7 +6,6 @@ export const createTabStyles = (theme) => StyleSheet.create({
     flexWrap: 'wrap',
     gap: 6,
     flex: 1,
-    paddingHorizontal: 10,
   },
   imageBorder: {
     width: 120,

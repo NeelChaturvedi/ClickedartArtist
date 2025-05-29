@@ -10,7 +10,7 @@ import {
   ToastAndroid,
   TouchableOpacity,
 } from 'react-native';
-import {Tabs} from 'react-native-collapsible-tab-view';
+import {MaterialTabBar, Tabs} from 'react-native-collapsible-tab-view';
 import {useUserStore} from '../../store/auth';
 import TabPhotos from '../Profiletabs/TabPhotos';
 import TabCatalogues from '../Profiletabs/TabCatalogue';
@@ -366,10 +366,21 @@ const Profile = () => {
         allowHeaderOverscroll={true}
         scrollEnabledHeader={true}
         containerStyle={[style.tabsContainer, style.background]}
-        onTabChange={({tabName}) => setActiveTab(tabName.toLowerCase())}>
+        onTabChange={({tabName}) => setActiveTab(tabName.toLowerCase())}
+        headerContainerStyle={{backgroundColor: theme.background}}
+        renderTabBar={props => (
+          <MaterialTabBar
+            {...props}
+            labelStyle={{color: theme.text}}
+            indicatorStyle={{backgroundColor: '#ED3147'}}
+            activeColor={'#ED3147'}
+            inactiveColor={theme.text}
+            style={{backgroundColor: theme.background}}
+          />
+        )}>
         <Tabs.Tab name="Photos">
           <Tabs.ScrollView
-            onScroll={onScroll} 
+            onScroll={onScroll}
             scrollEnabled={true}
             scrollEventThrottle={16}
             keyboardShouldPersistTaps="handled"
