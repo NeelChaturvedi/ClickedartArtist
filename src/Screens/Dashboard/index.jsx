@@ -110,6 +110,7 @@ const Dashboard = () => {
           <DashboardSkeleton />
         ) : (
           <ScrollView
+            style={{paddingHorizontal: 20}}
             from={{opacity: 0.3}}
             animate={{opacity: 1}}
             transition={{type: 'timing', duration: 500}}

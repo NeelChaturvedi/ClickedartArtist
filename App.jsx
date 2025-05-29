@@ -53,20 +53,20 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  // if (!isLoading || !timeOut) {
-  //   return (
-  //     <SafeAreaView style={styles.loadingContainer}>
-  //       <View style={styles.loader}>
-  //         <LottieView
-  //           style={styles.animation}
-  //           source={require('./src/assets/animations/Company.json')}
-  //           autoPlay
-  //           loop
-  //         />
-  //       </View>
-  //     </SafeAreaView>
-  //   );
-  // }
+  if (!timeOut) {
+    return (
+      <SafeAreaView style={styles.loadingContainer}>
+        <View style={styles.loader}>
+          <LottieView
+            style={styles.animation}
+            source={require('./src/assets/animations/ClickedartArtist.json')}
+            autoPlay
+            loop
+          />
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <NavigationContainer>
@@ -173,7 +173,6 @@ export default function App() {
 const getStyles = theme =>
   StyleSheet.create({
     loadingContainer: {
-      flex: 1,
       backgroundColor: theme.background,
       height: '100%',
       width: '100%',

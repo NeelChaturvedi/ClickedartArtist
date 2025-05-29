@@ -17,7 +17,7 @@ const DashboardSkeleton = () => {
         speed={800}
         backgroundColor={theme.loaderBackground}
         highlightColor={theme.loaderColor}>
-        <View style={{gap: 30, marginTop: 20}}>
+        <View style={{gap: 30, marginTop: 20, padding: 20}}>
           {/* Filter & Button */}
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View style={{width: '48%', height: 58, borderRadius: 8}} />
