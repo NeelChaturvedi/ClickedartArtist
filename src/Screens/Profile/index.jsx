@@ -2,7 +2,6 @@
 import {
   Pressable,
   RefreshControl,
-  ScrollView,
   Text,
   View,
   Share,
@@ -11,7 +10,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
-import {Image} from 'moti';
+import {Image, ScrollView} from 'moti';
 import {useUserStore} from '../../store/auth';
 import TabPhotos from '../Profiletabs/TabPhotos';
 import TabCatalogues from '../Profiletabs/TabCatalogue';
@@ -248,8 +247,9 @@ const Profile = () => {
   return (
     <SafeAreaView style={[style.background, {flex: 1}]}>
       <ScrollView
-        onScroll={onScroll}
-        scrollEventThrottle={16}
+        from={{opacity: 0.3}}
+        animate={{opacity: 1}}
+        transition={{type: 'timing', duration: 300}}
         stickyHeaderIndices={[3]}
         stickyHeaderHiddenOnScroll={true}
         showsVerticalScrollIndicator={false}
