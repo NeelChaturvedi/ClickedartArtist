@@ -23,7 +23,7 @@ import CatalogueNavigator from 'src/Navigation/CatalogueNavigator/CatalogueNavig
 import CheckOut from 'src/Screens/CheckOut/CheckOut';
 import {useTheme} from 'src/themes/useTheme';
 import LottieView from 'lottie-react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 enableScreens();
 
 const Stack = createNativeStackNavigator();
@@ -76,7 +76,8 @@ export default function App() {
             headerShown: false,
             navigationBarColor: theme.background,
             headerTitleAlign: 'center',
-          }}>
+          }}
+          initialRouteName='Details'>
           {!user ? (
             <>
               {!isOnboardingCompleted && (
