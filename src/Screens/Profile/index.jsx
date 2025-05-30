@@ -363,16 +363,17 @@ const Profile = () => {
         </View>
         <View style={{minHeight: 400}}>
           <ScrollView
-            ref={scrollViewRef}
             horizontal
             pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            onScroll={handleScroll}
-            scrollEventThrottle={16}
+            bounces={false}
             snapToInterval={width}
-            decelerationRate="fast">
+            decelerationRate="fast"
+            showsHorizontalScrollIndicator={false}
+            disableIntervalMomentum={true} // iOS only
+            onScroll={handleScroll}
+            scrollEventThrottle={16}>
             {tabs.map((tab, index) => (
-              <View key={tab.key} style={{width, minHeight: 400}}>
+              <View key={tab.key} style={{width, flex: 1}}>
                 {tab.component}
               </View>
             ))}
