@@ -74,7 +74,7 @@ export default function App() {
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
-            // navigationBarHidden: true,
+            navigationBarColor: theme.background,
             headerTitleAlign: 'center',
           }}>
           {!user ? (
