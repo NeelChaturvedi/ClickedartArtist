@@ -103,4 +103,10 @@ export const imageScreenStyles = (theme) => StyleSheet.create({
     paddingVertical: 10,
     color: theme.text,
   },
+  guideText:{
+    fontFamily: 'Calibri-Regular',
+    color: '#ED3147',
+    fontSize: 14,
+    textDecorationLine:'underline',
+  },
 });

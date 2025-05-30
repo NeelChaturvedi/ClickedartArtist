@@ -13,6 +13,7 @@ import {
   Pressable,
   ToastAndroid,
   RefreshControl,
+  Linking,
 } from 'react-native';
 import React, {useEffect, useMemo, useState} from 'react';
 import {imageScreenStyles} from './styles';
@@ -458,11 +459,21 @@ const ImageScreen = () => {
               </View>
               <View style={styles.section}>
                 <Text style={styles.nameText}>Media Type</Text>
-                <DropdownModal
-                  options={paperOptions}
-                  onSelect={handlePaperSelect}
-                  value={selectedPaper ? selectedPaper.name : 'Select Paper'}
-                />
+                <View style={{width: '100%', alignItems: 'flex-end', gap: 10}}>
+                  <DropdownModal
+                    options={paperOptions}
+                    onSelect={handlePaperSelect}
+                    value={selectedPaper ? selectedPaper.name : 'Select Paper'}
+                  />
+                  <Pressable
+                    onPress={() =>
+                      Linking.openURL(
+                        'https://clickedart.com/support/printing-guide',
+                      )
+                    }>
+                    <Text style={styles.guideText}>Printing Guide</Text>
+                  </Pressable>
+                </View>
               </View>
               <View style={styles.infoContainer}>
                 <View style={styles.subSection}>
