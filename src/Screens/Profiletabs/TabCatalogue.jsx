@@ -1,5 +1,4 @@
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable no-shadow */
 
 import {
   View,
@@ -8,7 +7,6 @@ import {
   Modal,
   ToastAndroid,
   Alert,
-  ScrollView,
   FlatList,
 } from 'react-native';
 import {createTabStyles} from './styles';

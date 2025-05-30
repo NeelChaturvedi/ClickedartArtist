@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import {
   View,
   Image,
@@ -8,8 +7,9 @@ import {
   ToastAndroid,
   Share,
   Alert,
+  FlatList,
 } from 'react-native';
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {createTabStyles} from './styles';
 import SlideUpModal from '@components/SlideupModal';
 import {useNavigation} from '@react-navigation/native';
@@ -27,9 +27,7 @@ const TabPhotos = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const {photos} = usePhotosStore();
   const {pendingPhotos} = usePendingPhotosStore();
-
   const navigation = useNavigation();
-
   const theme = useTheme();
   const styles = useMemo(() => createTabStyles(theme), [theme]);
 
@@ -50,16 +48,13 @@ const TabPhotos = () => {
     return true;
   };
 
-  const showToast = msg => {
-    ToastAndroid.show(msg, ToastAndroid.SHORT);
-  };
+  const showToast = msg => ToastAndroid.show(msg, ToastAndroid.SHORT);
 
   const downloadImage = async (id, resolution, title) => {
     try {
       const hasPermission = await requestStoragePermission();
       if (!hasPermission) {
-        showToast('Storage permission denied');
-        return;
+        return showToast('Storage permission denied');
       }
 
       showToast('Preparing download...');
@@ -69,27 +64,12 @@ const TabPhotos = () => {
       );
 
       const imageLinks = response.data.photo.imageLinks;
-      if (!imageLinks) {
-        throw new Error('No image links found');
-      }
-
       const imageUrl = Object.values(imageLinks)[0];
-      if (!imageUrl) {
-        throw new Error('Image URL not found');
-      }
-
       const formattedTitle = title?.replace(/\s+/g, '_')?.toLowerCase() || id;
       const fileName = `image_${formattedTitle}_${resolution}.jpg`;
-
       const downloadDest = `${RNFS.DownloadDirectoryPath}/${fileName}`;
-
-      const options = {
-        fromUrl: imageUrl,
-        toFile: downloadDest,
-      };
-
-      const {promise} = RNFS.downloadFile(options);
-      await promise;
+      await RNFS.downloadFile({fromUrl: imageUrl, toFile: downloadDest})
+        .promise;
 
       showToast(`Download at ${downloadDest}`);
     } catch (error) {
@@ -145,81 +125,80 @@ const TabPhotos = () => {
     {
       label: 'Download',
       icon: 'download',
-      onPress: () => {
-        if (!selectedImage) {
-          showToast('No image selected');
-          return;
-        }
-        downloadImage(selectedImage._id, 'original', selectedImage.title);
-      },
+      onPress: () =>
+        selectedImage &&
+        downloadImage(selectedImage._id, 'original', selectedImage.title),
     },
     {
       label: 'Share',
       icon: 'share',
-      onPress: () => {
-        onShare();
-      },
+      onPress: onShare,
     },
     {
       label: 'Delete',
       icon: 'delete',
-      onPress: () => {
+      onPress: () =>
         Alert.alert(
           'Delete Image',
           'Are you sure you want to delete this image?',
           [
             {text: 'Cancel', style: 'cancel'},
-            {
-              text: 'Delete',
-              style: 'destructive',
-              onPress: () => handleDelete(),
-            },
+            {text: 'Delete', style: 'destructive', onPress: handleDelete},
           ],
-          {cancelable: true},
-        );
-      },
+        ),
     },
   ];
 
-  return (
-    <View style={styles.ImageContainer}>
-      {pendingPhotos?.map((item, index) => (
-        <Pressable
-          key={index}
-          style={styles.imageBorder}
-          onPress={() => {
-            setSelectedImage(item);
-          }}>
-          <Image
-            style={styles.image}
-            source={{uri: item.imageLinks.thumbnail}}
-          />
-          <View style={styles.status}>
-            <View style={styles.overlay} />
-            <Icon
-              style={styles.pending}
-              name="clock-o"
-              size={50}
-              color="white"
-            />
-          </View>
-        </Pressable>
-      ))}
-      {photos?.map((item, index) => (
-        <Pressable
-          key={index}
-          style={styles.imageBorder}
-          onPress={() => {
-            setSelectedImage(item);
+  const combinedData = [
+    ...pendingPhotos.map(p => ({...p, type: 'pending'})),
+    ...photos.map(p => ({...p, type: 'photo'})),
+  ];
+
+  const renderItem = ({item}) => {
+    const isPending = item.type === 'pending';
+    return (
+      <Pressable
+        style={styles.imageBorder}
+        onPress={() => {
+          setSelectedImage(item);
+          if (!isPending) {
             setSlideUp(true);
-          }}>
+          }
+        }}>
+        {isPending ? (
+          <>
+            <Image
+              style={styles.image}
+              source={{uri: item.imageLinks.thumbnail}}
+            />
+            <View style={styles.status}>
+              <View style={styles.overlay} />
+              <Icon
+                name="clock-o"
+                size={50}
+                color="white"
+                style={styles.pending}
+              />
+            </View>
+          </>
+        ) : (
           <FastImage
             style={styles.image}
             source={{uri: item.imageLinks.thumbnail}}
           />
-        </Pressable>
-      ))}
+        )}
+      </Pressable>
+    );
+  };
 
+  return (
+    <View style={styles.ImageContainer}>
+      <FlatList
+        data={combinedData}
+        keyExtractor={(item, index) => item._id || index.toString()}
+        numColumns={2}
+        renderItem={renderItem}
+      />
       <SlideUpModal
         visible={slideUp}
         onClose={() => setSlideUp(false)}
