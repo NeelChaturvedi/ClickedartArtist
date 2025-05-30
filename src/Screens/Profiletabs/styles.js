@@ -1,51 +1,57 @@
 import {StyleSheet} from 'react-native';
 
-export const createTabStyles = theme =>
-  StyleSheet.create({
-    container: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-    },
-    imageBorder: {
-      width: '33.33%',
-      aspectRatio: 1,
-      padding: 2,
-    },
-    image: {
-      resizeMode: 'cover',
-      height: '100%',
-      width: '100%',
-    },
-    imageDetails: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-    },
-    imageText: {
-      fontSize: 16,
-      width: '80%',
-      fontFamily: 'Outfit-bold',
-      color: theme.text,
-    },
-    status: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    pending: {
-      opacity: 0.8,
-    },
-    overlay: {
-      position: 'absolute',
-      inset: 0,
-      backgroundColor: 'rgba(0, 0, 0, 0.4)',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
+export const createTabStyles = (theme) => StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    // gap: 6,
+    paddingHorizontal: 10,
+  },
+  ImageContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    // gap: 6,
+  },
+  imageBorder: {
+    width: '50%',
+    padding: 2,
+    aspectRatio: 1,
+  },
+  image: {
+    resizeMode: 'cover',
+    height: '100%',
+    aspectRatio: 1,
+  },
+  imageDetails: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  imageText: {
+    fontSize: 16,
+    width: '80%',
+    fontFamily: 'Outfit-bold',
+    color: theme.text,
+  },
+  status: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  pending: {
+    opacity: 0.8,
+  },
+  overlay: {
+    position: 'absolute',
+    inset: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 
     catalogueBorder: {
       padding: 15,

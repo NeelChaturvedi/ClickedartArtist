@@ -197,7 +197,7 @@ const TabPhotos = ({pendingPhotos}) => {
   ];
 
   return (
-    <View style={styles.container}>
+    <View style={styles.ImageContainer}>
       {pendingPhotos?.map((item, index) => (
         <Pressable
           key={index}
