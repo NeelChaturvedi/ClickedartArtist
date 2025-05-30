@@ -13,18 +13,37 @@ import PostsIcon from '../assets/svgs/PostsIcon.svg';
 import SlideUpModal from '@components/SlideupModal';
 import {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {Modal, Pressable, StyleSheet, Text, ToastAndroid} from 'react-native';
+import {
+  Appearance,
+  Modal,
+  Pressable,
+  StatusBar,
+  StyleSheet,
+  Text,
+  ToastAndroid,
+} from 'react-native';
 import Button from '@components/button';
 import AutoGrowTextInput from '@components/AutoGrowTextInput';
 import Cart from 'src/Screens/Cart';
 import api from 'src/utils/apiClient';
 import {useUserStore} from 'src/store/auth';
 import useCartStore from 'src/store/cart';
-import { useTheme } from 'src/themes/useTheme';
+import {useTheme} from 'src/themes/useTheme';
+import {useThemeStore} from 'src/store/useThemeStore';
 
 export const Tabs = () => {
   const Tab = createBottomTabNavigator();
+  const {userPreference} = useThemeStore();
+  const getSystemTheme = () => {
+    return Appearance.getColorScheme() || 'light';
+  };
 
+  const themeSetting =
+    userPreference === 'system' ? getSystemTheme() : userPreference;
+  StatusBar.setBarStyle(
+    `${themeSetting === 'dark' ? 'light-content' : 'dark-content'}`,
+    true,
+  );
   const [slideUp, setSlideUp] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [catalogue, setCatalogue] = useState({
@@ -114,13 +133,13 @@ export const Tabs = () => {
           tabBarInactiveTintColor: theme.text,
           tabBarActiveTintColor: '#ED3147',
           tabBarStyle: {
-            height: 90,
+            height: 80,
             backgroundColor: theme.background,
-            paddingTop: 20,
             paddingHorizontal: 10,
             flexDirection: 'row',
             justifyContent: 'space-between',
             borderTopWidth: 0,
+            shadowColor: 'transparent',
           },
         }}
         initialRouteName="Profile"
@@ -287,35 +306,36 @@ export const Tabs = () => {
   );
 };
 
-const getStyles = (theme) => StyleSheet.create({
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-  },
-  modalContent: {
-    backgroundColor: theme.card,
-    width: '85%',
-    gap: 30,
-    padding: 20,
-    borderRadius: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontFamily: 'Outfit-bold',
-    color: theme.text,
-    textAlign: 'center',
-  },
-  inputSection: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    gap: 16,
-    width: '100%',
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontFamily: 'Outfit-medium',
-    color: theme.text,
-  },
-});
+const getStyles = theme =>
+  StyleSheet.create({
+    modalContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    },
+    modalContent: {
+      backgroundColor: theme.card,
+      width: '85%',
+      gap: 30,
+      padding: 20,
+      borderRadius: 20,
+    },
+    title: {
+      fontSize: 24,
+      fontFamily: 'Outfit-bold',
+      color: theme.text,
+      textAlign: 'center',
+    },
+    inputSection: {
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      gap: 16,
+      width: '100%',
+    },
+    sectionTitle: {
+      fontSize: 16,
+      fontFamily: 'Outfit-medium',
+      color: theme.text,
+    },
+  });

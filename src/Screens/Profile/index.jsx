@@ -7,11 +7,11 @@ import {
   View,
   Share,
   Alert,
-  ActivityIndicator,
   ToastAndroid,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState, useRef} from 'react';
 import {Image} from 'moti';
 import {useUserStore} from '../../store/auth';
 import TabPhotos from '../Profiletabs/TabPhotos';
@@ -28,30 +28,40 @@ import {API_URL} from '@env';
 import {useTheme} from 'src/themes/useTheme';
 import {useMemo} from 'react';
 import {createProfileStyles} from './styles';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from 'react-native-reanimated';
+import {useAnalyticsStore} from 'src/store/photographerAnalytics';
+import ProfileSkeleton from './Loader';
+import {usePhotosStore} from 'src/store/photos';
+import {usePendingPhotosStore} from 'src/store/pendingPhotos';
+
+const {width} = Dimensions.get('window');
+const tabs = [
+  {key: 'photos', label: 'Photos', component: <TabPhotos />},
+  {key: 'catalogues', label: 'Catalogues', component: <TabCatalogues />},
+  {key: 'blogs', label: 'Blogs', component: <TabBlogs />},
+];
 
 const Profile = () => {
   const {user, fetchUserFromToken} = useUserStore();
-
+  const {fetchPhotos} = usePhotosStore();
+  const {fetchPendingPhotos} = usePendingPhotosStore();
   const theme = useTheme();
   const style = useMemo(() => createProfileStyles(theme), [theme]);
-
   const navigation = useNavigation();
 
   const [slideUp, setSlideUp] = useState(false);
-
   const [activeTab, setActiveTab] = useState('photos');
-  const [stats, setStats] = useState({});
-  const [photos, setPhotos] = useState([]);
-  const [pendingPhotos, setPendingPhotos] = useState([]);
-  const [catalogues, setCatalogues] = useState([]);
-  const [blogs, setBlogs] = useState([]);
-  const [pendingBlogs, setPendingBlogs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const {stats, loading: statsLoading, fetchStats} = useAnalyticsStore();
   const [refreshing, setRefreshing] = useState(false);
   const [profileUploading, setProfileUploading] = useState(false);
   const [fullBio, setFullBio] = useState(null);
 
-  console.log('fullbio:', fullBio);
+  const scrollViewRef = useRef(null);
+  const translateX = useSharedValue(0);
 
   const onShare = async () => {
     try {
@@ -62,6 +72,30 @@ const Profile = () => {
       Alert.alert(error.message);
     }
   };
+
+  const profileOptions = [
+    {
+      label: 'Cover Image',
+      icon: 'image',
+      onPress: () => {
+        handleCoverImageUpdate();
+      },
+    },
+    {
+      label: 'Profile Image',
+      icon: 'account-circle',
+      onPress: () => {
+        handleProfileImageUpdate();
+      },
+    },
+    {
+      label: 'Edit Profile',
+      icon: 'edit',
+      onPress: () => {
+        navigation.navigate('ProfileEdit');
+      },
+    },
+  ];
 
   const uploadImageToServer = async (dataName, imageUri) => {
     if (!imageUri) {
@@ -147,104 +181,35 @@ const Profile = () => {
     }
   };
 
-  const profileOptions = [
-    {
-      label: 'Cover Image',
-      icon: 'image',
-      onPress: () => {
-        handleCoverImageUpdate();
-      },
-    },
-    {
-      label: 'Profile Image',
-      icon: 'account-circle',
-      onPress: () => {
-        handleProfileImageUpdate();
-      },
-    },
-    {
-      label: 'Edit Profile',
-      icon: 'edit',
-      onPress: () => {
-        navigation.navigate('ProfileEdit');
-      },
-    },
-  ];
-
-  const tabs = [
-    {label: 'Photos', key: 'photos'},
-    {label: 'Catalogues', key: 'catalogues'},
-    {label: 'Blogs', key: 'blogs'},
-  ];
-
-  const handleTabPress = tab => {
-    setActiveTab(tab);
+  const handleTabPress = (tabKey, index) => {
+    setActiveTab(tabKey);
+    scrollViewRef.current?.scrollTo({x: index * width, animated: true});
+    translateX.value = withSpring(-index * width);
   };
 
-  const fetchAllData = useCallback(async () => {
-    try {
-      setLoading(true);
+  const handleScroll = event => {
+    const offsetX = event.nativeEvent.contentOffset.x;
+    const tabIndex = Math.round(offsetX / width);
+    setActiveTab(tabs[tabIndex].key);
+    translateX.value = -tabIndex * width;
+  };
 
-      const [
-        statsRes,
-        photosRes,
-        pendingPhotosRes,
-        cataloguesRes,
-        blogsRes,
-        pendingBlogsRes,
-      ] = await Promise.allSettled([
-        api.get(
-          `/photographeranalytics/get-photographer-analytics?photographer=${user._id}`,
-        ),
-        api.get(`/images/get-images-by-photographer?photographer=${user._id}`),
-        api.get(
-          `/photographer/get-pending-images-by-photographer?photographer=${user._id}`,
-        ),
-        api.get(
-          `/catalogue/get-catalogues-by-photographer?photographer=${user._id}`,
-        ),
-        api.get(`/blog/get-my-blogs?author=${user._id}`),
-        api.get(`/blog/get-my-pending-blogs?author=${user._id}`),
-      ]);
+  const tabIndicatorStyle = useAnimatedStyle(() => ({
+    transform: [{translateX: translateX.value / tabs.length}],
+    width: width / tabs.length,
+    height: 2,
+    backgroundColor: theme.text,
+    position: 'absolute',
+    bottom: 0,
+  }));
 
-      if (statsRes.status === 'fulfilled') {
-        setStats(statsRes.value?.data);
-      } else {
-        setStats({});
-      }
-      if (photosRes.status === 'fulfilled') {
-        setPhotos(photosRes.value?.data?.photos);
-      } else {
-        setPhotos([]);
-      }
-      if (pendingPhotosRes.status === 'fulfilled') {
-        setPendingPhotos(pendingPhotosRes.value?.data?.pendingImages);
-      } else {
-        setPendingPhotos([]);
-      }
-      if (cataloguesRes.status === 'fulfilled') {
-        setCatalogues(cataloguesRes.value?.data?.catalogues);
-      } else {
-        setCatalogues([]);
-      }
-      if (blogsRes.status === 'fulfilled') {
-        setBlogs(blogsRes.value?.data?.blogs);
-      } else {
-        setBlogs([]);
-      }
-      if (pendingBlogsRes.status === 'fulfilled') {
-        setPendingBlogs(pendingBlogsRes.value?.data?.blogs);
-      } else {
-        setPendingBlogs([]);
-      }
-    } catch (error) {
-      console.error('Unexpected error fetching Profile data:', error);
-    } finally {
-      setLoading(false);
-    }
-  }, [user._id]);
+  const fetchAllData = async () => {
+    await fetchStats(user?._id);
+    await fetchPhotos(user?._id);
+    await fetchPendingPhotos(user?._id);
+  };
 
-  const onRefresh = React.useCallback(async () => {
+  const onRefresh = useCallback(async () => {
     setRefreshing(true);
     await useUserStore.getState().fetchUserFromToken();
     setRefreshing(false);
@@ -255,14 +220,13 @@ const Profile = () => {
       return;
     }
     fetchAllData();
-  }, [user, fetchAllData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
-  if (loading) {
+  if (statsLoading) {
     return (
       <SafeAreaView style={[style.background, {flex: 1}]}>
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <ActivityIndicator size={'large'} color="#ed3147" />
-        </View>
+        <ProfileSkeleton />
       </SafeAreaView>
     );
   }
@@ -366,30 +330,25 @@ const Profile = () => {
         <View style={style.accountInfo}>
           <View style={style.summary}>
             <Text style={style.title}>IMPRESSIONS</Text>
-            <Text style={style.count}>
-              {photos
-                ?.filter(photo => photo.imageAnalytics?.views)
-                .reduce(
-                  (acc, photo) => acc + (photo.imageAnalytics?.views || 0),
-                  0,
-                )}
-            </Text>
+            <Text style={style.count}>{stats?.totalViews || 0}</Text>
           </View>
           <View style={style.summary}>
             <Text style={style.title}>PHOTOS</Text>
-            <Text style={style.count}>{stats.totalUploadingImgCount || 0}</Text>
+            <Text style={style.count}>
+              {stats?.totalUploadingImgCount || 0}
+            </Text>
           </View>
           <View style={style.summary}>
             <Text style={style.title}>DOWNLOADS</Text>
-            <Text style={style.count}>{stats.downloads || 0}</Text>
+            <Text style={style.count}>{stats?.downloads || 0}</Text>
           </View>
         </View>
         <View style={style.stickyTabs}>
           <View style={style.tabs}>
-            {tabs.map(tab => (
+            {tabs.map((tab, index) => (
               <TouchableOpacity
                 key={tab.key}
-                onPress={() => handleTabPress(tab.key)}>
+                onPress={() => handleTabPress(tab.key, index)}>
                 <Text
                   style={[
                     style.tabText,
@@ -400,17 +359,24 @@ const Profile = () => {
               </TouchableOpacity>
             ))}
           </View>
+          <Animated.View style={tabIndicatorStyle} />
         </View>
-        <View style={style.tabsContainer}>
-          <View>
-            {activeTab === 'photos' ? (
-              <TabPhotos photos={photos} pendingPhotos={pendingPhotos} />
-            ) : activeTab === 'catalogues' ? (
-              <TabCatalogues photos={photos} catalogues={catalogues} />
-            ) : (
-              <TabBlogs blogs={blogs} pendingBlogs={pendingBlogs} />
-            )}
-          </View>
+        <View style={{minHeight: 400}}>
+          <ScrollView
+            ref={scrollViewRef}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            onScroll={handleScroll}
+            scrollEventThrottle={16}
+            snapToInterval={width}
+            decelerationRate="fast">
+            {tabs.map((tab, index) => (
+              <View key={tab.key} style={{width, minHeight: 400}}>
+                {tab.component}
+              </View>
+            ))}
+          </ScrollView>
         </View>
       </ScrollView>
     </SafeAreaView>

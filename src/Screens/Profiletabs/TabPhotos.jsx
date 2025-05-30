@@ -1,7 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import {
   View,
-  Text,
   Image,
   Pressable,
   PermissionsAndroid,
@@ -9,9 +8,8 @@ import {
   ToastAndroid,
   Share,
   Alert,
-  FlatList,
 } from 'react-native';
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {createTabStyles} from './styles';
 import SlideUpModal from '@components/SlideupModal';
 import {useNavigation} from '@react-navigation/native';
@@ -20,28 +18,15 @@ import api from 'src/utils/apiClient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useTheme} from 'src/themes/useTheme';
 import {useUserStore} from 'src/store/auth';
-import MasonryList from '@react-native-seoul/masonry-list';
-import AutoHeightImage from '@components/AutoHeightImage';
 import {usePhotosStore} from 'src/store/photos';
 import FastImage from 'react-native-fast-image';
+import {usePendingPhotosStore} from 'src/store/pendingPhotos';
 
-const TabPhotos = ({pendingPhotos}) => {
+const TabPhotos = () => {
   const [slideUp, setSlideUp] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-
-  const {
-    photos,
-    // loading: photosLoading,
-    // fetchPhotos,
-    // pageNumber: photosPageNumber,
-    // pageCount: photosPageCount,
-    // fetchMorePhotos,
-  } = usePhotosStore();
-
-  const data = photos?.map(item => ({
-    id: item._id,
-    uri: item.imageLinks.thumbnail,
-  }));
+  const {photos} = usePhotosStore();
+  const {pendingPhotos} = usePendingPhotosStore();
 
   const navigation = useNavigation();
 
@@ -226,14 +211,12 @@ const TabPhotos = ({pendingPhotos}) => {
           style={styles.imageBorder}
           onPress={() => {
             setSelectedImage(item);
+            setSlideUp(true);
           }}>
           <FastImage
             style={styles.image}
             source={{uri: item.imageLinks.thumbnail}}
           />
-          {/* <View
-            style={[styles.image, {aspectRatio: 1, backgroundColor: 'red'}]}
-          /> */}
         </Pressable>
       ))}
 

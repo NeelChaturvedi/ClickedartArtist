@@ -38,7 +38,6 @@ export default function App() {
 
   React.useEffect(() => {
     const checkStatus = async () => {
-      setIsLoading(true);
       await loadOnboardingStatus();
       await loadToken();
       setIsLoading(false);
@@ -53,7 +52,7 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  if (!timeOut) {
+  if (isLoading || !timeOut) {
     return (
       <SafeAreaView style={styles.loadingContainer}>
         <View style={styles.loader}>
@@ -73,7 +72,7 @@ export default function App() {
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
-          navigationBarHidden: true,
+          // navigationBarHidden: true,
           headerTitleAlign: 'center',
         }}>
         {!user ? (
