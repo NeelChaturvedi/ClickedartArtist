@@ -2,12 +2,11 @@
 import {
   View,
   Text,
-  ScrollView,
+  FlatList,
   TouchableOpacity,
   ToastAndroid,
 } from 'react-native';
-import React, {use, useEffect, useMemo, useState} from 'react';
-import {createTabStyles} from './styles';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Image} from 'moti';
 import {useNavigation} from '@react-navigation/native';
 import SlideUpModal from '@components/SlideupModal';
@@ -16,6 +15,7 @@ import {useTheme} from 'src/themes/useTheme';
 import {useBlogsStore} from 'src/store/blogs';
 import {usePendingBlogsStore} from 'src/store/pendingBlogs';
 import {useUserStore} from 'src/store/auth';
+import {createTabStyles} from './styles';
 
 const TabBlogs = () => {
   const navigation = useNavigation();
@@ -54,6 +54,9 @@ const TabBlogs = () => {
     try {
       await api.delete(`/blog/delete-blog?blogId=${selectedBlog._id}`);
       ToastAndroid.show('Blog deleted successfully', ToastAndroid.SHORT);
+      // Refresh blogs after deletion
+      fetchBlogs(user?._id);
+      fetchPendingBlogs(user?._id);
     } catch (error) {
       console.error('Error deleting blog:', error);
     } finally {
@@ -61,90 +64,99 @@ const TabBlogs = () => {
     }
   };
 
+  // Combine pendingBlogs and blogs into a single array with type indicator
+  const data = useMemo(
+    () => [
+      ...pendingBlogs.map(item => ({...item, type: 'pending'})),
+      ...blogs.map(item => ({...item, type: 'published'})),
+    ],
+    [pendingBlogs, blogs],
+  );
+
   useEffect(() => {
-    fetchBlogs(user?._id);
-    fetchPendingBlogs(user?._id);
+    if (user?._id) {
+      fetchBlogs(user._id);
+      fetchPendingBlogs(user._id);
+    }
   }, [fetchBlogs, fetchPendingBlogs, user?._id]);
+
+  const renderItem = ({item, index}) => {
+    const isLastPending =
+      item.type === 'pending' && index === pendingBlogs.length - 1;
+    const isLastPublished =
+      item.type === 'published' && index === data.length - 1;
+    const isSingleRow = data.length === 1;
+
+    const blogContent = (
+      <TouchableOpacity
+        onPress={() => {
+          setSelectedBlog(item);
+          if (item.type === 'published') {
+            setSlideUp(true);
+          }
+        }}
+        style={[
+          styles.blogBorder,
+          (isLastPending || isLastPublished) &&
+            isSingleRow && {borderBottomWidth: 0},
+        ]}>
+        <View style={styles.blogDetails}>
+          <Text style={styles.imageText}>
+            {item.content.title.slice(0, 50).trim()}{' '}
+            {item.content.title.length > 50 ? '...' : ''}
+          </Text>
+          <Text style={styles.blogDate}>
+            {item.createdAt &&
+              new Date(item.createdAt).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+          </Text>
+        </View>
+        <View style={styles.imageContainer}>
+          <Image
+            style={styles.blogImage}
+            source={{uri: item.coverImage[0]}}
+            resizeMode="cover"
+          />
+        </View>
+      </TouchableOpacity>
+    );
+
+    return item.type === 'pending' ? (
+      <View style={[styles.pendingContainer, {paddingHorizontal: 15}]}>
+        {blogContent}
+      </View>
+    ) : (
+      <View style={{paddingHorizontal: 15}}>{blogContent}</View>
+    );
+  };
 
   return (
     <>
-      <ScrollView style={{paddingHorizontal: 15}}>
-        {pendingBlogs?.map((item, index) => {
-          return (
-            <View style={styles.pendingContainer} key={item._id}>
-              <TouchableOpacity
-                onPress={() => {
-                  setSelectedBlog(item);
-                }}
-                key={item._id}
-                style={[
-                  styles.blogBorder,
-                  index === blogs.length - 1 &&
-                    index === 1 && {borderBottomWidth: 0},
-                ]}>
-                <View style={styles.blogDetails}>
-                  <Text style={styles.imageText}>
-                    {item.content.title.slice(0, 50).trim()}{' '}
-                    {item.content.title.length > 50 ? '...' : ''}
-                  </Text>
-                  <Text style={styles.blogDate}>
-                    {item.createdAt &&
-                      new Date(item.createdAt).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      })}
-                  </Text>
-                </View>
-                <View style={styles.imageContainer}>
-                  <Image
-                    style={styles.blogImage}
-                    source={{uri: item.coverImage[0]}}
-                    resizeMode="cover"
-                  />
-                </View>
-              </TouchableOpacity>
-            </View>
-          );
-        })}
-        {blogs?.map((item, index) => {
-          return (
-            <TouchableOpacity
-              onPress={() => {
-                setSlideUp(true);
-                setSelectedBlog(item);
-              }}
-              key={item._id}
-              style={[
-                styles.blogBorder,
-                index === blogs.length - 1 &&
-                  index === 1 && {borderBottomWidth: 0},
-              ]}>
-              <View style={styles.blogDetails}>
-                <Text style={styles.imageText}>
-                  {item.content.title.slice(0, 50).trim()}{' '}
-                  {item.content.title.length > 50 ? '...' : ''}
-                </Text>
-                <Text style={styles.blogDate}>
-                  {item.createdAt &&
-                    new Date(item.createdAt).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                    })}
-                </Text>
-              </View>
-              <View style={styles.imageContainer}>
-                <Image
-                  style={styles.blogImage}
-                  source={{uri: item.coverImage[0]}}
-                  resizeMode="cover"
-                />
-              </View>
-            </TouchableOpacity>
-          );
-        })}
-      </ScrollView>
+      <FlatList
+        data={data}
+        renderItem={renderItem}
+        keyExtractor={item => `${item.type}-${item._id}`}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{paddingBottom: 20}}
+        nestedScrollEnabled={false} // Prevent nested scrolling conflicts
+        directionalLockEnabled={true} // Lock to vertical scrolling
+        initialNumToRender={10} // Optimize for initial render
+        windowSize={5} // Optimize for performance
+        ListEmptyComponent={
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: 20,
+            }}>
+            <Text style={{color: theme.text}}>No blogs available</Text>
+          </View>
+        }
+      />
       <SlideUpModal
         visible={slideUp}
         onClose={() => setSlideUp(false)}

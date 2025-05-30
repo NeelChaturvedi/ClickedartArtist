@@ -1,61 +1,61 @@
 import {StyleSheet} from 'react-native';
 
-export const createTabStyles = (theme) => StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    // gap: 6,
-    paddingHorizontal: 10,
-  },
-  ImageContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    // gap: 6,
-  },
-  imageBorder: {
-    width: '50%',
-    padding: 2,
-    aspectRatio: 1,
-  },
-  image: {
-    resizeMode: 'cover',
-    height: '100%',
-    aspectRatio: 1,
-  },
-  imageDetails: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  imageText: {
-    fontSize: 16,
-    width: '80%',
-    fontFamily: 'Calibri-Bold',
-    color: theme.text,
-  },
-  status: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  pending: {
-    opacity: 0.8,
-  },
-  overlay: {
-    position: 'absolute',
-    inset: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+export const createTabStyles = theme =>
+  StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      // gap: 6,
+      paddingHorizontal: 10,
+    },
+    ImageContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      // gap: 6,
+    },
+    imageBorder: {
+      width: '50%',
+      padding: 2,
+      aspectRatio: 1,
+    },
+    image: {
+      resizeMode: 'cover',
+      height: '100%',
+      aspectRatio: 1,
+    },
+    imageDetails: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    imageText: {
+      fontSize: 16,
+      width: '80%',
+      fontFamily: 'Calibri-Bold',
+      color: theme.text,
+    },
+    status: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    pending: {
+      opacity: 0.8,
+    },
+    overlay: {
+      position: 'absolute',
+      inset: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.4)',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
 
     catalogueBorder: {
       padding: 15,
-      gap: 24,
       width: '100%',
       flexGrow: 1,
       justifyContent: 'space-between',
@@ -64,13 +64,14 @@ export const createTabStyles = (theme) => StyleSheet.create({
       borderColor: theme.border,
       borderRadius: 20,
       marginRight: 10,
-      aspectRatio: 1,
     },
     imageDistribution: {
       justifyContent: 'space-between',
       flexDirection: 'row',
       flexWrap: 'wrap',
       gap: '5%',
+      width: '100%',
+      aspectRatio: 1,
     },
     catalogueImage: {
       width: '45%',
@@ -102,12 +103,14 @@ export const createTabStyles = (theme) => StyleSheet.create({
     noImageContainer: {
       justifyContent: 'center',
       alignItems: 'center',
+      width: '100%',
     },
     noImageText: {
       fontSize: 32,
       fontFamily: 'Calibri-Regular',
       color: '#A9A9A9',
       lineHeight: 40,
+      textAlign: 'center',
     },
     blogBorder: {
       flexDirection: 'row',

@@ -2,7 +2,6 @@
 import {
   Pressable,
   RefreshControl,
-  ScrollView,
   Text,
   View,
   Share,
@@ -12,7 +11,7 @@ import {
   Dimensions,
 } from 'react-native';
 import React, {useCallback, useEffect, useState, useRef} from 'react';
-import {Image} from 'moti';
+import {Image, MotiText} from 'moti';
 import {useUserStore} from '../../store/auth';
 import TabPhotos from '../Profiletabs/TabPhotos';
 import TabCatalogues from '../Profiletabs/TabCatalogue';
@@ -29,9 +28,9 @@ import {useTheme} from 'src/themes/useTheme';
 import {useMemo} from 'react';
 import {createProfileStyles} from './styles';
 import Animated, {
+  useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
-  withSpring,
 } from 'react-native-reanimated';
 import {useAnalyticsStore} from 'src/store/photographerAnalytics';
 import ProfileSkeleton from './Loader';
@@ -183,25 +182,32 @@ const Profile = () => {
 
   const handleTabPress = (tabKey, index) => {
     setActiveTab(tabKey);
-    scrollViewRef.current?.scrollTo({x: index * width, animated: true});
-    translateX.value = withSpring(-index * width);
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({x: index * width, animated: true});
+    }
   };
+
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: event => {
+      translateX.value =
+        (event.contentOffset.x / width) * (width / tabs.length);
+    },
+  });
+
+  const tabIndicatorStyle = useAnimatedStyle(() => ({
+    transform: [{translateX: translateX.value}],
+    width: width / tabs.length,
+    height: 3,
+    backgroundColor: '#ED3147',
+    position: 'absolute',
+    bottom: 0,
+  }));
 
   const handleScroll = event => {
     const offsetX = event.nativeEvent.contentOffset.x;
     const tabIndex = Math.round(offsetX / width);
     setActiveTab(tabs[tabIndex].key);
-    translateX.value = -tabIndex * width;
   };
-
-  const tabIndicatorStyle = useAnimatedStyle(() => ({
-    transform: [{translateX: translateX.value / tabs.length}],
-    width: width / tabs.length,
-    height: 2,
-    backgroundColor: theme.text,
-    position: 'absolute',
-    bottom: 0,
-  }));
 
   const fetchAllData = async () => {
     await fetchStats(user?._id);
@@ -212,13 +218,198 @@ const Profile = () => {
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     await useUserStore.getState().fetchUserFromToken();
+    translateX.value = 0;
+    setActiveTab(tabs[0].key);
     setRefreshing(false);
-  }, []);
+  }, [translateX]);
+
+  const renderHeader1 = () => (
+    <View>
+      <View style={style.profileHeader}>
+        <View style={style.coverImageContainer}>
+          <Image
+            style={style.coverImage}
+            source={
+              user?.coverImage
+                ? {uri: user?.coverImage}
+                : require('../../assets/images/onboarding.png')
+            }
+          />
+          <View style={style.headerIcons}>
+            <Pressable
+              onPress={() => {
+                console.log('Settings pressed');
+                navigation.navigate('SettingsNavigator');
+              }}
+              style={style.iconContainer}>
+              <Icon name="gear" size={20} color={theme.text} />
+            </Pressable>
+            <Pressable
+              onPress={onShare}
+              title="Share"
+              style={style.iconContainer}>
+              <Icon name="share" size={20} color={theme.text} />
+            </Pressable>
+          </View>
+        </View>
+        <View style={style.profileDiv}>
+          <Image
+            style={style.profileImage}
+            source={
+              user?.profileImage
+                ? {uri: user?.profileImage}
+                : require('../../assets/images/onboarding.png')
+            }
+          />
+          <Pressable style={style.edit} onPress={() => setSlideUp(true)}>
+            <Image
+              style={{height: 12, width: 12, tintColor: theme.background}}
+              source={require('../../assets/tabIcons/edit.png')}
+            />
+          </Pressable>
+          <SlideUpModal
+            visible={slideUp}
+            onClose={() => setSlideUp(false)}
+            options={profileOptions}
+          />
+        </View>
+      </View>
+      <View style={style.userDetails}>
+        <Text style={style.userName}>
+          {user.firstName || ''} {user.lastName || ''}
+        </Text>
+        <Text style={style.userAddress}>
+          {user?.shippingAddress.city}, {user?.shippingAddress.country}
+        </Text>
+        <View style={{width: '100%', alignItems: 'center'}}>
+          <Text style={style.userBio}>
+            {fullBio
+              ? fullBio
+              : user?.bio?.split(' ').length <= 20
+              ? user?.bio
+              : user?.bio?.split(' ').slice(0, 20).join(' ') + '...'}
+          </Text>
+          {user?.bio?.split(' ').length > 20 && (
+            <Pressable
+              style={{paddingVertical: 16}}
+              onPress={() => {
+                if (fullBio) {
+                  setFullBio(null);
+                } else {
+                  setFullBio(user?.bio);
+                }
+              }}>
+              <Icon
+                name={fullBio ? 'chevron-up' : 'chevron-down'}
+                size={20}
+                color={theme.text}
+              />
+            </Pressable>
+          )}
+        </View>
+      </View>
+      <View style={style.accountInfo}>
+        <View style={style.summary}>
+          <Text style={style.title}>IMPRESSIONS</Text>
+          <Text style={style.count}>{stats?.totalViews || 0}</Text>
+        </View>
+        <View style={style.summary}>
+          <Text style={style.title}>PHOTOS</Text>
+          <Text style={style.count}>{stats?.totalUploadingImgCount || 0}</Text>
+        </View>
+        <View style={style.summary}>
+          <Text style={style.title}>DOWNLOADS</Text>
+          <Text style={style.count}>{stats?.downloads || 0}</Text>
+        </View>
+      </View>
+    </View>
+  );
+
+  const renderHeader2 = () => {
+    return (
+      <View
+        style={[
+          style.stickyTabs,
+          {
+            backgroundColor: theme.background,
+            paddingTop: 5,
+            marginTop: 0,
+            zIndex: 10,
+          },
+        ]}>
+        <View
+          style={[
+            style.tabs,
+            {
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              minHeight: 48,
+            },
+          ]}>
+          {tabs.map((tab, index) => (
+            <TouchableOpacity
+              key={tab.key}
+              activeOpacity={0.7}
+              onPress={() => handleTabPress(tab.key, index)}
+              style={{
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+                paddingVertical: 12,
+              }}>
+              <MotiText
+                from={{color: theme.text + '80', fontSize: 16}}
+                animate={{
+                  color: activeTab === tab.key ? '#ED3147' : theme.text + '80',
+                }}
+                transition={{
+                  type: 'timing',
+                  duration: 200,
+                }}
+                style={[
+                  style.tabText,
+                  {
+                    textAlign: 'center',
+                    fontSize: 16,
+                  },
+                ]}>
+                {tab.label}
+              </MotiText>
+            </TouchableOpacity>
+          ))}
+        </View>
+        <Animated.View style={tabIndicatorStyle} />
+      </View>
+    );
+  };
+
+  const renderTabs = () => (
+    <Animated.ScrollView
+      ref={scrollViewRef}
+      horizontal
+      pagingEnabled
+      snapToInterval={width}
+      decelerationRate={0.9}
+      showsHorizontalScrollIndicator={false}
+      onScroll={scrollHandler}
+      scrollEventThrottle={16}
+      onMomentumScrollEnd={handleScroll}>
+      {tabs.map(tab => (
+        <View key={tab.key} style={{width}}>
+          {tab.component}
+        </View>
+      ))}
+    </Animated.ScrollView>
+  );
+
+  const flatListData = ['header1', 'header2', 'tabs'];
 
   useEffect(() => {
     if (!user?._id) {
       return;
     }
+    translateX.value = 0;
+    setActiveTab(tabs[0].key);
     fetchAllData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
@@ -233,153 +424,42 @@ const Profile = () => {
 
   return (
     <SafeAreaView style={[style.background, {flex: 1}]}>
-      <ScrollView
-        stickyHeaderIndices={[3]}
-        stickyHeaderHiddenOnScroll={true}
+      <Animated.FlatList
+        data={flatListData}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({item}) => {
+          if (item === 'header1') {
+            return renderHeader1();
+          } else if (item === 'header2') {
+            return renderHeader2();
+          } else if (item === 'tabs') {
+            return renderTabs();
+          }
+          return null;
+        }}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingBottom: 30}}
+        contentContainerStyle={{paddingBottom: 20}}
         refreshControl={
           <RefreshControl
             refreshing={refreshing || profileUploading}
             onRefresh={onRefresh}
             tintColor="#000"
           />
-        }>
-        <View style={style.profileHeader}>
-          <View style={style.coverImageContainer}>
-            <Image
-              style={style.coverImage}
-              source={
-                user?.coverImage
-                  ? {uri: user?.coverImage}
-                  : require('../../assets/images/onboarding.png')
-              }
-            />
-            <View style={style.headerIcons}>
-              <Pressable
-                onPress={() => {
-                  navigation.navigate('SettingsNavigator');
-                }}
-                style={style.iconContainer}>
-                <Icon name="gear" size={20} color={theme.text} />
-              </Pressable>
-              <Pressable
-                onPress={onShare}
-                title="Share"
-                style={style.iconContainer}>
-                <Icon name="share" size={20} color={theme.text} />
-              </Pressable>
-            </View>
+        }
+        stickyHeaderIndices={[1]}
+        stickyHeaderHiddenOnScroll={true}
+        nestedScrollEnabled={true}
+        ListFooterComponent={<View style={{height: 20}} />}
+        ListEmptyComponent={
+          <View
+            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <Text style={{color: theme.text}}>No data available</Text>
           </View>
-          <View style={style.profileDiv}>
-            <Image
-              style={style.profileImage}
-              source={
-                user?.profileImage
-                  ? {uri: user?.profileImage}
-                  : require('../../assets/images/onboarding.png')
-              }
-            />
-            <Pressable style={style.edit} onPress={() => setSlideUp(true)}>
-              <Image
-                style={{height: 12, width: 12, tintColor: theme.background}}
-                source={require('../../assets/tabIcons/edit.png')}
-              />
-            </Pressable>
-            <SlideUpModal
-              visible={slideUp}
-              onClose={() => setSlideUp(false)}
-              options={profileOptions}
-            />
-          </View>
-        </View>
-        <View style={style.userDetails}>
-          <Text style={style.userName}>
-            {user.firstName || ''} {user.lastName || ''}
-          </Text>
-          <Text style={style.userAddress}>
-            {user?.shippingAddress.city}, {user?.shippingAddress.country}
-          </Text>
-          <View style={{width: '100%', alignItems: 'center'}}>
-            <Text style={style.userBio}>
-              {fullBio
-                ? fullBio
-                : user?.bio?.split(' ').length <= 20
-                ? user?.bio
-                : user?.bio?.split(' ').slice(0, 20).join(' ') + '...'}
-            </Text>
-            {user?.bio?.split(' ').length > 20 && (
-              <Pressable
-                style={{paddingVertical: 16}}
-                onPress={() => {
-                  if (fullBio) {
-                    setFullBio(null);
-                  } else {
-                    setFullBio(user?.bio);
-                  }
-                }}>
-                <Icon
-                  name={fullBio ? 'chevron-up' : 'chevron-down'}
-                  size={20}
-                  color={theme.text}
-                />
-              </Pressable>
-            )}
-          </View>
-        </View>
-        <View style={style.accountInfo}>
-          <View style={style.summary}>
-            <Text style={style.title}>IMPRESSIONS</Text>
-            <Text style={style.count}>{stats?.totalViews || 0}</Text>
-          </View>
-          <View style={style.summary}>
-            <Text style={style.title}>PHOTOS</Text>
-            <Text style={style.count}>
-              {stats?.totalUploadingImgCount || 0}
-            </Text>
-          </View>
-          <View style={style.summary}>
-            <Text style={style.title}>DOWNLOADS</Text>
-            <Text style={style.count}>{stats?.downloads || 0}</Text>
-          </View>
-        </View>
-        <View style={style.stickyTabs}>
-          <View style={style.tabs}>
-            {tabs.map((tab, index) => (
-              <TouchableOpacity
-                key={tab.key}
-                onPress={() => handleTabPress(tab.key, index)}>
-                <Text
-                  style={[
-                    style.tabText,
-                    activeTab === tab.key && {color: theme.text},
-                  ]}>
-                  {tab.label}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-          <Animated.View style={tabIndicatorStyle} />
-        </View>
-        <View style={{minHeight: 400}}>
-          <ScrollView
-            horizontal
-            pagingEnabled
-            bounces={false}
-            snapToInterval={width}
-            decelerationRate="fast"
-            showsHorizontalScrollIndicator={false}
-            disableIntervalMomentum={true} // iOS only
-            onScroll={handleScroll}
-            scrollEventThrottle={16}>
-            {tabs.map((tab, index) => (
-              <View key={tab.key} style={{width, flex: 1}}>
-                {tab.component}
-              </View>
-            ))}
-          </ScrollView>
-        </View>
-      </ScrollView>
+        }
+        onEndReachedThreshold={0.5}
+        style={{flex: 1}}
+        bounces={false}
+      />
     </SafeAreaView>
   );
 };
