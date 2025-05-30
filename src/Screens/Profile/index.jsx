@@ -36,6 +36,9 @@ import {useAnalyticsStore} from 'src/store/photographerAnalytics';
 import ProfileSkeleton from './Loader';
 import {usePhotosStore} from 'src/store/photos';
 import {usePendingPhotosStore} from 'src/store/pendingPhotos';
+import {useCataloguesStore} from 'src/store/catalogues';
+import {useBlogsStore} from 'src/store/blogs';
+import {usePendingBlogsStore} from 'src/store/pendingBlogs';
 
 const {width} = Dimensions.get('window');
 const tabs = [
@@ -48,6 +51,9 @@ const Profile = () => {
   const {user, fetchUserFromToken} = useUserStore();
   const {fetchPhotos} = usePhotosStore();
   const {fetchPendingPhotos} = usePendingPhotosStore();
+  const {fetchCatalogues} = useCataloguesStore();
+  const {fetchBlogs} = useBlogsStore();
+  const {fetchPendingBlogs} = usePendingBlogsStore();
   const theme = useTheme();
   const style = useMemo(() => createProfileStyles(theme), [theme]);
   const navigation = useNavigation();
@@ -213,6 +219,9 @@ const Profile = () => {
     await fetchStats(user?._id);
     await fetchPhotos(user?._id);
     await fetchPendingPhotos(user?._id);
+    await fetchCatalogues(user?._id);
+    await fetchBlogs(user?._id);
+    await fetchPendingBlogs(user?._id);
   };
 
   const onRefresh = useCallback(async () => {

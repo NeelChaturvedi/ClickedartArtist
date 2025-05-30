@@ -25,6 +25,7 @@ import FastImage from 'react-native-fast-image';
 
 const TabCatalogues = () => {
   const {catalogues, fetchCatalogues} = useCataloguesStore();
+  console.log('catalogues', catalogues);
   const navigation = useNavigation();
 
   const {user} = useUserStore();
@@ -152,58 +153,19 @@ const TabCatalogues = () => {
 
   return (
     <>
-      {/* <View style={styles.container}>
-        {catalogues?.map((item, index) => (
-          <Pressable
-            onPress={() => {
-              setSlideUp(true);
-              setSelectedCatalogue(item);
-            }}
-            key={index}
-            style={styles.catalogueBorder}>
-            <View style={styles.imageDistribution}>
-              {item?.images
-                ?.slice(0, item?.images?.length <= 4 ? 4 : 3)
-                .map((image, index) => (
-                  <FastImage
-                    key={index}
-                    style={styles.catalogueImage}
-                    source={{uri: image.imageLinks.thumbnail}}
-                    resizeMode="cover"
-                  />
-                ))}
-              {item?.images?.length > 4 && (
-                <View style={styles.catalogueImageExtra}>
-                  <Text style={styles.catalogueImageText}>
-                    +{item?.images?.length - 3}
-                  </Text>
-                </View>
-              )}
-            </View>
-            {!item?.images ||
-              (item?.images?.length === 0 && (
-                <View style={styles.noImageContainer}>
-                  <Text style={styles.noImageText}>No Images</Text>
-                </View>
-              ))}
-            <Text style={styles.catalougeText}>{item.name}</Text>
-          </Pressable>
-        ))}
-      </View> */}
       <FlatList
-        style={{flex: 1, gap: 10, paddingHorizontal: 10}}
+        style={{flex: 1, gap: 10, paddingHorizontal: 10, flexGrow: 1}}
         contentContainerStyle={{flexGrow: 1}}
         data={catalogues}
         renderItem={renderItem}
         keyExtractor={item => item._id}
-        numColumns={2}
+        nestedScrollEnabled={true}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           <View style={styles.noImageContainer}>
             <Text style={styles.noImageText}>No Catalogues</Text>
           </View>
         }
-        columnWrapperStyle={{justifyContent: 'space-between'}}
       />
       <SlideUpModal
         visible={slideUp}
