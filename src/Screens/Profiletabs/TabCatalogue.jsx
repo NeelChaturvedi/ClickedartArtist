@@ -152,8 +152,14 @@ const TabCatalogues = () => {
   return (
     <>
       <FlatList
-        style={{flex: 1, gap: 10, paddingHorizontal: 10, flexGrow: 1}}
-        contentContainerStyle={{flexGrow: 1}}
+        style={{
+          flex: 1,
+          gap: 10,
+          paddingHorizontal: 10,
+          flexGrow: 1,
+          backgroundColor: theme.background,
+        }}
+        contentContainerStyle={{flexGrow: 1, gap: 20}}
         data={catalogues}
         renderItem={renderItem}
         keyExtractor={item => item._id}

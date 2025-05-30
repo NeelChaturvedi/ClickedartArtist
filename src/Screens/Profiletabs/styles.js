@@ -11,16 +11,18 @@ export const createTabStyles = theme =>
     ImageContainer: {
       flexDirection: 'row',
       flexWrap: 'wrap',
+      backgroundColor: theme.background,
       // gap: 6,
     },
     imageBorder: {
-      width: '50%',
+      width: '33.33%',
       padding: 2,
       aspectRatio: 1,
     },
     image: {
       resizeMode: 'cover',
-      height: '100%',
+      // height: '100%',
+      width: '100%',
       aspectRatio: 1,
     },
     imageDetails: {

@@ -192,19 +192,22 @@ const TabPhotos = () => {
   };
 
   return (
-    <View style={styles.ImageContainer}>
+    <>
       <FlatList
         data={combinedData}
         keyExtractor={(item, index) => item._id || index.toString()}
-        numColumns={2}
+        numColumns={3}
         renderItem={renderItem}
+        nestedScrollEnabled={true}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{flexGrow: 1, backgroundColor: theme.background}}
       />
       <SlideUpModal
         visible={slideUp}
         onClose={() => setSlideUp(false)}
         options={imageOptions}
       />
-    </View>
+    </>
   );
 };
 
