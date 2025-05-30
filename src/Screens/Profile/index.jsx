@@ -391,7 +391,7 @@ const Profile = () => {
                 onRefresh={onRefresh}
                 tintColor="#000"
               />
-            }>
+            }>  
             <TabPhotos />
           </Tabs.ScrollView>
         </Tabs.Tab>

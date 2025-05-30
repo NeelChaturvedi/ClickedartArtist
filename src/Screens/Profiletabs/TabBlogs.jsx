@@ -6,18 +6,24 @@ import {
   TouchableOpacity,
   ToastAndroid,
 } from 'react-native';
-import React, {useMemo, useState} from 'react';
+import React, {use, useEffect, useMemo, useState} from 'react';
 import {createTabStyles} from './styles';
 import {Image} from 'moti';
 import {useNavigation} from '@react-navigation/native';
 import SlideUpModal from '@components/SlideupModal';
 import api from 'src/utils/apiClient';
 import {useTheme} from 'src/themes/useTheme';
+import {useBlogsStore} from 'src/store/blogs';
+import {usePendingBlogsStore} from 'src/store/pendingBlogs';
+import {useUserStore} from 'src/store/auth';
 
-const TabBlogs = ({blogs, pendingBlogs}) => {
+const TabBlogs = () => {
   const navigation = useNavigation();
   const theme = useTheme();
   const styles = useMemo(() => createTabStyles(theme), [theme]);
+  const {user} = useUserStore();
+  const {pendingBlogs, fetchPendingBlogs} = usePendingBlogsStore();
+  const {blogs, fetchBlogs} = useBlogsStore();
 
   const [slideUp, setSlideUp] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState(null);
@@ -54,6 +60,11 @@ const TabBlogs = ({blogs, pendingBlogs}) => {
       setSlideUp(false);
     }
   };
+
+  useEffect(() => {
+    fetchBlogs(user?._id);
+    fetchPendingBlogs(user?._id);
+  }, [fetchBlogs, fetchPendingBlogs, user?._id]);
 
   return (
     <>

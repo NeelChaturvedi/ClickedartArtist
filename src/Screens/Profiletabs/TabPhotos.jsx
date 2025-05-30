@@ -227,10 +227,13 @@ const TabPhotos = ({pendingPhotos}) => {
           onPress={() => {
             setSelectedImage(item);
           }}>
-          <Image
+          <FastImage
             style={styles.image}
             source={{uri: item.imageLinks.thumbnail}}
           />
+          {/* <View
+            style={[styles.image, {aspectRatio: 1, backgroundColor: 'red'}]}
+          /> */}
         </Pressable>
       ))}
 

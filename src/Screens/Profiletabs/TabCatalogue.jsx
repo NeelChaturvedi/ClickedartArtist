@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable no-shadow */
 
 import {
@@ -7,10 +8,10 @@ import {
   Modal,
   ToastAndroid,
   Alert,
+  ScrollView,
 } from 'react-native';
 import {createTabStyles} from './styles';
-import React, {useMemo, useState} from 'react';
-import {Image} from 'moti';
+import React, {useEffect, useMemo, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import SlideUpModal from '@components/SlideupModal';
 import AutoGrowTextInput from '@components/AutoGrowTextInput';
@@ -18,14 +19,11 @@ import Button from '@components/button';
 import api from 'src/utils/apiClient';
 import {useUserStore} from 'src/store/auth';
 import {useTheme} from 'src/themes/useTheme';
-import { useCataloguesStore } from 'src/store/catalogues';
+import {useCataloguesStore} from 'src/store/catalogues';
 import FastImage from 'react-native-fast-image';
 
 const TabCatalogues = () => {
-  const {
-      catalogues,
-      // loading: cataloguesLoading,
-    } = useCataloguesStore();
+  const {catalogues, fetchCatalogues} = useCataloguesStore();
   const navigation = useNavigation();
 
   const {user} = useUserStore();
@@ -108,93 +106,99 @@ const TabCatalogues = () => {
     }
   };
 
-  return (
-    <View style={styles.container}>
-      {catalogues?.map((item, index) => (
-        <Pressable
-          onPress={() => {
-            setSlideUp(true);
-            setSelectedCatalogue(item);
-          }}
-          key={index}
-          style={styles.catalogueBorder}>
-          <View style={styles.imageDistribution}>
-            {item?.images
-              ?.slice(0, item?.images?.length <= 4 ? 4 : 3)
-              .map((image, index) => (
-                <FastImage
-                  key={index}
-                  style={styles.catalogueImage}
-                  source={{uri: image.imageLinks.thumbnail}}
-                  resizeMode="cover"
-                />
-              ))}
-            {item?.images?.length > 4 && (
-              <View style={styles.catalogueImageExtra}>
-                <Text style={styles.catalogueImageText}>
-                  +{item?.images?.length - 3}
-                </Text>
-              </View>
-            )}
-          </View>
-          {!item?.images ||
-            (item?.images?.length === 0 && (
-              <View style={styles.noImageContainer}>
-                <Text style={styles.noImageText}>No Images</Text>
-              </View>
-            ))}
-          <Text style={styles.catalougeText}>{item.name}</Text>
-        </Pressable>
-      ))}
-      <SlideUpModal
-        visible={slideUp}
-        onClose={() => setSlideUp(false)}
-        options={imageOptions}
-      />
+  useEffect(() => {
+    fetchCatalogues(user?._id);
+  }, [fetchCatalogues, user?._id]);
 
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={showModal}
-        onRequestClose={() => {
-          setShowModal(false);
-        }}>
-        <Pressable
-          style={styles.modalContainer}
-          onPress={() => setShowModal(false)}>
-          <Pressable style={styles.modalContent} onPress={() => {}}>
-            <Text style={styles.title}>Edit Catalogue</Text>
-            <View style={styles.inputSection}>
-              <Text style={styles.sectionTitle}>Catalogue Name</Text>
-              <AutoGrowTextInput
-                placeholder={'Enter Title'}
-                value={selectedCatalogue?.name}
-                onChangeText={text =>
-                  setSelectedCatalogue({
-                    ...selectedCatalogue,
-                    name: text,
-                  })
-                }
-              />
+  return (
+    <ScrollView contentContainerStyle={{flex: 1}}>
+      <View style={styles.container}>
+        {catalogues?.map((item, index) => (
+          <Pressable
+            onPress={() => {
+              setSlideUp(true);
+              setSelectedCatalogue(item);
+            }}
+            key={index}
+            style={styles.catalogueBorder}>
+            <View style={styles.imageDistribution}>
+              {item?.images
+                ?.slice(0, item?.images?.length <= 4 ? 4 : 3)
+                .map((image, index) => (
+                  <FastImage
+                    key={index}
+                    style={styles.catalogueImage}
+                    source={{uri: image.imageLinks.thumbnail}}
+                    resizeMode="cover"
+                  />
+                ))}
+              {item?.images?.length > 4 && (
+                <View style={styles.catalogueImageExtra}>
+                  <Text style={styles.catalogueImageText}>
+                    +{item?.images?.length - 3}
+                  </Text>
+                </View>
+              )}
             </View>
-            <View style={styles.inputSection}>
-              <Text style={styles.sectionTitle}>Description</Text>
-              <AutoGrowTextInput
-                placeholder={'Enter Description'}
-                value={selectedCatalogue?.description}
-                onChangeText={text =>
-                  setSelectedCatalogue({
-                    ...selectedCatalogue,
-                    description: text,
-                  })
-                }
-              />
-            </View>
-            <Button btnText="Save Changes" onPress={handleCatalogueUpdate} />
+            {!item?.images ||
+              (item?.images?.length === 0 && (
+                <View style={styles.noImageContainer}>
+                  <Text style={styles.noImageText}>No Images</Text>
+                </View>
+              ))}
+            <Text style={styles.catalougeText}>{item.name}</Text>
           </Pressable>
-        </Pressable>
-      </Modal>
-    </View>
+        ))}
+        <SlideUpModal
+          visible={slideUp}
+          onClose={() => setSlideUp(false)}
+          options={imageOptions}
+        />
+
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={showModal}
+          onRequestClose={() => {
+            setShowModal(false);
+          }}>
+          <Pressable
+            style={styles.modalContainer}
+            onPress={() => setShowModal(false)}>
+            <Pressable style={styles.modalContent} onPress={() => {}}>
+              <Text style={styles.title}>Edit Catalogue</Text>
+              <View style={styles.inputSection}>
+                <Text style={styles.sectionTitle}>Catalogue Name</Text>
+                <AutoGrowTextInput
+                  placeholder={'Enter Title'}
+                  value={selectedCatalogue?.name}
+                  onChangeText={text =>
+                    setSelectedCatalogue({
+                      ...selectedCatalogue,
+                      name: text,
+                    })
+                  }
+                />
+              </View>
+              <View style={styles.inputSection}>
+                <Text style={styles.sectionTitle}>Description</Text>
+                <AutoGrowTextInput
+                  placeholder={'Enter Description'}
+                  value={selectedCatalogue?.description}
+                  onChangeText={text =>
+                    setSelectedCatalogue({
+                      ...selectedCatalogue,
+                      description: text,
+                    })
+                  }
+                />
+              </View>
+              <Button btnText="Save Changes" onPress={handleCatalogueUpdate} />
+            </Pressable>
+          </Pressable>
+        </Modal>
+      </View>
+    </ScrollView>
   );
 };
 
