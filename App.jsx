@@ -76,8 +76,7 @@ export default function App() {
             headerShown: false,
             navigationBarColor: theme.background,
             headerTitleAlign: 'center',
-          }}
-          initialRouteName='Details'>
+          }}>
           {!user ? (
             <>
               {!isOnboardingCompleted && (
