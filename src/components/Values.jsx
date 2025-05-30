@@ -42,7 +42,7 @@ const getStyles = (theme) => StyleSheet.create({
     fontSize: 18,
     lineHeight: 24,
     color: theme.text,
-    fontFamily: 'Outfit-medium',
+    fontFamily: 'Calibri-Medium',
   },
   value: {
     width: '50%',
@@ -53,7 +53,7 @@ const getStyles = (theme) => StyleSheet.create({
     fontSize: 20,
     lineHeight: 24,
     color: theme.text,
-    fontFamily: 'Outfit-medium',
+    fontFamily: 'Calibri-Medium',
   },
 });
 

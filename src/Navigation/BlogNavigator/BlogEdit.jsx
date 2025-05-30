@@ -219,7 +219,7 @@ const getStyles = (theme) => StyleSheet.create({
     gap: 16,
   },
   headingText: {
-    fontFamily: 'Outfit-bold',
+    fontFamily: 'Calibri-Bold',
     fontSize: 24,
     color: theme.text,
   },

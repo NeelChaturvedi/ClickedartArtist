@@ -39,7 +39,7 @@ const getStyles = theme =>
       marginLeft: 10,
       color: theme.text,
       fontSize: 16,
-      fontFamily: 'Outfit-regular',
+      fontFamily: 'Calibri-Regular',
     },
   });
 

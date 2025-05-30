@@ -546,7 +546,7 @@ const CheckOut = () => {
                       <Text
                         style={{
                           fontSize: 14,
-                          fontFamily: 'Outfit-regular',
+                          fontFamily: 'Calibri-Regular',
                           color: pincodeChecking
                             ? '#FFB800'
                             : isAvailable

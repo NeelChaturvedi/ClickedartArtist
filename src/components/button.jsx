@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     fontSize: 20,
-    fontFamily: 'Outfit-bold',
+    fontFamily: 'Calibri-Bold',
   },
   disabledText: {
     color: '#ccc',

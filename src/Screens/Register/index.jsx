@@ -183,14 +183,14 @@ const Register = () => {
               style={{
                 color: theme.text,
                 marginLeft: 10,
-                fontFamily: 'Outfit-regular',
+                fontFamily: 'Calibri-Regular',
               }}>
               Agree With{' '}
               <Text
                 style={{
                   color: '#ea324a',
                   textDecorationLine: 'underline',
-                  fontFamily: 'Outfit-medium',
+                  fontFamily: 'Calibri-Medium',
                 }}>
                 Terms & Conditions
               </Text>
@@ -217,7 +217,7 @@ const Register = () => {
             style={{
               color: theme.text,
               textAlign: 'center',
-              fontFamily: 'Outfit-regular',
+              fontFamily: 'Calibri-Regular',
             }}>
             Already have an account?{' '}
           </Text>
@@ -225,7 +225,7 @@ const Register = () => {
             onPress={() => {
               navigation.goBack('Login');
             }}>
-            <Text style={{fontFamily: 'Outfit-bold', color: '#ea324a'}}>
+            <Text style={{fontFamily: 'Calibri-Bold', color: '#ea324a'}}>
               Sign In
             </Text>
           </TouchableOpacity>

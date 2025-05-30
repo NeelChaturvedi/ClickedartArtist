@@ -76,7 +76,7 @@ export const createAccountStyles = (theme) => StyleSheet.create({
   title: {
     color: theme.text,
     fontSize: 16,
-    fontFamily: 'Outfit-bold',
+    fontFamily: 'Calibri-Bold',
   },
   orderType: {
     color: '#888',
@@ -87,7 +87,7 @@ export const createAccountStyles = (theme) => StyleSheet.create({
     color: '#000',
     fontSize: 12,
     paddingVertical: 1,
-    fontFamily: 'Outfit-regular',
+    fontFamily: 'Calibri-Regular',
     textTransform: 'capitalize',
   },
   image: {
@@ -110,7 +110,7 @@ export const createAccountStyles = (theme) => StyleSheet.create({
   },
   metaLabel: {
     color: theme.text,
-    fontFamily: 'Outfit-bold',
+    fontFamily: 'Calibri-Bold',
     fontSize: 14,
     marginBottom: 4,
   },
@@ -136,7 +136,7 @@ export const createAccountStyles = (theme) => StyleSheet.create({
   notFoundTitle: {
     color: theme.text,
     fontSize: 16,
-    fontFamily: 'Outfit-medium',
+    fontFamily: 'Calibri-Medium',
     textAlign: 'center',
   },
   notFoundDesc: {
@@ -144,7 +144,7 @@ export const createAccountStyles = (theme) => StyleSheet.create({
     fontSize: 14,
     textAlign: 'center',
     marginTop: 8,
-    fontFamily: 'Outfit-regular',
+    fontFamily: 'Calibri-Regular',
   },
 
   modalContainer: {
@@ -164,13 +164,13 @@ export const createAccountStyles = (theme) => StyleSheet.create({
   },
   modalTitle: {
     fontSize: 24,
-    fontFamily: 'Outfit-bold',
+    fontFamily: 'Calibri-Bold',
     color: theme.text,
     textAlign: 'center',
   },
   modalDescription:{
     fontSize: 16,
-    fontFamily: 'Outfit-regular',
+    fontFamily: 'Calibri-Regular',
     color: '#888888',
   },
   inputSection: {
@@ -181,13 +181,13 @@ export const createAccountStyles = (theme) => StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 16,
-    fontFamily: 'Outfit-medium',
+    fontFamily: 'Calibri-Medium',
     color: theme.text,
   },
   wordCount:{
     color:theme.text,
     fontSize: 12,
-    fontFamily: 'Outfit-regular',
+    fontFamily: 'Calibri-Regular',
     marginTop: -6,
   },
   trackingList:{
@@ -195,14 +195,14 @@ export const createAccountStyles = (theme) => StyleSheet.create({
     justifyContent: 'space-between',
   },
   trackingTitle:{
-    fontFamily: 'Outfit-bold',
+    fontFamily: 'Calibri-Bold',
     width: '40%',
     fontSize: 16,
     color: theme.text,
     textAlign: 'left',
   },
   trackingStatus:{
-    fontFamily: 'Outfit-medium',
+    fontFamily: 'Calibri-Medium',
     fontSize: 16,
     width: '60%',
     color: theme.text,

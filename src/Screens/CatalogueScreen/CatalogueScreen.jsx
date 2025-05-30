@@ -167,7 +167,7 @@ const CatalogueScreen = ({setCatalogueId, modalVisible, setModalVisible}) => {
                 source={{uri: item.imageLinks.thumbnail}}
               />
               <View style={styles.imageDetails}>
-                <Text style={styles.imageText}>{item.title}</Text>
+                <Text numberOfLines={1} style={styles.imageText}>{item.title}</Text>
               </View>
             </Pressable>
           ))}

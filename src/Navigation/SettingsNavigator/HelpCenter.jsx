@@ -91,7 +91,7 @@ const getStyles = (theme) => StyleSheet.create({
   },
   title: {
     fontSize: 32,
-    fontFamily: 'Outfit-bold',
+    fontFamily: 'Calibri-Bold',
     marginBottom: 10,
     color: theme.text,
     paddingVertical: 10,
@@ -115,7 +115,7 @@ const getStyles = (theme) => StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 16,
-    fontFamily: 'Outfit-medium',
+    fontFamily: 'Calibri-Medium',
     marginBottom: 10,
     color: theme.text,
   },
@@ -124,7 +124,7 @@ const getStyles = (theme) => StyleSheet.create({
     lineHeight: 24,
     marginLeft: 10,
     marginBottom: 6,
-    fontFamily: 'Outfit-medium',
+    fontFamily: 'Calibri-Medium',
     color: theme.text,
   },
   contactUs: {
@@ -138,7 +138,7 @@ const getStyles = (theme) => StyleSheet.create({
     borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
-    fontFamily: 'Outfit-medium',
+    fontFamily: 'Calibri-Medium',
     color: theme.text,
   },
 });

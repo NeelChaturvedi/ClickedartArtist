@@ -8,7 +8,7 @@ export const createCartStyles = theme =>
       backgroundColor: theme.background,
     },
     header: {
-      fontFamily: 'Outfit-bold',
+      fontFamily: 'Calibri-Bold',
       fontSize: 24,
       color: theme.text,
       textAlign: 'center',
@@ -17,6 +17,7 @@ export const createCartStyles = theme =>
       paddingHorizontal: 20,
       paddingVertical: 16,
       gap: 30,
+      flexGrow: 1,
     },
     card: {
       width: '100%',
@@ -43,25 +44,30 @@ export const createCartStyles = theme =>
       resizeMode: 'cover',
     },
     imageDetails: {
-      flexDirection: 'column',
+      flex: 1,
       height: '100%',
       alignItems: 'flex-start',
       justifyContent: 'space-between',
+      overflow: 'hidden',
     },
+
     title: {
       color: theme.text,
-      fontFamily: 'Outfit-bold',
-      fontSize: 20,
+      fontFamily: 'Calibri-Bold',
+      fontSize: 18,
+      flexShrink: 1,
+      flexWrap: 'wrap',
     },
+
     owner: {
       color: '#888',
-      fontFamily: 'Outfit-medium',
-      fontSize: 16,
+      fontFamily: 'Calibri-Medium',
+      fontSize: 14,
     },
     price: {
       color: theme.text,
-      fontFamily: 'Outfit-medium',
-      fontSize: 20,
+      fontFamily: 'Calibri-Medium',
+      fontSize: 18,
       textAlign: 'right',
     },
     line: {
@@ -71,12 +77,12 @@ export const createCartStyles = theme =>
     },
     size: {
       color: theme.text,
-      fontFamily: 'Outfit-medium',
+      fontFamily: 'Calibri-Medium',
       fontSize: 18,
     },
     paper: {
       color: theme.text,
-      fontFamily: 'Outfit-medium',
+      fontFamily: 'Calibri-Medium',
       fontSize: 14,
     },
     otherOptions: {
@@ -108,7 +114,7 @@ export const createCartStyles = theme =>
     emptyText: {
       color: theme.text,
       opacity: 0.7,
-      fontFamily: 'Outfit-medium',
+      fontFamily: 'Calibri-Medium',
       fontSize: 20,
     },
   });

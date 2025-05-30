@@ -13,7 +13,7 @@ export const blogPageStyles = (theme) => StyleSheet.create({
     width: '100%',
   },
   headingText: {
-    fontFamily: 'Outfit-bold',
+    fontFamily: 'Calibri-Bold',
     fontSize: 28,
     color: theme.text,
   },
@@ -24,7 +24,7 @@ export const blogPageStyles = (theme) => StyleSheet.create({
   },
   dateText: {
     color: '#888',
-    fontFamily: 'Outfit-medium',
+    fontFamily: 'Calibri-Medium',
     fontSize: 16,
   },
   summary: {
@@ -39,7 +39,7 @@ export const blogPageStyles = (theme) => StyleSheet.create({
   },
   description: {
     color: theme.text,
-    fontFamily: 'Outfit-regular',
+    fontFamily: 'Calibri-Regular',
     fontSize: 16,
   },
   blogOwner: {
@@ -60,12 +60,12 @@ export const blogPageStyles = (theme) => StyleSheet.create({
   },
   nameText: {
     color: theme.text,
-    fontFamily: 'Outfit-Medium',
+    fontFamily: 'Calibri-Medium',
     fontSize: 20,
   },
   typeText: {
     color: '#888',
-    fontFamily: 'Outfit-regular',
+    fontFamily: 'Calibri-Regular',
     fontSize: 16,
     textTransform: 'capitalize',
     paddingRight: 10,

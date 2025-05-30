@@ -22,13 +22,13 @@ export const loginStyles = theme =>
       lineHeight: 40,
       color: theme.text,
       textAlign: 'center',
-      fontFamily: 'Outfit-bold',
+      fontFamily: 'Calibri-Bold',
     },
     subHeading: {
       fontSize: 16,
       color: '#888888',
       textAlign: 'center',
-      fontFamily: 'Outfit-medium',
+      fontFamily: 'Calibri-Medium',
     },
     form: {
       gap: 20,
@@ -40,7 +40,7 @@ export const loginStyles = theme =>
     },
     inputTitle: {
       fontSize: 16,
-      fontFamily: 'Outfit-medium',
+      fontFamily: 'Calibri-Medium',
       color: theme.text,
     },
     inputbox: {
@@ -68,7 +68,7 @@ export const loginStyles = theme =>
     },
     passwordTextInput: {
       color: theme.text,
-      fontFamily: 'Outfit-regular',
+      fontFamily: 'Calibri-Regular',
       flex: 1,
       marginRight: 10,
     },
@@ -76,7 +76,7 @@ export const loginStyles = theme =>
       color: theme.text,
       textAlign: 'right',
       textDecorationLine: 'underline',
-      fontFamily: 'Outfit-regular',
+      fontFamily: 'Calibri-Regular',
     },
     createAccount: {
       flexDirection: 'row',
@@ -86,10 +86,10 @@ export const loginStyles = theme =>
     createAccountText: {
       color: theme.text,
       textAlign: 'center',
-      fontFamily: 'Outfit-regular',
+      fontFamily: 'Calibri-Regular',
     },
     createNowText: {
-      fontFamily: 'Outfit-bold',
+      fontFamily: 'Calibri-Bold',
       color: '#ED3147',
     },
     modalContainer: {
@@ -108,7 +108,7 @@ export const loginStyles = theme =>
     modalTitle: {
       fontSize: 24,
       lineHeight: 28,
-      fontFamily: 'Outfit-bold',
+      fontFamily: 'Calibri-Bold',
       color: theme.text,
       textAlign: 'center',
     },
@@ -121,12 +121,12 @@ export const loginStyles = theme =>
     sectionTitle: {
       fontSize: 16,
       lineHeight: 20,
-      fontFamily: 'Outfit-medium',
+      fontFamily: 'Calibri-Medium',
       color: theme.text,
     },
     errorText: {
       color: '#ED3147',
       fontSize: 14,
-      fontFamily: 'Outfit-regular',
+      fontFamily: 'Calibri-Regular',
     },
   });

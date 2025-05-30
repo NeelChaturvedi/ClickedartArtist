@@ -69,12 +69,12 @@ const styles = StyleSheet.create({
   closeButtonText: {
     color: '#000000',
     fontSize: 16,
-    fontFamily: 'Outfit-medium',
+    fontFamily: 'Calibri-Medium',
   },
   noImageText: {
     color: '#FFFFFF',
     fontSize: 16,
-    fontFamily: 'Outfit-regular',
+    fontFamily: 'Calibri-Regular',
   },
 });
 
