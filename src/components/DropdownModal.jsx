@@ -48,7 +48,7 @@ const DropdownModal = ({options, onSelect, value}) => {
                 <Text style={styles.title}>Select option</Text>
                 <FlatList
                   data={options}
-                  keyExtractor={item => item.id.toString()}
+                  keyExtractor={item => item?.id?.toString()}
                   renderItem={({item}) => (
                     <Pressable onPress={() => handleSelect(item)}>
                       <Text style={styles.option}>{item.name}</Text>

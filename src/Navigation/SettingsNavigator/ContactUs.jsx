@@ -1,12 +1,9 @@
-import { View, Text } from 'react-native';
+import {View, Text} from 'react-native';
 import React from 'react';
+import {ContactNavigator} from '../ContactNavigator/ContactNavigator';
 
 const ContactUs = () => {
-  return (
-    <View>
-      <Text>ContactUs</Text>
-    </View>
-  );
+  return <ContactNavigator />;
 };
 
 export default ContactUs;
