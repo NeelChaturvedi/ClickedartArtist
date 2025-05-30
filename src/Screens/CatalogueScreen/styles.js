@@ -54,9 +54,9 @@ export const catalogueScreenStyles = (theme) => StyleSheet.create({
     alignItems: 'center',
   },
   imageText: {
-    fontSize: 16,
+    fontSize: 14,
     width: '80%',
-    fontFamily: 'Outfit-bold',
+    fontFamily: 'Outfit-medium',
     color: theme.text,
   },
   modalContainer: {

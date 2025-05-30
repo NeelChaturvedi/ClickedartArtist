@@ -17,6 +17,7 @@ export const createCartStyles = theme =>
       paddingHorizontal: 20,
       paddingVertical: 16,
       gap: 30,
+      flexGrow: 1,
     },
     card: {
       width: '100%',
@@ -43,25 +44,30 @@ export const createCartStyles = theme =>
       resizeMode: 'cover',
     },
     imageDetails: {
-      flexDirection: 'column',
+      flex: 1,
       height: '100%',
       alignItems: 'flex-start',
       justifyContent: 'space-between',
+      overflow: 'hidden',
     },
+
     title: {
       color: theme.text,
       fontFamily: 'Outfit-bold',
-      fontSize: 20,
+      fontSize: 18,
+      flexShrink: 1,
+      flexWrap: 'wrap',
     },
+
     owner: {
       color: '#888',
       fontFamily: 'Outfit-medium',
-      fontSize: 16,
+      fontSize: 14,
     },
     price: {
       color: theme.text,
       fontFamily: 'Outfit-medium',
-      fontSize: 20,
+      fontSize: 18,
       textAlign: 'right',
     },
     line: {
