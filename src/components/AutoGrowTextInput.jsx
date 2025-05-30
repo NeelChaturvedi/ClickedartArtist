@@ -38,7 +38,7 @@ const getStyles = (theme) => StyleSheet.create({
     paddingVertical: 16,
     fontSize: 16,
     textAlignVertical: 'top',
-    fontFamily: 'Outfit-regular',
+    fontFamily: 'Calibri-Regular',
     color: theme.text,
   },
 });

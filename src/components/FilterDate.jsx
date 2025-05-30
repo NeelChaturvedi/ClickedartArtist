@@ -107,7 +107,7 @@ const getStyles = (theme) => StyleSheet.create({
   },
   dateText: {
     color: theme.text,
-    fontFamily: 'Outfit-medium',
+    fontFamily: 'Calibri-Medium',
     fontSize: 18,
   },
 });

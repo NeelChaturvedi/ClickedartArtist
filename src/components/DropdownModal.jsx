@@ -77,14 +77,14 @@ const getStyles = (theme) => StyleSheet.create({
   title: {
     fontSize: 18,
     marginBottom: 12,
-    fontFamily: 'Outfit-bold',
+    fontFamily: 'Calibri-Bold',
     color: theme.text,
   },
   option: {
     paddingVertical: 12,
     fontSize: 16,
     color: theme.text,
-    fontFamily: 'Outfit-medium',
+    fontFamily: 'Calibri-Medium',
   },
   selectionContainer: {
     width: '100%',

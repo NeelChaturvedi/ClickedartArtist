@@ -66,18 +66,18 @@ export const createProfileStyles = (theme) =>
     },
     userName: {
       color: theme.text,
-      fontFamily: 'Outfit-medium',
+      fontFamily: 'Calibri-Medium',
       fontSize: 24,
       marginTop: 0,
     },
     userAddress: {
       color: '#888',
-      fontFamily: 'Outfit-medium',
+      fontFamily: 'Calibri-Medium',
       fontSize: 16,
     },
     userBio: {
       color: theme.text,
-      fontFamily: 'Outfit-medium',
+      fontFamily: 'Calibri-Medium',
       fontSize: 16,
       padding: 20,
       textAlign: 'justify',
@@ -97,12 +97,12 @@ export const createProfileStyles = (theme) =>
     },
     title: {
       fontSize: 14,
-      fontFamily: 'Outfit-regular',
+      fontFamily: 'Calibri-Regular',
       color: theme.text,
     },
     count: {
       fontSize: 28,
-      fontFamily: 'Outfit-medium',
+      fontFamily: 'Calibri-Medium',
       color: theme.text,
     },
     tabsContainer: {
@@ -130,7 +130,7 @@ export const createProfileStyles = (theme) =>
       fontSize: 20,
       lineHeight: 30,
       color: '#999',
-      fontFamily: 'Outfit-medium',
+      fontFamily: 'Calibri-Medium',
     },
     modalContainer: {
       flex: 1,

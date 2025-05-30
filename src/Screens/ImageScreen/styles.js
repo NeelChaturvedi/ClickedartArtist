@@ -33,17 +33,17 @@ export const imageScreenStyles = (theme) => StyleSheet.create({
     alignItems: 'flex-start',
   },
   headingTitle: {
-    fontFamily: 'Outfit-bold',
+    fontFamily: 'Calibri-Bold',
     fontSize: 20,
     color: theme.text,
   },
   nameText: {
-    fontFamily: 'Outfit-medium',
+    fontFamily: 'Calibri-Medium',
     color: theme.text,
     fontSize: 18,
   },
   discountedText: {
-    fontFamily: 'Outfit-medium',
+    fontFamily: 'Calibri-Medium',
     color: theme.text,
     fontSize: 18,
     opacity: 0.7,
@@ -51,12 +51,12 @@ export const imageScreenStyles = (theme) => StyleSheet.create({
     textDecorationStyle: 'solid',
   },
   priceText: {
-    fontFamily: 'Outfit-bold',
+    fontFamily: 'Calibri-Bold',
     color: theme.text,
     fontSize: 18,
   },
   discountPercentage: {
-    fontFamily: 'Outfit-medium',
+    fontFamily: 'Calibri-Medium',
     color: '#ed3147',
     fontSize: 18,
     opacity: 1,
@@ -75,7 +75,7 @@ export const imageScreenStyles = (theme) => StyleSheet.create({
     gap: 14,
   },
   aboutText: {
-    fontFamily: 'Outfit-regular',
+    fontFamily: 'Calibri-Regular',
     color: theme.text,
     fontSize: 14,
   },

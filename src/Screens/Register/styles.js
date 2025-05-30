@@ -18,13 +18,13 @@ export const registerStyles = (theme) => StyleSheet.create({
     fontSize: 32,
     color: theme.text,
     textAlign: 'center',
-    fontFamily: 'Outfit-bold',
+    fontFamily: 'Calibri-Bold',
   },
   subHeading: {
     fontSize: 16,
     color: '#888888',
     textAlign: 'center',
-    fontFamily: 'Outfit-medium',
+    fontFamily: 'Calibri-Medium',
   },
   form: {
     paddingHorizontal: 30,
@@ -36,7 +36,7 @@ export const registerStyles = (theme) => StyleSheet.create({
   inputTitle: {
     fontSize: 16,
     color: theme.text,
-    fontFamily: 'Outfit-medium',
+    fontFamily: 'Calibri-Medium',
     marginBottom: 6,
   },
   inputbox: {
@@ -44,7 +44,7 @@ export const registerStyles = (theme) => StyleSheet.create({
     height: 54,
     color: theme.text,
     backgroundColor: theme.card,
-    fontFamily: 'Outfit-regular',
+    fontFamily: 'Calibri-Regular',
     paddingHorizontal: 10,
     borderRadius: 10,
     borderWidth: 0.5,

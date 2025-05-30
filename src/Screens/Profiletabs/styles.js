@@ -30,7 +30,7 @@ export const createTabStyles = (theme) => StyleSheet.create({
   imageText: {
     fontSize: 16,
     width: '80%',
-    fontFamily: 'Outfit-bold',
+    fontFamily: 'Calibri-Bold',
     color: theme.text,
   },
   status: {
@@ -89,13 +89,13 @@ export const createTabStyles = (theme) => StyleSheet.create({
     },
     catalogueImageText: {
       fontSize: 32,
-      fontFamily: 'Outfit-bold',
+      fontFamily: 'Calibri-Bold',
       color: theme.text,
       textAlign: 'center',
       paddingBottom: 5,
     },
     catalougeText: {
-      fontFamily: 'Outfit-Bold',
+      fontFamily: 'Calibri-Bold',
       fontSize: 24,
       color: theme.text,
     },
@@ -105,7 +105,7 @@ export const createTabStyles = (theme) => StyleSheet.create({
     },
     noImageText: {
       fontSize: 32,
-      fontFamily: 'Outfit-regular',
+      fontFamily: 'Calibri-Regular',
       color: '#A9A9A9',
       lineHeight: 40,
     },
@@ -125,7 +125,7 @@ export const createTabStyles = (theme) => StyleSheet.create({
     },
     blogDate: {
       color: '#888',
-      fontFamily: 'Outfit-bold',
+      fontFamily: 'Calibri-Bold',
       fontSize: 12,
     },
     blogImage: {
@@ -158,7 +158,7 @@ export const createTabStyles = (theme) => StyleSheet.create({
     },
     title: {
       fontSize: 24,
-      fontFamily: 'Outfit-bold',
+      fontFamily: 'Calibri-Bold',
       color: theme.text,
       textAlign: 'center',
     },
@@ -170,7 +170,7 @@ export const createTabStyles = (theme) => StyleSheet.create({
     },
     sectionTitle: {
       fontSize: 16,
-      fontFamily: 'Outfit-medium',
+      fontFamily: 'Calibri-Medium',
       color: theme.text,
     },
   });

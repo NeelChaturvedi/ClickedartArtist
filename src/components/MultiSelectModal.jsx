@@ -104,14 +104,14 @@ const getStyles = theme =>
     title: {
       fontSize: 20,
       marginBottom: 12,
-      fontFamily: 'Outfit-bold',
+      fontFamily: 'Calibri-Bold',
       textAlign: 'center',
       color: theme.text,
     },
     option: {
       paddingVertical: 12,
       fontSize: 16,
-      fontFamily: 'Outfit-medium',
+      fontFamily: 'Calibri-Medium',
       color: theme.text,
     },
     selectedOption: {
