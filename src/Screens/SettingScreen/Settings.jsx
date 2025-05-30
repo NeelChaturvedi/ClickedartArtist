@@ -44,9 +44,10 @@ const Settings = () => {
       label: isMonetized ? 'Manage Monetization' : 'Monetize Account',
       screen: 'Monetize Account',
     },
-    {id: '7', icon: 'info', label: 'Help Center', screen: 'Help Center'},
+    {id: '7', icon: 'play-circle', label: 'Support Videos', screen: 'Support Videos'},
+    {id: '8', icon: 'phone', label: 'Contact Us', screen: 'Contact Us'},
     {
-      id: '8',
+      id: '9',
       icon: theme === 'dark' ? 'dark-mode' : 'light-mode',
       label: 'Theme',
       screen: 'Manage Theme',

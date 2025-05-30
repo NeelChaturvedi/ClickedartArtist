@@ -32,8 +32,7 @@ export const createSettingStyles = (theme) =>
       alignItems: 'center',
       justifyContent: 'space-between',
       width: '100%',
-      paddingVertical: 20,
-      paddingHorizontal: 16,
+      padding: 16,
     },
     options: {
       flexDirection: 'row',

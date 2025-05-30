@@ -7,18 +7,16 @@ import {
   View,
   SafeAreaView,
   Alert,
-  TouchableOpacity,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import YoutubePlayer from 'react-native-youtube-iframe';
-import { useTheme } from 'src/themes/useTheme';
+import {useTheme} from 'src/themes/useTheme';
 import api from 'src/utils/apiClient';
 
-const HelpCenter = () => {
+const SupportVideos = () => {
   const [playing, setPlaying] = useState(false);
   const [supportVideos, setSupportVideos] = useState([]);
 
-    const theme = useTheme();
+  const theme = useTheme();
   const styles = getStyles(theme);
 
   const getVideoId = url => {
@@ -55,8 +53,9 @@ const HelpCenter = () => {
   }, []);
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false} style={{width: '100%', paddingVertical: 10}}>
-        <Text style={styles.title}>Support Videos</Text>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{width: '100%', paddingVertical: 10}}>
         <Text style={styles.introText}>
           Here are some videos that can help you with common issues and
           questions.
@@ -74,73 +73,57 @@ const HelpCenter = () => {
           </View>
         ))}
       </ScrollView>
-      <TouchableOpacity style={styles.contactUs}>
-        <Icon name="message" size={30} color="white" />
-      </TouchableOpacity>
     </SafeAreaView>
   );
 };
 
-const getStyles = (theme) => StyleSheet.create({
-  container: {
-    paddingHorizontal: 20,
-    backgroundColor: theme.background,
-    position: 'relative',
-    width: '100%',
-    height: '100%',
-  },
-  title: {
-    fontSize: 32,
-    fontFamily: 'Calibri-Bold',
-    marginBottom: 10,
-    color: theme.text,
-    paddingVertical: 10,
-  },
-  lastUpdated: {
-    fontSize: 14,
-    color: '#888',
-    marginBottom: 20,
-  },
-  introText: {
-    fontSize: 15,
-    marginBottom: 20,
-    color: '#888',
-    lineHeight: 22,
-  },
-  section: {
-    gap: 4,
-    paddingVertical: 16,
-    borderBottomcolor: theme.text,
-    borderBottomWidth: 1,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontFamily: 'Calibri-Medium',
-    marginBottom: 10,
-    color: theme.text,
-  },
-  bullet: {
-    fontSize: 16,
-    lineHeight: 24,
-    marginLeft: 10,
-    marginBottom: 6,
-    fontFamily: 'Calibri-Medium',
-    color: theme.text,
-  },
-  contactUs: {
-    position: 'absolute',
-    bottom: 30,
-    right: 12,
-    height: 70,
-    width: 70,
-    elevation: 10,
-    backgroundColor: '#ED3147',
-    borderRadius: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontFamily: 'Calibri-Medium',
-    color: theme.text,
-  },
-});
+const getStyles = theme =>
+  StyleSheet.create({
+    container: {
+      paddingHorizontal: 20,
+      backgroundColor: theme.background,
+      position: 'relative',
+      width: '100%',
+      height: '100%',
+    },
+    title: {
+      fontSize: 32,
+      fontFamily: 'Calibri-Bold',
+      marginBottom: 10,
+      color: theme.text,
+      paddingVertical: 10,
+    },
+    lastUpdated: {
+      fontSize: 14,
+      color: '#888',
+      marginBottom: 20,
+    },
+    introText: {
+      fontSize: 15,
+      marginBottom: 20,
+      color: '#888',
+      lineHeight: 22,
+    },
+    section: {
+      gap: 4,
+      paddingVertical: 16,
+      borderBottomcolor: theme.text,
+      borderBottomWidth: 1,
+    },
+    sectionTitle: {
+      fontSize: 16,
+      fontFamily: 'Calibri-Medium',
+      marginBottom: 10,
+      color: theme.text,
+    },
+    bullet: {
+      fontSize: 16,
+      lineHeight: 24,
+      marginLeft: 10,
+      marginBottom: 6,
+      fontFamily: 'Calibri-Medium',
+      color: theme.text,
+    },
+  });
 
-export default HelpCenter;
+export default SupportVideos;
