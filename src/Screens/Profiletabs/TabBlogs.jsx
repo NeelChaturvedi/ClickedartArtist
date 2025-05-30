@@ -54,7 +54,6 @@ const TabBlogs = () => {
     try {
       await api.delete(`/blog/delete-blog?blogId=${selectedBlog._id}`);
       ToastAndroid.show('Blog deleted successfully', ToastAndroid.SHORT);
-      // Refresh blogs after deletion
       fetchBlogs(user?._id);
       fetchPendingBlogs(user?._id);
     } catch (error) {
@@ -64,7 +63,6 @@ const TabBlogs = () => {
     }
   };
 
-  // Combine pendingBlogs and blogs into a single array with type indicator
   const data = useMemo(
     () => [
       ...pendingBlogs.map(item => ({...item, type: 'pending'})),
@@ -141,10 +139,10 @@ const TabBlogs = () => {
         keyExtractor={item => `${item.type}-${item._id}`}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 20}}
-        nestedScrollEnabled={false} // Prevent nested scrolling conflicts
-        directionalLockEnabled={true} // Lock to vertical scrolling
-        initialNumToRender={10} // Optimize for initial render
-        windowSize={5} // Optimize for performance
+        nestedScrollEnabled={false}
+        directionalLockEnabled={true}
+        initialNumToRender={10}
+        windowSize={5}
         ListEmptyComponent={
           <View
             style={{
