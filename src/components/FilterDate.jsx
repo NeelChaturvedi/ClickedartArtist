@@ -3,6 +3,7 @@ import {Pressable, StyleSheet, Text, View} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import dayjs from 'dayjs';
 import { useTheme } from 'src/themes/useTheme';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const FilterDate = ({ dateRange, setDateRange, fetchCustomStats }) => {
   const [openPicker, setOpenPicker] = useState(false);
@@ -57,6 +58,7 @@ const FilterDate = ({ dateRange, setDateRange, fetchCustomStats }) => {
               ? dayjs(dateRange?.startDate).format('DD-MM-YYYY')
               : 'Start Date'}
           </Text>
+          <Icon name="date-range" size={16} color={theme.text} />
         </Pressable>
 
         <Pressable
@@ -70,6 +72,7 @@ const FilterDate = ({ dateRange, setDateRange, fetchCustomStats }) => {
               ? dayjs(dateRange?.endDate).format('DD-MM-YYYY')
               : 'End Date'}
           </Text>
+          <Icon name="date-range" size={16} color={theme.text} />
         </Pressable>
       </View>
 
@@ -99,16 +102,18 @@ const getStyles = (theme) => StyleSheet.create({
   },
   dateButton: {
     flex: 1,
+    flexDirection: 'row',
     height: 60,
     backgroundColor: theme.card,
     borderRadius: 10,
-    justifyContent: 'center',
+    paddingHorizontal: 20,
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
   dateText: {
     color: theme.text,
-    fontFamily: 'Calibri-Medium',
-    fontSize: 18,
+    fontFamily: 'Calibri-Regular',
+    fontSize: 16,
   },
 });
 

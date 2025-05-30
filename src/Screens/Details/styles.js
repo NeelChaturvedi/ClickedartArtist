@@ -14,7 +14,7 @@ export const userCreationStyles = theme =>
       paddingVertical: 30,
     },
     subHeadingText: {
-      fontSize: 18,
+      fontSize: 16,
       color: '#888',
       fontFamily: 'Calibri-Regular',
       textAlign: 'center',
@@ -42,10 +42,12 @@ export const userCreationStyles = theme =>
     inputbox: {
       height: 54,
       color: theme.text,
-      justifyContent: 'center',
+      justifyContent: 'space-between',
+      alignItems: 'center',
       backgroundColor: theme.card,
       fontFamily: 'Calibri-Regular',
       paddingHorizontal: 16,
+      flexDirection: 'row',
       borderRadius: 10,
       borderWidth: 0.5,
       borderColor: theme.border,

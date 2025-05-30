@@ -7,11 +7,12 @@ import Faqs from './Faqs';
 import TermsAndConditions from './TermsConditions';
 import Membership from './Membership';
 import PrivacyPolicy from './PrivacyPolicy';
-import HelpCenter from './HelpCenter';
 import ChangePassword from './ChangePassword';
 import Monetization from './Monetization';
 import { useTheme } from 'src/themes/useTheme';
 import Theme from './Theme';
+import SupportVideos from './SupportVideos';
+import ContactUs from './ContactUs';
 enableScreens();
 
 const Stack = createNativeStackNavigator();
@@ -38,9 +39,10 @@ export default function SettingsNavigator() {
       <Stack.Screen name="Terms of Use" component={TermsAndConditions}/>
       <Stack.Screen name="Membership" component={Membership}/>
       <Stack.Screen name="Privacy Policy" component={PrivacyPolicy}/>
-      <Stack.Screen name="Help Center" component={HelpCenter}/>
+      <Stack.Screen name="Support Videos" component={SupportVideos}/>
       <Stack.Screen name="Change Password" component={ChangePassword}/>
       <Stack.Screen name="Monetize Account" component={Monetization}/>
+      <Stack.Screen name="Contact Us" component={ContactUs}/>
       <Stack.Screen name="Manage Theme" component={Theme}/>
     </Stack.Navigator>
   );

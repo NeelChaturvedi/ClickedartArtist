@@ -22,6 +22,7 @@ import {useRegistrationStore} from '../../store/registration';
 import DatePicker from 'react-native-date-picker';
 import dayjs from 'dayjs';
 import { useTheme } from 'src/themes/useTheme';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Personal = () => {
   const navigation = useNavigation();
@@ -90,7 +91,7 @@ const Personal = () => {
             <ScrollView
               showsVerticalScrollIndicator={false}
               style={{flex: 1}}
-              contentContainerStyle={{paddingBottom: 30}}
+              contentContainerStyle={{paddingBottom: 10}}
               keyboardShouldPersistTaps="handled">
               <Text style={styles.subHeadingText}>
                 Let's start by getting your personal details.
@@ -153,6 +154,7 @@ const Personal = () => {
                         ? dayjs(formData.dob).format('DD-MM-YYYY')
                         : 'Select Date of Birth'}
                     </Text>
+                    <Icon name="date-range" size={20} color={theme.text} />
                     <DatePicker
                       modal
                       mode="date"

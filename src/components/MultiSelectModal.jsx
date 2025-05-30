@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,9 +9,10 @@ import {
   Pressable,
   FlatList,
 } from 'react-native';
-import {useTheme} from 'src/themes/useTheme';
+import Icon from 'react-native-vector-icons/Feather';
+import { useTheme } from 'src/themes/useTheme';
 
-const MultiSelectModal = ({options, value = [], onChange, placeholder}) => {
+const MultiSelectModal = ({ options, value = [], onChange, placeholder }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedIds, setSelectedIds] = useState(value);
 
@@ -22,9 +23,13 @@ const MultiSelectModal = ({options, value = [], onChange, placeholder}) => {
     onChange?.(selectedIds);
   }, [selectedIds]);
 
-  const toggleSelect = id => {
-    setSelectedIds(prev =>
-      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id],
+  useEffect(() => {
+    setSelectedIds(value);
+  }, [value]);
+
+  const toggleSelect = (id) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
     );
   };
 
@@ -33,20 +38,17 @@ const MultiSelectModal = ({options, value = [], onChange, placeholder}) => {
       return `${placeholder || 'Select options'}`;
     }
     const selectedNames = options
-      ?.filter(opt => selectedIds?.includes(opt.id))
-      .map(opt => opt.name)
+      ?.filter((opt) => selectedIds?.includes(opt.id))
+      .map((opt) => opt.name)
       .join(', ');
     return selectedNames;
   };
 
-  useEffect(() => {
-    setSelectedIds(value);
-  }, [value]);
-
   return (
     <View style={styles.selectionContainer}>
-      <Pressable onPress={() => setModalVisible(true)} style={styles.selector}>
-        <Text style={styles.selectionText}>{renderSelectedText()}</Text>
+      <Pressable style={styles.pressableContainer} onPress={() => setModalVisible(true)}>
+        <Text numberOfLines={1} style={styles.selectionText}>{renderSelectedText()}</Text>
+        <Icon name="chevron-down" size={24} color={theme.text} />
       </Pressable>
 
       <Modal
@@ -61,16 +63,12 @@ const MultiSelectModal = ({options, value = [], onChange, placeholder}) => {
                 <Text style={styles.title}>Select options</Text>
                 <FlatList
                   data={options}
-                  keyExtractor={item => item.id.toString()}
-                  renderItem={({item}) => {
+                  keyExtractor={(item) => item.id.toString()}
+                  renderItem={({ item }) => {
                     const selected = selectedIds?.includes(item.id);
                     return (
                       <Pressable onPress={() => toggleSelect(item.id)}>
-                        <Text
-                          style={[
-                            styles.option,
-                            selected && styles.selectedOption,
-                          ]}>
+                        <Text style={[styles.option, selected && styles.selectedOption]}>
                           {item.name} {selected ? '✓' : ''}
                         </Text>
                       </Pressable>
@@ -86,7 +84,7 @@ const MultiSelectModal = ({options, value = [], onChange, placeholder}) => {
   );
 };
 
-const getStyles = theme =>
+const getStyles = (theme) =>
   StyleSheet.create({
     overlay: {
       flex: 1,
@@ -120,7 +118,6 @@ const getStyles = theme =>
     selectionContainer: {
       width: '100%',
       height: 60,
-      paddingVertical: 10,
       paddingHorizontal: 16,
       backgroundColor: theme.card,
       justifyContent: 'center',
@@ -128,12 +125,17 @@ const getStyles = theme =>
       borderWidth: 0.5,
       borderRadius: 10,
     },
-    selector: {
-      paddingVertical: 8,
+    pressableContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      width: '100%',
     },
     selectionText: {
       color: theme.text,
+      width: '80%',
       fontSize: 16,
+      fontFamily: 'Calibri-Medium',
     },
   });
 
