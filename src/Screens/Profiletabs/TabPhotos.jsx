@@ -8,6 +8,7 @@ import {
   Share,
   Alert,
   FlatList,
+  Dimensions,
 } from 'react-native';
 import React, {useMemo, useState} from 'react';
 import {createTabStyles} from './styles';
@@ -30,6 +31,7 @@ const TabPhotos = () => {
   const navigation = useNavigation();
   const theme = useTheme();
   const styles = useMemo(() => createTabStyles(theme), [theme]);
+  const screenHeight = Dimensions.get('window').height;
 
   const requestStoragePermission = async () => {
     if (Platform.OS === 'android' && Platform.Version < 30) {
@@ -167,7 +169,7 @@ const TabPhotos = () => {
         }}>
         {isPending ? (
           <>
-            <Image
+            <FastImage
               style={styles.image}
               source={{uri: item.imageLinks.thumbnail}}
             />
@@ -186,6 +188,7 @@ const TabPhotos = () => {
             style={styles.image}
             source={{uri: item.imageLinks.thumbnail}}
           />
+          // <View style={[styles.image, {backgroundColor: 'red'}]} />
         )}
       </Pressable>
     );
@@ -198,9 +201,11 @@ const TabPhotos = () => {
         keyExtractor={(item, index) => item._id || index.toString()}
         numColumns={3}
         renderItem={renderItem}
-        nestedScrollEnabled={true}
+        scrollEnabled={false}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{flexGrow: 1, backgroundColor: theme.background}}
+        style={{backgroundColor: theme.background, minHeight: screenHeight}}
+        // eslint-disable-next-line react-native/no-inline-styles
+        contentContainerStyle={{flexGrow: 1, minHeight: screenHeight}}
       />
       <SlideUpModal
         visible={slideUp}

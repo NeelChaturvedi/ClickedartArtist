@@ -5,6 +5,7 @@ import {
   FlatList,
   TouchableOpacity,
   ToastAndroid,
+  Dimensions,
 } from 'react-native';
 import React, {useEffect, useMemo, useState} from 'react';
 import {Image} from 'moti';
@@ -16,6 +17,7 @@ import {useBlogsStore} from 'src/store/blogs';
 import {usePendingBlogsStore} from 'src/store/pendingBlogs';
 import {useUserStore} from 'src/store/auth';
 import {createTabStyles} from './styles';
+import FastImage from 'react-native-fast-image';
 
 const TabBlogs = () => {
   const navigation = useNavigation();
@@ -24,6 +26,7 @@ const TabBlogs = () => {
   const {user} = useUserStore();
   const {pendingBlogs, fetchPendingBlogs} = usePendingBlogsStore();
   const {blogs, fetchBlogs} = useBlogsStore();
+  const screenHeight = Dimensions.get('window').height;
 
   const [slideUp, setSlideUp] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState(null);
@@ -113,7 +116,7 @@ const TabBlogs = () => {
           </Text>
         </View>
         <View style={styles.imageContainer}>
-          <Image
+          <FastImage
             style={styles.blogImage}
             source={{uri: item.coverImage[0]}}
             resizeMode="cover"
@@ -135,11 +138,12 @@ const TabBlogs = () => {
     <>
       <FlatList
         data={data}
+        style={{flex: 1, backgroundColor: theme.background}}
         renderItem={renderItem}
         keyExtractor={item => `${item.type}-${item._id}`}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingBottom: 20}}
-        nestedScrollEnabled={false}
+        contentContainerStyle={{paddingBottom: 20, minHeight: screenHeight}}
+        scrollEnabled={false}
         directionalLockEnabled={true}
         initialNumToRender={10}
         windowSize={5}

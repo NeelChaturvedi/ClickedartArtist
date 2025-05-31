@@ -8,6 +8,7 @@ import {
   ToastAndroid,
   Alert,
   FlatList,
+  Dimensions,
 } from 'react-native';
 import {createTabStyles} from './styles';
 import React, {useEffect, useMemo, useState} from 'react';
@@ -33,8 +34,8 @@ const TabCatalogues = () => {
 
   const [slideUp, setSlideUp] = useState(false);
   const [showModal, setShowModal] = useState(false);
-
   const [selectedCatalogue, setSelectedCatalogue] = useState(null);
+  const screenHeight = Dimensions.get('window').height;
 
   const imageOptions = [
     {
@@ -159,12 +160,11 @@ const TabCatalogues = () => {
           flexGrow: 1,
           backgroundColor: theme.background,
         }}
-        contentContainerStyle={{flexGrow: 1, gap: 20}}
+        contentContainerStyle={{flexGrow: 1, gap: 20, minHeight: screenHeight}}
         data={catalogues}
         renderItem={renderItem}
         keyExtractor={item => item._id}
-        nestedScrollEnabled={true}
-        showsVerticalScrollIndicator={false}
+        scrollEnabled={false}
         ListEmptyComponent={
           <View style={styles.noImageContainer}>
             <Text style={styles.noImageText}>No Catalogues</Text>

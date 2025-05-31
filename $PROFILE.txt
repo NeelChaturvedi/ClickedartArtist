@@ -1,0 +1,7 @@
+function npm {
+  if ($args[0] -eq "install" -or $args[0] -eq "i") {
+    command npm @args --legacy-peer-deps
+  } else {
+    command npm @args
+  }
+}

@@ -13,7 +13,7 @@ import SettingsNavigator from './src/Navigation/SettingsNavigator/SettingsNaviga
 import OtpScreen from './src/Screens/OTP/OtpScreen';
 import BlogNavigator from './src/Navigation/BlogNavigator/BlogNavigator';
 import {StyleSheet} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import {View} from 'moti';
 import ProfileEditScreen from 'src/Screens/ProfileEdit/ProfileEditScreen';
 import {useOnboardingStore} from 'src/store/onboarding';
@@ -70,106 +70,111 @@ export default function App() {
   }
 
   return (
-    <GestureHandlerRootView style={{flex: 1}}>
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-            navigationBarColor: theme.background,
-            headerTitleAlign: 'center',
-          }}>
-          {!user ? (
-            <>
-              {!isOnboardingCompleted && (
-                <Stack.Screen name="Onboarding" component={Onboarding} />
-              )}
-              <Stack.Screen name="Login" component={Login} />
-              <Stack.Screen name="Register" component={Register} />
-              <Stack.Screen name="Details" component={Details} />
-              <Stack.Screen
-                name="OTP"
-                options={{
-                  headerShown: true,
-                  headerStyle: {
-                    backgroundColor: theme.background,
-                  },
-                  headerTitle: ' ',
-                  headerTintColor: theme.text,
-                }}
-                component={OtpScreen}
-              />
-            </>
-          ) : (
-            <>
-              <Stack.Screen name="BottomTab" component={Tabs} />
-              <Stack.Screen
-                name="SettingsNavigator"
-                component={SettingsNavigator}
-              />
-              <Stack.Screen name="BlogNavigator" component={BlogNavigator} />
-              <Stack.Screen
-                name="ProfileEdit"
-                options={{
-                  headerShown: true,
-                  headerStyle: {
-                    backgroundColor: theme.background,
-                  },
-                  headerTitle: 'Edit Profile',
-                  headerTintColor: theme.text,
-                }}
-                component={ProfileEditScreen}
-              />
-              <Stack.Screen
-                name="Upload Image"
-                options={{
-                  headerShown: true,
-                  headerStyle: {
-                    backgroundColor: theme.background,
-                  },
-                  title: 'Upload Image',
-                  headerTitleAlign: 'center',
-                  headerTintColor: theme.text,
-                }}
-                component={UploadImage}
-              />
-              <Stack.Screen name="ImageNavigator" component={ImageNavigator} />
-              <Stack.Screen
-                name="CatalogueNavigator"
-                component={CatalogueNavigator}
-              />
-              <Stack.Screen
-                name="Write a blog"
-                options={{
-                  headerShown: true,
-                  headerStyle: {
-                    backgroundColor: theme.background,
-                  },
-                  headerTitle: {
-                    color: theme.text,
-                  },
-                  headerTintColor: theme.text,
-                }}
-                component={UploadBlog}
-              />
-              <Stack.Screen
-                name="Place Order"
-                options={{
-                  headerShown: true,
-                  headerStyle: {
-                    backgroundColor: theme.background,
-                  },
-                  headerTitle: {
-                    color: theme.text,
-                  },
-                  headerTintColor: theme.text,
-                }}
-                component={CheckOut}
-              />
-            </>
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
-    </GestureHandlerRootView>
+    <SafeAreaProvider>
+      <GestureHandlerRootView style={{flex: 1}}>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+              navigationBarColor: theme.background,
+              headerTitleAlign: 'center',
+            }}>
+            {!user ? (
+              <>
+                {!isOnboardingCompleted && (
+                  <Stack.Screen name="Onboarding" component={Onboarding} />
+                )}
+                <Stack.Screen name="Login" component={Login} />
+                <Stack.Screen name="Register" component={Register} />
+                <Stack.Screen name="Details" component={Details} />
+                <Stack.Screen
+                  name="OTP"
+                  options={{
+                    headerShown: true,
+                    headerStyle: {
+                      backgroundColor: theme.background,
+                    },
+                    headerTitle: ' ',
+                    headerTintColor: theme.text,
+                  }}
+                  component={OtpScreen}
+                />
+              </>
+            ) : (
+              <>
+                <Stack.Screen name="BottomTab" component={Tabs} />
+                <Stack.Screen
+                  name="SettingsNavigator"
+                  component={SettingsNavigator}
+                />
+                <Stack.Screen name="BlogNavigator" component={BlogNavigator} />
+                <Stack.Screen
+                  name="ProfileEdit"
+                  options={{
+                    headerShown: true,
+                    headerStyle: {
+                      backgroundColor: theme.background,
+                    },
+                    headerTitle: 'Edit Profile',
+                    headerTintColor: theme.text,
+                  }}
+                  component={ProfileEditScreen}
+                />
+                <Stack.Screen
+                  name="Upload Image"
+                  options={{
+                    headerShown: true,
+                    headerStyle: {
+                      backgroundColor: theme.background,
+                    },
+                    title: 'Upload Image',
+                    headerTitleAlign: 'center',
+                    headerTintColor: theme.text,
+                  }}
+                  component={UploadImage}
+                />
+                <Stack.Screen
+                  name="ImageNavigator"
+                  component={ImageNavigator}
+                />
+                <Stack.Screen
+                  name="CatalogueNavigator"
+                  component={CatalogueNavigator}
+                />
+                <Stack.Screen
+                  name="Write a blog"
+                  options={{
+                    headerShown: true,
+                    headerStyle: {
+                      backgroundColor: theme.background,
+                    },
+                    headerTitle: {
+                      color: theme.text,
+                    },
+                    headerTintColor: theme.text,
+                  }}
+                  component={UploadBlog}
+                />
+                <Stack.Screen
+                  name="Place Order"
+                  options={{
+                    headerShown: true,
+                    headerStyle: {
+                      backgroundColor: theme.background,
+                    },
+                    headerTitle: {
+                      color: theme.text,
+                    },
+                    headerTintColor: theme.text,
+                  }}
+                  component={CheckOut}
+                />
+              </>
+            )}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </GestureHandlerRootView>
+    </SafeAreaProvider>
   );
 }
 
