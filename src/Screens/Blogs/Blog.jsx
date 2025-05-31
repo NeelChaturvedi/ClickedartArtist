@@ -4,7 +4,8 @@ import {
   ScrollView,
   Text,
   View,
-  Dimensions,  SafeAreaView,
+  Dimensions,
+  SafeAreaView,
   RefreshControl,
 } from 'react-native';
 import React, {useEffect, useMemo} from 'react';
@@ -12,7 +13,7 @@ import {blogPageStyles} from './style';
 import api from '../../utils/apiClient';
 import {useRoute} from '@react-navigation/native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
-import { useTheme } from 'src/themes/useTheme';
+import {useTheme} from 'src/themes/useTheme';
 
 const Blog = ({setBlogSlug, setBlogName, setBlogId, setVal, val}) => {
   const {blogId} = useRoute().params;
@@ -26,7 +27,6 @@ const Blog = ({setBlogSlug, setBlogName, setBlogId, setVal, val}) => {
     setLoading(true);
     fetchBlog();
   };
-
 
   const fetchBlog = React.useCallback(async () => {
     try {
@@ -129,6 +129,9 @@ const Blog = ({setBlogSlug, setBlogName, setBlogId, setVal, val}) => {
                   color: ${theme.text} !important; 
                 }
                 *[style*="color: rgb(10, 10, 10)"] {
+                  color: ${theme.text} !important; 
+                }
+                *[style*="color: black"] {
                   color: ${theme.text} !important; 
                 }
 
