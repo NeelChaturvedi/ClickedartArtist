@@ -21,6 +21,7 @@ import {useUserStore} from 'src/store/auth';
 import {useTheme} from 'src/themes/useTheme';
 import {useCataloguesStore} from 'src/store/catalogues';
 import FastImage from 'react-native-fast-image';
+import { Tabs } from 'react-native-collapsible-tab-view';
 
 const TabCatalogues = () => {
   const {catalogues, fetchCatalogues} = useCataloguesStore();
@@ -152,7 +153,7 @@ const TabCatalogues = () => {
 
   return (
     <>
-      <FlatList
+      <Tabs.FlatList
         style={{
           flex: 1,
           gap: 10,
@@ -160,11 +161,11 @@ const TabCatalogues = () => {
           flexGrow: 1,
           backgroundColor: theme.background,
         }}
-        contentContainerStyle={{flexGrow: 1, gap: 20, minHeight: screenHeight}}
+        contentContainerStyle={{flexGrow: 1, gap: 20, minHeight: screenHeight - 160}}
         data={catalogues}
         renderItem={renderItem}
         keyExtractor={item => item._id}
-        scrollEnabled={false}
+        scrollEnabled={true}
         ListEmptyComponent={
           <View style={styles.noImageContainer}>
             <Text style={styles.noImageText}>No Catalogues</Text>

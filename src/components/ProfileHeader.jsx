@@ -31,7 +31,7 @@ const ProfileHeader = () => {
   const navigation = useNavigation();
 
   const [slideUp, setSlideUp] = useState(false);
-  const {stats, loading: statsLoading, fetchStats} = useAnalyticsStore();
+  const {stats} = useAnalyticsStore();
   const [profileUploading, setProfileUploading] = useState(false);
   const [fullBio, setFullBio] = useState(null);
 
@@ -163,21 +163,6 @@ const ProfileHeader = () => {
     }
   };
 
-  useEffect(() => {
-    if (!user?._id) {
-      return;
-    }
-    fetchStats(user._id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?._id]);
-
-  if (statsLoading) {
-    return (
-      <SafeAreaView style={[style.background, {flex: 1}]}>
-        <ProfileSkeleton />
-      </SafeAreaView>
-    );
-  }
   return (
     <View
       contentContainerStyle={{flexGrow: 1}}
@@ -193,7 +178,7 @@ const ProfileHeader = () => {
       pointerEvents="box-none"
       style={{
         paddingTop: 0,
-        paddingBottom: 30,
+        paddingBottom: 50,
         backgroundColor: theme.background,
       }}>
       <View style={style.profileHeader}>
@@ -257,7 +242,7 @@ const ProfileHeader = () => {
           </Text>
           {user?.bio?.split(' ').length > 20 && (
             <Pressable
-              style={{paddingVertical: 16}}
+              style={{paddingBottom: 10}}
               onPress={() => {
                 setFullBio(fullBio ? null : user?.bio);
               }}>

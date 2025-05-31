@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {
   View,
   Image,
@@ -22,11 +23,14 @@ import {useUserStore} from 'src/store/auth';
 import {usePhotosStore} from 'src/store/photos';
 import FastImage from 'react-native-fast-image';
 import {usePendingPhotosStore} from 'src/store/pendingPhotos';
+import {Tabs} from 'react-native-collapsible-tab-view';
 
 const TabPhotos = () => {
   const [slideUp, setSlideUp] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-  const {photos} = usePhotosStore();
+  const {user} = useUserStore();
+  const {photos, loading, pageNumber, pageCount, fetchMorePhotos} =
+    usePhotosStore();
   const {pendingPhotos} = usePendingPhotosStore();
   const navigation = useNavigation();
   const theme = useTheme();
@@ -196,16 +200,26 @@ const TabPhotos = () => {
 
   return (
     <>
-      <FlatList
+      <Tabs.FlatList
+        onEndReachedThreshold={0.5}
+        onEndReached={() => {
+          console.log('End reached');
+          if (pageNumber < pageCount) {
+            fetchMorePhotos(user?.id);
+          }
+        }}
         data={combinedData}
         keyExtractor={(item, index) => item._id || index.toString()}
         numColumns={3}
         renderItem={renderItem}
-        scrollEnabled={false}
+        scrollEnabled={true}
         showsVerticalScrollIndicator={false}
-        style={{backgroundColor: theme.background, minHeight: screenHeight}}
-        // eslint-disable-next-line react-native/no-inline-styles
-        contentContainerStyle={{flexGrow: 1, minHeight: screenHeight}}
+        style={{
+          backgroundColor: theme.background,
+          minHeight: screenHeight - 160,
+          marginBottom: 40,
+        }}
+        contentContainerStyle={{flexGrow: 1}}
       />
       <SlideUpModal
         visible={slideUp}

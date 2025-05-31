@@ -18,6 +18,7 @@ import {usePendingBlogsStore} from 'src/store/pendingBlogs';
 import {useUserStore} from 'src/store/auth';
 import {createTabStyles} from './styles';
 import FastImage from 'react-native-fast-image';
+import {Tabs} from 'react-native-collapsible-tab-view';
 
 const TabBlogs = () => {
   const navigation = useNavigation();
@@ -136,14 +137,17 @@ const TabBlogs = () => {
 
   return (
     <>
-      <FlatList
+      <Tabs.FlatList
         data={data}
         style={{flex: 1, backgroundColor: theme.background}}
         renderItem={renderItem}
         keyExtractor={item => `${item.type}-${item._id}`}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingBottom: 20, minHeight: screenHeight}}
-        scrollEnabled={false}
+        contentContainerStyle={{
+          paddingBottom: 20,
+          minHeight: screenHeight - 160,
+        }}
+        scrollEnabled={true}
         directionalLockEnabled={true}
         initialNumToRender={10}
         windowSize={5}

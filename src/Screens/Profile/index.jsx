@@ -23,29 +23,22 @@ import TabBlogs from '../Profiletabs/TabBlogs';
 import ProfileHeader from '@components/ProfileHeader';
 
 const Profile = () => {
-  const photosScrollRef = useRef(null);
   const {user, fetchUserFromToken} = useUserStore();
-  const {
-    fetchPhotos,
-    fetchMorePhotos,
-    photos,
-    loading: photosLoading,
-    pageNumber: photosPageNumber,
-    pageCount: photosPageCount,
-  } = usePhotosStore();
-
+  const {fetchPhotos} = usePhotosStore();
+  const {stats, loading: statsLoading, fetchStats} = useAnalyticsStore();
   const {fetchPendingPhotos} = usePendingPhotosStore();
   const {fetchCatalogues} = useCataloguesStore();
   const {fetchBlogs} = useBlogsStore();
   const {fetchPendingBlogs} = usePendingBlogsStore();
   const theme = useTheme();
   const style = useMemo(() => createProfileStyles(theme), [theme]);
-  const {stats, loading: statsLoading, fetchStats} = useAnalyticsStore();
   const [refreshing, setRefreshing] = useState(false);
 
   const fetchAllData = async () => {
     try {
       await Promise.all([
+        fetchUserFromToken(),
+        fetchStats(),
         fetchPhotos(user?._id),
         fetchPendingPhotos(user?._id),
         fetchCatalogues(user?._id),
@@ -68,39 +61,20 @@ const Profile = () => {
     }
   }, [fetchUserFromToken]);
 
-  const handlePhotosScroll = useCallback(
-    event => {
-      const {contentOffset, contentSize, layoutMeasurement} = event.nativeEvent;
-      console.log('Scroll Event:', contentOffset, contentSize, layoutMeasurement);
-      const paddingToBottom = 20;
-      const isCloseToBottom =
-        contentOffset.y + layoutMeasurement.height >=
-        contentSize.height - paddingToBottom;
-
-      if (
-        isCloseToBottom &&
-        !photosLoading &&
-        photosPageNumber < photosPageCount &&
-        user?._id
-      ) {
-        fetchMorePhotos(user._id);
-      }
-    },
-    [
-      photosLoading,
-      photosPageNumber,
-      photosPageCount,
-      user?._id,
-      fetchMorePhotos,
-    ],
-  );
-
   useEffect(() => {
     if (!user?._id) {
       return;
     }
     fetchAllData();
   }, [user?._id]);
+
+  if (statsLoading) {
+    return (
+      <SafeAreaView style={[style.background, {flex: 1}]}>
+        <ProfileSkeleton />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={[style.background, {flex: 1}]}>
@@ -111,23 +85,13 @@ const Profile = () => {
         renderHeader={() => <ProfileHeader />}
         lazy>
         <Tabs.Tab name="Photos">
-          <Tabs.ScrollView
-            onScroll={handlePhotosScroll}
-            scrollEventThrottle={16}
-            ref={photosScrollRef}
-            showsVerticalScrollIndicator={false}>
-            <TabPhotos />
-          </Tabs.ScrollView>
+          <TabPhotos />
         </Tabs.Tab>
         <Tabs.Tab name="Catalogues">
-          <Tabs.ScrollView showsVerticalScrollIndicator={false}>
-            <TabCatalogues />
-          </Tabs.ScrollView>
+          <TabCatalogues />
         </Tabs.Tab>
         <Tabs.Tab name="Blogs">
-          <Tabs.ScrollView showsVerticalScrollIndicator={false}>
-            <TabBlogs />
-          </Tabs.ScrollView>
+          <TabBlogs />
         </Tabs.Tab>
       </Tabs.Container>
     </SafeAreaView>
