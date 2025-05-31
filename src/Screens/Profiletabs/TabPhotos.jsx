@@ -198,15 +198,18 @@ const TabPhotos = () => {
     );
   };
 
+  const handleLoadMore = () => {
+    if (!loading && pageNumber < pageCount && user?._id) {
+      fetchMorePhotos(user._id);
+    }
+  };
+
   return (
     <>
       <Tabs.FlatList
         onEndReachedThreshold={0.5}
         onEndReached={() => {
-          console.log('End reached');
-          if (pageNumber < pageCount) {
-            fetchMorePhotos(user?.id);
-          }
+          handleLoadMore();
         }}
         data={combinedData}
         keyExtractor={(item, index) => item._id || index.toString()}
