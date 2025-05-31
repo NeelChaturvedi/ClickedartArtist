@@ -2,6 +2,12 @@ import {create} from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from 'src/utils/apiClient';
 import useCartStore from './cart';
+import {usePhotosStore} from './photos';
+import {useCataloguesStore} from './catalogues';
+import {useBlogsStore} from './blogs';
+import {usePendingBlogsStore} from './pendingBlogs';
+import {useAnalyticsStore} from './photographerAnalytics';
+import {usePendingPhotosStore} from './pendingPhotos';
 
 export const useUserStore = create((set, get) => ({
   user: null,
@@ -18,8 +24,23 @@ export const useUserStore = create((set, get) => ({
 
   clearUser: async () => {
     const {clearCart} = useCartStore.getState();
+    const {clearPhotos} = usePhotosStore.getState();
+    const {clearCatalogues} = useCataloguesStore.getState();
+    const {clearBlogs} = useBlogsStore.getState();
+    const {clearPendingBlogs} = usePendingBlogsStore.getState();
+    const {clearPendingPhotos} = usePendingPhotosStore.getState();
+    const {clearStats} = useAnalyticsStore.getState();
+
     await AsyncStorage.removeItem('token');
+
     clearCart();
+    clearPhotos();
+    clearPendingPhotos();
+    clearCatalogues();
+    clearBlogs();
+    clearPendingBlogs();
+    clearStats();
+
     set({user: null, token: null});
   },
 

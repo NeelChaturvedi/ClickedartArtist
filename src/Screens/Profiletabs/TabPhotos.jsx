@@ -24,6 +24,7 @@ import {usePhotosStore} from 'src/store/photos';
 import FastImage from 'react-native-fast-image';
 import {usePendingPhotosStore} from 'src/store/pendingPhotos';
 import {Tabs} from 'react-native-collapsible-tab-view';
+import DotLoader from '@components/PaginationLoader';
 
 const TabPhotos = () => {
   const [slideUp, setSlideUp] = useState(false);

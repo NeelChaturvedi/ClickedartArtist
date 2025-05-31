@@ -21,13 +21,13 @@ import {useUserStore} from 'src/store/auth';
 import {useTheme} from 'src/themes/useTheme';
 import {useCataloguesStore} from 'src/store/catalogues';
 import FastImage from 'react-native-fast-image';
-import { Tabs } from 'react-native-collapsible-tab-view';
+import {Tabs} from 'react-native-collapsible-tab-view';
 
 const TabCatalogues = () => {
-  const {catalogues, fetchCatalogues} = useCataloguesStore();
-  console.log('catalogues', catalogues);
   const navigation = useNavigation();
 
+  const {catalogues, loading, pageCount, pageNumber, fetchMoreCatalogues} =
+    useCataloguesStore();
   const {user} = useUserStore();
 
   const theme = useTheme();
@@ -147,9 +147,11 @@ const TabCatalogues = () => {
     );
   };
 
-  useEffect(() => {
-    fetchCatalogues(user?._id);
-  }, [fetchCatalogues, user?._id]);
+  const handleLoadMore = () => {
+    if (!loading && pageNumber < pageCount && user?._id) {
+      fetchMoreCatalogues(user._id);
+    }
+  };
 
   return (
     <>
@@ -161,7 +163,15 @@ const TabCatalogues = () => {
           flexGrow: 1,
           backgroundColor: theme.background,
         }}
-        contentContainerStyle={{flexGrow: 1, gap: 20, minHeight: screenHeight - 160}}
+        contentContainerStyle={{
+          flexGrow: 1,
+          gap: 20,
+          minHeight: screenHeight - 160,
+        }}
+        onEndReachedThreshold={0.5}
+        onEndReached={() => {
+          handleLoadMore();
+        }}
         data={catalogues}
         renderItem={renderItem}
         keyExtractor={item => item._id}

@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import {create} from 'zustand';
 import api from 'src/utils/apiClient';
 
 export const usePhotosStore = create((set, get) => ({
@@ -8,12 +8,12 @@ export const usePhotosStore = create((set, get) => ({
   pageNumber: 1,
   pageCount: 1,
 
-  fetchPhotos: async (photographerId, pageSize = 20) => {
-    set({ loading: true, error: null });
+  fetchPhotos: async (photographerId, pageSize = 18) => {
+    set({loading: true, error: null});
     console.log('Fetching photos for photographer:', photographerId);
     try {
       const res = await api.get(
-        `/images/get-images-by-photographer?photographer=${photographerId}&pageSize=${pageSize}&pageNumber=1`
+        `/images/get-images-by-photographer?photographer=${photographerId}&pageSize=${pageSize}&pageNumber=1`,
       );
 
       set({
@@ -23,21 +23,23 @@ export const usePhotosStore = create((set, get) => ({
         pageCount: res.data?.pageCount || 1,
       });
     } catch (error) {
-      set({ error: error.response || error.message || error, loading: false });
+      set({error: error.response || error.message || error, loading: false});
     }
   },
 
-  fetchMorePhotos: async (photographerId, pageSize = 20) => {
-    const { pageNumber, pageCount, loading } = get();
+  fetchMorePhotos: async (photographerId, pageSize = 18) => {
+    const {pageNumber, pageCount, loading} = get();
 
     // Prevent fetching if already loading or no more pages
-    if (loading || pageNumber >= pageCount) return;
+    if (loading || pageNumber >= pageCount) {
+      return;
+    }
 
-    set({ loading: true, error: null });
+    set({loading: true, error: null});
     try {
       const nextPage = pageNumber + 1;
       const res = await api.get(
-        `/images/get-images-by-photographer?photographer=${photographerId}&pageSize=${pageSize}&pageNumber=${nextPage}`
+        `/images/get-images-by-photographer?photographer=${photographerId}&pageSize=${pageSize}&pageNumber=${nextPage}`,
       );
 
       const newPhotos = res.data?.photos || [];
@@ -48,7 +50,16 @@ export const usePhotosStore = create((set, get) => ({
         pageCount: res.data?.pageCount || pageCount,
       }));
     } catch (error) {
-      set({ error: error.response || error.message || error, loading: false });
+      set({error: error.response || error.message || error, loading: false});
     }
+  },
+  clearPhotos: () => {
+    set({
+      photos: [],
+      loading: false,
+      error: null,
+      pageNumber: 1,
+      pageCount: 1,
+    });
   },
 }));
