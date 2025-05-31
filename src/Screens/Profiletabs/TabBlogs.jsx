@@ -139,13 +139,16 @@ const TabBlogs = () => {
     <>
       <Tabs.FlatList
         data={data}
-        style={{flex: 1, backgroundColor: theme.background}}
+        style={{
+          flex: 1,
+          backgroundColor: theme.background,
+          minHeight: screenHeight - 160,
+        }}
         renderItem={renderItem}
         keyExtractor={item => `${item.type}-${item._id}`}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           paddingBottom: 20,
-          minHeight: screenHeight - 160,
         }}
         scrollEnabled={true}
         directionalLockEnabled={true}
