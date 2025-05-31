@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useEffect, useState, useCallback, useMemo} from 'react';
 import {
   View,
   Text,
@@ -14,7 +14,7 @@ import {
   TouchableWithoutFeedback,
   RefreshControl,
 } from 'react-native';
-import {styles} from './styles';
+import {editProfileStyles} from './styles';
 import Button from '@components/button';
 import DatePicker from 'react-native-date-picker';
 import dayjs from 'dayjs';
@@ -22,6 +22,8 @@ import {useUserStore} from 'src/store/auth';
 import Icon from 'react-native-vector-icons/AntDesign';
 import api from 'src/utils/apiClient';
 import {useNavigation} from '@react-navigation/native';
+import { useTheme } from 'src/themes/useTheme';
+import AutoGrowTextInput from '@components/AutoGrowTextInput';
 
 const ProfileEditScreen = () => {
   const {user, fetchUserFromToken} = useUserStore();
@@ -64,6 +66,9 @@ const ProfileEditScreen = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
+  const theme = useTheme();
+  const styles = useMemo(() => editProfileStyles(theme), [theme]);
 
   const handleProfileUpdate = async () => {
     if (!validateForm()) {
@@ -119,7 +124,7 @@ const ProfileEditScreen = () => {
                   <TextInput
                     style={styles.inputbox}
                     placeholder="First Name"
-                    placeholderTextColor={'#D9D9D9'}
+                    placeholderTextColor={'#888888'}
                     value={formData.firstName}
                     onChangeText={text =>
                       setFormData(prev => ({...prev, firstName: text}))
@@ -134,7 +139,7 @@ const ProfileEditScreen = () => {
                   <TextInput
                     style={styles.inputbox}
                     placeholder="Last Name"
-                    placeholderTextColor={'#D9D9D9'}
+                    placeholderTextColor={'#888888'}
                     value={formData.lastName}
                     onChangeText={text =>
                       setFormData(prev => ({...prev, lastName: text}))
@@ -144,12 +149,7 @@ const ProfileEditScreen = () => {
               </View>
               <View style={styles.formField}>
                 <Text style={styles.inputTitle}>Bio</Text>
-                <TextInput
-                  style={styles.bioInput}
-                  placeholder="Tell us about yourself"
-                  placeholderTextColor={'#D9D9D9'}
-                  multiline
-                  numberOfLines={4}
+                <AutoGrowTextInput
                   value={formData.bio}
                   onChangeText={text =>
                     setFormData(prev => ({...prev, bio: text}))
@@ -248,7 +248,7 @@ const ProfileEditScreen = () => {
                       <TextInput
                         style={styles.inputbox}
                         placeholder="Required"
-                        placeholderTextColor={'#D9D9D9'}
+                        placeholderTextColor={'#888888'}
                         value={account.accountLink}
                         onChangeText={text =>
                           setFormData(prev => ({
@@ -318,7 +318,7 @@ const ProfileEditScreen = () => {
                   <TextInput
                     style={styles.inputbox}
                     placeholder="Required"
-                    placeholderTextColor={'#D9D9D9'}
+                    placeholderTextColor={'#888888'}
                     value={formData.shippingAddress.country}
                     onChangeText={text =>
                       setFormData(prev => ({
@@ -339,7 +339,7 @@ const ProfileEditScreen = () => {
                   <TextInput
                     style={styles.inputbox}
                     placeholder="Required"
-                    placeholderTextColor={'#D9D9D9'}
+                    placeholderTextColor={'#888888'}
                     value={formData.shippingAddress.state}
                     onChangeText={text =>
                       setFormData(prev => ({
@@ -361,7 +361,7 @@ const ProfileEditScreen = () => {
                 <TextInput
                   style={styles.inputbox}
                   placeholder="Optional"
-                  placeholderTextColor={'#D9D9D9'}
+                  placeholderTextColor={'#888888'}
                   multiline
                   numberOfLines={4}
                   value={formData.shippingAddress.address}
@@ -385,7 +385,7 @@ const ProfileEditScreen = () => {
                   <TextInput
                     style={styles.inputbox}
                     placeholder="Required"
-                    placeholderTextColor={'#D9D9D9'}
+                    placeholderTextColor={'#888888'}
                     value={formData.shippingAddress.city}
                     onChangeText={text =>
                       setFormData(prev => ({
@@ -407,7 +407,7 @@ const ProfileEditScreen = () => {
                     style={styles.inputbox}
                     placeholder="Required"
                     inputMode="numeric"
-                    placeholderTextColor={'#D9D9D9'}
+                    placeholderTextColor={'#888888'}
                     keyboardType="numeric"
                     value={formData.shippingAddress.pincode}
                     onChangeText={text =>
@@ -430,7 +430,7 @@ const ProfileEditScreen = () => {
                 <TextInput
                   style={styles.inputbox}
                   placeholder="Optional"
-                  placeholderTextColor={'#D9D9D9'}
+                  placeholderTextColor={'#888888'}
                   multiline
                   numberOfLines={4}
                   value={formData.shippingAddress.landmark}
@@ -450,7 +450,7 @@ const ProfileEditScreen = () => {
                 <TextInput
                   style={styles.inputbox}
                   placeholder="Optional"
-                  placeholderTextColor={'#D9D9D9'}
+                  placeholderTextColor={'#888888'}
                   multiline
                   numberOfLines={4}
                   value={formData.shippingAddress.area}

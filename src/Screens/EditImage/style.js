@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 
-export const editProfileStyles = theme =>
+export const editImageStyles = theme =>
   StyleSheet.create({
     background: {
       height: '100%',
