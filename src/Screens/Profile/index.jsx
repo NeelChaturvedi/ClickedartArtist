@@ -65,8 +65,15 @@ const Profile = () => {
           borderTopWidth: 0.5,
           borderTopColor: '#ccc',
         }}
-        TabItemComponent={({name, index, isActive}) => {
-          const color = isActive ? '#ED3147' : theme.text;
+        indicatorStyle={{
+          backgroundColor: '#ED3147',
+          height: 2,
+          borderRadius: 1.5,
+        }}
+        activeColor='#ED3147'
+        inactiveColor={theme.text}
+        TabItemComponent={({name, activeColor, inactiveColor, isActive}) => {
+          const color = isActive ? activeColor : inactiveColor;
 
           const IconComponent = (() => {
             switch (name) {
@@ -83,7 +90,7 @@ const Profile = () => {
 
           return (
             <TouchableOpacity
-              onPress={() => props.onTabPress(name)}
+              onPress={() => props.onTabPress(name, isActive)}
               style={{
                 flex: 1,
                 justifyContent: 'center',
