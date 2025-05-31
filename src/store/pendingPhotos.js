@@ -17,4 +17,11 @@ export const usePendingPhotosStore = create(set => ({
       set({error: error.response || error.message || error, loading: false});
     }
   },
+  clearPendingPhotos: () => {
+    set({
+      pendingPhotos: [],
+      loading: false,
+      error: null,
+    });
+  },
 }));

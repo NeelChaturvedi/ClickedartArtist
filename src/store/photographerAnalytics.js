@@ -17,4 +17,5 @@ export const useAnalyticsStore = create(set => ({
       set({error: error.response || error.message || error, loading: false});
     }
   },
+  clearStats: () => set({stats: null, loading: false, error: null}),
 }));
