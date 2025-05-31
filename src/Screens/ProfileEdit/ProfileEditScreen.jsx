@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useEffect, useState, useCallback, useMemo} from 'react';
 import {
   View,
   Text,
@@ -14,7 +14,7 @@ import {
   TouchableWithoutFeedback,
   RefreshControl,
 } from 'react-native';
-import {styles} from './styles';
+import {editProfileStyles} from './styles';
 import Button from '@components/button';
 import DatePicker from 'react-native-date-picker';
 import dayjs from 'dayjs';
@@ -22,6 +22,7 @@ import {useUserStore} from 'src/store/auth';
 import Icon from 'react-native-vector-icons/AntDesign';
 import api from 'src/utils/apiClient';
 import {useNavigation} from '@react-navigation/native';
+import { useTheme } from 'src/themes/useTheme';
 
 const ProfileEditScreen = () => {
   const {user, fetchUserFromToken} = useUserStore();
@@ -64,6 +65,9 @@ const ProfileEditScreen = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
+  const theme = useTheme();
+  const styles = useMemo(() => editProfileStyles(theme), [theme]);
 
   const handleProfileUpdate = async () => {
     if (!validateForm()) {

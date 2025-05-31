@@ -14,7 +14,7 @@ import {
   ToastAndroid,
 } from 'react-native';
 import React, {useEffect, useMemo, useState} from 'react';
-import {editProfileStyles} from './style';
+import {editImageStyles, editProfileStyles} from './style';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Button from '@components/button';
 import AutoGrowTextInput from '@components/AutoGrowTextInput';
@@ -40,7 +40,7 @@ const EditImage = () => {
   const [isEnabled, setIsEnabled] = useState(false);
 
   const theme = useTheme();
-  const styles = useMemo(() => editProfileStyles(theme), [theme]);
+  const styles = useMemo(() => editImageStyles(theme), [theme]);
 
   const toggleSwitch = () => {
     setIsEnabled(previousState => !previousState);

@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 
-export const styles = StyleSheet.create({
+export const editProfileStyles = (theme) => StyleSheet.create({
   background: {
     backgroundColor: 'black',
     width: '100%',
