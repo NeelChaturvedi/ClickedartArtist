@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useRef} from 'react';
-import {Tabs} from 'react-native-collapsible-tab-view';
+import {MaterialTabBar, Tabs} from 'react-native-collapsible-tab-view';
 import TabCatalogues from '../Profiletabs/TabCatalogue';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import TabPhotos from '../Profiletabs/TabPhotos';
-import {ToastAndroid} from 'react-native';
+import {ToastAndroid, TouchableOpacity, View} from 'react-native';
 import {useCallback, useEffect, useState} from 'react';
 import {useUserStore} from '../../store/auth';
 import {useNavigation} from '@react-navigation/native';
@@ -21,6 +21,9 @@ import {usePendingBlogsStore} from 'src/store/pendingBlogs';
 import ProfileSkeleton from './Loader';
 import TabBlogs from '../Profiletabs/TabBlogs';
 import ProfileHeader from '@components/ProfileHeader';
+import Photos from '../../assets/svgs/Photos.svg';
+import Catalogues from '../../assets/svgs/Catalogues.svg';
+import Blogs from '../../assets/svgs/Blogs.svg';
 
 const Profile = () => {
   const {user, fetchUserFromToken} = useUserStore();
@@ -34,11 +37,12 @@ const Profile = () => {
   const style = useMemo(() => createProfileStyles(theme), [theme]);
   const [refreshing, setRefreshing] = useState(false);
 
+  const navigation = useNavigation();
+
   const fetchAllData = async () => {
     try {
       await Promise.all([
-        fetchUserFromToken(),
-        fetchStats(),
+        fetchStats(user?._id),
         fetchPhotos(user?._id),
         fetchPendingPhotos(user?._id),
         fetchCatalogues(user?._id),
@@ -49,6 +53,49 @@ const Profile = () => {
       console.error('Fetch All Data Error:', error);
       ToastAndroid.show('Failed to fetch data', ToastAndroid.SHORT);
     }
+  };
+
+  const CustomTabBar = props => {
+    return (
+      <MaterialTabBar
+        {...props}
+        style={{
+          backgroundColor: theme.background,
+          height: 60,
+          borderTopWidth: 0.5,
+          borderTopColor: '#ccc',
+        }}
+        TabItemComponent={({name, index, isActive}) => {
+          const color = isActive ? '#ED3147' : theme.text;
+
+          const IconComponent = (() => {
+            switch (name) {
+              case 'Photos':
+                return <Photos width={24} height={24} color={color} />;
+              case 'Catalogues':
+                return <Catalogues width={24} height={24} color={color} />;
+              case 'Blogs':
+                return <Blogs width={24} height={24} color={color} />;
+              default:
+                return null;
+            }
+          })();
+
+          return (
+            <TouchableOpacity
+              onPress={() => props.onTabPress(name)}
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: 60,
+              }}>
+              {IconComponent}
+            </TouchableOpacity>
+          );
+        }}
+      />
+    );
   };
 
   const onRefresh = useCallback(async () => {
@@ -83,6 +130,7 @@ const Profile = () => {
         scrollEnabledHeader={true}
         snap={true}
         renderHeader={() => <ProfileHeader />}
+        renderTabBar={props => <CustomTabBar {...props} />}
         lazy>
         <Tabs.Tab name="Photos">
           <TabPhotos />
