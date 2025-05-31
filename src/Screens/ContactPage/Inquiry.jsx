@@ -161,13 +161,13 @@ const getStyles = theme =>
     },
     heading: {
       fontSize: 20,
-      fontFamily: 'Calibri-Bold',
+      fontFamily: 'CircularStd-Bold',
       color: theme.text,
       textAlign: 'center',
     },
     subHeading: {
       fontSize: 14,
-      fontFamily: 'Calibri-Regular',
+      fontFamily: 'CircularStd-Regular',
       color: '#888',
       textAlign: 'justify',
       lineHeight: 20,
@@ -177,7 +177,7 @@ const getStyles = theme =>
     },
     title: {
       fontSize: 16,
-      fontFamily: 'Calibri-Bold',
+      fontFamily: 'CircularStd-Bold',
       color: theme.text,
       marginBottom: 5,
     },

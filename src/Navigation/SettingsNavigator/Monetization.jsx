@@ -1082,7 +1082,7 @@ const getStyles = (theme) => StyleSheet.create({
     justifyContent: 'center',
   },
   sectionTitle: {
-    fontFamily: 'Calibri-Bold',
+    fontFamily: 'CircularStd-Bold',
     fontSize: 20,
     color: theme.text,
   },
@@ -1107,7 +1107,7 @@ const getStyles = (theme) => StyleSheet.create({
   },
   inputTitle: {
     fontSize: 16,
-    fontFamily: 'Calibri-Medium',
+    fontFamily: 'CircularStd-Medium',
     color: theme.text,
   },
   inputbox: {
@@ -1115,7 +1115,7 @@ const getStyles = (theme) => StyleSheet.create({
     color: theme.text,
     justifyContent: 'center',
     backgroundColor: theme.card,
-    fontFamily: 'Calibri-Regular',
+    fontFamily: 'CircularStd-Regular',
     paddingHorizontal: 16,
     borderRadius: 10,
     borderWidth: 0.5,
@@ -1149,7 +1149,7 @@ const getStyles = (theme) => StyleSheet.create({
     alignItems: 'center',
   },
   deleteTitle: {
-    fontFamily: 'Calibri-Medium',
+    fontFamily: 'CircularStd-Medium',
     color: 'red',
   },
   checkContainer: {

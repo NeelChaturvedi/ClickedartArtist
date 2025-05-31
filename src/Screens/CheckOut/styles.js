@@ -11,7 +11,7 @@ export const placeOrderStyles = (theme) => StyleSheet.create({
     marginTop:30,
   },
   header: {
-    fontFamily: 'Calibri-Bold',
+    fontFamily: 'CircularStd-Bold',
     fontSize: 20,
     color: theme.text,
   },
@@ -34,7 +34,7 @@ export const placeOrderStyles = (theme) => StyleSheet.create({
   },
   inputTitle: {
     fontSize: 16,
-    fontFamily: 'Calibri-Medium',
+    fontFamily: 'CircularStd-Medium',
     color: theme.text,
   },
   inputbox: {
@@ -42,7 +42,7 @@ export const placeOrderStyles = (theme) => StyleSheet.create({
     color: theme.text,
     justifyContent: 'center',
     backgroundColor: '#1E1E1E',
-    fontFamily: 'Calibri-Regular',
+    fontFamily: 'CircularStd-Regular',
     paddingHorizontal: 16,
     borderRadius: 10,
     borderWidth: 0.5,
@@ -92,12 +92,12 @@ export const placeOrderStyles = (theme) => StyleSheet.create({
     width: '60%',
   },
   orderTitle:{
-    fontFamily: 'Calibri-Medium',
+    fontFamily: 'CircularStd-Medium',
     color: theme.text,
     fontSize: 16,
   },
   orderPaper:{
-    fontFamily: 'Calibri-Medium',
+    fontFamily: 'CircularStd-Medium',
     color: theme.text,
     fontSize: 14,
   },

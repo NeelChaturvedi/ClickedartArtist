@@ -22,13 +22,13 @@ export const catalogueScreenStyles = (theme) => StyleSheet.create({
   Heading: {
     color: theme.text,
     fontSize: 24,
-    fontFamily: 'Calibri-Bold',
+    fontFamily: 'CircularStd-Bold',
     textAlign: 'center',
   },
   Description: {
     color: theme.text,
     fontSize: 14,
-    fontFamily: 'Calibri-Regular',
+    fontFamily: 'CircularStd-Regular',
     alignItems: 'center',
   },
   imageBorder: {
@@ -56,7 +56,7 @@ export const catalogueScreenStyles = (theme) => StyleSheet.create({
   imageText: {
     fontSize: 14,
     width: '80%',
-    fontFamily: 'Calibri-Medium',
+    fontFamily: 'CircularStd-Medium',
     color: theme.text,
   },
   modalContainer: {
@@ -79,7 +79,7 @@ export const catalogueScreenStyles = (theme) => StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontFamily: 'Calibri-Bold',
+    fontFamily: 'CircularStd-Bold',
     color: theme.text,
     textAlign: 'center',
   },
@@ -99,7 +99,7 @@ export const catalogueScreenStyles = (theme) => StyleSheet.create({
   noImageText: {
     color: theme.text,
     fontSize: 16,
-    fontFamily: 'Calibri-Regular',
+    fontFamily: 'CircularStd-Regular',
   },
   checkIconContainer: {
     position: 'absolute',

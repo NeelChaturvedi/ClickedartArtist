@@ -93,7 +93,7 @@ const getStyles = theme =>
       backgroundColor: '#ED3147',
     },
     tabText: {
-      fontFamily: 'Calibri-Medium',
+      fontFamily: 'CircularStd-Medium',
       fontSize: 20,
       color: theme.text,
     },

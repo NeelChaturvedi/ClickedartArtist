@@ -18,14 +18,14 @@ export const styles = StyleSheet.create({
   },
   headingText: {
     color: 'white',
-    fontFamily: 'Calibri-Bold',
+    fontFamily: 'CircularStd-Bold',
     fontSize: 28,
     textAlign: 'center',
     paddingBottom: 20,
   },
   subHeadingText: {
     color: 'white',
-    fontFamily: 'Calibri-Medium',
+    fontFamily: 'CircularStd-Medium',
     fontSize: 20,
   },
   fieldContainer: {
@@ -54,7 +54,7 @@ export const styles = StyleSheet.create({
   },
   inputTitle: {
     fontSize: 16,
-    fontFamily: 'Calibri-Medium',
+    fontFamily: 'CircularStd-Medium',
     color: 'white',
   },
   inputbox: {
@@ -63,7 +63,7 @@ export const styles = StyleSheet.create({
     color: 'white',
     justifyContent: 'center',
     backgroundColor: '#1A1A1A',
-    fontFamily: 'Calibri-Regular',
+    fontFamily: 'CircularStd-Regular',
     paddingHorizontal: 16,
     borderRadius: 10,
     borderWidth: 0.5,
@@ -74,7 +74,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     color: 'white',
     backgroundColor: '#1A1A1A',
-    fontFamily: 'Calibri-Regular',
+    fontFamily: 'CircularStd-Regular',
     paddingHorizontal: 16,
     borderRadius: 10,
     borderWidth: 0.5,
@@ -129,7 +129,7 @@ export const styles = StyleSheet.create({
   },
   selectionText: {
     height: 54,
-    fontFamily: 'Calibri-Regular',
+    fontFamily: 'CircularStd-Regular',
     fontSize: 16,
     color: '#D9D9D9',
     paddingVertical: 16,
@@ -143,7 +143,7 @@ export const styles = StyleSheet.create({
     opacity: 0.5,
   },
   errorText: {
-    fontFamily: 'Calibri-Regular',
+    fontFamily: 'CircularStd-Regular',
     color: 'red',
     fontSize: 15,
   },

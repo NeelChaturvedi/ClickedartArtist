@@ -102,14 +102,14 @@ const getStyles = (theme) =>
     title: {
       fontSize: 20,
       marginBottom: 12,
-      fontFamily: 'Calibri-Bold',
+      fontFamily: 'CircularStd-Bold',
       textAlign: 'center',
       color: theme.text,
     },
     option: {
       paddingVertical: 12,
       fontSize: 16,
-      fontFamily: 'Calibri-Medium',
+      fontFamily: 'CircularStd-Medium',
       color: theme.text,
     },
     selectedOption: {
@@ -135,7 +135,7 @@ const getStyles = (theme) =>
       color: theme.text,
       width: '80%',
       fontSize: 16,
-      fontFamily: 'Calibri-Medium',
+      fontFamily: 'CircularStd-Medium',
     },
   });
 

@@ -23,7 +23,7 @@ export const createSettingStyles = (theme) =>
       alignItems: 'center',
     },
     headingText: {
-      fontFamily: 'Calibri-Bold',
+      fontFamily: 'CircularStd-Bold',
       fontSize: 32,
       color: theme.text,
     },
@@ -42,7 +42,7 @@ export const createSettingStyles = (theme) =>
       gap: 20,
     },
     itemText: {
-      fontFamily: 'Calibri-Regular',
+      fontFamily: 'CircularStd-Regular',
       fontSize: 16,
       color: theme.text,
       lineHeight: 24,

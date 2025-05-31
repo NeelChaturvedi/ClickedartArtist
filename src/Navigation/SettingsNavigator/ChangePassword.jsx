@@ -217,7 +217,7 @@ const getStyles = theme =>
     title: {
       color: theme.text,
       fontSize: 18,
-      fontFamily: 'Calibri-Medium',
+      fontFamily: 'CircularStd-Medium',
     },
     passwordInput: {
       flexDirection: 'row',

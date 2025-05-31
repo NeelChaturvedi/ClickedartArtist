@@ -156,7 +156,7 @@ const getStyles = theme =>
     text: {
       color: theme.text,
       fontSize: 36,
-      fontFamily: 'Calibri-Bold',
+      fontFamily: 'CircularStd-Bold',
       marginTop: 10,
     },
   });

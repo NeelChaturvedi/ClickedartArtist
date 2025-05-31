@@ -20,7 +20,7 @@ export const createDashboardStyles = (theme) => StyleSheet.create({
     borderColor: theme.border,
   },
   title: {
-    fontFamily: 'Calibri-Bold',
+    fontFamily: 'CircularStd-Bold',
     fontSize: 20,
     color: theme.text,
   },
@@ -37,7 +37,7 @@ export const createDashboardStyles = (theme) => StyleSheet.create({
   },
   growthText: {
     color: theme.text,
-    fontFamily: 'Calibri-Medium',
+    fontFamily: 'CircularStd-Medium',
     fontSize: 16,
   },
   growthTypeIndicator: {
@@ -46,7 +46,7 @@ export const createDashboardStyles = (theme) => StyleSheet.create({
     backgroundColor: 'white',
   },
   smallText: {
-    fontFamily: 'Calibri-Regular',
+    fontFamily: 'CircularStd-Regular',
     fontSize: 18,
     color: '#888',
   },

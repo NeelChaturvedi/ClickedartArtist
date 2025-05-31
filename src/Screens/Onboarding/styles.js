@@ -22,20 +22,20 @@ export const styles = StyleSheet.create({
   skipText: {
     fontSize: 24,
     color: 'white',
-    fontFamily: 'Calibri-Bold',
+    fontFamily: 'CircularStd-Bold',
     textAlign: 'right',
   },
   title: {
     fontSize: 30,
     color: 'white',
     textAlign: 'center',
-    fontFamily: 'Calibri-Bold',
+    fontFamily: 'CircularStd-Bold',
   },
   subtitle: {
     fontSize: 16,
     color: 'white',
     textAlign: 'center',
-    fontFamily: 'Calibri-Regular',
+    fontFamily: 'CircularStd-Regular',
   },
   buttonContainer: {
     width: '100%',

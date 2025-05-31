@@ -160,7 +160,7 @@ const getStyles = theme =>
     },
     title: {
       fontSize: 32,
-      fontFamily: 'Calibri-Bold',
+      fontFamily: 'CircularStd-Bold',
       marginBottom: 10,
       color: theme.text,
       paddingVertical: 10,
@@ -184,7 +184,7 @@ const getStyles = theme =>
     },
     sectionTitle: {
       fontSize: 18,
-      fontFamily: 'Calibri-Bold',
+      fontFamily: 'CircularStd-Bold',
       marginBottom: 10,
       color: theme.text,
     },
@@ -193,7 +193,7 @@ const getStyles = theme =>
       lineHeight: 24,
       marginLeft: 10,
       marginBottom: 6,
-      fontFamily: 'Calibri-Medium',
+      fontFamily: 'CircularStd-Medium',
       color: theme.text,
     },
   });

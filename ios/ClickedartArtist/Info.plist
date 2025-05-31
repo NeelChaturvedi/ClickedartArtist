@@ -48,6 +48,10 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>UIAppFonts</key>
-	<array/>
+	<array>
+		<string>CircularStd-Bold.ttf</string>
+		<string>CircularStd-Medium.ttf</string>
+		<string>CircularStd-Regular.ttf</string>
+	</array>
 </dict>
 </plist>

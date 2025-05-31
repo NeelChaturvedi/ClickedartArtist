@@ -82,14 +82,14 @@ const getStyles = theme =>
     title: {
       fontSize: 18,
       marginBottom: 12,
-      fontFamily: 'Calibri-Bold',
+      fontFamily: 'CircularStd-Bold',
       color: theme.text,
     },
     option: {
       paddingVertical: 12,
       fontSize: 16,
       color: theme.text,
-      fontFamily: 'Calibri-Medium',
+      fontFamily: 'CircularStd-Medium',
     },
     selectionContainer: {
       width: '100%',

@@ -19,7 +19,7 @@ export const uploadBlogStyles = (theme) => StyleSheet.create({
     gap: 16,
   },
   headingText: {
-    fontFamily: 'Calibri-Bold',
+    fontFamily: 'CircularStd-Bold',
     fontSize: 24,
     color:theme.text,
   },

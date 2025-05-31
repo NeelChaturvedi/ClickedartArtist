@@ -17,7 +17,7 @@ export const ContactNavigator = () => {
       },
       tabBarLabelStyle:{
         color: theme.text,
-        fontFamily:'Calibri-Bold',
+        fontFamily:'CircularStd-Bold',
         fontSize: 16,
       },
       tabBarIndicatorStyle:{

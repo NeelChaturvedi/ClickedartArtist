@@ -63,7 +63,7 @@ const getStyles = (theme) => StyleSheet.create({
   title: {
     color: theme.text,
     fontSize: 16,
-    fontFamily: 'Calibri-Bold',
+    fontFamily: 'CircularStd-Bold',
     width: '90%',
   },
   content: {
@@ -72,7 +72,7 @@ const getStyles = (theme) => StyleSheet.create({
   contentText: {
     color: theme.text,
     fontSize: 16,
-    fontFamily: 'Calibri-Regular',
+    fontFamily: 'CircularStd-Regular',
     flexShrink: 1,
   },
   bulletItem: {

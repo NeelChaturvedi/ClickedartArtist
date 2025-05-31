@@ -112,7 +112,7 @@ const getStyles = (theme) => StyleSheet.create({
   },
   dateText: {
     color: theme.text,
-    fontFamily: 'Calibri-Regular',
+    fontFamily: 'CircularStd-Regular',
     fontSize: 16,
   },
 });

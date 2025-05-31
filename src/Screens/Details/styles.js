@@ -16,7 +16,7 @@ export const userCreationStyles = theme =>
     subHeadingText: {
       fontSize: 16,
       color: '#888',
-      fontFamily: 'Calibri-Regular',
+      fontFamily: 'CircularStd-Regular',
       textAlign: 'center',
       paddingTop: 20,
       paddingBottom: 10,
@@ -36,7 +36,7 @@ export const userCreationStyles = theme =>
     },
     inputTitle: {
       fontSize: 16,
-      fontFamily: 'Calibri-Medium',
+      fontFamily: 'CircularStd-Medium',
       color: theme.text,
     },
     inputbox: {
@@ -45,7 +45,7 @@ export const userCreationStyles = theme =>
       justifyContent: 'space-between',
       alignItems: 'center',
       backgroundColor: theme.card,
-      fontFamily: 'Calibri-Regular',
+      fontFamily: 'CircularStd-Regular',
       paddingHorizontal: 16,
       flexDirection: 'row',
       borderRadius: 10,
@@ -56,7 +56,7 @@ export const userCreationStyles = theme =>
       height: 120,
       color: theme.text,
       backgroundColor: theme.card,
-      fontFamily: 'Calibri-Regular',
+      fontFamily: 'CircularStd-Regular',
       paddingHorizontal: 16,
       borderRadius: 10,
       borderWidth: 0.5,
@@ -116,7 +116,7 @@ export const userCreationStyles = theme =>
     },
     selectionText: {
       height: 54,
-      fontFamily: 'Calibri-Regular',
+      fontFamily: 'CircularStd-Regular',
       fontSize: 16,
       color: '#888888',
       paddingVertical: 16,
@@ -177,7 +177,7 @@ export const userCreationStyles = theme =>
       opacity: 0.5,
     },
     errorText: {
-      fontFamily: 'Calibri-Regular',
+      fontFamily: 'CircularStd-Regular',
       color: 'red',
       fontSize: 15,
     },

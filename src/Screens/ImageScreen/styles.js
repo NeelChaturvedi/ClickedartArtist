@@ -33,17 +33,17 @@ export const imageScreenStyles = (theme) => StyleSheet.create({
     alignItems: 'flex-start',
   },
   headingTitle: {
-    fontFamily: 'Calibri-Bold',
+    fontFamily: 'CircularStd-Bold',
     fontSize: 20,
     color: theme.text,
   },
   nameText: {
-    fontFamily: 'Calibri-Medium',
+    fontFamily: 'CircularStd-Medium',
     color: theme.text,
     fontSize: 18,
   },
   discountedText: {
-    fontFamily: 'Calibri-Medium',
+    fontFamily: 'CircularStd-Medium',
     color: theme.text,
     fontSize: 18,
     opacity: 0.7,
@@ -51,12 +51,12 @@ export const imageScreenStyles = (theme) => StyleSheet.create({
     textDecorationStyle: 'solid',
   },
   priceText: {
-    fontFamily: 'Calibri-Bold',
+    fontFamily: 'CircularStd-Bold',
     color: theme.text,
     fontSize: 18,
   },
   discountPercentage: {
-    fontFamily: 'Calibri-Medium',
+    fontFamily: 'CircularStd-Medium',
     color: '#ed3147',
     fontSize: 18,
     opacity: 1,
@@ -75,7 +75,7 @@ export const imageScreenStyles = (theme) => StyleSheet.create({
     gap: 14,
   },
   aboutText: {
-    fontFamily: 'Calibri-Regular',
+    fontFamily: 'CircularStd-Regular',
     color: theme.text,
     fontSize: 14,
   },
@@ -104,7 +104,7 @@ export const imageScreenStyles = (theme) => StyleSheet.create({
     color: theme.text,
   },
   guideText:{
-    fontFamily: 'Calibri-Regular',
+    fontFamily: 'CircularStd-Regular',
     color: '#ED3147',
     fontSize: 14,
     textDecorationLine:'underline',

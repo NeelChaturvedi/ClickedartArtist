@@ -32,7 +32,7 @@ export const uploadImageStyles = theme =>
     uploadText: {
       color: theme.text,
       fontSize: 20,
-      fontFamily: 'Calibri-Medium',
+      fontFamily: 'CircularStd-Medium',
     },
     tabContainer: {
       flexDirection: 'row',
@@ -42,14 +42,14 @@ export const uploadImageStyles = theme =>
     },
     tabText: {
       color: '#888',
-      fontFamily: 'Calibri-Medium',
+      fontFamily: 'CircularStd-Medium',
       fontSize: 16,
     },
     addContainer: {
       backgroundColor: theme.card,
       height: 55,
       color: theme.text,
-      fontFamily: 'Calibri-Medium',
+      fontFamily: 'CircularStd-Medium',
       fontSize: 16,
       borderWidth: 0.5,
       borderColor: theme.border,
@@ -88,7 +88,7 @@ export const uploadImageStyles = theme =>
     },
     proceedBtn: {
       fontSize: 20,
-      fontFamily: 'Calibri-Bold',
+      fontFamily: 'CircularStd-Bold',
       color: theme.text,
     },
 
@@ -101,7 +101,7 @@ export const uploadImageStyles = theme =>
     switchText: {
       fontSize: 20,
       color: theme.text,
-      fontFamily: 'Calibri-Medium',
+      fontFamily: 'CircularStd-Medium',
     },
     section: {
       alignItems: 'flex-start',
@@ -109,7 +109,7 @@ export const uploadImageStyles = theme =>
     },
     headingText: {
       fontSize: 20,
-      fontFamily: 'Calibri-Bold',
+      fontFamily: 'CircularStd-Bold',
       color: theme.text,
     },
     twoFields: {
@@ -133,11 +133,11 @@ export const uploadImageStyles = theme =>
       paddingBottom: 12,
       borderRadius: 10,
       marginTop: 20,
-      fontFamily: 'Calibri-Medium',
+      fontFamily: 'CircularStd-Medium',
     },
     errorText: {
       color: 'red',
       fontSize: 14,
-      fontFamily: 'Calibri-Medium',
+      fontFamily: 'CircularStd-Medium',
     },
   });

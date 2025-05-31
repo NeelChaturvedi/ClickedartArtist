@@ -95,14 +95,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     marginBottom: 12,
-    fontFamily: 'Calibri-Bold',
+    fontFamily: 'CircularStd-Bold',
     textAlign: 'center',
     color: 'white',
   },
   option: {
     paddingVertical: 12,
     fontSize: 16,
-    fontFamily: 'Calibri-Medium',
+    fontFamily: 'CircularStd-Medium',
     color: 'white',
   },
   selectedOption: {

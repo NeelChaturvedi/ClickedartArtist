@@ -23,7 +23,7 @@ export const otpScreenStyles = theme =>
     heading: {
       fontSize: 32,
       color: theme.text,
-      fontFamily: 'Calibri-Bold',
+      fontFamily: 'CircularStd-Bold',
     },
     subHeadingContainer: {
       alignItems: 'center',
@@ -32,12 +32,12 @@ export const otpScreenStyles = theme =>
     subHeading: {
       fontSize: 18,
       color: theme.text,
-      fontFamily: 'Calibri-Medium',
+      fontFamily: 'CircularStd-Medium',
     },
     emailText: {
       fontSize: 18,
       color: '#ED3147',
-      fontFamily: 'Calibri-Bold',
+      fontFamily: 'CircularStd-Bold',
       textDecorationLine: 'underline',
     },
     animation: {

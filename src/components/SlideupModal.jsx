@@ -142,7 +142,7 @@ const getStyles = theme =>
       color: theme.text,
       fontSize: 16,
       lineHeight: 20,
-      fontFamily: 'Calibri-Medium',
+      fontFamily: 'CircularStd-Medium',
     },
     cancel: {
       marginTop: 10,
@@ -152,7 +152,7 @@ const getStyles = theme =>
       color: 'red',
       fontSize: 16,
       textAlign: 'center',
-      fontFamily: 'Calibri-Bold',
+      fontFamily: 'CircularStd-Bold',
     },
   });
 

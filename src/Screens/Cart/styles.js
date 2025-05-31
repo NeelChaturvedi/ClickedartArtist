@@ -8,7 +8,7 @@ export const createCartStyles = theme =>
       backgroundColor: theme.background,
     },
     header: {
-      fontFamily: 'Calibri-Bold',
+      fontFamily: 'CircularStd-Bold',
       fontSize: 24,
       color: theme.text,
       textAlign: 'center',
@@ -53,7 +53,7 @@ export const createCartStyles = theme =>
 
     title: {
       color: theme.text,
-      fontFamily: 'Calibri-Bold',
+      fontFamily: 'CircularStd-Bold',
       fontSize: 18,
       flexShrink: 1,
       flexWrap: 'wrap',
@@ -61,12 +61,12 @@ export const createCartStyles = theme =>
 
     owner: {
       color: '#888',
-      fontFamily: 'Calibri-Medium',
+      fontFamily: 'CircularStd-Medium',
       fontSize: 14,
     },
     price: {
       color: theme.text,
-      fontFamily: 'Calibri-Medium',
+      fontFamily: 'CircularStd-Medium',
       fontSize: 18,
       textAlign: 'right',
     },
@@ -77,12 +77,12 @@ export const createCartStyles = theme =>
     },
     size: {
       color: theme.text,
-      fontFamily: 'Calibri-Medium',
+      fontFamily: 'CircularStd-Medium',
       fontSize: 18,
     },
     paper: {
       color: theme.text,
-      fontFamily: 'Calibri-Medium',
+      fontFamily: 'CircularStd-Medium',
       fontSize: 14,
     },
     otherOptions: {
@@ -114,7 +114,7 @@ export const createCartStyles = theme =>
     emptyText: {
       color: theme.text,
       opacity: 0.7,
-      fontFamily: 'Calibri-Medium',
+      fontFamily: 'CircularStd-Medium',
       fontSize: 20,
     },
   });

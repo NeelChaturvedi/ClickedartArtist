@@ -382,13 +382,13 @@ const getStyles = (theme) => StyleSheet.create({
   headingText: {
     color: 'white',
     fontSize: 32,
-    fontFamily: 'Calibri-Bold',
+    fontFamily: 'CircularStd-Bold',
   },
   subHeadingText: {
     color: 'white',
     fontSize: 16,
     paddingHorizontal: 30,
-    fontFamily: 'Calibri-Medium',
+    fontFamily: 'CircularStd-Medium',
     textAlign: 'center',
   },
   optionsContainer: {
@@ -413,19 +413,19 @@ const getStyles = (theme) => StyleSheet.create({
     alignItems: 'flex-start',
   },
   typeText: {
-    fontFamily: 'Calibri-Bold',
+    fontFamily: 'CircularStd-Bold',
     fontSize: 24,
     color: 'white',
   },
   priceText: {
-    fontFamily: 'Calibri-Bold',
+    fontFamily: 'CircularStd-Bold',
     fontSize: 16,
     color: 'white',
   },
   typeDescription: {
     color: 'white',
     fontSize: 14,
-    fontFamily: 'Calibri-Medium',
+    fontFamily: 'CircularStd-Medium',
   },
   featureContainer: {
     flexDirection: 'row',
@@ -436,13 +436,13 @@ const getStyles = (theme) => StyleSheet.create({
   featureText: {
     color: 'white',
     fontSize: 16,
-    fontFamily: 'Calibri-Bold',
+    fontFamily: 'CircularStd-Bold',
     width: '40%',
   },
   valueText: {
     color: 'white',
     fontSize: 16,
-    fontFamily: 'Calibri-Regular',
+    fontFamily: 'CircularStd-Regular',
     width: '40%',
     textAlign: 'left',
   },

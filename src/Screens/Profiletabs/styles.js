@@ -33,7 +33,7 @@ export const createTabStyles = theme =>
     imageText: {
       fontSize: 16,
       width: '80%',
-      fontFamily: 'Calibri-Bold',
+      fontFamily: 'CircularStd-Bold',
       color: theme.text,
     },
     status: {
@@ -92,13 +92,13 @@ export const createTabStyles = theme =>
     },
     catalogueImageText: {
       fontSize: 32,
-      fontFamily: 'Calibri-Bold',
+      fontFamily: 'CircularStd-Bold',
       color: theme.text,
       textAlign: 'center',
       paddingBottom: 5,
     },
     catalougeText: {
-      fontFamily: 'Calibri-Bold',
+      fontFamily: 'CircularStd-Bold',
       fontSize: 24,
       color: theme.text,
     },
@@ -109,7 +109,7 @@ export const createTabStyles = theme =>
     },
     noImageText: {
       fontSize: 32,
-      fontFamily: 'Calibri-Regular',
+      fontFamily: 'CircularStd-Regular',
       color: '#A9A9A9',
       lineHeight: 40,
       textAlign: 'center',
@@ -130,7 +130,7 @@ export const createTabStyles = theme =>
     },
     blogDate: {
       color: '#888',
-      fontFamily: 'Calibri-Bold',
+      fontFamily: 'CircularStd-Bold',
       fontSize: 12,
     },
     blogImage: {
@@ -163,7 +163,7 @@ export const createTabStyles = theme =>
     },
     title: {
       fontSize: 24,
-      fontFamily: 'Calibri-Bold',
+      fontFamily: 'CircularStd-Bold',
       color: theme.text,
       textAlign: 'center',
     },
@@ -175,7 +175,7 @@ export const createTabStyles = theme =>
     },
     sectionTitle: {
       fontSize: 16,
-      fontFamily: 'Calibri-Medium',
+      fontFamily: 'CircularStd-Medium',
       color: theme.text,
     },
   });

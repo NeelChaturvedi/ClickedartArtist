@@ -128,7 +128,7 @@ export const Tabs = () => {
         screenOptions={{
           headerShown: false,
           tabBarLabelStyle: {
-            fontFamily: 'Calibri-Bold',
+            fontFamily: 'CircularStd-Bold',
           },
           tabBarInactiveTintColor: theme.text,
           tabBarActiveTintColor: '#ED3147',
@@ -184,7 +184,7 @@ export const Tabs = () => {
                   <Text
                     style={{
                       fontSize: 12,
-                      fontFamily: 'Calibri-Bold',
+                      fontFamily: 'CircularStd-Bold',
                       color: focused ? '#ED3147' : 'white',
                     }}>
                     {cartItems?.length || 0}
@@ -323,7 +323,7 @@ const getStyles = theme =>
     },
     title: {
       fontSize: 24,
-      fontFamily: 'Calibri-Bold',
+      fontFamily: 'CircularStd-Bold',
       color: theme.text,
       textAlign: 'center',
     },
@@ -335,7 +335,7 @@ const getStyles = theme =>
     },
     sectionTitle: {
       fontSize: 16,
-      fontFamily: 'Calibri-Medium',
+      fontFamily: 'CircularStd-Medium',
       color: theme.text,
     },
   });
