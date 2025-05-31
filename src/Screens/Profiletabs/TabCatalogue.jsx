@@ -26,8 +26,14 @@ import {Tabs} from 'react-native-collapsible-tab-view';
 const TabCatalogues = () => {
   const navigation = useNavigation();
 
-  const {catalogues, loading, pageCount, pageNumber, fetchMoreCatalogues} =
-    useCataloguesStore();
+  const {
+    catalogues,
+    loading,
+    pageCount,
+    pageNumber,
+    fetchCatalogues,
+    fetchMoreCatalogues,
+  } = useCataloguesStore();
   const {user} = useUserStore();
 
   const theme = useTheme();
@@ -87,11 +93,11 @@ const TabCatalogues = () => {
         name: selectedCatalogue?.name,
         description: selectedCatalogue?.description,
       });
-      useUserStore.getState().fetchUserFromToken();
       setShowModal(false);
     } catch (err) {
       console.log('err', err.response.data.message);
     } finally {
+      fetchCatalogues(user._id);
     }
   };
 
@@ -101,10 +107,10 @@ const TabCatalogues = () => {
         `/catalogue/delete-catalogue?catalogueId=${selectedCatalogue._id}`,
       );
       ToastAndroid.show('Catalogue deleted successfully.', ToastAndroid.SHORT);
-      useUserStore.getState().fetchUserFromToken();
     } catch (err) {
       console.log('err', err);
     } finally {
+      fetchCatalogues(user._id);
     }
   };
 

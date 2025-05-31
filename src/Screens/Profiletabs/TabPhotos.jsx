@@ -30,7 +30,7 @@ const TabPhotos = () => {
   const [slideUp, setSlideUp] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const {user} = useUserStore();
-  const {photos, loading, pageNumber, pageCount, fetchMorePhotos} =
+  const {photos, loading, pageNumber, pageCount, fetchPhotos, fetchMorePhotos} =
     usePhotosStore();
   const {pendingPhotos} = usePendingPhotosStore();
   const navigation = useNavigation();
