@@ -25,6 +25,7 @@ import FastImage from 'react-native-fast-image';
 import {usePendingPhotosStore} from 'src/store/pendingPhotos';
 import {Tabs} from 'react-native-collapsible-tab-view';
 import DotLoader from '@components/PaginationLoader';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 const TabPhotos = () => {
   const [slideUp, setSlideUp] = useState(false);
@@ -32,6 +33,7 @@ const TabPhotos = () => {
   const {user} = useUserStore();
   const {photos, loading, pageNumber, pageCount, fetchPhotos, fetchMorePhotos} =
     usePhotosStore();
+  const [loadingImages, setLoadingImages] = useState({});
   const {pendingPhotos} = usePendingPhotosStore();
   const navigation = useNavigation();
   const theme = useTheme();
@@ -163,6 +165,16 @@ const TabPhotos = () => {
 
   const renderItem = ({item}) => {
     const isPending = item.type === 'pending';
+    const isLoading = loadingImages[item._id];
+
+    const handleLoadStart = () => {
+      setLoadingImages(prev => ({...prev, [item._id]: true}));
+    };
+
+    const handleLoadEnd = () => {
+      setLoadingImages(prev => ({...prev, [item._id]: false}));
+    };
+
     return (
       <Pressable
         style={styles.imageBorder}
@@ -172,28 +184,35 @@ const TabPhotos = () => {
             setSlideUp(true);
           }
         }}>
-        {isPending ? (
-          <>
-            <FastImage
-              style={styles.image}
-              source={{uri: item.imageLinks.thumbnail}}
+        {isLoading && (
+          <SkeletonPlaceholder
+            backgroundColor={theme.loaderBackground}
+            highlightColor={theme.loaderColor}>
+            <SkeletonPlaceholder.Item
+              width="100%"
+              height="100%"
+              borderRadius={8}
             />
-            <View style={styles.status}>
-              <View style={styles.overlay} />
-              <Icon
-                name="clock-o"
-                size={50}
-                color="white"
-                style={styles.pending}
-              />
-            </View>
-          </>
-        ) : (
-          <FastImage
-            style={styles.image}
-            source={{uri: item.imageLinks.thumbnail}}
-          />
-          // <View style={[styles.image, {backgroundColor: 'red'}]} />
+          </SkeletonPlaceholder>
+        )}
+
+        <FastImage
+          style={[styles.image, isLoading && {position: 'absolute'}]}
+          source={{uri: item.imageLinks.thumbnail}}
+          onLoadStart={handleLoadStart}
+          onLoadEnd={handleLoadEnd}
+        />
+
+        {isPending && (
+          <View style={styles.status}>
+            <View style={styles.overlay} />
+            <Icon
+              name="clock-o"
+              size={50}
+              color="white"
+              style={styles.pending}
+            />
+          </View>
         )}
       </Pressable>
     );
